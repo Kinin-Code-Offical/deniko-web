@@ -1,9 +1,11 @@
 # --------------------------------------------------------
 # 1. AŞAMA: Bağımlılıkları Yükle (Dependencies)
 # --------------------------------------------------------
-FROM node:20-alpine AS deps
-# Prisma'nın Alpine linux'ta çalışması için gerekli kütüphane
-RUN apk add --no-cache libc6-compat
+FROM node:20-alpine3.20 AS deps
+# ÖNCE GÜNCELLEME: Mevcut paketlerdeki açıkları kapat (apk upgrade)
+# SONRA YÜKLEME: Prisma için gerekli libc6-compat'i yükle
+RUN apk update && apk upgrade && apk add --no-cache libc6-compat
+
 WORKDIR /app
 
 # Paket dosyalarını kopyala
@@ -14,37 +16,37 @@ RUN npm ci
 # --------------------------------------------------------
 # 2. AŞAMA: Projeyi Derle (Builder)
 # --------------------------------------------------------
-FROM node:20-alpine AS builder
+FROM node:20-alpine3.20 AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Prisma generate'in çalışması için geçici/sahte bir URL veriyoruz.
+# Build sırasında Prisma generate için geçici dummy URL
 ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
 
 # Prisma istemcisini oluştur
 RUN npx prisma generate
 
 # Next.js projesini build et
-# (TypeScript hatalarını yoksaymaması için build sırasında kontrol edilir)
 RUN npm run build
 
 # --------------------------------------------------------
 # 3. AŞAMA: Çalıştır (Runner - Production)
 # --------------------------------------------------------
-FROM node:20-alpine AS runner
+FROM node:20-alpine3.20 AS runner
+# Burada da işletim sistemini güncellemek güvenlik için iyidir
+RUN apk update && apk upgrade
+
 WORKDIR /app
 
-ENV NODE_ENV production
-# Google Cloud Run portu genellikle 8080'dir
-ENV PORT 8080 
-ENV HOSTNAME "0.0.0.0"
+ENV NODE_ENV=production
+ENV PORT=8080
+ENV HOSTNAME="0.0.0.0"
 
-# Güvenlik için root olmayan kullanıcı oluştur
+# Güvenlik için root olmayan kullanıcı
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Sadece gerekli dosyaları kopyala (Standalone modun güzelliği)
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
