@@ -1,7 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "standalone", // <-- BU SATIR ÇOK ÖNEMLİ
+
+  // Resim optimizasyonu için domainlere izin ver (Google User Content vb.)
+  images: {
+    remotePatterns: [
+      { hostname: "lh3.googleusercontent.com" }, // Google Login fotoları
+      { hostname: "storage.googleapis.com" },    // Senin Cloud Storage bucket'ın
+    ],
+  },
 };
 
 export default nextConfig;

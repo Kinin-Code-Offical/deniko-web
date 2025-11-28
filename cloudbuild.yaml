@@ -1,0 +1,31 @@
+steps:
+  # 1. Docker İmajını Oluştur
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/deniko-web', '.']
+
+  # 2. İmajı Google Container Registry'ye Gönder (Push)
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/deniko-web']
+
+  # 3. Cloud Run'a Dağıt (Deploy)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'deniko-web'                 # Cloud Run Servis Adı
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/deniko-web'
+      - '--region'
+      - 'europe-west1'               # Lokasyon (Belçika - Türkiye'ye hızlı)
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'    # Public erişim
+      - '--port'
+      - '8080'
+      # Cloud SQL Bağlantısı (Aşağıdaki INSTANCE_CONNECTION_NAME kısmını dolduracağız)
+      - '--add-cloudsql-instances'
+      - 'deniko:europe-west1:deniko-sql' 
+
+images:
+  - 'gcr.io/$PROJECT_ID/deniko-web'
