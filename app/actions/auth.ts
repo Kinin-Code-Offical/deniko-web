@@ -1,5 +1,8 @@
 "use server"
 
+/* The line `import { signIn } from "@/auth"` is importing the `signIn` function from a module located
+at the path `@/auth`. This function is likely used for handling user authentication, such as signing
+in users using different methods like Google sign-in or credentials sign-in. */
 import { signIn } from "@/auth"
 import { db } from "@/lib/db"
 import { z } from "zod"
@@ -163,7 +166,7 @@ export async function verifyEmail(token: string) {
         })
 
         await db.verificationToken.delete({
-            where: { id: verificationToken.id },
+            where: { token: verificationToken.token },
         })
 
         return { success: true, message: "E-posta adresi başarıyla doğrulandı." }
