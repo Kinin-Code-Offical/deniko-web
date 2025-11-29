@@ -1,63 +1,106 @@
-# 🧠 Deniko - AI System Instructions & Rules
+Deniko - Master System Instructions & Rules
 
-## 1. Project Context & Identity
-**Deniko** is a professional SaaS platform designed for hybrid tutors (freelance & institution based). It manages academic processes, finances, and communication.
-- **Core Philosophy:** "The Teacher's Assistant." The system supports "Shadow Accounts" (students without real accounts managed by teachers).
-- **Target Audience:** Private Tutors, Coaching Centers, Students, Parents.
+1. Project Context & Identity
 
-## 2. Tech Stack (Strict Versions)
-- **Framework:** Next.js 15 (App Router). **Strictly avoid Pages Router.**
-- **Language:** TypeScript (Strict mode).
-- **Database:** PostgreSQL (Google Cloud SQL) via **Prisma ORM v6**.
-- **Auth:** NextAuth.js (Auth.js) v5.
-- **UI:** Tailwind CSS v4 + **Shadcn/UI**.
-- **Infrastructure:** Google Cloud Run (Docker Standalone) + Cloud Build.
+Deniko is a high-end, professional SaaS platform for hybrid tutors (freelance & institution-based). It manages academic processes, finances, and communication.
 
-## 3. Architecture & Coding Conventions
+    Design Philosophy: "Sophisticated Simplicity." Use a 50/50 split layout for entry pages. High-end, trustworthy, and clean.
 
-### A. Next.js & Server Actions
-- **Data Fetching:** Fetch data directly in **Server Components** using `db` (Prisma). Do NOT use `useEffect` for data fetching unless absolutely necessary.
-- **Mutations:** Use **Server Actions** for all create/update/delete operations.
-- **Client Components:** Add `"use client"` only to leaf nodes (buttons, forms, interactive UI). Keep page layouts as Server Components.
+    Brand Assets: Use /public/logo.svg (preferred) or /public/logo.png for branding. The primary color is the Deep Blue found in the logo.
 
-### B. Database & Prisma (Crucial)
-- **Singleton Pattern:** Always import the Prisma client from `@/lib/db`. Do not instantiate `new PrismaClient()`.
-- **Shadow Accounts Logic:** - A `StudentProfile` does NOT always have a `userId`. If `userId` is null, it is a "Shadow Student".
-  - When querying students, handle both cases (Real vs. Shadow).
-- **Schema Awareness:** Always check `prisma/schema.prisma`.
-  - **Exams:** Distinguish between `SchoolExam` (Grade only) and `TrialExam` (TYT/AYT net calculation).
-  - **Payments:** Default `isVisibleToStudent` is `false`.
+2. Tech Stack (Strict Versions)
 
-### C. Styling (Shadcn/Tailwind)
-- **Utils:** Always use `cn()` from `@/lib/utils` for class merging.
-- **Colors:** Primary brand color is Blue (`bg-blue-600`), neutral is Slate/Zinc.
-- **Components:** Reuse components from `@/components/ui`. DO NOT reinvent the wheel. If you need a card, import `Card`.
+    Framework: Next.js 15 (App Router) with Internationalization (i18n) routing ([locale]).
 
-### D. Docker & Deployment Rules
-- **Output:** `next.config.ts` must have `output: "standalone"`.
-- **Binary Targets:** Prisma schema must include `linux-musl-openssl-3.0.x` for Alpine Linux compatibility.
-- **Environment:** Never hardcode secrets. Use `process.env`.
-- **Image Optimization:** Remember to allow `storage.googleapis.com` in `next.config.ts`.
+    Language: TypeScript (Strict mode).
 
-## 4. Critical Business Logic (Do Not Hallucinate)
+    Database: PostgreSQL (Google Cloud SQL) via Prisma ORM v6.
 
-1.  **Teacher-Student Relation:** It is Many-to-Many. A student can have multiple teachers.
-2.  **Lesson Types:**
-    - `PRIVATE`: Paid lessons (Included in financial calc).
-    - `INSTITUTION`: Salary-based (Excluded from wallet/balance, price is usually 0).
-3.  **Notifications:** We use "Deep Linking". Notifications must have a `route` field pointing to the relevant page (e.g., `/student/homework/123`).
+    Auth: NextAuth.js (Auth.js) v5 Beta.
 
-## 5. Directory Structure
-- `app/` -> App Router pages and layouts.
-- `components/ui/` -> Shadcn primitive components.
-- `components/` -> Feature-specific components (e.g., `components/auth/login-form.tsx`).
-- `lib/` -> Utilities, database client, auth config.
-- `prisma/` -> Schema and migrations.
+    UI: Tailwind CSS v4 + Shadcn/UI.
 
-## 6. Language Settings
-- **Primary Language:** Turkish (for user-facing text).
-- **Code Comments:** English (for clarity and consistency).
-- **Date Format:** Use `DD.MM.YYYY` for all date representations.
-- **Strategy:** Implement the i18n structure using the **Next.js App Router standard** (creating `i18n-config.ts` and middleware to handle locale routing).
-- **Locales:** Define two primary locales: `tr` (Turkish - Default) and `en` (English).
-- **Language Switcher Component:** Create a reusable component (e.g., `components/ui/language-switcher.tsx`) that displays a simple dropdown or button group for the user to switch between `tr` and `en`.. 
+    Infrastructure: Google Cloud Run (Docker Standalone).
+
+3. Critical Architecture & Workflows
+
+A. Internationalization (i18n) - MANDATORY
+
+    Structure: All pages must reside under app/[locale]/....
+
+    Config: Use i18n-config.ts to define locales: ['tr', 'en'] (default tr).
+
+    Middleware: Middleware must handle locale detection and redirection strictly.
+
+    Components: Use a LanguageSwitcher component in the top-right of Auth/Public pages.
+
+B. Authentication & Security (Fixed Logic)
+
+    Google & Manual Merge: To fix "OAuthAccountNotLinked" errors, set allowDangerousEmailAccountLinking: true in the Google Provider config within auth.ts. This allows a manual email user to later sign in with Google.
+
+    Registration (Manual):
+
+        Collect: firstName, lastName, email, phone (with country code), password, role.
+
+        Validation: Zod schema must enforce:
+
+            Password: 8+ chars, 1 uppercase, 1 lowercase, 1 number, 1 special char.
+
+            Phone: Valid format with country code.
+
+        Verification: Send an email via Nodemailer (lib/email.ts). Redirect to /verify.
+
+    Onboarding Loop Fix:
+
+        In app/[locale]/onboarding/page.tsx, check: if (session.user.role) redirect('/dashboard'). Never show onboarding if the role is already set.
+
+C. UI/UX Standards (The "Premium" Look)
+
+    Auth Layout (Login/Register):
+
+        50/50 Split Screen:
+
+            Left: Deep Blue/Gradient background, Logo, and a contextual Illustration/Tagline.
+
+            Right: Clean white form, centered.
+
+        Back Button: Every auth page must have a "Go Back" (< ChevronLeft) button at the top left.
+
+    Components:
+
+        Use DenikoLogo.tsx (rendering the SVG) for crisp branding.
+
+        Forms must use react-hook-form + zod with proper error messages translated via i18n.
+
+        Buttons: Use Shadcn buttons with loading states (useTransition or useFormStatus).
+
+4. Directory Structure Rules
+
+Plaintext
+
+app/
+  [locale]/
+    login/page.tsx
+    register/page.tsx
+    onboarding/page.tsx
+    dashboard/page.tsx
+    layout.tsx (Root layout with i18n provider)
+components/
+  ui/ (Shadcn primitives)
+  auth/ (LoginForm, RegisterForm, GoogleButton)
+  dashboard/ (Shell, Nav, UserNav)
+  shared/ (DenikoLogo, LanguageSwitcher, BackButton)
+lib/
+  db.ts (Prisma Singleton)
+  auth.ts (NextAuth Config)
+  email.ts (Nodemailer Logic)
+  validations/ (Zod schemas)
+messages/ (JSON files for tr/en translations)
+
+5. Development Safety Checks
+
+    Before generating code: Always import db from @/lib/db, never instantiate new PrismaClient().
+
+    Docker compatibility: Ensure output: "standalone" is in next.config.ts.
+
+    Environment: Never hardcode secrets. Use process.env.

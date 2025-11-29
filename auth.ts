@@ -5,12 +5,14 @@ import Credentials from "next-auth/providers/credentials"
 import { db } from "@/lib/db"
 import bcrypt from "bcryptjs"
 import { z } from "zod"
+import { SignJWT } from "jose"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     adapter: PrismaAdapter(db),
     session: { strategy: "jwt" },
     providers: [
         Google({
+            allowDangerousEmailAccountLinking: true,
             profile(profile) {
                 return {
                     id: profile.sub,
@@ -19,7 +21,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     lastName: profile.family_name,
                     email: profile.email,
                     image: profile.picture,
-                    role: "STUDENT", // Default role, will be updated in onboarding
+                    emailVerified: profile.email_verified ? new Date() : null,
                 }
             },
         }),
@@ -52,6 +54,32 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         })
     ],
     callbacks: {
+        async signIn({ user, account }) {
+            if (account?.provider === "google") {
+                if (!user.email) return false
+
+                const existingUser = await db.user.findUnique({
+                    where: { email: user.email },
+                })
+
+                if (existingUser) return true
+
+                // User does not exist, create a token and redirect to onboarding
+                const secret = new TextEncoder().encode(process.env.AUTH_SECRET)
+                const token = await new SignJWT({
+                    email: user.email,
+                    name: user.name,
+                    image: user.image,
+                    googleId: user.id,
+                })
+                    .setProtectedHeader({ alg: "HS256" })
+                    .setExpirationTime("1h")
+                    .sign(secret)
+
+                return `/onboarding?token=${token}`
+            }
+            return true
+        },
         async session({ session, token }) {
             if (token.sub && session.user) {
                 session.user.id = token.sub

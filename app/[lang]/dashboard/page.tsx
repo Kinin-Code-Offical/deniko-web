@@ -4,11 +4,12 @@ import { redirect } from "next/navigation"
 import { TeacherView } from "@/components/dashboard/teacher-view"
 import { StudentView } from "@/components/dashboard/student-view"
 
-export default async function DashboardPage() {
+export default async function DashboardPage({ params }: { params: Promise<{ lang: string }> }) {
+    const { lang } = await params
     const session = await auth()
 
     if (!session?.user?.id) {
-        redirect("/login")
+        redirect(`/${lang}/login`)
     }
 
     const user = await db.user.findUnique({
@@ -20,7 +21,7 @@ export default async function DashboardPage() {
     })
 
     if (!user) {
-        redirect("/login")
+        redirect(`/${lang}/login`)
     }
 
     if (user.role === "TEACHER") {

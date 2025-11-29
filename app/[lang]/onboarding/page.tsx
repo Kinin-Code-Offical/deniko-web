@@ -1,26 +1,76 @@
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
 import { redirect } from "next/navigation"
-import { RoleSelector } from "./role-selector"
+import { OnboardingForm } from "@/components/auth/onboarding-form"
+import { getDictionary } from "@/lib/get-dictionary"
+import { jwtVerify } from "jose"
 
-export default async function OnboardingPage() {
-    const session = await auth()
+export default async function OnboardingPage({
+    params,
+    searchParams
+}: {
+    params: Promise<{ lang: string }>,
+    searchParams: Promise<{ token?: string }>
+}) {
+    const { lang } = await params
+    const { token } = await searchParams
+    const dictionary = await getDictionary(lang as any)
 
-    if (!session?.user?.id) {
-        redirect("/login")
-    }
+    let user: any = null
+    let session = null
 
-    const user = await db.user.findUnique({
-        where: { id: session.user.id },
-        include: {
-            teacherProfile: true,
-            studentProfile: true,
-        },
-    })
+    if (token) {
+        try {
+            const secret = new TextEncoder().encode(process.env.AUTH_SECRET)
+            const { payload } = await jwtVerify(token, secret)
+            user = {
+                firstName: (payload.name as string)?.split(" ")[0],
+                lastName: (payload.name as string)?.split(" ").slice(1).join(" "),
+                email: payload.email as string,
+                image: payload.image as string,
+            }
+        } catch (e) {
+            redirect(`/${lang}/login`)
+        }
+    } else {
+        session = await auth()
+        if (!session?.user?.id) {
+            redirect(`/${lang}/login`)
+        }
 
-    // Critical Check: If profile exists, redirect to dashboard
-    if (user?.teacherProfile || user?.studentProfile) {
-        redirect("/dashboard")
+        const dbUser = await db.user.findUnique({
+            where: { id: session.user.id },
+            include: {
+                teacherProfile: true,
+                studentProfile: true,
+            },
+        })
+
+        // If user is in session but not in DB, redirect to login to restart flow
+        // This handles the edge case where middleware dropped the token but session was somehow established
+        // or if the user was deleted from DB but has a valid session cookie.
+        if (!dbUser) {
+            // Optionally sign out? But we can't do that easily in server component.
+            // Redirecting to login might just loop if session persists.
+            // But since our signIn callback prevents login for new users, this state should be rare.
+            // If we are here, it means auth() returned a session.
+            // Let's allow them to see the form, but completeOnboarding will fail if we don't handle it.
+            // Actually, if dbUser is null, we can't pre-fill much.
+            // Let's redirect to login with error.
+            redirect(`/${lang}/login?error=SessionMismatch`)
+        }
+
+        // Critical Check: If profile exists, redirect to dashboard
+        if (dbUser?.teacherProfile || dbUser?.studentProfile) {
+            redirect(`/${lang}/dashboard`)
+        }
+
+        user = {
+            firstName: dbUser?.firstName || session.user.name?.split(" ")[0],
+            lastName: dbUser?.lastName || session.user.name?.split(" ").slice(1).join(" "),
+            email: dbUser?.email,
+            image: dbUser?.image
+        }
     }
 
     return (
@@ -75,10 +125,10 @@ export default async function OnboardingPage() {
                         </svg>
                     </div>
                     <h2 className="text-3xl font-bold text-white max-w-md leading-tight">
-                        Eğitimde Yeni Nesil Yönetim ve Takip Sistemi
+                        {dictionary.auth.onboarding.title}
                     </h2>
                     <p className="text-blue-100 text-lg max-w-sm">
-                        Öğretmen ve öğrencileri tek bir platformda buluşturuyoruz.
+                        {dictionary.auth.onboarding.subtitle}
                     </p>
                 </div>
 
@@ -88,23 +138,13 @@ export default async function OnboardingPage() {
                 </div>
             </div>
 
-            {/* Right Panel - Action */}
-            <div className="w-full md:w-1/2 bg-white flex flex-col items-center justify-center p-8 md:p-12 overflow-y-auto">
-                <div className="w-full max-w-md space-y-8">
-                    <div className="text-center space-y-2">
-                        <div className="md:hidden flex justify-center mb-4">
-                            <img src="/logo.png" alt="Deniko Logo" className="h-12 w-auto" />
-                        </div>
-                        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
-                            Merhaba! 👋
-                        </h1>
-                        <p className="text-slate-500 text-lg">
-                            Devam etmeden önce lütfen rolünüzü seçin.
-                        </p>
-                    </div>
-
-                    <RoleSelector />
-                </div>
+            {/* Right Panel - Form */}
+            <div className="flex-1 flex items-center justify-center p-8 bg-slate-50">
+                <OnboardingForm
+                    dictionary={dictionary}
+                    user={user}
+                    token={token}
+                />
             </div>
         </div>
     )

@@ -60,7 +60,7 @@ const registerSchema = z.object({
     firstName: z.string().min(2, "Ad en az 2 karakter olmalıdır"),
     lastName: z.string().min(2, "Soyad en az 2 karakter olmalıdır"),
     email: z.string().email("Geçerli bir e-posta adresi giriniz"),
-    phoneNumber: z.string().min(10, "Geçerli bir telefon numarası giriniz"),
+    phoneNumber: z.string().regex(/^\+\d{10,15}$/, "Geçerli bir telefon numarası giriniz"),
     role: z.enum(["TEACHER", "STUDENT"]),
     password: z.string()
         .min(8, "Şifre en az 8 karakter olmalıdır")
@@ -97,18 +97,36 @@ export async function registerUser(formData: z.infer<typeof registerSchema>, lan
         // 2. Hash password
         const hashedPassword = await bcrypt.hash(password, 10)
 
-        // 3. Create User
-        const user = await db.user.create({
-            data: {
-                email,
-                password: hashedPassword,
-                firstName,
-                lastName,
-                role,
-                phoneNumber,
-                name: `${firstName} ${lastName}`,
-                emailVerified: null,
-            },
+        // 3. Create User & Profile
+        await db.$transaction(async (tx) => {
+            const user = await tx.user.create({
+                data: {
+                    email,
+                    password: hashedPassword,
+                    firstName,
+                    lastName,
+                    role,
+                    phoneNumber,
+                    name: `${firstName} ${lastName}`,
+                    emailVerified: null,
+                },
+            })
+
+            if (role === "TEACHER") {
+                await tx.teacherProfile.create({
+                    data: {
+                        userId: user.id,
+                        branch: "Genel",
+                    },
+                })
+            } else {
+                await tx.studentProfile.create({
+                    data: {
+                        userId: user.id,
+                        isClaimed: true,
+                    },
+                })
+            }
         })
 
         // 4. Generate Verification Token
@@ -124,7 +142,7 @@ export async function registerUser(formData: z.infer<typeof registerSchema>, lan
         })
 
         // 5. Send Email
-        await sendVerificationEmail(email, token)
+        await sendVerificationEmail(email, token, lang as "tr" | "en")
 
         return { success: true, message: dict.auth.register.success_desc }
     } catch (error) {
@@ -146,7 +164,7 @@ export async function verifyEmail(token: string) {
         const hasExpired = new Date(verificationToken.expires) < new Date()
 
         if (hasExpired) {
-            return { success: false, message: "Doğrulama kodunun süresi dolmuş." }
+            return { success: false, message: "Doğrulama kodunun süresi dolmuş.", email: verificationToken.identifier }
         }
 
         const existingUser = await db.user.findUnique({
@@ -172,5 +190,41 @@ export async function verifyEmail(token: string) {
         return { success: true, message: "E-posta adresi başarıyla doğrulandı." }
     } catch (error) {
         return { success: false, message: "Doğrulama sırasında bir hata oluştu." }
+    }
+}
+
+export async function resendVerificationEmailAction(email: string, lang: string = "tr") {
+    try {
+        const existingUser = await db.user.findUnique({
+            where: { email },
+        })
+
+        if (!existingUser) {
+            return { success: false, message: "Kullanıcı bulunamadı." }
+        }
+
+        if (existingUser.emailVerified) {
+            return { success: false, message: "E-posta zaten doğrulanmış." }
+        }
+
+        await db.verificationToken.deleteMany({
+            where: { identifier: email },
+        })
+
+        const token = randomBytes(32).toString("hex")
+        const expires = new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+
+        await db.verificationToken.create({
+            data: {
+                identifier: email,
+                token,
+                expires,
+            },
+        })
+
+        await sendVerificationEmail(email, token, lang as "tr" | "en")
+        return { success: true, message: "Doğrulama kodu tekrar gönderildi." }
+    } catch (error) {
+        return { success: false, message: "Bir hata oluştu." }
     }
 }

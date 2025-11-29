@@ -16,7 +16,7 @@ interface DashboardShellProps {
         name?: string | null
         email?: string | null
         image?: string | null
-        role?: "TEACHER" | "STUDENT" | "ADMIN"
+        role?: "TEACHER" | "STUDENT" | "ADMIN" | null
     }
 }
 

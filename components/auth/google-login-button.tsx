@@ -7,7 +7,7 @@ import { Chrome } from "lucide-react" // Using Chrome icon as Google proxy or ju
 // Actually, I can use a simple SVG for Google or just text.
 // I'll use a simple SVG for Google logo inline.
 
-export function GoogleLoginButton() {
+export function GoogleLoginButton({ text = "Google ile Devam Et" }: { text?: string }) {
     return (
         <form action={googleSignIn} className="w-full">
             <Button variant="outline" className="w-full flex items-center gap-2" type="submit">
@@ -36,7 +36,7 @@ export function GoogleLoginButton() {
                     />
                     <path d="M1 1h22v22H1z" fill="none" />
                 </svg>
-                Google ile Devam Et
+                {text}
             </Button>
         </form>
     )

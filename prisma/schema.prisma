@@ -37,7 +37,7 @@ model User {
   password      String? // OAuth kullananlar için boş olabilir (Nullable)
   phoneNumber   String? // Telefon numarası
 
-  role     Role    @default(STUDENT)
+  role     Role? // Rol seçimi onboarding'de yapılacak
   isActive Boolean @default(true) // Hesap dondurma kontrolü
 
   createdAt DateTime @default(now())

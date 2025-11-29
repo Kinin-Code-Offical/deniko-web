@@ -4,11 +4,12 @@ import { redirect } from "next/navigation"
 import { StudentTable } from "@/components/students/student-table"
 import { AddStudentDialog } from "@/components/students/add-student-dialog"
 
-export default async function StudentsPage() {
+export default async function StudentsPage({ params }: { params: Promise<{ lang: string }> }) {
+    const { lang } = await params
     const session = await auth()
 
     if (!session?.user?.id) {
-        redirect("/login")
+        redirect(`/${lang}/login`)
     }
 
     const user = await db.user.findUnique({
@@ -18,7 +19,7 @@ export default async function StudentsPage() {
 
     if (!user?.teacherProfile) {
         // If not a teacher, redirect to dashboard (or show error)
-        redirect("/dashboard")
+        redirect(`/${lang}/dashboard`)
     }
 
     const students = await db.studentTeacherRelation.findMany({

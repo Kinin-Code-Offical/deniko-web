@@ -41,6 +41,7 @@
             "subtitle": "Profesyonel özel ders yönetim platformu",
             "card_title": "Giriş Yap",
             "card_desc": "Google ile veya e-posta adresinle giriş yap",
+            "google_login": "Google ile Devam Et",
             "or_email": "Veya E-posta ile",
             "email": "E-posta",
             "password": "Şifre",
@@ -51,6 +52,12 @@
                 "email_invalid": "Geçerli bir e-posta adresi giriniz",
                 "password_required": "Şifre gereklidir"
             }
+        },
+        "onboarding": {
+            "title": "Profilinizi Tamamlayın",
+            "subtitle": "Devam etmek için lütfen eksik bilgilerinizi giriniz.",
+            "submit": "Kaydet ve Devam Et",
+            "submitting": "Kaydediliyor..."
         }
     }
 }

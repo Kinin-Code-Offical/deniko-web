@@ -5,13 +5,16 @@ import { DashboardShell } from "@/components/dashboard/shell"
 
 export default async function DashboardLayout({
     children,
+    params,
 }: {
     children: React.ReactNode
+    params: Promise<{ lang: string }>
 }) {
+    const { lang } = await params
     const session = await auth()
 
     if (!session?.user?.id) {
-        redirect("/login")
+        redirect(`/${lang}/login`)
     }
 
     const user = await db.user.findUnique({
@@ -23,7 +26,7 @@ export default async function DashboardLayout({
     })
 
     if (!user) {
-        redirect("/login")
+        redirect(`/${lang}/login`)
     }
 
     // If user has no role or no profile, redirect to onboarding
@@ -32,7 +35,7 @@ export default async function DashboardLayout({
         (user.role === "TEACHER" && !user.teacherProfile) ||
         (user.role === "STUDENT" && !user.studentProfile)
     ) {
-        redirect("/onboarding")
+        redirect(`/${lang}/onboarding`)
     }
 
     return (

@@ -41,6 +41,7 @@
             "subtitle": "Professional tutoring management platform",
             "card_title": "Login",
             "card_desc": "Login with Google or your email address",
+            "google_login": "Continue with Google",
             "or_email": "Or with Email",
             "email": "Email",
             "password": "Password",
@@ -51,6 +52,12 @@
                 "email_invalid": "Please enter a valid email address",
                 "password_required": "Password is required"
             }
+        },
+        "onboarding": {
+            "title": "Complete Your Profile",
+            "subtitle": "Please fill in the missing information to continue.",
+            "submit": "Save and Continue",
+            "submitting": "Saving..."
         }
     }
 }
