@@ -5,9 +5,10 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { dashboardConfig } from "@/config/dashboard"
 import { UserNav } from "@/components/dashboard/user-nav"
-import { Menu, X, GraduationCap } from "lucide-react"
+import { Menu, X, GraduationCap, Search } from "lucide-react"
 
 interface DashboardShellProps {
     children: React.ReactNode
@@ -80,7 +81,7 @@ export function DashboardShell({ children, user }: DashboardShellProps) {
 
             {/* Desktop Sidebar */}
             <aside className="hidden md:flex w-64 flex-col border-r bg-slate-50/40 min-h-screen">
-                <div className="p-6 border-b">
+                <div className="p-6 border-b h-16 flex items-center">
                     <div className="flex items-center gap-2 font-bold text-xl text-blue-600">
                         <GraduationCap className="h-6 w-6" />
                         <span>Deniko</span>
@@ -108,25 +109,26 @@ export function DashboardShell({ children, user }: DashboardShellProps) {
                         })}
                     </nav>
                 </div>
-                <div className="p-4 border-t">
-                    <div className="flex items-center gap-3">
-                        <UserNav user={user} />
-                        <div className="flex flex-col overflow-hidden">
-                            <span className="text-sm font-medium truncate">{user.name}</span>
-                            <span className="text-xs text-slate-500 truncate">{user.email}</span>
-                        </div>
-                    </div>
-                </div>
+                {/* User info removed from bottom sidebar as it is now in header */}
             </aside>
 
             {/* Main Content */}
             <main className="flex-1 flex flex-col min-h-0 overflow-hidden">
                 {/* Desktop Header */}
                 <header className="hidden md:flex h-16 items-center justify-between border-b px-6 bg-white">
-                    <h1 className="text-lg font-semibold text-slate-900">
-                        {navItems.find(i => i.href === pathname)?.title || "Dashboard"}
-                    </h1>
-                    {/* Right side header items if needed */}
+                    <div className="flex items-center gap-4 w-full max-w-md">
+                        <div className="relative w-full">
+                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                type="search"
+                                placeholder="Ara..."
+                                className="w-full bg-slate-50 pl-9 md:w-[300px] lg:w-[400px]"
+                            />
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <UserNav user={user} />
+                    </div>
                 </header>
 
                 <div className="flex-1 overflow-y-auto p-6">

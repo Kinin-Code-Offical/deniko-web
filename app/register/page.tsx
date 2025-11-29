@@ -4,7 +4,7 @@ import { useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { login } from "@/app/actions/auth"
+import { registerUser } from "@/app/actions/auth"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -29,11 +29,12 @@ import Link from "next/link"
 
 const formSchema = z.object({
     email: z.string().email("Geçerli bir e-posta adresi giriniz"),
-    password: z.string().min(1, "Şifre gereklidir"),
+    password: z.string().min(8, "Şifre en az 8 karakter olmalıdır"),
 })
 
-export default function LoginPage() {
+export default function RegisterPage() {
     const [isPending, startTransition] = useTransition()
+    const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -45,11 +46,38 @@ export default function LoginPage() {
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         startTransition(async () => {
-            const result = await login(values)
-            if (result && !result.success) {
+            const result = await registerUser(values)
+            if (result.success) {
+                setSuccessMessage(result.message)
+                toast.success(result.message)
+                form.reset()
+            } else {
                 toast.error(result.message)
             }
         })
+    }
+
+    if (successMessage) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
+                <Card className="w-full max-w-md border-slate-200 shadow-lg">
+                    <CardHeader className="text-center">
+                        <div className="mx-auto rounded-full bg-green-100 p-3 mb-4 w-fit">
+                            <GraduationCap className="h-10 w-10 text-green-600" />
+                        </div>
+                        <CardTitle className="text-xl text-green-700">Kayıt Başarılı!</CardTitle>
+                        <CardDescription className="text-slate-600 mt-2">
+                            {successMessage}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex justify-center pb-6">
+                        <Button asChild variant="outline">
+                            <Link href="/login">Giriş Sayfasına Dön</Link>
+                        </Button>
+                    </CardContent>
+                </Card>
+            </div>
+        )
     }
 
     return (
@@ -60,18 +88,18 @@ export default function LoginPage() {
                         <GraduationCap className="h-10 w-10 text-blue-600" />
                     </div>
                     <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
-                        Deniko'ya Hoş Geldiniz
+                        Deniko'ya Kayıt Ol
                     </h1>
                     <p className="mt-2 text-slate-600">
-                        Profesyonel özel ders yönetim platformu
+                        Hemen hesabını oluştur ve eğitime başla
                     </p>
                 </div>
 
                 <Card className="border-slate-200 shadow-lg">
                     <CardHeader className="space-y-1 text-center">
-                        <CardTitle className="text-xl">Giriş Yap</CardTitle>
+                        <CardTitle className="text-xl">Hesap Oluştur</CardTitle>
                         <CardDescription>
-                            Google ile veya e-posta adresinle giriş yap
+                            Google ile veya e-posta adresinle kayıt ol
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="grid gap-4">
@@ -118,15 +146,15 @@ export default function LoginPage() {
                                 />
                                 <Button type="submit" className="w-full" disabled={isPending}>
                                     {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                    Giriş Yap
+                                    Kayıt Ol
                                 </Button>
                             </form>
                         </Form>
 
                         <p className="text-xs text-center text-slate-500 mt-4">
-                            Hesabın yok mu?{" "}
-                            <Link href="/register" className="text-blue-600 hover:underline">
-                                Kayıt Ol
+                            Zaten hesabın var mı?{" "}
+                            <Link href="/login" className="text-blue-600 hover:underline">
+                                Giriş Yap
                             </Link>
                         </p>
                     </CardContent>
