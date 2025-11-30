@@ -49,14 +49,41 @@
             "or_email": "Veya E-posta ile",
             "email": "E-posta",
             "password": "Şifre",
+            "forgot_password_link": "Şifremi Unuttum",
             "submit": "Giriş Yap",
             "no_account": "Hesabınız yok mu?",
             "register_link": "Kayıt Ol",
+            "back_to_home": "Ana Sayfaya Dön",
             "validation": {
                 "email_invalid": "Geçerli bir e-posta adresi giriniz",
                 "password_required": "Şifre gereklidir",
                 "invalid_credentials": "Hatalı e-posta veya şifre."
             }
+        },
+        "forgot_password": {
+            "title": "Şifrenizi mi Unuttunuz?",
+            "desc": "E-posta adresinizi girin, size şifrenizi sıfırlamanız için bir bağlantı gönderelim.",
+            "email_label": "E-posta Adresi",
+            "submit": "Sıfırlama Linki Gönder",
+            "submitting": "Gönderiliyor...",
+            "back_to_login": "Girişe Dön",
+            "try_again": "Farklı bir e-posta ile dene",
+            "success": "Bu e-posta adresiyle kayıtlı bir hesap varsa, kısa süre içinde şifre sıfırlama bağlantısı alacaksınız."
+        },
+        "reset_password": {
+            "title": "Şifre Sıfırlama",
+            "desc": "Yeni şifrenizi aşağıya girin.",
+            "new_password": "Yeni Şifre",
+            "confirm_password": "Şifre Tekrarı",
+            "submit": "Şifreyi Sıfırla",
+            "submitting": "Sıfırlanıyor...",
+            "success": "Şifreniz başarıyla sıfırlandı. Artık giriş yapabilirsiniz.",
+            "invalid_token": "Geçersiz veya süresi dolmuş token.",
+            "expired_token": "Bu bağlantının süresi dolmuş.",
+            "user_not_found": "Kullanıcı bulunamadı.",
+            "invalid_link_title": "Geçersiz Bağlantı",
+            "invalid_link_desc": "Bu şifre sıfırlama bağlantısı geçersiz veya süresi dolmuş. Lütfen yeni bir tane talep edin.",
+            "same_password": "Yeni şifre eski şifre ile aynı olamaz."
         },
         "onboarding": {
             "title": "Profilinizi Tamamlayın",
@@ -213,6 +240,19 @@
             "footer_address": "Güzeltepe Mah., 747. Cd., No:14 Çankaya/Ankara",
             "footer_copyright": "© 2025 Deniko. Tüm hakları saklıdır.",
             "footer_terms": "Kullanıcı Sözleşmesi",
+            "footer_privacy": "Gizlilik Politikası"
+        },
+        "password_reset": {
+            "subject": "Deniko Şifre Sıfırlama Talebi",
+            "title": "Şifrenizi Sıfırlayın",
+            "greeting": "Merhaba,",
+            "body": "Hesabınız için bir şifre sıfırlama talebi aldık. Şifrenizi yenilemek için aşağıdaki butona tıklayın. Bu link 1 saat süreyle geçerlidir.",
+            "button": "Şifremi Sıfırla",
+            "ignore": "Bu talebi siz yapmadıysanız, bu e-postayı görmezden gelebilirsiniz.",
+            "footer_disclaimer": "Bu e-posta Deniko hesabınızla ilgili önemli bir bildirimdir.",
+            "footer_address": "Güzeltepe Mah., 747. Cd., No:14 Çankaya/Ankara",
+            "footer_copyright": "© 2025 Deniko. Tüm hakları saklıdır.",
+            "footer_terms": "Kullanım Koşulları",
             "footer_privacy": "Gizlilik Politikası"
         }
     }

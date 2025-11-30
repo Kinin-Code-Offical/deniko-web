@@ -15,7 +15,22 @@ const transporter = nodemailer.createTransport({
   maxMessages: 100,
 })
 
+export async function sendPasswordResetEmail(email: string, token: string, lang: string = "tr") {
+  const dictionary = await getDictionary(lang as Locale)
+  const resetLink = `${process.env.NEXTAUTH_URL}/${lang}/reset-password?token=${token}`
 
+  // @ts-ignore
+  const content = dictionary.email.password_reset
+
+  const html = getVerificationEmailTemplate(resetLink, lang as Locale, content)
+
+  await transporter.sendMail({
+    from: `"Deniko" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: content.subject,
+    html,
+  })
+}
 
 function getVerificationEmailTemplate(url: string, lang: Locale, content: any) {
   return `

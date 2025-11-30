@@ -1,0 +1,209 @@
+"use client"
+
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import { useRouter, useSearchParams } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Loader2, Lock, CheckCircle2, AlertCircle, Eye, EyeOff } from "lucide-react"
+import { resetPassword } from "@/app/actions/auth"
+import { Locale } from "@/i18n-config"
+import Link from "next/link"
+
+// Password strength regex: at least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/
+
+interface ResetPasswordFormProps {
+    dictionary: any
+    lang: Locale
+    token: string
+}
+
+export function ResetPasswordForm({ dictionary, lang, token }: ResetPasswordFormProps) {
+    const router = useRouter()
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const [success, setSuccess] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+    const formSchema = z.object({
+        password: z.string().regex(passwordRegex, {
+            message: dictionary.auth.register.validation.password_regex,
+        }),
+        confirmPassword: z.string(),
+    }).refine((data) => data.password === data.confirmPassword, {
+        message: dictionary.auth.register.validation.password_mismatch,
+        path: ["confirmPassword"],
+    })
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            password: "",
+            confirmPassword: "",
+        },
+    })
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true)
+        setError(null)
+
+        try {
+            const result = await resetPassword(token, values.password, lang)
+
+            if (!result.success) {
+                setError(result.message)
+            } else {
+                setSuccess(true)
+                // Redirect to login after 3 seconds
+                setTimeout(() => {
+                    router.push(`/${lang}/login`)
+                }, 3000)
+            }
+        } catch (err) {
+            setError(dictionary.auth.errors.generic)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    if (success) {
+        return (
+            <div className="text-center space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                    <CheckCircle2 className="w-8 h-8 text-green-600" />
+                </div>
+                <div className="space-y-2">
+                    <h3 className="text-2xl font-semibold text-slate-900">
+                        {dictionary.auth.reset_password.success_title}
+                    </h3>
+                    <p className="text-slate-500">
+                        {dictionary.auth.reset_password.success_desc}
+                    </p>
+                </div>
+                <Button asChild className="w-full bg-[#2062A3] hover:bg-[#1a4f83]">
+                    <Link href={`/${lang}/login`}>
+                        {dictionary.auth.login.submit}
+                    </Link>
+                </Button>
+            </div>
+        )
+    }
+
+    return (
+        <div className="space-y-6">
+            <div className="space-y-2 text-center md:text-left">
+                <h2 className="text-2xl font-bold text-slate-900">
+                    {dictionary.auth.reset_password.title}
+                </h2>
+                <p className="text-slate-500">
+                    {dictionary.auth.reset_password.desc}
+                </p>
+            </div>
+
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    {error && (
+                        <Alert variant="destructive">
+                            <AlertCircle className="h-4 w-4" />
+                            <AlertDescription>{error}</AlertDescription>
+                        </Alert>
+                    )}
+
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{dictionary.auth.register.password}</FormLabel>
+                                <FormControl>
+                                    <div className="relative">
+                                        <Lock className="absolute left-3 top-2.5 h-5 w-5 text-slate-400" />
+                                        <Input
+                                            type={showPassword ? "text" : "password"}
+                                            placeholder="••••••••"
+                                            className="pl-10 pr-10"
+                                            {...field}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600"
+                                        >
+                                            {showPassword ? (
+                                                <EyeOff className="h-5 w-5" />
+                                            ) : (
+                                                <Eye className="h-5 w-5" />
+                                            )}
+                                        </button>
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="confirmPassword"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{dictionary.auth.register.confirm_password}</FormLabel>
+                                <FormControl>
+                                    <div className="relative">
+                                        <Lock className="absolute left-3 top-2.5 h-5 w-5 text-slate-400" />
+                                        <Input
+                                            type={showConfirmPassword ? "text" : "password"}
+                                            placeholder="••••••••"
+                                            className="pl-10 pr-10"
+                                            {...field}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                            className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600"
+                                        >
+                                            {showConfirmPassword ? (
+                                                <EyeOff className="h-5 w-5" />
+                                            ) : (
+                                                <Eye className="h-5 w-5" />
+                                            )}
+                                        </button>
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <Button
+                        type="submit"
+                        className="w-full bg-[#2062A3] hover:bg-[#1a4f83]"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                {dictionary.common.loading}
+                            </>
+                        ) : (
+                            dictionary.auth.reset_password.submit
+                        )}
+                    </Button>
+                </form>
+            </Form>
+        </div>
+    )
+}

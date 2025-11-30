@@ -9,7 +9,7 @@ import { db } from "@/lib/db"
 import { z } from "zod"
 import bcrypt from "bcryptjs"
 import { randomBytes } from "crypto"
-import { sendVerificationEmail } from "@/lib/email"
+import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email"
 import { AuthError } from "next-auth"
 import { getDictionary } from "@/lib/get-dictionary"
 import { Locale } from "@/i18n-config"
@@ -320,4 +320,111 @@ export async function resendVerificationEmailAction(email: string, lang: string 
     } catch (error) {
         return { success: false, message: d.error }
     }
+}
+
+export async function forgotPassword(email: string, lang: string = "tr") {
+    const dict = await getDictionary(lang as Locale)
+
+    const emailSchema = z.string().email()
+    const validatedEmail = emailSchema.safeParse(email)
+
+    if (!validatedEmail.success) {
+        return { success: false, message: dict.auth.register.validation.email_invalid }
+    }
+
+    const user = await db.user.findUnique({
+        where: { email },
+    })
+
+    // Security: Always return success to prevent email enumeration
+    if (!user) {
+        return { success: true, message: dict.auth.forgot_password.success }
+    }
+
+    // If user has no password (OAuth only), we can't reset it
+    if (!user.password) {
+        // Optional: Send an email saying "You use Google Login"
+        return { success: true, message: dict.auth.forgot_password.success }
+    }
+
+    // Delete existing tokens
+    await db.passwordResetToken.deleteMany({
+        where: { email },
+    })
+
+    // Generate new token
+    const token = randomBytes(32).toString("hex")
+    const expires = new Date(new Date().getTime() + 60 * 60 * 1000) // 1 hour
+
+    await db.passwordResetToken.create({
+        data: {
+            email,
+            token,
+            expires,
+        },
+    })
+
+    await sendPasswordResetEmail(email, token, lang)
+
+    return { success: true, message: dict.auth.forgot_password.success }
+}
+
+export async function resetPassword(token: string, newPassword: string, lang: string = "tr") {
+    const dict = await getDictionary(lang as Locale)
+    const d = dict.auth.register.validation
+
+    const passwordSchema = z.string()
+        .min(8, d.password_min)
+        .regex(/[A-Z]/, d.password_regex)
+        .regex(/[a-z]/, d.password_regex)
+        .regex(/[0-9]/, d.password_regex)
+        .regex(/[^A-Za-z0-9]/, d.password_regex)
+
+    const validatedPassword = passwordSchema.safeParse(newPassword)
+
+    if (!validatedPassword.success) {
+        return { success: false, message: validatedPassword.error.issues[0].message }
+    }
+
+    const existingToken = await db.passwordResetToken.findUnique({
+        where: { token },
+    })
+
+    if (!existingToken) {
+        return { success: false, message: dict.auth.reset_password.invalid_token }
+    }
+
+    const hasExpired = new Date() > existingToken.expires
+    if (hasExpired) {
+        return { success: false, message: dict.auth.reset_password.expired_token }
+    }
+
+    const existingUser = await db.user.findUnique({
+        where: { email: existingToken.email },
+    })
+
+    if (!existingUser) {
+        return { success: false, message: dict.auth.reset_password.user_not_found }
+    }
+
+    // Check if new password is same as old password
+    if (existingUser.password) {
+        const isSamePassword = await bcrypt.compare(newPassword, existingUser.password)
+        if (isSamePassword) {
+            return { success: false, message: dict.auth.reset_password.same_password }
+        }
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+    await db.user.update({
+        where: { id: existingUser.id },
+        data: { password: hashedPassword },
+    })
+
+    await db.passwordResetToken.delete({
+        where: { id: existingToken.id },
+    })
+
+    return { success: true, message: dict.auth.reset_password.success }
 }

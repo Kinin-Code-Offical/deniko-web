@@ -107,7 +107,15 @@ export function LoginForm({ dictionary, lang }: LoginFormProps) {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>{d.password}</FormLabel>
+                                    <div className="flex items-center justify-between">
+                                        <FormLabel>{d.password}</FormLabel>
+                                        <Link
+                                            href={`/${lang}/forgot-password`}
+                                            className="text-sm font-medium text-[#2062A3] hover:underline"
+                                        >
+                                            {d.forgot_password_link}
+                                        </Link>
+                                    </div>
                                     <FormControl>
                                         <div className="relative">
                                             <Input

@@ -49,14 +49,41 @@
             "or_email": "Or with Email",
             "email": "Email",
             "password": "Password",
+            "forgot_password_link": "Forgot Password?",
             "submit": "Login",
             "no_account": "Don't have an account?",
             "register_link": "Register",
+            "back_to_home": "Back to Home",
             "validation": {
                 "email_invalid": "Please enter a valid email address",
                 "password_required": "Password is required",
                 "invalid_credentials": "Invalid email or password."
             }
+        },
+        "forgot_password": {
+            "title": "Forgot Password?",
+            "desc": "Enter your email address and we'll send you a link to reset your password.",
+            "email_label": "Email Address",
+            "submit": "Send Reset Link",
+            "submitting": "Sending...",
+            "back_to_login": "Back to Login",
+            "try_again": "Try with a different email",
+            "success": "If an account exists with this email, you will receive a password reset link shortly."
+        },
+        "reset_password": {
+            "title": "Reset Password",
+            "desc": "Enter your new password below.",
+            "new_password": "New Password",
+            "confirm_password": "Confirm Password",
+            "submit": "Reset Password",
+            "submitting": "Resetting...",
+            "success": "Your password has been reset successfully. You can now login.",
+            "invalid_token": "Invalid or expired token.",
+            "expired_token": "This link has expired.",
+            "user_not_found": "User not found.",
+            "invalid_link_title": "Invalid Link",
+            "invalid_link_desc": "This password reset link is invalid or has expired. Please request a new one.",
+            "same_password": "New password cannot be the same as the old password."
         },
         "onboarding": {
             "title": "Complete Your Profile",
@@ -210,6 +237,19 @@
             "website": "Web Site",
             "support": "Support",
             "footer_disclaimer": "This email was sent regarding an important action on your Deniko account (membership verification).",
+            "footer_address": "Güzeltepe Mah., 747. Cd., No:14 Çankaya/Ankara",
+            "footer_copyright": "© 2025 Deniko. All rights reserved.",
+            "footer_terms": "Terms of Service",
+            "footer_privacy": "Privacy Policy"
+        },
+        "password_reset": {
+            "subject": "Reset Your Password - Deniko",
+            "title": "Reset Your Password",
+            "greeting": "Hello,",
+            "body": "We received a request to reset your password. Click the button below to create a new password. This link is valid for 1 hour.",
+            "button": "Reset Password",
+            "ignore": "If you didn't request this, you can safely ignore this email.",
+            "footer_disclaimer": "This email contains important information about your Deniko account.",
             "footer_address": "Güzeltepe Mah., 747. Cd., No:14 Çankaya/Ankara",
             "footer_copyright": "© 2025 Deniko. All rights reserved.",
             "footer_terms": "Terms of Service",
