@@ -10,7 +10,9 @@ export async function completeOnboarding(data: {
     phoneNumber: string,
     password?: string,
     confirmPassword?: string,
-    userId?: string // Fallback for debugging
+    userId?: string, // Fallback for debugging
+    terms?: boolean,
+    marketingConsent?: boolean
 }) {
     const session = await auth()
     console.log("Session in Action:", session)
@@ -22,9 +24,13 @@ export async function completeOnboarding(data: {
         return { success: false, error: "Oturum bulunamadı. Lütfen tekrar giriş yapın." }
     }
 
-    const { role, phoneNumber, password, confirmPassword } = data
+    const { role, phoneNumber, password, confirmPassword, terms } = data
 
     // Validation
+    if (!terms) {
+        return { success: false, error: "Kullanım koşullarını kabul etmelisiniz." }
+    }
+
     if (!phoneNumber) {
         return { success: false, error: "Telefon numarası gereklidir." }
     }
@@ -72,7 +78,8 @@ export async function completeOnboarding(data: {
                     phoneNumber,
                     password: hashedPassword,
                     isOnboardingCompleted: true,
-                    emailVerified: new Date() // Verify email upon onboarding completion
+                    emailVerified: new Date(), // Verify email upon onboarding completion
+                    isMarketingConsent: data.marketingConsent || false
                 },
             })
 

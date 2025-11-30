@@ -25,6 +25,7 @@ import { PhoneInput } from "@/components/ui/phone-input"
 import { DenikoLogo } from "@/components/ui/deniko-logo"
 import { registerUser } from "@/app/actions/auth"
 import { LanguageSwitcher } from "@/components/ui/language-switcher"
+import { Checkbox } from "@/components/ui/checkbox"
 
 interface RegisterFormProps {
     dictionary: any
@@ -53,7 +54,11 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
             .regex(/[a-z]/, d.validation.password_regex)
             .regex(/[0-9]/, d.validation.password_regex)
             .regex(/[^A-Za-z0-9]/, d.validation.password_regex),
-        confirmPassword: z.string()
+        confirmPassword: z.string(),
+        terms: z.boolean().refine(val => val === true, {
+            message: dictionary.legal.validation_error
+        }),
+        marketingConsent: z.boolean().optional(),
     }).refine((data) => data.password === data.confirmPassword, {
         message: d.validation.password_mismatch,
         path: ["confirmPassword"],
@@ -69,6 +74,8 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
             role: undefined,
             password: "",
             confirmPassword: "",
+            terms: false,
+            marketingConsent: false,
         },
     })
 
@@ -280,6 +287,62 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                             )}
                         />
                     </div>
+
+                    <FormField
+                        control={form.control}
+                        name="terms"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-row items-center gap-3 space-y-0 rounded-xl border border-slate-200 p-3 shadow-sm transition-all duration-200 hover:bg-slate-50 hover:border-[#2062A3]/50">
+                                <FormControl>
+                                    <Checkbox
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                        className="h-5 w-5 border-2 border-slate-300 data-[state=checked]:bg-[#2062A3] data-[state=checked]:border-[#2062A3] transition-all duration-200"
+                                    />
+                                </FormControl>
+                                <div className="leading-none flex-1">
+                                    <FormLabel className="text-sm font-medium text-slate-600 cursor-pointer block">
+                                        {dictionary.legal.accept_terms.split(/(\[.*?\])/g).map((part: string, i: number) => {
+                                            if (part.startsWith("[") && part.endsWith("]")) {
+                                                const content = part.slice(1, -1);
+                                                const href = content === dictionary.legal.terms_title || content === "Terms of Service" || content === "Kullanıcı Sözleşmesi"
+                                                    ? `/${lang}/legal/terms`
+                                                    : `/${lang}/legal/privacy`;
+                                                return (
+                                                    <Link key={i} href={href} target="_blank" className="font-bold text-[#2062A3] hover:underline hover:text-[#1a4f83] transition-colors">
+                                                        {content}
+                                                    </Link>
+                                                );
+                                            }
+                                            return part;
+                                        })}
+                                    </FormLabel>
+                                    <FormMessage className="mt-1" />
+                                </div>
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="marketingConsent"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-row items-center gap-3 space-y-0 rounded-xl border border-slate-200 p-3 shadow-sm transition-all duration-200 hover:bg-slate-50 hover:border-[#2062A3]/50">
+                                <FormControl>
+                                    <Checkbox
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                        className="h-5 w-5 border-2 border-slate-300 data-[state=checked]:bg-[#2062A3] data-[state=checked]:border-[#2062A3] transition-all duration-200"
+                                    />
+                                </FormControl>
+                                <div className="leading-none flex-1">
+                                    <FormLabel className="text-sm font-medium text-slate-600 cursor-pointer block">
+                                        {dictionary.legal.marketing_consent || "Kampanya ve duyurulardan e-posta ile haberdar olmak istiyorum."}
+                                    </FormLabel>
+                                </div>
+                            </FormItem>
+                        )}
+                    />
 
                     <Button
                         type="submit"

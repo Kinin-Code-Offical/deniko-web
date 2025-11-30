@@ -87,11 +87,34 @@ function getVerificationEmailTemplate(url: string, lang: Locale, content: any) {
       </div>
       <div class="divider"></div>
       <div class="footer">
-        <p style="margin: 0 0 8px 0;">${content.footer}</p>
-        <div class="footer-links">
-          <a href="${process.env.NEXTAUTH_URL}" class="footer-link">${content.website}</a> • 
-          <a href="mailto:support@deniko.net" class="footer-link">${content.support}</a>
-        </div>
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+          <tr>
+            <td style="padding-bottom: 16px; text-align: center;">
+              <p style="margin: 0; color: #6b7280; font-size: 12px; line-height: 1.5;">
+                ${content.footer_disclaimer}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-bottom: 16px; text-align: center;">
+              <p style="margin: 0; color: #6b7280; font-size: 12px; line-height: 1.5;">
+                ${content.footer_address}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: center;">
+              <p style="margin: 0 0 8px 0; color: #6b7280; font-size: 12px; line-height: 1.5;">
+                ${content.footer_copyright}
+              </p>
+              <p style="margin: 0; font-size: 12px; line-height: 1.5;">
+                <a href="${process.env.NEXTAUTH_URL}/${lang}/legal/terms" style="color: #2062A3; text-decoration: none;">${content.footer_terms}</a>
+                <span style="color: #d1d5db; margin: 0 8px;">|</span>
+                <a href="${process.env.NEXTAUTH_URL}/${lang}/legal/privacy" style="color: #2062A3; text-decoration: none;">${content.footer_privacy}</a>
+              </p>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>

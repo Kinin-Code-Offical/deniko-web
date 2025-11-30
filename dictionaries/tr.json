@@ -92,6 +92,13 @@
             }
         }
     },
+    "legal": {
+        "terms_title": "Kullanıcı Sözleşmesi",
+        "privacy_title": "Gizlilik Politikası",
+        "accept_terms": "[Kullanıcı Sözleşmesi] ve [Gizlilik Politikası]'nı okudum ve kabul ediyorum.",
+        "validation_terms": "Devam etmek için sözleşmeleri kabul etmelisiniz.",
+        "marketing_consent": "Kampanya ve duyurulardan e-posta ile haberdar olmak istiyorum."
+    },
     "common": {
         "back_to_home": "Ana Sayfaya Dön"
     },
@@ -199,9 +206,14 @@
             "body": "Aramıza katıldığınız için çok mutluyuz. Hesabınızı güvenli tutmak ve tüm özelliklere erişmek için lütfen e-posta adresinizi doğrulayın.",
             "button": "Hesabımı Doğrula",
             "ignore": "Bu e-postayı siz talep etmediyseniz, lütfen dikkate almayınız.",
-            "footer": "© 2025 Deniko. Öğretmen ve Öğrenci Yönetim Platformu.",
+            "footer": "Deniko - Öğretmen ve Öğrenci Yönetim Platformu.",
             "website": "Web Site",
-            "support": "Destek"
+            "support": "Destek",
+            "footer_disclaimer": "Bu e-posta, Deniko hesabınızla ilgili önemli bir işlem (üyelik doğrulama) hakkında olduğu için gönderilmiştir.",
+            "footer_address": "Güzeltepe Mah., 747. Cd., No:14 Çankaya/Ankara",
+            "footer_copyright": "© 2025 Deniko. Tüm hakları saklıdır.",
+            "footer_terms": "Kullanıcı Sözleşmesi",
+            "footer_privacy": "Gizlilik Politikası"
         }
     }
 }

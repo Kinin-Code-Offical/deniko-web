@@ -20,14 +20,18 @@ import {
 import { Input } from "@/components/ui/input"
 
 const countries = [
-    { label: "Turkey", value: "TR", code: "+90" },
-    { label: "United States", value: "US", code: "+1" },
-    { label: "United Kingdom", value: "GB", code: "+44" },
-    { label: "Germany", value: "DE", code: "+49" },
-    { label: "France", value: "FR", code: "+33" },
-    { label: "Netherlands", value: "NL", code: "+31" },
-    { label: "Azerbaijan", value: "AZ", code: "+994" },
-    // Add more as needed
+    { label: "Turkey", value: "TR", code: "+90", flag: "🇹🇷" },
+    { label: "United States", value: "US", code: "+1", flag: "🇺🇸" },
+    { label: "United Kingdom", value: "GB", code: "+44", flag: "🇬🇧" },
+    { label: "Germany", value: "DE", code: "+49", flag: "🇩🇪" },
+    { label: "France", value: "FR", code: "+33", flag: "🇫🇷" },
+    { label: "Netherlands", value: "NL", code: "+31", flag: "🇳🇱" },
+    { label: "Azerbaijan", value: "AZ", code: "+994", flag: "🇦🇿" },
+    { label: "Cyprus", value: "CY", code: "+357", flag: "🇨🇾" },
+    { label: "Italy", value: "IT", code: "+39", flag: "🇮🇹" },
+    { label: "Spain", value: "ES", code: "+34", flag: "🇪🇸" },
+    { label: "Russia", value: "RU", code: "+7", flag: "🇷🇺" },
+    { label: "Ukraine", value: "UA", code: "+380", flag: "🇺🇦" },
 ]
 
 interface PhoneInputProps {
@@ -79,43 +83,47 @@ export function PhoneInput({ value = "", onChange, className }: PhoneInputProps)
         }
     }
 
+    const selectedCountry = countries.find(c => c.code === countryCode)
+
     if (!mounted) {
         return (
-            <div className={cn("flex gap-2", className)}>
+            <div className={cn("flex items-center w-full rounded-md border border-input bg-background ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2", className)}>
                 <Button
-                    variant="outline"
+                    variant="ghost"
                     role="combobox"
-                    className="w-[100px] justify-between px-3"
+                    className="h-full rounded-l-md rounded-r-none border-r border-input/50 px-2 gap-1 hover:bg-transparent"
                 >
-                    {countryCode}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <span className="text-lg leading-none">{selectedCountry?.flag}</span>
+                    <span className="text-sm font-medium">{countryCode}</span>
+                    <ChevronsUpDown className="h-3 w-3 shrink-0 opacity-50" />
                 </Button>
                 <Input
                     type="tel"
                     placeholder="5XX XXX XX XX"
                     value={phoneNumber}
                     onChange={handlePhoneChange}
-                    className="flex-1"
+                    className="h-full flex-1 rounded-l-none rounded-r-md border-0 shadow-none focus-visible:ring-0"
                 />
             </div>
         )
     }
 
     return (
-        <div className={cn("flex gap-2", className)}>
+        <div className={cn("flex items-center w-full rounded-md border border-input bg-background ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2", className)}>
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                     <Button
-                        variant="outline"
+                        variant="ghost"
                         role="combobox"
                         aria-expanded={open}
-                        className="w-[100px] justify-between px-3"
+                        className="h-full rounded-l-md rounded-r-none border-r border-input/50 px-2 gap-1 hover:bg-transparent"
                     >
-                        {countryCode}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        <span className="text-lg leading-none">{selectedCountry?.flag}</span>
+                        <span className="text-sm font-medium">{countryCode}</span>
+                        <ChevronsUpDown className="h-3 w-3 shrink-0 opacity-50" />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
+                <PopoverContent className="w-[300px] p-0" align="start">
                     <Command>
                         <CommandInput placeholder="Ülke ara..." />
                         <CommandList>
@@ -124,16 +132,23 @@ export function PhoneInput({ value = "", onChange, className }: PhoneInputProps)
                                 {countries.map((country) => (
                                     <CommandItem
                                         key={country.value}
-                                        value={country.value}
-                                        onSelect={handleCountrySelect}
+                                        value={`${country.label} ${country.code}`}
+                                        onSelect={() => {
+                                            handleCountrySelect(country.value)
+                                            setOpen(false)
+                                        }}
+                                        className="gap-2 cursor-pointer"
                                     >
                                         <Check
                                             className={cn(
-                                                "mr-2 h-4 w-4",
+                                                "h-4 w-4 shrink-0",
                                                 countryCode === country.code ? "opacity-100" : "opacity-0"
                                             )}
                                         />
-                                        {country.label} ({country.code})
+                                        <span className="text-lg leading-none">{country.flag}</span>
+                                        <span className="flex-1 truncate">
+                                            {country.label} <span className="text-muted-foreground">({country.code})</span>
+                                        </span>
                                     </CommandItem>
                                 ))}
                             </CommandGroup>
@@ -146,7 +161,7 @@ export function PhoneInput({ value = "", onChange, className }: PhoneInputProps)
                 placeholder="5XX XXX XX XX"
                 value={phoneNumber}
                 onChange={handlePhoneChange}
-                className="flex-1"
+                className="h-full flex-1 rounded-l-none rounded-r-md border-0 shadow-none focus-visible:ring-0"
             />
         </div>
     )

@@ -14,6 +14,8 @@ import { PhoneInput } from "@/components/ui/phone-input"
 import { Input } from "@/components/ui/input"
 import { DenikoLogo } from "@/components/ui/deniko-logo"
 import { LanguageSwitcher } from "@/components/ui/language-switcher"
+import { Checkbox } from "@/components/ui/checkbox"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
 
 interface OnboardingClientPageProps {
@@ -33,6 +35,7 @@ export function OnboardingClientPage({ dictionary, lang, userId }: OnboardingCli
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [termsAccepted, setTermsAccepted] = useState(false)
+    const [marketingConsent, setMarketingConsent] = useState(false)
 
     const handleLogout = async () => {
         await logout()
@@ -68,7 +71,9 @@ export function OnboardingClientPage({ dictionary, lang, userId }: OnboardingCli
                     phoneNumber,
                     password,
                     confirmPassword,
-                    userId
+                    userId,
+                    terms: termsAccepted,
+                    marketingConsent
                 })
                 if (result.success) {
                     await update({ role })
@@ -209,6 +214,7 @@ export function OnboardingClientPage({ dictionary, lang, userId }: OnboardingCli
                                 <Label>{dictionary.auth.register.password}</Label>
                                 <div className="relative">
                                     <Input
+                                        placeholder="******"
                                         type={showPassword ? "text" : "password"}
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
@@ -231,6 +237,7 @@ export function OnboardingClientPage({ dictionary, lang, userId }: OnboardingCli
                                 <Label>{dictionary.auth.register.password_confirm}</Label>
                                 <div className="relative">
                                     <Input
+                                        placeholder="******"
                                         type={showConfirmPassword ? "text" : "password"}
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
@@ -252,20 +259,52 @@ export function OnboardingClientPage({ dictionary, lang, userId }: OnboardingCli
                         </div>
 
                         {/* Terms Checkbox */}
-                        <div className="flex items-center space-x-2">
-                            <input
-                                type="checkbox"
+                        <div className="flex flex-row items-center gap-3 space-y-0 rounded-xl border border-slate-200 p-3 shadow-sm transition-all duration-200 hover:bg-slate-50 hover:border-[#2062A3]/50">
+                            <Checkbox
                                 id="terms"
                                 checked={termsAccepted}
-                                onChange={(e) => setTermsAccepted(e.target.checked)}
-                                className="h-4 w-4 rounded border-gray-300 text-[#2062A3] focus:ring-[#2062A3]"
+                                onCheckedChange={(checked) => setTermsAccepted(checked as boolean)}
+                                className="h-5 w-5 border-2 border-slate-300 data-[state=checked]:bg-[#2062A3] data-[state=checked]:border-[#2062A3] transition-all duration-200"
                             />
-                            <label
-                                htmlFor="terms"
-                                className="text-sm text-gray-500 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-                            >
-                                {lang === 'tr' ? "Kullanım koşullarını kabul ediyorum" : "I accept the terms and conditions"}
-                            </label>
+                            <div className="leading-none flex-1">
+                                <label
+                                    htmlFor="terms"
+                                    className="text-sm font-medium text-slate-600 cursor-pointer block"
+                                >
+                                    {dictionary.legal.accept_terms.split(/(\[.*?\])/g).map((part: string, i: number) => {
+                                        if (part.startsWith("[") && part.endsWith("]")) {
+                                            const content = part.slice(1, -1);
+                                            const href = content === dictionary.legal.terms_title || content === "Terms of Service" || content === "Kullanıcı Sözleşmesi"
+                                                ? `/${lang}/legal/terms`
+                                                : `/${lang}/legal/privacy`;
+                                            return (
+                                                <Link key={i} href={href} target="_blank" className="font-bold text-[#2062A3] hover:underline hover:text-[#1a4f83] transition-colors">
+                                                    {content}
+                                                </Link>
+                                            );
+                                        }
+                                        return part;
+                                    })}
+                                </label>
+                            </div>
+                        </div>
+
+                        {/* Marketing Consent Checkbox */}
+                        <div className="flex flex-row items-center gap-3 space-y-0 rounded-xl border border-slate-200 p-3 shadow-sm transition-all duration-200 hover:bg-slate-50 hover:border-[#2062A3]/50">
+                            <Checkbox
+                                id="marketingConsent"
+                                checked={marketingConsent}
+                                onCheckedChange={(checked) => setMarketingConsent(checked as boolean)}
+                                className="h-5 w-5 border-2 border-slate-300 data-[state=checked]:bg-[#2062A3] data-[state=checked]:border-[#2062A3] transition-all duration-200"
+                            />
+                            <div className="leading-none flex-1">
+                                <label
+                                    htmlFor="marketingConsent"
+                                    className="text-sm font-medium text-slate-600 cursor-pointer block"
+                                >
+                                    {dictionary.legal.marketing_consent || "Kampanya ve duyurulardan e-posta ile haberdar olmak istiyorum."}
+                                </label>
+                            </div>
                         </div>
 
                         {/* Submit Button */}

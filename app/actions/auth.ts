@@ -128,7 +128,9 @@ const registerSchemaBase = z.object({
         .regex(/[a-z]/)
         .regex(/[0-9]/)
         .regex(/[^A-Za-z0-9]/),
-    confirmPassword: z.string()
+    confirmPassword: z.string(),
+    terms: z.boolean(),
+    marketingConsent: z.boolean().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
 })
@@ -149,7 +151,11 @@ export async function registerUser(formData: z.infer<typeof registerSchemaBase>,
             .regex(/[a-z]/, d.password_regex)
             .regex(/[0-9]/, d.password_regex)
             .regex(/[^A-Za-z0-9]/, d.password_regex),
-        confirmPassword: z.string()
+        confirmPassword: z.string(),
+        terms: z.boolean().refine(val => val === true, {
+            message: dict.legal.validation_terms
+        }),
+        marketingConsent: z.boolean().optional(),
     }).refine((data) => data.password === data.confirmPassword, {
         message: d.password_mismatch,
         path: ["confirmPassword"],
@@ -161,7 +167,7 @@ export async function registerUser(formData: z.infer<typeof registerSchemaBase>,
         return { success: false, message: dict.auth.register.errors.invalid_data }
     }
 
-    const { email, password, firstName, lastName, role, phoneNumber } = validatedFields.data
+    const { email, password, firstName, lastName, role, phoneNumber, marketingConsent } = validatedFields.data
 
     try {
         // 1. Check if user exists
@@ -189,6 +195,7 @@ export async function registerUser(formData: z.infer<typeof registerSchemaBase>,
                     name: `${firstName} ${lastName}`,
                     emailVerified: null,
                     isOnboardingCompleted: true,
+                    isMarketingConsent: marketingConsent || false,
                 },
             })
 

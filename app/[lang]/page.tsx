@@ -183,13 +183,72 @@ export default async function Home({
       </main>
 
       <footer className="bg-gray-50 border-t py-12">
-        <div className="container mx-auto px-4 text-center text-gray-500">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <DenikoLogo className="h-6 w-6 text-gray-400" />
-            <span className="font-semibold text-gray-700">Deniko</span>
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            {/* Brand */}
+            <div className="col-span-1 md:col-span-2">
+              <div className="flex items-center gap-2 mb-4">
+                <DenikoLogo className="h-6 w-6 text-[#2062A3]" />
+                <span className="font-bold text-xl text-gray-900">Deniko</span>
+              </div>
+              <p className="text-gray-500 text-sm max-w-xs leading-relaxed">
+                {dictionary.home.hero_subtitle}
+              </p>
+            </div>
+
+            {/* Platform Links */}
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-4">{lang === 'tr' ? 'Platform' : 'Platform'}</h4>
+              <ul className="space-y-2 text-sm text-gray-500">
+                <li>
+                  <Link href={`/${lang}/login`} className="hover:text-[#2062A3] transition-colors">
+                    {dictionary.home.login}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${lang}/register`} className="hover:text-[#2062A3] transition-colors">
+                    {dictionary.home.get_started}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Legal Links */}
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-4">{lang === 'tr' ? 'Yasal' : 'Legal'}</h4>
+              <ul className="space-y-2 text-sm text-gray-500">
+                <li>
+                  <Link href={`/${lang}/legal/terms`} className="hover:text-[#2062A3] transition-colors">
+                    {lang === 'tr' ? 'Kullanıcı Sözleşmesi' : 'Terms of Service'}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${lang}/legal/privacy`} className="hover:text-[#2062A3] transition-colors">
+                    {lang === 'tr' ? 'Gizlilik Politikası' : 'Privacy Policy'}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${lang}/legal/cookies`} className="hover:text-[#2062A3] transition-colors">
+                    {lang === 'tr' ? 'Çerez Politikası' : 'Cookie Policy'}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${lang}/legal/kvkk`} className="hover:text-[#2062A3] transition-colors">
+                    {lang === 'tr' ? 'KVKK Aydınlatma Metni' : 'KVKK Clarification Text'}
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
-          <p className="mb-2">© 2025 Deniko. All rights reserved.</p>
-          <p className="text-xs text-gray-400">v1.0.0</p>
+
+          <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-gray-500">
+              {lang === 'tr' ? '© 2025 Deniko. Tüm hakları saklıdır.' : '© 2025 Deniko. All rights reserved.'}
+            </p>
+            <div className="flex items-center gap-4">
+              {/* Social Media Icons Placeholder */}
+            </div>
+          </div>
         </div>
       </footer>
     </div>

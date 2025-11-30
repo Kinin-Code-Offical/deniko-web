@@ -92,6 +92,13 @@
             }
         }
     },
+    "legal": {
+        "terms_title": "Terms of Service",
+        "privacy_title": "Privacy Policy",
+        "accept_terms": "I have read and accept the [Terms of Service] and [Privacy Policy].",
+        "validation_terms": "You must accept the terms to continue.",
+        "marketing_consent": "I want to be informed about campaigns and announcements via email."
+    },
     "common": {
         "back_to_home": "Back to Home"
     },
@@ -199,9 +206,14 @@
             "body": "We are very happy to have you join us. Please verify your email address to keep your account secure and access all features.",
             "button": "Verify My Account",
             "ignore": "If you did not request this email, please ignore it.",
-            "footer": "© 2025 Deniko. Teacher and Student Management Platform.",
+            "footer": "Deniko - Teacher and Student Management Platform.",
             "website": "Web Site",
-            "support": "Support"
+            "support": "Support",
+            "footer_disclaimer": "This email was sent regarding an important action on your Deniko account (membership verification).",
+            "footer_address": "Güzeltepe Mah., 747. Cd., No:14 Çankaya/Ankara",
+            "footer_copyright": "© 2025 Deniko. All rights reserved.",
+            "footer_terms": "Terms of Service",
+            "footer_privacy": "Privacy Policy"
         }
     }
 }
