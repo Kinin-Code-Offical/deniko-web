@@ -8,15 +8,18 @@ import { BookOpen, Clock, FileText, Trophy } from "lucide-react"
 
 interface StudentViewProps {
     user: any // Replace with proper type
+    dictionary: any
 }
 
-export function StudentView({ user }: StudentViewProps) {
+export function StudentView({ user, dictionary }: StudentViewProps) {
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-3xl font-bold tracking-tight">Merhaba, {user.firstName || user.name} 👋</h2>
+                <h2 className="text-3xl font-bold tracking-tight">
+                    {dictionary.dashboard.student.welcome.replace("{name}", user.firstName || user.name)} 👋
+                </h2>
                 <p className="text-muted-foreground">
-                    Derslerine ve ödevlerine buradan ulaşabilirsin.
+                    {dictionary.dashboard.student.subtitle}
                 </p>
             </div>
 
@@ -24,7 +27,7 @@ export function StudentView({ user }: StudentViewProps) {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                            Sıradaki Ders
+                            {dictionary.dashboard.student.stats.next_lesson}
                         </CardTitle>
                         <Clock className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
@@ -38,7 +41,7 @@ export function StudentView({ user }: StudentViewProps) {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                            Bekleyen Ödevler
+                            {dictionary.dashboard.student.stats.homework}
                         </CardTitle>
                         <FileText className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
@@ -52,7 +55,7 @@ export function StudentView({ user }: StudentViewProps) {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                            Tamamlanan Dersler
+                            {dictionary.dashboard.student.stats.completed_lessons}
                         </CardTitle>
                         <BookOpen className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
@@ -66,7 +69,7 @@ export function StudentView({ user }: StudentViewProps) {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                            Ortalama Başarı
+                            {dictionary.dashboard.student.stats.average_success}
                         </CardTitle>
                         <Trophy className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
@@ -82,17 +85,17 @@ export function StudentView({ user }: StudentViewProps) {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="col-span-4">
                     <CardHeader>
-                        <CardTitle>Haftalık Programım</CardTitle>
+                        <CardTitle>{dictionary.dashboard.student.stats.weekly_schedule}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="flex items-center justify-center h-[200px] text-muted-foreground border-2 border-dashed rounded-md">
-                            Ders programı takvimi burada olacak
+                            {dictionary.dashboard.teacher.stats.schedule_placeholder}
                         </div>
                     </CardContent>
                 </Card>
                 <Card className="col-span-3">
                     <CardHeader>
-                        <CardTitle>Ödev Durumu</CardTitle>
+                        <CardTitle>{dictionary.dashboard.student.stats.homework_status}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">

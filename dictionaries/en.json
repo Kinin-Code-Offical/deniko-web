@@ -54,7 +54,8 @@
             "register_link": "Register",
             "validation": {
                 "email_invalid": "Please enter a valid email address",
-                "password_required": "Password is required"
+                "password_required": "Password is required",
+                "invalid_credentials": "Invalid email or password."
             }
         },
         "onboarding": {
@@ -62,6 +63,33 @@
             "subtitle": "Please fill in the missing information to continue.",
             "submit": "Save and Continue",
             "submitting": "Saving..."
+        },
+        "verification": {
+            "unverified_title": "Email address not verified.",
+            "unverified_desc": "Please click the verification link sent to your email address to log in.",
+            "resend_button": "Resend Verification Code",
+            "sending": "Sending...",
+            "wait": "Please wait: {time}",
+            "success": "Verification link resent.",
+            "error": "An error occurred.",
+            "user_not_found": "User not found.",
+            "already_verified": "Email already verified."
+        },
+        "verify_page": {
+            "verifying": "Verifying...",
+            "success_title": "Email Verified!",
+            "error_title": "Verification Failed",
+            "verifying_desc": "Please wait, verifying your email address.",
+            "missing_token": "Verification token not found.",
+            "resend_button": "Resend Verification Code",
+            "back_to_login": "Login",
+            "messages": {
+                "invalid_token": "Invalid verification code.",
+                "expired_token": "Verification code expired.",
+                "user_not_found": "User not found.",
+                "success": "Email address successfully verified.",
+                "error": "An error occurred during verification."
+            }
         }
     },
     "common": {
@@ -74,12 +102,12 @@
         "login": "Login",
         "features": {
             "title": "Powerful Tools for Education",
-            "f1_title": "Smart Scheduling",
-            "f1_desc": "Optimize your lesson schedule, prevent conflicts, and use your time efficiently.",
-            "f2_title": "Student Portfolio",
-            "f2_desc": "Create custom progress reports, notes, and homework tracking for each student.",
-            "f3_title": "Data-Driven Analysis",
-            "f3_desc": "Review success charts, identify gaps, and focus on goals."
+            "scheduling_title": "Smart Scheduling",
+            "scheduling_desc": "Optimize your lesson schedule, prevent conflicts, and use your time efficiently.",
+            "students_title": "Student Portfolio",
+            "students_desc": "Create custom progress reports, notes, and homework tracking for each student.",
+            "progress_title": "Data-Driven Analysis",
+            "progress_desc": "Review success charts, identify gaps, and focus on goals."
         },
         "how_it_works": {
             "title": "How Deniko Works?",
@@ -94,6 +122,86 @@
             "title": "Be Part of Modern Education",
             "subtitle": "Leave traditional methods behind. Make your education process more organized and efficient with Deniko.",
             "button": "Start Now"
+        }
+    },
+    "dashboard": {
+        "teacher": {
+            "welcome": "Welcome, {name}",
+            "stats": {
+                "active_students": "Active Students",
+                "total_lessons": "Total Lessons",
+                "income": "Monthly Income",
+                "success_rate": "Success Rate",
+                "success_desc": "Homework completion rate",
+                "recent_activity": "Recent Activity",
+                "upcoming_lessons": "Upcoming Lessons",
+                "schedule_placeholder": "Schedule calendar will be here"
+            },
+            "students": {
+                "title": "My Students",
+                "subtitle": "Manage all your students and add new ones here.",
+                "add_new": "Add New Student",
+                "add_dialog": {
+                    "title": "Add New Student",
+                    "desc": "Create a shadow account by entering student details. They can claim it later via invite link.",
+                    "first_name": "First Name",
+                    "last_name": "Last Name",
+                    "student_no": "Student No (Optional)",
+                    "grade_level": "Grade Level (Optional)",
+                    "placeholder_name": "John",
+                    "success": "Student created successfully",
+                    "copy_invite": "Invite link copied"
+                },
+                "table": {
+                    "name": "Student Name",
+                    "status": "Status",
+                    "school_no": "School Info",
+                    "actions": "Actions",
+                    "empty": "No students added yet.",
+                    "shadow_account": "Shadow Account",
+                    "copy_invite": "Copy Invite Link"
+                },
+                "status": {
+                    "shadow": "Pending Invite",
+                    "claimed": "Active"
+                }
+            }
+        },
+        "student": {
+            "welcome": "Hello, {name}",
+            "subtitle": "Access your lessons and homework here.",
+            "stats": {
+                "next_lesson": "Next Lesson",
+                "homework": "Pending Homework",
+                "completed_lessons": "Completed Lessons",
+                "average_success": "Average Success",
+                "weekly_schedule": "Weekly Schedule",
+                "homework_status": "Homework Status"
+            }
+        },
+        "nav": {
+            "dashboard": "Dashboard",
+            "students": "My Students",
+            "schedule": "Schedule",
+            "finance": "Finance",
+            "lessons": "My Lessons",
+            "homework": "Homework",
+            "exams": "Exams",
+            "settings": "Settings",
+            "logout": "Logout"
+        }
+    },
+    "email": {
+        "verification": {
+            "subject": "Verify Your Deniko Account",
+            "title": "Welcome to Deniko!",
+            "greeting": "Hello,",
+            "body": "We are very happy to have you join us. Please verify your email address to keep your account secure and access all features.",
+            "button": "Verify My Account",
+            "ignore": "If you did not request this email, please ignore it.",
+            "footer": "© 2025 Deniko. Teacher and Student Management Platform.",
+            "website": "Web Site",
+            "support": "Support"
         }
     }
 }

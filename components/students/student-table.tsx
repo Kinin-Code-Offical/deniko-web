@@ -23,16 +23,17 @@ import {
 
 interface StudentTableProps {
     data: any[] // Replace with proper type
+    dictionary: any
 }
 
-export function StudentTable({ data }: StudentTableProps) {
+export function StudentTable({ data, dictionary }: StudentTableProps) {
     const [copiedId, setCopiedId] = useState<string | null>(null)
 
     const copyInviteLink = (token: string, id: string) => {
         const link = `${window.location.origin}/join/${token}`
         navigator.clipboard.writeText(link)
         setCopiedId(id)
-        toast.success("Davet linki kopyalandı")
+        toast.success(dictionary.dashboard.teacher.students.add_dialog.copy_invite)
         setTimeout(() => setCopiedId(null), 2000)
     }
 
@@ -41,17 +42,17 @@ export function StudentTable({ data }: StudentTableProps) {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Öğrenci Adı</TableHead>
-                        <TableHead>Durum</TableHead>
-                        <TableHead>Okul Bilgisi</TableHead>
-                        <TableHead className="text-right">İşlemler</TableHead>
+                        <TableHead>{dictionary.dashboard.teacher.students.table.name}</TableHead>
+                        <TableHead>{dictionary.dashboard.teacher.students.table.status}</TableHead>
+                        <TableHead>{dictionary.dashboard.teacher.students.table.school_no}</TableHead>
+                        <TableHead className="text-right">{dictionary.dashboard.teacher.students.table.actions}</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {data.length === 0 ? (
                         <TableRow>
                             <TableCell colSpan={4} className="h-24 text-center">
-                                Henüz öğrenci eklenmemiş.
+                                {dictionary.dashboard.teacher.students.table.empty}
                             </TableCell>
                         </TableRow>
                     ) : (
@@ -69,7 +70,7 @@ export function StudentTable({ data }: StudentTableProps) {
                                             <span>{name}</span>
                                             {isShadow && (
                                                 <span className="text-xs text-muted-foreground">
-                                                    (Gölge Hesap)
+                                                    ({dictionary.dashboard.teacher.students.table.shadow_account})
                                                 </span>
                                             )}
                                         </div>
@@ -77,11 +78,11 @@ export function StudentTable({ data }: StudentTableProps) {
                                     <TableCell>
                                         {student.isClaimed ? (
                                             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                                                Aktif
+                                                {dictionary.dashboard.teacher.students.status.claimed}
                                             </Badge>
                                         ) : (
                                             <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">
-                                                Davet Bekliyor
+                                                {dictionary.dashboard.teacher.students.status.shadow}
                                             </Badge>
                                         )}
                                     </TableCell>
@@ -100,14 +101,14 @@ export function StudentTable({ data }: StudentTableProps) {
                                                     variant="ghost"
                                                     size="sm"
                                                     onClick={() => copyInviteLink(student.inviteToken!, relation.id)}
-                                                    title="Davet Linkini Kopyala"
+                                                    title={dictionary.dashboard.teacher.students.table.copy_invite}
                                                 >
                                                     {copiedId === relation.id ? (
                                                         <Check className="h-4 w-4 text-green-600" />
                                                     ) : (
                                                         <Copy className="h-4 w-4" />
                                                     )}
-                                                    <span className="sr-only">Kopyala</span>
+                                                    <span className="sr-only">{dictionary.dashboard.teacher.students.table.copy_invite}</span>
                                                 </Button>
                                             )}
                                             <DropdownMenu>
@@ -117,7 +118,7 @@ export function StudentTable({ data }: StudentTableProps) {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
-                                                    <DropdownMenuLabel>İşlemler</DropdownMenuLabel>
+                                                    <DropdownMenuLabel>{dictionary.dashboard.teacher.students.table.actions}</DropdownMenuLabel>
                                                     <DropdownMenuItem>Düzenle</DropdownMenuItem>
                                                     <DropdownMenuItem>Ders Programı</DropdownMenuItem>
                                                     <DropdownMenuItem className="text-red-600">

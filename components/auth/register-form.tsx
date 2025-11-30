@@ -107,11 +107,6 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
 
     return (
         <div className="w-full space-y-6">
-            <div className="space-y-2 text-center md:text-left">
-                <h1 className="text-3xl font-bold text-slate-900">{d.title}</h1>
-                <p className="text-slate-600">{d.subtitle}</p>
-            </div>
-
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 

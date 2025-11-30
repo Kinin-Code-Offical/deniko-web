@@ -8,15 +8,18 @@ import { Users, BookOpen, DollarSign, TrendingUp } from "lucide-react"
 
 interface TeacherViewProps {
     user: any // Replace with proper type from Prisma
+    dictionary: any
 }
 
-export function TeacherView({ user }: TeacherViewProps) {
+export function TeacherView({ user, dictionary }: TeacherViewProps) {
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-3xl font-bold tracking-tight">Merhaba, {user.firstName || user.name} 👋</h2>
+                <h2 className="text-3xl font-bold tracking-tight">
+                    {dictionary.dashboard.teacher.welcome.replace("{name}", user.firstName || user.name)} 👋
+                </h2>
                 <p className="text-muted-foreground">
-                    İşte bugünkü durum özetiniz.
+                    {dictionary.dashboard.teacher.stats.recent_activity}
                 </p>
             </div>
 
@@ -24,7 +27,7 @@ export function TeacherView({ user }: TeacherViewProps) {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                            Aktif Öğrenciler
+                            {dictionary.dashboard.teacher.stats.active_students}
                         </CardTitle>
                         <Users className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
@@ -38,7 +41,7 @@ export function TeacherView({ user }: TeacherViewProps) {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                            Toplam Ders
+                            {dictionary.dashboard.teacher.stats.total_lessons}
                         </CardTitle>
                         <BookOpen className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
@@ -52,7 +55,7 @@ export function TeacherView({ user }: TeacherViewProps) {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                            Aylık Gelir
+                            {dictionary.dashboard.teacher.stats.income}
                         </CardTitle>
                         <DollarSign className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
@@ -66,14 +69,14 @@ export function TeacherView({ user }: TeacherViewProps) {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                            Başarı Oranı
+                            {dictionary.dashboard.teacher.stats.success_rate}
                         </CardTitle>
                         <TrendingUp className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">94%</div>
                         <p className="text-xs text-muted-foreground">
-                            Ödev tamamlama oranı
+                            {dictionary.dashboard.teacher.stats.success_desc}
                         </p>
                     </CardContent>
                 </Card>
@@ -83,17 +86,17 @@ export function TeacherView({ user }: TeacherViewProps) {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="col-span-4">
                     <CardHeader>
-                        <CardTitle>Yaklaşan Dersler</CardTitle>
+                        <CardTitle>{dictionary.dashboard.teacher.stats.upcoming_lessons}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="flex items-center justify-center h-[200px] text-muted-foreground border-2 border-dashed rounded-md">
-                            Ders programı takvimi burada olacak
+                            {dictionary.dashboard.teacher.stats.schedule_placeholder}
                         </div>
                     </CardContent>
                 </Card>
                 <Card className="col-span-3">
                     <CardHeader>
-                        <CardTitle>Son Aktiviteler</CardTitle>
+                        <CardTitle>{dictionary.dashboard.teacher.stats.recent_activity}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">

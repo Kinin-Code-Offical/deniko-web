@@ -54,7 +54,8 @@
             "register_link": "Kayıt Ol",
             "validation": {
                 "email_invalid": "Geçerli bir e-posta adresi giriniz",
-                "password_required": "Şifre gereklidir"
+                "password_required": "Şifre gereklidir",
+                "invalid_credentials": "Hatalı e-posta veya şifre."
             }
         },
         "onboarding": {
@@ -62,6 +63,33 @@
             "subtitle": "Devam etmek için lütfen eksik bilgilerinizi giriniz.",
             "submit": "Kaydet ve Devam Et",
             "submitting": "Kaydediliyor..."
+        },
+        "verification": {
+            "unverified_title": "E-posta adresiniz doğrulanmamış.",
+            "unverified_desc": "Giriş yapabilmek için lütfen e-posta adresinize gönderilen doğrulama bağlantısına tıklayın.",
+            "resend_button": "Doğrulama Kodunu Tekrar Gönder",
+            "sending": "Gönderiliyor...",
+            "wait": "Lütfen bekleyin: {time}",
+            "success": "Doğrulama bağlantısı tekrar gönderildi.",
+            "error": "Bir hata oluştu.",
+            "user_not_found": "Kullanıcı bulunamadı.",
+            "already_verified": "E-posta zaten doğrulanmış."
+        },
+        "verify_page": {
+            "verifying": "Doğrulanıyor...",
+            "success_title": "E-posta Doğrulandı!",
+            "error_title": "Doğrulama Başarısız",
+            "verifying_desc": "Lütfen bekleyin, e-posta adresiniz doğrulanıyor.",
+            "missing_token": "Doğrulama kodu bulunamadı.",
+            "resend_button": "Doğrulama Kodunu Tekrar Gönder",
+            "back_to_login": "Giriş Yap",
+            "messages": {
+                "invalid_token": "Geçersiz doğrulama kodu.",
+                "expired_token": "Doğrulama kodunun süresi dolmuş.",
+                "user_not_found": "Kullanıcı bulunamadı.",
+                "success": "E-posta adresi başarıyla doğrulandı.",
+                "error": "Doğrulama sırasında bir hata oluştu."
+            }
         }
     },
     "common": {
@@ -74,12 +102,12 @@
         "login": "Giriş Yap",
         "features": {
             "title": "Eğitim İçin Güçlü Araçlar",
-            "f1_title": "Akıllı Planlama",
-            "f1_desc": "Ders programınızı optimize edin, çakışmaları önleyin ve zamanınızı verimli kullanın.",
-            "f2_title": "Öğrenci Portföyü",
-            "f2_desc": "Her öğrenci için özel gelişim raporları, notlar ve ödev takibi oluşturun.",
-            "f3_title": "Veri Odaklı Analiz",
-            "f3_desc": "Başarı grafiklerini inceleyin, eksikleri belirleyin ve hedeflere odaklanın."
+            "scheduling_title": "Akıllı Planlama",
+            "scheduling_desc": "Ders programınızı optimize edin, çakışmaları önleyin ve zamanınızı verimli kullanın.",
+            "students_title": "Öğrenci Portföyü",
+            "students_desc": "Her öğrenci için özel gelişim raporları, notlar ve ödev takibi oluşturun.",
+            "progress_title": "Veri Odaklı Analiz",
+            "progress_desc": "Başarı grafiklerini inceleyin, eksikleri belirleyin ve hedeflere odaklanın."
         },
         "how_it_works": {
             "title": "Deniko Nasıl Çalışır?",
@@ -94,6 +122,86 @@
             "title": "Modern Eğitimin Bir Parçası Olun",
             "subtitle": "Klasik yöntemleri geride bırakın. Deniko ile eğitim sürecinizi daha organize ve verimli hale getirin.",
             "button": "Hemen Başlayın"
+        }
+    },
+    "dashboard": {
+        "teacher": {
+            "welcome": "Hoş Geldin, {name}",
+            "stats": {
+                "active_students": "Aktif Öğrenci",
+                "total_lessons": "Toplam Ders",
+                "income": "Aylık Gelir",
+                "success_rate": "Başarı Oranı",
+                "success_desc": "Ödev tamamlama oranı",
+                "recent_activity": "Son Aktiviteler",
+                "upcoming_lessons": "Yaklaşan Dersler",
+                "schedule_placeholder": "Ders programı takvimi burada olacak"
+            },
+            "students": {
+                "title": "Öğrencilerim",
+                "subtitle": "Tüm öğrencilerinizi buradan yönetebilir ve yeni öğrenci ekleyebilirsiniz.",
+                "add_new": "Yeni Öğrenci Ekle",
+                "add_dialog": {
+                    "title": "Yeni Öğrenci Ekle",
+                    "desc": "Öğrencinin bilgilerini girerek bir gölge hesap oluşturun. Daha sonra davet linki ile öğrenci hesabını devralabilir.",
+                    "first_name": "İsim",
+                    "last_name": "Soyisim",
+                    "student_no": "Öğrenci No (İsteğe bağlı)",
+                    "grade_level": "Sınıf Seviyesi (İsteğe bağlı)",
+                    "placeholder_name": "Ahmet",
+                    "success": "Öğrenci başarıyla oluşturuldu",
+                    "copy_invite": "Davet linki kopyalandı"
+                },
+                "table": {
+                    "name": "Öğrenci Adı",
+                    "status": "Durum",
+                    "school_no": "Okul Bilgisi",
+                    "actions": "İşlemler",
+                    "empty": "Henüz öğrenci eklenmemiş.",
+                    "shadow_account": "Gölge Hesap",
+                    "copy_invite": "Davet Linkini Kopyala"
+                },
+                "status": {
+                    "shadow": "Davet Bekliyor",
+                    "claimed": "Aktif"
+                }
+            }
+        },
+        "student": {
+            "welcome": "Merhaba, {name}",
+            "subtitle": "Derslerine ve ödevlerine buradan ulaşabilirsin.",
+            "stats": {
+                "next_lesson": "Sıradaki Ders",
+                "homework": "Bekleyen Ödevler",
+                "completed_lessons": "Tamamlanan Dersler",
+                "average_success": "Ortalama Başarı",
+                "weekly_schedule": "Haftalık Programım",
+                "homework_status": "Ödev Durumu"
+            }
+        },
+        "nav": {
+            "dashboard": "Kontrol Paneli",
+            "students": "Öğrencilerim",
+            "schedule": "Ders Programı",
+            "finance": "Finans",
+            "lessons": "Derslerim",
+            "homework": "Ödevler",
+            "exams": "Sınavlar",
+            "settings": "Ayarlar",
+            "logout": "Çıkış Yap"
+        }
+    },
+    "email": {
+        "verification": {
+            "subject": "Deniko Hesabınızı Doğrulayın",
+            "title": "Deniko'ya Hoş Geldiniz!",
+            "greeting": "Merhaba,",
+            "body": "Aramıza katıldığınız için çok mutluyuz. Hesabınızı güvenli tutmak ve tüm özelliklere erişmek için lütfen e-posta adresinizi doğrulayın.",
+            "button": "Hesabımı Doğrula",
+            "ignore": "Bu e-postayı siz talep etmediyseniz, lütfen dikkate almayınız.",
+            "footer": "© 2025 Deniko. Öğretmen ve Öğrenci Yönetim Platformu.",
+            "website": "Web Site",
+            "support": "Destek"
         }
     }
 }

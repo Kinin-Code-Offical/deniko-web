@@ -34,7 +34,7 @@ const formSchema = z.object({
     gradeLevel: z.string().optional(),
 })
 
-export function AddStudentDialog() {
+export function AddStudentDialog({ dictionary }: { dictionary: any }) {
     const [open, setOpen] = useState(false)
     const [isPending, startTransition] = useTransition()
 
@@ -65,14 +65,14 @@ export function AddStudentDialog() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button>
-                    <Plus className="mr-2 h-4 w-4" /> Yeni Öğrenci Ekle
+                    <Plus className="mr-2 h-4 w-4" /> {dictionary.dashboard.teacher.students.add_new}
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Yeni Öğrenci Ekle</DialogTitle>
+                    <DialogTitle>{dictionary.dashboard.teacher.students.add_dialog.title}</DialogTitle>
                     <DialogDescription>
-                        Öğrencinin bilgilerini girerek bir gölge hesap oluşturun. Daha sonra davet linki ile öğrenci hesabını devralabilir.
+                        {dictionary.dashboard.teacher.students.add_dialog.desc}
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -83,9 +83,9 @@ export function AddStudentDialog() {
                                 name="firstName"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>İsim</FormLabel>
+                                        <FormLabel>{dictionary.dashboard.teacher.students.add_dialog.first_name}</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Ahmet" {...field} />
+                                            <Input placeholder={dictionary.dashboard.teacher.students.add_dialog.placeholder_name} {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -96,9 +96,9 @@ export function AddStudentDialog() {
                                 name="lastName"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Soyisim</FormLabel>
+                                        <FormLabel>{dictionary.dashboard.teacher.students.add_dialog.last_name}</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Yılmaz" {...field} />
+                                            <Input placeholder="" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -111,7 +111,7 @@ export function AddStudentDialog() {
                                 name="studentNo"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Öğrenci No</FormLabel>
+                                        <FormLabel>{dictionary.dashboard.teacher.students.add_dialog.student_no}</FormLabel>
                                         <FormControl>
                                             <Input placeholder="1234" {...field} />
                                         </FormControl>
@@ -124,7 +124,7 @@ export function AddStudentDialog() {
                                 name="gradeLevel"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Sınıf/Seviye</FormLabel>
+                                        <FormLabel>{dictionary.dashboard.teacher.students.add_dialog.grade_level}</FormLabel>
                                         <FormControl>
                                             <Input placeholder="12. Sınıf" {...field} />
                                         </FormControl>
@@ -136,7 +136,7 @@ export function AddStudentDialog() {
                         <DialogFooter>
                             <Button type="submit" disabled={isPending}>
                                 {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                Kaydet
+                                {dictionary.dashboard.teacher.students.add_new}
                             </Button>
                         </DialogFooter>
                     </form>

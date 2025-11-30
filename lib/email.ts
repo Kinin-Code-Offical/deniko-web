@@ -1,43 +1,24 @@
 import nodemailer from "nodemailer"
+import { getDictionary } from "@/lib/get-dictionary"
+import { Locale } from "@/i18n-config"
 
 const transporter = nodemailer.createTransport({
-    pool: true,
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
-    maxConnections: 5,
-    maxMessages: 100,
+  pool: true,
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+  maxConnections: 5,
+  maxMessages: 100,
 })
 
-const emailContent = {
-    tr: {
-        subject: "Deniko Hesabınızı Doğrulayın",
-        title: "Deniko'ya Hoş Geldiniz!",
-        greeting: "Merhaba,",
-        body: "Aramıza katıldığınız için çok mutluyuz. Hesabınızı güvenli tutmak ve tüm özelliklere erişmek için lütfen e-posta adresinizi doğrulayın.",
-        button: "Hesabımı Doğrula",
-        ignore: "Bu e-postayı siz talep etmediyseniz, lütfen dikkate almayınız.",
-        footer: "© 2025 Deniko. Teknopark İstanbul, Türkiye"
-    },
-    en: {
-        subject: "Verify Your Deniko Account",
-        title: "Welcome to Deniko!",
-        greeting: "Hello,",
-        body: "We are very happy to have you join us. Please verify your email address to keep your account secure and access all features.",
-        button: "Verify My Account",
-        ignore: "If you did not request this email, please ignore it.",
-        footer: "© 2025 Deniko. Technopark Istanbul, Turkey"
-    }
-}
 
-function getVerificationEmailTemplate(url: string, lang: "tr" | "en") {
-    const content = emailContent[lang] || emailContent.tr;
 
-    return `
+function getVerificationEmailTemplate(url: string, lang: Locale, content: any) {
+  return `
 <!DOCTYPE html>
 <html lang="${lang}">
 <head>
@@ -108,8 +89,8 @@ function getVerificationEmailTemplate(url: string, lang: "tr" | "en") {
       <div class="footer">
         <p style="margin: 0 0 8px 0;">${content.footer}</p>
         <div class="footer-links">
-          <a href="${process.env.NEXTAUTH_URL}" class="footer-link">Web Site</a> • 
-          <a href="mailto:support@deniko.net" class="footer-link">Destek</a>
+          <a href="${process.env.NEXTAUTH_URL}" class="footer-link">${content.website}</a> • 
+          <a href="mailto:support@deniko.net" class="footer-link">${content.support}</a>
         </div>
       </div>
     </div>
@@ -117,21 +98,25 @@ function getVerificationEmailTemplate(url: string, lang: "tr" | "en") {
 </body>
 </html>
     `;
-} export async function sendVerificationEmail(email: string, token: string, lang: "tr" | "en" = "tr") {
-    const confirmLink = `${process.env.NEXTAUTH_URL}/${lang}/verify?token=${token}`
-    const content = emailContent[lang] || emailContent.tr
-    const html = getVerificationEmailTemplate(confirmLink, lang);
+} export async function sendVerificationEmail(email: string, token: string, lang: Locale = "tr") {
+  const confirmLink = `${process.env.NEXTAUTH_URL}/${lang}/verify?token=${token}`
 
-    try {
-        await transporter.sendMail({
-            from: `"Deniko" <${process.env.EMAIL_USER}>`,
-            to: email,
-            subject: content.subject,
-            html: html,
-        })
-        return { success: true }
-    } catch (error) {
-        console.error("Email sending failed:", error)
-        return { success: false, error: "Failed to send email" }
-    }
+  const dictionary = await getDictionary(lang)
+  // @ts-ignore
+  const content = dictionary.email.verification
+
+  const html = getVerificationEmailTemplate(confirmLink, lang, content);
+
+  try {
+    await transporter.sendMail({
+      from: `"Deniko" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: content.subject,
+      html: html,
+    })
+    return { success: true }
+  } catch (error) {
+    console.error("Email sending failed:", error)
+    return { success: false, error: "Failed to send email" }
+  }
 }

@@ -40,6 +40,11 @@ export function PhoneInput({ value = "", onChange, className }: PhoneInputProps)
     const [open, setOpen] = React.useState(false)
     const [countryCode, setCountryCode] = React.useState("+90")
     const [phoneNumber, setPhoneNumber] = React.useState("")
+    const [mounted, setMounted] = React.useState(false)
+
+    React.useEffect(() => {
+        setMounted(true)
+    }, [])
 
     // Parse initial value if provided
     React.useEffect(() => {
@@ -72,6 +77,28 @@ export function PhoneInput({ value = "", onChange, className }: PhoneInputProps)
         if (onChange) {
             onChange(`${countryCode}${newValue}`)
         }
+    }
+
+    if (!mounted) {
+        return (
+            <div className={cn("flex gap-2", className)}>
+                <Button
+                    variant="outline"
+                    role="combobox"
+                    className="w-[100px] justify-between px-3"
+                >
+                    {countryCode}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+                <Input
+                    type="tel"
+                    placeholder="5XX XXX XX XX"
+                    value={phoneNumber}
+                    onChange={handlePhoneChange}
+                    className="flex-1"
+                />
+            </div>
+        )
     }
 
     return (

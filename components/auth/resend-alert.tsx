@@ -8,9 +8,12 @@ import { toast } from "sonner"
 
 interface ResendAlertProps {
     email: string
+    dictionary: any
+    lang: string
 }
 
-export function ResendAlert({ email }: ResendAlertProps) {
+export function ResendAlert({ email, dictionary, lang }: ResendAlertProps) {
+    const d = dictionary.auth.verification
     const [timeLeft, setTimeLeft] = useState(0)
     const [isPending, setIsPending] = useState(false)
 
@@ -48,9 +51,9 @@ export function ResendAlert({ email }: ResendAlertProps) {
     const handleResend = async () => {
         setIsPending(true)
         try {
-            const result = await resendVerificationCode(email)
+            const result = await resendVerificationCode(email, lang)
             if (result.success) {
-                toast.success(result.message)
+                toast.success(d.success)
 
                 // Set cooldown
                 const cooldownSeconds = 90
@@ -61,7 +64,7 @@ export function ResendAlert({ email }: ResendAlertProps) {
                 toast.error(result.message)
             }
         } catch (error) {
-            toast.error("Bir hata oluştu.")
+            toast.error(d.error)
         } finally {
             setIsPending(false)
         }
@@ -77,10 +80,10 @@ export function ResendAlert({ email }: ResendAlertProps) {
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex flex-col gap-3 animate-in fade-in slide-in-from-top-2">
             <div className="flex items-center gap-2 text-yellow-800">
                 <MailWarning className="h-5 w-5" />
-                <span className="font-medium text-sm">E-posta adresiniz doğrulanmamış.</span>
+                <span className="font-medium text-sm">{d.unverified_title}</span>
             </div>
             <p className="text-xs text-yellow-700">
-                Giriş yapabilmek için lütfen e-posta adresinize gönderilen doğrulama bağlantısına tıklayın.
+                {d.unverified_desc}
             </p>
             <Button
                 variant="outline"
@@ -92,12 +95,12 @@ export function ResendAlert({ email }: ResendAlertProps) {
                 {isPending ? (
                     <>
                         <Loader2 className="mr-2 h-3 w-3 animate-spin" />
-                        Gönderiliyor...
+                        {d.sending}
                     </>
                 ) : timeLeft > 0 ? (
-                    `Lütfen bekleyin: ${formatTime(timeLeft)}`
+                    d.wait.replace("{time}", formatTime(timeLeft))
                 ) : (
-                    "Doğrulama Kodunu Tekrar Gönder"
+                    d.resend_button
                 )}
             </Button>
         </div>

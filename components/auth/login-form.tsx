@@ -69,13 +69,8 @@ export function LoginForm({ dictionary, lang }: LoginFormProps) {
 
     return (
         <div className="w-full space-y-6">
-            <div className="space-y-2 text-center md:text-left">
-                <h1 className="text-3xl font-bold text-slate-900">{d.title}</h1>
-                <p className="text-slate-600">{d.subtitle}</p>
-            </div>
-
             {unverifiedEmail && (
-                <ResendAlert email={unverifiedEmail} />
+                <ResendAlert email={unverifiedEmail} dictionary={dictionary} lang={lang} />
             )}
 
             <div className="space-y-6">

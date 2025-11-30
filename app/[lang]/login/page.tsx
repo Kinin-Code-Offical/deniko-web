@@ -81,11 +81,13 @@ export default async function LoginPage({
             </div>
 
             {/* Right Panel - Form */}
-            <div className="flex-1 flex flex-col relative bg-white">
+            <div className="flex-1 flex flex-col relative bg-white animate-in slide-in-from-right-4 duration-700">
                 {/* Mobile Header */}
-                <div className="md:hidden p-4 flex justify-between items-center border-b">
+                <div className="md:hidden p-4 flex justify-between items-center border-b sticky top-0 z-50 bg-white/80 backdrop-blur-md">
                     <Link href="/" className="flex items-center gap-2">
-                        <DenikoLogo className="h-6 w-6 text-[#2062A3]" />
+                        <div className="bg-[#2062A3] p-1 rounded-md">
+                            <DenikoLogo className="h-5 w-5 text-white" />
+                        </div>
                         <span className="font-bold text-[#2062A3]">Deniko</span>
                     </Link>
                     <LanguageSwitcher />
@@ -97,8 +99,16 @@ export default async function LoginPage({
                 </div>
 
                 {/* Form Container */}
-                <div className="flex-1 flex items-center justify-center p-4 sm:p-8 md:p-12 overflow-y-auto">
-                    <div className="w-full max-w-md">
+                <div className="flex-1 flex items-center justify-center p-6 sm:p-8 md:p-12 min-h-[calc(100vh-64px)] md:min-h-screen">
+                    <div className="w-full max-w-md space-y-8">
+                        <div className="text-center md:text-left">
+                            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
+                                {dictionary.auth.login.title || "Hoş Geldiniz"}
+                            </h1>
+                            <p className="text-gray-500 mt-2">
+                                {dictionary.auth.login.subtitle || "Hesabınıza giriş yapın"}
+                            </p>
+                        </div>
                         <LoginForm dictionary={dictionary} lang={lang} />
                     </div>
                 </div>

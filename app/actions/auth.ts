@@ -22,16 +22,23 @@ export async function googleSignIn() {
     await signIn("google", { redirectTo: "/onboarding" })
 }
 
-const loginSchema = z.object({
-    email: z.string().email("Geçerli bir e-posta adresi giriniz"),
-    password: z.string().min(1, "Şifre gereklidir"),
+const loginSchemaBase = z.object({
+    email: z.string().email(),
+    password: z.string().min(1),
 })
 
-export async function login(formData: z.infer<typeof loginSchema>, lang: string = "tr") {
+export async function login(formData: z.infer<typeof loginSchemaBase>, lang: string = "tr") {
+    const dict = await getDictionary(lang as Locale)
+
+    const loginSchema = z.object({
+        email: z.string().email(dict.auth.login.validation.email_invalid),
+        password: z.string().min(1, dict.auth.login.validation.password_required),
+    })
+
     const validatedFields = loginSchema.safeParse(formData)
 
     if (!validatedFields.success) {
-        return { success: false, message: "Geçersiz form verileri" }
+        return { success: false, message: dict.auth.register.errors.invalid_data }
     }
 
     const { email, password } = validatedFields.data
@@ -46,15 +53,15 @@ export async function login(formData: z.infer<typeof loginSchema>, lang: string 
         if (error instanceof AuthError) {
             switch (error.type) {
                 case "CredentialsSignin":
-                    return { success: false, message: "Hatalı e-posta veya şifre." }
+                    return { success: false, message: dict.auth.login.validation.invalid_credentials }
                 default:
                     // Check if the error message contains "Email not verified"
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const cause = error.cause as any
                     if (cause?.err?.message === "Email not verified") {
-                        return { success: false, error: "NOT_VERIFIED", email: email, message: "Lütfen e-posta adresinizi doğrulayın." }
+                        return { success: false, error: "NOT_VERIFIED", email: email, message: dict.auth.verification.unverified_desc }
                     }
-                    return { success: false, message: "Bir hata oluştu." }
+                    return { success: false, message: dict.auth.register.errors.generic }
             }
         }
 
@@ -67,18 +74,19 @@ export async function login(formData: z.infer<typeof loginSchema>, lang: string 
     }
 }
 
-export async function resendVerificationCode(email: string) {
+export async function resendVerificationCode(email: string, lang: string = "tr") {
+    const dict = await getDictionary(lang as Locale)
     try {
         const user = await db.user.findUnique({
             where: { email },
         })
 
         if (!user) {
-            return { success: false, message: "Kullanıcı bulunamadı." }
+            return { success: false, message: dict.auth.verification.user_not_found }
         }
 
         if (user.emailVerified) {
-            return { success: false, message: "E-posta zaten doğrulanmış." }
+            return { success: false, message: dict.auth.verification.already_verified }
         }
 
         // Delete existing tokens
@@ -99,35 +107,54 @@ export async function resendVerificationCode(email: string) {
         })
 
         // Send Email
-        await sendVerificationEmail(email, token, "tr") // Defaulting to TR for now, or pass lang if needed
+        await sendVerificationEmail(email, token, lang as Locale)
 
-        return { success: true, message: "Doğrulama kodu gönderildi." }
+        return { success: true, message: dict.auth.verification.success }
     } catch (error) {
         console.error("Resend Verification Error:", error)
-        return { success: false, message: "Bir hata oluştu." }
+        return { success: false, message: dict.auth.register.errors.generic }
     }
 }
 
-const registerSchema = z.object({
-    firstName: z.string().min(2, "Ad en az 2 karakter olmalıdır"),
-    lastName: z.string().min(2, "Soyad en az 2 karakter olmalıdır"),
-    email: z.string().email("Geçerli bir e-posta adresi giriniz"),
-    phoneNumber: z.string().regex(/^\+\d{10,15}$/, "Geçerli bir telefon numarası giriniz"),
+const registerSchemaBase = z.object({
+    firstName: z.string().min(2),
+    lastName: z.string().min(2),
+    email: z.string().email(),
+    phoneNumber: z.string().regex(/^\+\d{10,15}$/),
     role: z.enum(["TEACHER", "STUDENT"]),
     password: z.string()
-        .min(8, "Şifre en az 8 karakter olmalıdır")
-        .regex(/[A-Z]/, "En az bir büyük harf içermelidir")
-        .regex(/[a-z]/, "En az bir küçük harf içermelidir")
-        .regex(/[0-9]/, "En az bir rakam içermelidir")
-        .regex(/[^A-Za-z0-9]/, "En az bir özel karakter içermelidir"),
+        .min(8)
+        .regex(/[A-Z]/)
+        .regex(/[a-z]/)
+        .regex(/[0-9]/)
+        .regex(/[^A-Za-z0-9]/),
     confirmPassword: z.string()
 }).refine((data) => data.password === data.confirmPassword, {
-    message: "Şifreler eşleşmiyor",
     path: ["confirmPassword"],
 })
 
-export async function registerUser(formData: z.infer<typeof registerSchema>, lang: string = "tr") {
+export async function registerUser(formData: z.infer<typeof registerSchemaBase>, lang: string = "tr") {
     const dict = await getDictionary(lang as Locale)
+    const d = dict.auth.register.validation
+
+    const registerSchema = z.object({
+        firstName: z.string().min(2, d.first_name_min),
+        lastName: z.string().min(2, d.last_name_min),
+        email: z.string().email(d.email_invalid),
+        phoneNumber: z.string().regex(/^\+\d{10,15}$/, d.phone_min),
+        role: z.enum(["TEACHER", "STUDENT"]),
+        password: z.string()
+            .min(8, d.password_min)
+            .regex(/[A-Z]/, d.password_regex)
+            .regex(/[a-z]/, d.password_regex)
+            .regex(/[0-9]/, d.password_regex)
+            .regex(/[^A-Za-z0-9]/, d.password_regex),
+        confirmPassword: z.string()
+    }).refine((data) => data.password === data.confirmPassword, {
+        message: d.password_mismatch,
+        path: ["confirmPassword"],
+    })
+
     const validatedFields = registerSchema.safeParse(formData)
 
     if (!validatedFields.success) {
@@ -204,20 +231,23 @@ export async function registerUser(formData: z.infer<typeof registerSchema>, lan
     }
 }
 
-export async function verifyEmail(token: string) {
+export async function verifyEmail(token: string, lang: string = "tr") {
+    const dict = await getDictionary(lang as Locale)
+    const d = dict.auth.verify_page.messages
+
     try {
         const verificationToken = await db.verificationToken.findUnique({
             where: { token },
         })
 
         if (!verificationToken) {
-            return { success: false, message: "Geçersiz doğrulama kodu." }
+            return { success: false, message: d.invalid_token }
         }
 
         const hasExpired = new Date(verificationToken.expires) < new Date()
 
         if (hasExpired) {
-            return { success: false, message: "Doğrulama kodunun süresi dolmuş.", email: verificationToken.identifier }
+            return { success: false, message: d.expired_token, email: verificationToken.identifier }
         }
 
         const existingUser = await db.user.findUnique({
@@ -225,7 +255,7 @@ export async function verifyEmail(token: string) {
         })
 
         if (!existingUser) {
-            return { success: false, message: "Kullanıcı bulunamadı." }
+            return { success: false, message: d.user_not_found }
         }
 
         await db.user.update({
@@ -240,24 +270,27 @@ export async function verifyEmail(token: string) {
             where: { token: verificationToken.token },
         })
 
-        return { success: true, message: "E-posta adresi başarıyla doğrulandı." }
+        return { success: true, message: d.success }
     } catch (error) {
-        return { success: false, message: "Doğrulama sırasında bir hata oluştu." }
+        return { success: false, message: d.error }
     }
 }
 
 export async function resendVerificationEmailAction(email: string, lang: string = "tr") {
+    const dict = await getDictionary(lang as Locale)
+    const d = dict.auth.verification
+
     try {
         const existingUser = await db.user.findUnique({
             where: { email },
         })
 
         if (!existingUser) {
-            return { success: false, message: "Kullanıcı bulunamadı." }
+            return { success: false, message: d.user_not_found }
         }
 
         if (existingUser.emailVerified) {
-            return { success: false, message: "E-posta zaten doğrulanmış." }
+            return { success: false, message: d.already_verified }
         }
 
         await db.verificationToken.deleteMany({
@@ -275,9 +308,9 @@ export async function resendVerificationEmailAction(email: string, lang: string 
             },
         })
 
-        await sendVerificationEmail(email, token, lang as "tr" | "en")
-        return { success: true, message: "Doğrulama kodu tekrar gönderildi." }
+        await sendVerificationEmail(email, token, lang as Locale)
+        return { success: true, message: d.success }
     } catch (error) {
-        return { success: false, message: "Bir hata oluştu." }
+        return { success: false, message: d.error }
     }
 }

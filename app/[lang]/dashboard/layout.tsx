@@ -2,6 +2,8 @@ import { auth } from "@/auth"
 import { db } from "@/lib/db"
 import { redirect } from "next/navigation"
 import { DashboardShell } from "@/components/dashboard/shell"
+import { getDictionary } from "@/lib/get-dictionary"
+import { Locale } from "@/i18n-config"
 
 export default async function DashboardLayout({
     children,
@@ -11,6 +13,7 @@ export default async function DashboardLayout({
     params: Promise<{ lang: string }>
 }) {
     const { lang } = await params
+    const dictionary = await getDictionary(lang as Locale) as any
     const session = await auth()
 
     if (!session?.user?.id) {
@@ -35,7 +38,7 @@ export default async function DashboardLayout({
     }
 
     return (
-        <DashboardShell user={user}>
+        <DashboardShell user={user} dictionary={dictionary}>
             {children}
         </DashboardShell>
     )

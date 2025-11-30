@@ -6,9 +6,19 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { dashboardConfig } from "@/config/dashboard"
 import { UserNav } from "@/components/dashboard/user-nav"
-import { Menu, X, GraduationCap, Search } from "lucide-react"
+import {
+    Menu,
+    X,
+    GraduationCap,
+    LayoutDashboard,
+    Users,
+    Calendar,
+    CreditCard,
+    Settings,
+    BookOpen,
+    Search
+} from "lucide-react"
 
 interface DashboardShellProps {
     children: React.ReactNode
@@ -18,16 +28,59 @@ interface DashboardShellProps {
         image?: string | null
         role?: "TEACHER" | "STUDENT" | "ADMIN" | null
     }
+    dictionary: any
 }
 
-export function DashboardShell({ children, user }: DashboardShellProps) {
+export function DashboardShell({ children, user, dictionary }: DashboardShellProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const pathname = usePathname()
 
+    const teacherNav = [
+        {
+            title: dictionary.dashboard.nav.dashboard,
+            href: "/dashboard",
+            icon: LayoutDashboard,
+        },
+        {
+            title: dictionary.dashboard.nav.students,
+            href: "/dashboard/students",
+            icon: Users,
+        },
+        {
+            title: dictionary.dashboard.nav.schedule,
+            href: "/dashboard/schedule",
+            icon: Calendar,
+        },
+        {
+            title: dictionary.dashboard.nav.finance,
+            href: "/dashboard/finance",
+            icon: CreditCard,
+        },
+        {
+            title: dictionary.dashboard.nav.settings,
+            href: "/dashboard/settings",
+            icon: Settings,
+        },
+    ]
+
+    const studentNav = [
+        {
+            title: dictionary.dashboard.nav.dashboard,
+            href: "/dashboard",
+            icon: LayoutDashboard,
+        },
+        {
+            title: dictionary.dashboard.nav.lessons,
+            href: "/dashboard/lessons",
+            icon: BookOpen,
+        },
+        // Add other student nav items as needed
+    ]
+
     const navItems = user.role === "TEACHER"
-        ? dashboardConfig.teacherNav
+        ? teacherNav
         : user.role === "STUDENT"
-            ? dashboardConfig.studentNav
+            ? studentNav
             : []
 
     return (
