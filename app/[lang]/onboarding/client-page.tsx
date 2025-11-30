@@ -4,11 +4,12 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useState, useTransition } from "react"
 import { completeOnboarding } from "@/app/actions/onboarding"
+import { logout } from "@/app/actions/auth"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
-import { Loader2, School, GraduationCap } from "lucide-react"
+import { Loader2, School, GraduationCap, LogOut } from "lucide-react"
 import { toast } from "sonner"
 import { PhoneInput } from "@/components/ui/phone-input"
 import { Input } from "@/components/ui/input"
@@ -28,6 +29,10 @@ export function OnboardingClientPage({ dictionary, lang, userId }: OnboardingCli
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [termsAccepted, setTermsAccepted] = useState(false)
+
+    const handleLogout = async () => {
+        await logout()
+    }
 
     const handleSubmit = () => {
         if (!phoneNumber) {
@@ -246,6 +251,16 @@ export function OnboardingClientPage({ dictionary, lang, userId }: OnboardingCli
                             ) : (
                                 dictionary.common?.continue || "Continue"
                             )}
+                        </Button>
+
+                        <Button
+                            variant="ghost"
+                            className="w-full text-muted-foreground hover:text-primary"
+                            onClick={handleLogout}
+                            disabled={isPending}
+                        >
+                            <LogOut className="mr-2 h-4 w-4" />
+                            Vazgeç ve Çıkış Yap
                         </Button>
                     </CardContent>
                 </Card>

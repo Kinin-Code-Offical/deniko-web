@@ -17,6 +17,11 @@ export function LanguageSwitcher() {
 
     const currentLocale = pathname.split("/")[1] || i18n.defaultLocale
 
+    const handleLanguageChange = (locale: string) => {
+        document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000; SameSite=Lax`
+        router.push(redirectedPathName(locale))
+    }
+
     return (
         <div className="flex gap-2">
             {i18n.locales.map((locale) => (
@@ -24,7 +29,7 @@ export function LanguageSwitcher() {
                     key={locale}
                     variant={currentLocale === locale ? "default" : "outline"}
                     size="sm"
-                    onClick={() => router.push(redirectedPathName(locale))}
+                    onClick={() => handleLanguageChange(locale)}
                     className={currentLocale === locale ? "bg-[#2062A3]" : ""}
                 >
                     {locale.toUpperCase()}

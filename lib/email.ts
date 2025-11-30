@@ -1,16 +1,16 @@
 import nodemailer from "nodemailer"
 
 const transporter = nodemailer.createTransport({
-    pool: true, // <--- SİHİRLİ AYAR BU (Bağlantıyı açık tutar)
+    pool: true,
     host: "smtp.gmail.com",
     port: 465,
-    secure: true, // true for 465, false for other ports
+    secure: true,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
     },
-    maxConnections: 5, // Aynı anda kaç bağlantı açsın?
-    maxMessages: 100,  // Bir bağlantıdan kaç mail atsın?
+    maxConnections: 5,
+    maxMessages: 100,
 })
 
 const emailContent = {
@@ -18,94 +18,120 @@ const emailContent = {
         subject: "Deniko Hesabınızı Doğrulayın",
         title: "Deniko'ya Hoş Geldiniz!",
         greeting: "Merhaba,",
-        body: "Deniko hesabınızı oluşturduğunuz için teşekkür ederiz. Hesabınızı aktif hale getirmek ve öğrenme yolculuğunuza başlamak için lütfen aşağıdaki butona tıklayarak e-posta adresinizi doğrulayın.",
+        body: "Aramıza katıldığınız için çok mutluyuz. Hesabınızı güvenli tutmak ve tüm özelliklere erişmek için lütfen e-posta adresinizi doğrulayın.",
         button: "Hesabımı Doğrula",
-        ignore: "Eğer bu işlemi siz yapmadıysanız, bu e-postayı görmezden gelebilirsiniz.",
-        footer: "© 2025 Deniko Eğitim Platformu"
+        ignore: "Bu e-postayı siz talep etmediyseniz, lütfen dikkate almayınız.",
+        footer: "© 2025 Deniko. Teknopark İstanbul, Türkiye"
     },
     en: {
         subject: "Verify Your Deniko Account",
         title: "Welcome to Deniko!",
         greeting: "Hello,",
-        body: "Thank you for creating your Deniko account. To activate your account and start your learning journey, please verify your email address by clicking the button below.",
+        body: "We are very happy to have you join us. Please verify your email address to keep your account secure and access all features.",
         button: "Verify My Account",
-        ignore: "If you did not perform this action, you can safely ignore this email.",
-        footer: "© 2025 Deniko Education Platform"
+        ignore: "If you did not request this email, please ignore it.",
+        footer: "© 2025 Deniko. Technopark Istanbul, Turkey"
     }
 }
 
-export async function sendVerificationEmail(email: string, token: string, lang: "tr" | "en" = "tr") {
+function getVerificationEmailTemplate(url: string, lang: "tr" | "en") {
+    const content = emailContent[lang] || emailContent.tr;
+
+    return `
+<!DOCTYPE html>
+<html lang="${lang}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${content.subject}</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <![endif]-->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    body { margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; -webkit-font-smoothing: antialiased; }
+    .container { width: 100%; background-color: #f8fafc; padding: 40px 0; }
+    .card { max-width: 560px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); overflow: hidden; border: 1px solid #e2e8f0; }
+    .header-accent { height: 8px; background: linear-gradient(90deg, #2563EB 0%, #3B82F6 100%); width: 100%; }
+    .header { text-align: center; padding: 40px 40px 20px 40px; }
+    .logo { height: 48px; width: auto; }
+    .content { padding: 0 48px 48px 48px; text-align: center; }
+    .title { color: #0f172a; font-size: 28px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.5px; }
+    .text { color: #475569; font-size: 16px; line-height: 1.6; margin-bottom: 32px; }
+    .button-container { margin-bottom: 32px; }
+    .button { display: inline-block; background-color: #2563EB; color: #ffffff; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); transition: all 0.2s; }
+    .button:hover { background-color: #1d4ed8; box-shadow: 0 6px 8px -1px rgba(37, 99, 235, 0.3); transform: translateY(-1px); }
+    .divider { border-top: 1px solid #f1f5f9; margin: 0 48px; }
+    .footer { padding: 32px 48px; text-align: center; color: #94a3b8; font-size: 13px; line-height: 1.5; background-color: #fcfcfc; }
+    .footer-links { margin-top: 12px; }
+    .footer-link { color: #64748b; text-decoration: none; margin: 0 8px; }
+    .footer-link:hover { color: #2563EB; text-decoration: underline; }
+    
+    @media only screen and (max-width: 600px) {
+      .container { padding: 20px 0; }
+      .card { border-radius: 0; border: none; box-shadow: none; }
+      .content { padding: 0 24px 40px 24px; }
+      .header { padding: 32px 24px 20px 24px; }
+      .divider { margin: 0 24px; }
+      .footer { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header-accent"></div>
+      <div class="header">
+        <!-- Replace with your actual logo URL -->
+        <img src="https://deniko.net/logo.png" alt="Deniko" class="logo" style="display: block; margin: 0 auto;">
+      </div>
+      <div class="content">
+        <h1 class="title">${content.title}</h1>
+        <p class="text">
+          ${content.greeting}<br><br>
+          ${content.body}
+        </p>
+        <div class="button-container">
+          <a href="${url}" class="button" style="color: #ffffff;">${content.button}</a>
+        </div>
+        <p class="text" style="font-size: 14px; color: #94a3b8; margin-bottom: 0;">
+          ${content.ignore}
+        </p>
+      </div>
+      <div class="divider"></div>
+      <div class="footer">
+        <p style="margin: 0 0 8px 0;">${content.footer}</p>
+        <div class="footer-links">
+          <a href="${process.env.NEXTAUTH_URL}" class="footer-link">Web Site</a> • 
+          <a href="mailto:support@deniko.net" class="footer-link">Destek</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+    `;
+} export async function sendVerificationEmail(email: string, token: string, lang: "tr" | "en" = "tr") {
     const confirmLink = `${process.env.NEXTAUTH_URL}/${lang}/verify?token=${token}`
     const content = emailContent[lang] || emailContent.tr
+    const html = getVerificationEmailTemplate(confirmLink, lang);
 
-    const mailOptions = {
-        from: `"Deniko" <${process.env.EMAIL_USER}>`,
-        to: email,
-        subject: content.subject,
-        html: `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>${content.subject}</title>
-      </head>
-      <body style="margin: 0; padding: 0; background-color: #f4f7ff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;">
-          <tr>
-            <td align="center" style="padding: 40px 0;">
-              <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05); overflow: hidden;">
-                <!-- Header -->
-                <tr>
-                  <td align="center" style="padding: 40px 0 30px 0; background-color: #ffffff;">
-                    <h1 style="margin: 0; color: #2563eb; font-size: 28px; font-weight: 800; letter-spacing: -0.5px;">Deniko</h1>
-                  </td>
-                </tr>
-                
-                <!-- Content -->
-                <tr>
-                  <td style="padding: 0 40px 40px 40px;">
-                    <h2 style="margin: 0 0 20px 0; color: #1e293b; font-size: 24px; font-weight: 600; text-align: center;">${content.title}</h2>
-                    <p style="margin: 0 0 16px 0; color: #475569; font-size: 16px; line-height: 1.6;">
-                      ${content.greeting}
-                    </p>
-                    <p style="margin: 0 0 32px 0; color: #475569; font-size: 16px; line-height: 1.6;">
-                      ${content.body}
-                    </p>
-                    
-                    <!-- Button -->
-                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
-                      <tr>
-                        <td align="center">
-                          <a href="${confirmLink}" style="display: inline-block; padding: 16px 32px; background-color: #2563eb; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; transition: background-color 0.3s ease;">
-                            ${content.button}
-                          </a>
-                        </td>
-                      </tr>
-                    </table>
-                    
-                    <p style="margin: 32px 0 0 0; color: #94a3b8; font-size: 14px; line-height: 1.5; text-align: center;">
-                      ${content.ignore}
-                    </p>
-                  </td>
-                </tr>
-                
-                <!-- Footer -->
-                <tr>
-                  <td style="padding: 30px 40px; background-color: #f8fafc; border-top: 1px solid #e2e8f0;">
-                    <p style="margin: 0; color: #64748b; font-size: 12px; text-align: center;">
-                      ${content.footer}
-                    </p>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </body>
-      </html>
-    `,
+    try {
+        await transporter.sendMail({
+            from: `"Deniko" <${process.env.EMAIL_USER}>`,
+            to: email,
+            subject: content.subject,
+            html: html,
+        })
+        return { success: true }
+    } catch (error) {
+        console.error("Email sending failed:", error)
+        return { success: false, error: "Failed to send email" }
     }
-
-    await transporter.sendMail(mailOptions)
 }

@@ -5,6 +5,12 @@ import { match as matchLocale } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
 
 function getLocale(request: NextRequest): string | undefined {
+    // 1. Check cookie
+    const cookieLocale = request.cookies.get("NEXT_LOCALE")?.value
+    if (cookieLocale && i18n.locales.includes(cookieLocale as any)) {
+        return cookieLocale
+    }
+
     const negotiatorHeaders: Record<string, string> = {}
     request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
 
@@ -41,7 +47,27 @@ export function middleware(request: NextRequest) {
         // Preserve query parameters
         newUrl.search = request.nextUrl.search
 
-        return NextResponse.redirect(newUrl)
+        const response = NextResponse.redirect(newUrl)
+
+        // Set cookie if missing or different
+        if (request.cookies.get("NEXT_LOCALE")?.value !== locale) {
+            response.cookies.set("NEXT_LOCALE", locale as string, { path: '/', maxAge: 31536000, sameSite: 'lax' })
+        }
+
+        return response
+    } else {
+        // If locale is present in path, ensure cookie matches
+        const localeInPath = i18n.locales.find(
+            (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+        )
+
+        if (localeInPath) {
+            const response = NextResponse.next()
+            if (request.cookies.get("NEXT_LOCALE")?.value !== localeInPath) {
+                response.cookies.set("NEXT_LOCALE", localeInPath, { path: '/', maxAge: 31536000, sameSite: 'lax' })
+            }
+            return response
+        }
     }
 }
 
