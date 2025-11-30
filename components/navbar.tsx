@@ -4,7 +4,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { DenikoLogo } from "@/components/ui/deniko-logo"
 import { LanguageSwitcher } from "@/components/ui/language-switcher"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
 import { useState } from "react"
 
@@ -50,6 +50,7 @@ export function Navbar({ lang, dictionary }: NavbarProps) {
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                            <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
                             <div className="flex flex-col gap-6 py-6">
                                 <div className="flex items-center gap-2">
                                     <div className="bg-[#2062A3] p-1.5 rounded-lg">
