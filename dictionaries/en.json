@@ -223,6 +223,58 @@
             "next_lesson": "Next Lesson",
             "assignments_todo": "Assignments To-Do",
             "weekly_schedule": "Weekly Schedule"
+        },
+        "student_detail": {
+            "tabs": {
+                "lessons": "Lessons",
+                "homework": "Homework",
+                "finance": "Finance",
+                "profile": "Profile & Settings"
+            },
+            "header": {
+                "total_lessons": "Total Lessons",
+                "balance": "Balance",
+                "invite_link": "Copy Invite Link",
+                "status": {
+                    "active": "Active",
+                    "shadow": "Pending Invite"
+                }
+            },
+            "lessons": {
+                "title": "Lesson History",
+                "add_lesson": "Add Lesson for Student",
+                "no_lessons": "No lesson records found.",
+                "status": {
+                    "scheduled": "Scheduled",
+                    "completed": "Completed",
+                    "cancelled": "Cancelled",
+                    "missed": "Missed"
+                }
+            },
+            "finance": {
+                "title": "Financial Transactions",
+                "receive_payment": "Receive Payment",
+                "lesson_fee": "Lesson Fee",
+                "payment_received": "Payment Received",
+                "balance": "Balance",
+                "no_transactions": "No financial transactions found."
+            },
+            "homework": {
+                "title": "Homework Tracking",
+                "assign_homework": "Assign Homework",
+                "no_homework": "No homework found.",
+                "status": {
+                    "pending": "Pending",
+                    "completed": "Completed"
+                }
+            },
+            "profile": {
+                "title": "Student Information",
+                "contact_parent": "Parent Contact",
+                "archive_student": "Archive Student",
+                "delete_student": "Delete Student",
+                "save": "Save Changes"
+            }
         }
     },
     "email": {

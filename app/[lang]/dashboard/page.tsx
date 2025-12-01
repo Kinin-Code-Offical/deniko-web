@@ -35,7 +35,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
             redirect(`/${lang}/onboarding`)
         }
 
-        const activeStudents = await db.studentTeacherRelation.count({
+        const activeStudentsCount = await db.studentTeacherRelation.count({
             where: {
                 teacherId: user.teacherProfile.id,
                 status: 'ACTIVE'
@@ -47,7 +47,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
         const endOfDay = new Date();
         endOfDay.setHours(23, 59, 59, 999);
 
-        const todayLessonCount = await db.lesson.count({
+        const todayLessonsCount = await db.lesson.count({
             where: {
                 teacherId: user.teacherProfile.id,
                 startTime: {
@@ -71,7 +71,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
             }
         })
 
-        const todayLessons = await db.lesson.findMany({
+        const todaySchedule = await db.lesson.findMany({
             where: {
                 teacherId: user.teacherProfile.id,
                 startTime: {
@@ -82,7 +82,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
                     not: 'CANCELLED'
                 }
             },
-            take: 3,
+            take: 5,
             orderBy: {
                 startTime: 'asc'
             },
@@ -101,11 +101,11 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
             dictionary={dictionary}
             lang={lang}
             stats={{
-                activeStudents,
-                todayLessonCount,
+                activeStudentsCount,
+                todayLessonsCount,
                 pendingHomeworkCount
             }}
-            upcomingLessons={todayLessons}
+            schedule={todaySchedule}
         />
     }
 
@@ -115,17 +115,50 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
             redirect(`/${lang}/onboarding`)
         }
 
-        const completedLessons = await db.attendance.count({
+        const completedLessons = await db.lesson.count({
             where: {
-                studentId: user.studentProfile.id,
-                status: 'PRESENT'
+                students: {
+                    some: {
+                        id: user.studentProfile.id
+                    }
+                },
+                status: 'COMPLETED'
             }
         })
 
-        const pendingHomework = await db.homeworkTracking.count({
+        const homeworkCount = await db.homeworkTracking.count({
             where: {
                 studentId: user.studentProfile.id,
-                status: 'PENDING'
+                status: {
+                    not: 'COMPLETED'
+                }
+            }
+        })
+
+        const nextLesson = await db.lesson.findFirst({
+            where: {
+                students: {
+                    some: {
+                        id: user.studentProfile.id
+                    }
+                },
+                startTime: {
+                    gt: new Date()
+                },
+                status: {
+                    not: 'CANCELLED'
+                }
+            },
+            orderBy: {
+                startTime: 'asc'
+            },
+            include: {
+                teacher: {
+                    include: {
+                        user: true
+                    }
+                },
+                classroom: true
             }
         })
 
@@ -143,7 +176,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
                     not: 'CANCELLED'
                 }
             },
-            take: 3,
+            take: 5,
             orderBy: {
                 startTime: 'asc'
             },
@@ -157,15 +190,31 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
             }
         })
 
+        const pendingHomeworks = await db.homeworkTracking.findMany({
+            where: {
+                studentId: user.studentProfile.id,
+                status: "PENDING"
+            },
+            include: {
+                homework: {
+                    include: { lesson: true }
+                }
+            },
+            orderBy: { homework: { dueDate: "asc" } },
+            take: 5
+        })
+
         return <StudentView
             user={user}
             dictionary={dictionary}
             lang={lang}
             stats={{
                 completedLessons,
-                pendingHomework
+                homeworkCount
             }}
+            nextLesson={nextLesson}
             upcomingLessons={upcomingLessons}
+            pendingHomeworks={pendingHomeworks}
         />
     }
 

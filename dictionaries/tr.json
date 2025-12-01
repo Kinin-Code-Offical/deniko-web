@@ -222,6 +222,58 @@
             "next_lesson": "Sıradaki Ders",
             "assignments_todo": "Yapılacak Ödevler",
             "weekly_schedule": "Haftalık Ders Programım"
+        },
+        "student_detail": {
+            "tabs": {
+                "lessons": "Dersler",
+                "homework": "Ödevler",
+                "finance": "Finans",
+                "profile": "Profil & Ayarlar"
+            },
+            "header": {
+                "total_lessons": "Toplam Ders",
+                "balance": "Kalan Bakiye",
+                "invite_link": "Davet Linkini Kopyala",
+                "status": {
+                    "active": "Aktif",
+                    "shadow": "Davet Bekliyor"
+                }
+            },
+            "lessons": {
+                "title": "Ders Geçmişi",
+                "add_lesson": "Bu Öğrenciye Ders Ekle",
+                "no_lessons": "Henüz ders kaydı bulunmuyor.",
+                "status": {
+                    "scheduled": "Planlandı",
+                    "completed": "Tamamlandı",
+                    "cancelled": "İptal",
+                    "missed": "Katılmadı"
+                }
+            },
+            "finance": {
+                "title": "Finansal Hareketler",
+                "receive_payment": "Ödeme Al",
+                "lesson_fee": "Ders Ücreti",
+                "payment_received": "Ödeme Alındı",
+                "balance": "Bakiye",
+                "no_transactions": "Henüz finansal işlem bulunmuyor."
+            },
+            "homework": {
+                "title": "Ödev Takibi",
+                "assign_homework": "Ödev Ata",
+                "no_homework": "Henüz ödev bulunmuyor.",
+                "status": {
+                    "pending": "Bekliyor",
+                    "completed": "Tamamlandı"
+                }
+            },
+            "profile": {
+                "title": "Öğrenci Bilgileri",
+                "contact_parent": "Veli İletişim",
+                "archive_student": "Öğrenciyi Arşivle",
+                "delete_student": "Öğrenciyi Sil",
+                "save": "Değişiklikleri Kaydet"
+            }
         }
     },
     "email": {

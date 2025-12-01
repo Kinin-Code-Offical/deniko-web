@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Users, Calendar, BookCheck, Plus, UserPlus, FileText, CreditCard } from "lucide-react"
+import { Users, Calendar, BookCheck, UserPlus, CreditCard } from "lucide-react"
 import { format } from "date-fns"
 import { tr, enUS } from "date-fns/locale"
 import Link from "next/link"
@@ -14,15 +14,15 @@ interface TeacherViewProps {
     dictionary: any
     lang: string
     stats: {
-        activeStudents: number
-        todayLessonCount: number
+        activeStudentsCount: number
+        todayLessonsCount: number
         pendingHomeworkCount: number
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    upcomingLessons: any[]
+    schedule: any[]
 }
 
-export function TeacherView({ user, dictionary, lang, stats, upcomingLessons }: TeacherViewProps) {
+export function TeacherView({ user, dictionary, lang, stats, schedule }: TeacherViewProps) {
     const dateLocale = lang === "tr" ? tr : enUS
     return (
         <div className="space-y-6">
@@ -41,7 +41,7 @@ export function TeacherView({ user, dictionary, lang, stats, upcomingLessons }: 
                         <Users className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{stats.activeStudents}</div>
+                        <div className="text-2xl font-bold">{stats.activeStudentsCount}</div>
                     </CardContent>
                 </Card>
                 <Card>
@@ -52,7 +52,7 @@ export function TeacherView({ user, dictionary, lang, stats, upcomingLessons }: 
                         <Calendar className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{stats.todayLessonCount}</div>
+                        <div className="text-2xl font-bold">{stats.todayLessonsCount}</div>
                     </CardContent>
                 </Card>
                 <Card>
@@ -75,7 +75,7 @@ export function TeacherView({ user, dictionary, lang, stats, upcomingLessons }: 
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-8">
-                            {upcomingLessons.length === 0 ? (
+                            {schedule.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center py-8 text-center">
                                     <Calendar className="h-12 w-12 text-muted-foreground/50 mb-4" />
                                     <p className="text-muted-foreground">
@@ -83,7 +83,7 @@ export function TeacherView({ user, dictionary, lang, stats, upcomingLessons }: 
                                     </p>
                                 </div>
                             ) : (
-                                upcomingLessons.map((lesson) => (
+                                schedule.map((lesson) => (
                                     <div key={lesson.id} className="flex items-center justify-between">
                                         <div className="flex items-center">
                                             <div className="ml-4 space-y-1">
