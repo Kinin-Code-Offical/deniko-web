@@ -14,8 +14,10 @@ export default async function OnboardingPage({
 }) {
     const { lang } = await params
     const { token } = await searchParams
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const dictionary = await getDictionary(lang as any)
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let user: any = null
     let session = null
 

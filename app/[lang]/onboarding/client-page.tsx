@@ -19,6 +19,7 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 
 interface OnboardingClientPageProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
     lang: string
     userId?: string

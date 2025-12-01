@@ -8,6 +8,7 @@ import { toast } from "sonner"
 
 interface ResendAlertProps {
     email: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
     lang: string
 }

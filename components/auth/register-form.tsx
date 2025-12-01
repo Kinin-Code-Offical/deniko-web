@@ -28,6 +28,7 @@ import { LanguageSwitcher } from "@/components/ui/language-switcher"
 import { Checkbox } from "@/components/ui/checkbox"
 
 interface RegisterFormProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
     lang: string
 }

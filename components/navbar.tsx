@@ -10,6 +10,7 @@ import { useState } from "react"
 
 interface NavbarProps {
     lang: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
 }
 

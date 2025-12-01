@@ -31,6 +31,7 @@ import { LanguageSwitcher } from "@/components/ui/language-switcher"
 import { ResendAlert } from "@/components/auth/resend-alert"
 
 interface LoginFormProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
     lang: string
 }

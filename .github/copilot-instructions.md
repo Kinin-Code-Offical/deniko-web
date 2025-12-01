@@ -1,70 +1,73 @@
-# 🧠 Deniko - Master System Instructions & Rules (Phase 2: Dashboard & Core Features)
+# 🧠 Deniko - Master System Instructions & Rules (Fix & Polish Phase)
 
-## 1. Project Context & Identity
-**Deniko** is a professional SaaS platform for hybrid tutors (freelance & institution-based).
-- **Current Phase:** Core Feature Development (Dashboard & Student Management).
-- **Design Philosophy:** "Sophisticated Simplicity." High-end, trustworthy, mobile-first.
-- **Brand Assets:** Primary Logo: `<DenikoLogo />` (SVG). Primary Color: **Deep Blue** (`#2062A3`).
+## 1. Project Status & Context
+**Deniko** is a live SaaS platform. We are in the **"Strict Polish & Core Logic"** phase.
+- **Goal:** Eliminate all bugs, standardize UI, and enforce security rules.
+- **Current State:** Auth is working, Dashboard is scaffolded but needs logic fixes.
 
-## 2. Tech Stack (Strict Versions)
-- **Framework:** Next.js 15 (App Router) with **i18n routing** (`app/[lang]/...`).
-- **Language:** TypeScript (Strict mode).
-- **Database:** PostgreSQL (Google Cloud SQL) via **Prisma ORM v6** (`lib/db.ts` singleton).
-- **Auth:** NextAuth.js (Auth.js) v5 Beta (Prisma Adapter).
+## 2. Tech Stack (Immutable Rules)
+- **Framework:** Next.js 15 (App Router) with **i18n** (`app/[lang]/...`).
+- **Database:** PostgreSQL via **Prisma ORM v6** (`lib/db.ts`).
+- **Auth:** NextAuth.js v5 Beta (`auth.ts`).
 - **UI:** Tailwind CSS v4 + **Shadcn/UI**.
-- **Infrastructure:** Google Cloud Run (Docker Standalone).
+- **Logging:** Pino (Structured Logging).
 
-## 3. Critical Business Logic & Rules
+## 3. CRITICAL BUG FIXING RULES (Must Follow)
 
-### A. Authentication & User Flow
-- **Account Linking:** `allowDangerousEmailAccountLinking: true` is ENABLED in `auth.ts` (Merges Google/Manual accounts).
-- **Resend Cooldown:** Client uses `resend_cooldown` cookie. Server Action (`login`) **DELETES** this cookie on successful redirect.
-- **Onboarding Gate:** Users cannot access `/dashboard` if `user.isOnboardingCompleted` is `false`.
-  - **Flow:** Register/Login -> Middleware Check -> Redirect `/onboarding` (if incomplete) -> Select Role/Phone -> Update DB -> Client `update()` session -> Redirect `/dashboard`.
+### A. Dashboard & Onboarding Logic
+1.  **No Dead Ends:** In `dashboard/page.tsx`, if `user.role` is missing or `isOnboardingCompleted` is false, **IMMEDIATELY redirect** to `/[lang]/onboarding`. Never return `null` or empty fragments.
+2.  **Loop Prevention:** In `onboarding/page.tsx`, if `user.isOnboardingCompleted` is true, **IMMEDIATELY redirect** to `/[lang]/dashboard`.
+3.  **Session Sync:** After `completeOnboarding` action success, the Client Component MUST call `await update()` and then force a hard navigation (`window.location.href`) to refresh cookies.
 
-### B. Student Management (Shadow Accounts)
-- **Concept:** Teachers create students who do NOT have a User account yet.
-- **Schema Rule:** `StudentProfile` has a nullable `userId`.
-  - `userId: null` = **Shadow Account** (Managed by Teacher).
-  - `userId: "uuid"` = **Real Account** (Claimed by Student via Invite Token).
-- **Relation:** `StudentTeacherRelation` connects Teachers and Students.
+### B. Authentication Security
+1.  **Resend Cookie:** The `login` Server Action MUST explicitly delete the `resend_cooldown` cookie upon a successful redirect (catch the `NEXT_REDIRECT` error).
+2.  **Safe Links:** `auth.ts` MUST have `allowDangerousEmailAccountLinking: true`.
+3.  **Session Validation:** The `session` callback must return `null` if the user is deleted from the DB.
 
-### C. Dashboard Logic (Role-Based)
-- **Route:** `/[lang]/dashboard` is the main entry point.
-- **Teacher View:**
-  - **Focus:** Operational efficiency (Schedule, Active Students, Pending Homework).
-  - **Privacy Rule:** **Financial data (Income/Wallet) must be HIDDEN** from the main dashboard summary cards. Accessible ONLY via "Finans" sidebar menu.
-- **Student View:**
-  - **Focus:** Action items (Next Lesson, Homework To-Do).
+### C. Logging Standards (STRICT)
+- **FORBIDDEN:** `console.log`, `console.error`, `console.warn`.
+- **REQUIRED:** Import `logger` from `@/lib/logger`.
+- **Usage:** `logger.info({ userId: session.user.id, context: "onboarding" }, "User completed onboarding")`.
 
-## 4. UI/UX & Coding Standards
+## 4. UI/UX & Design System
 
-### Internationalization (i18n)
-- **Structure:** ALL pages reside in `app/[lang]/`.
-- **Content:** NEVER hardcode text. Use `dictionary` props passed from Server Components.
-- **Persistence:** `middleware.ts`(proxy.ts) reads/writes `NEXT_LOCALE` cookie.
+### Layouts & Responsiveness
+- **Auth Pages:** - **Mobile:** Vertical Stack (Header Top, Form Bottom).
+  - **Desktop:** 50/50 Split (Brand Left, Form Right).
+- **Dashboard:**
+  - **Mobile:** Sticky Header + Hamburger Menu (Sheet).
+  - **Desktop:** Fixed Sidebar (w-64).
+- **Tables:** ALWAYS wrap tables in `<div className="overflow-x-auto">` to prevent mobile overflow.
 
-### Component Architecture
-- **Mobile-First Strategy:**
-  - **Auth Pages:** Stacked (`flex-col`) on mobile, Split (`flex-row`) on desktop.
-  - **Dashboard:** Sticky Header + Hamburger Menu (`Sheet`) on mobile. Fixed Sidebar on desktop.
-- **Forms:** Use `react-hook-form` + `zod`.
-- **Data Fetching:** Fetch data in Server Components (`page.tsx`) and pass to Client Views (`view.tsx`).
+### Branding Assets
+- **Logo:** Use `<DenikoLogo />` (SVG). 
+  - **Blue Background:** Use `text-white`.
+  - **White Background:** Use `text-[#2062A3]`.
+- **Colors:** Primary Brand Color is **Deep Blue** (`#2062A3`).
 
-## 5. Directory Structure Reference
+## 5. Code Quality & i18n
+- **No Hardcoded Text:** EVERY visible string must come from `dictionary` (e.g., `dictionary.auth.login.title`).
+- **Server Actions:**
+  - Must use **Zod** for validation.
+  - Must check `await auth()` at the start.
+  - Must return standardized objects: `{ success: boolean, message?: string, error?: string }`.
+- **Imports:** Use absolute paths (`@/components/...`, `@/lib/...`).
+
+## 6. Directory Structure Reference
 ```text
 app/
   [lang]/
     (auth)/       -> login, register, verify, onboarding
-    dashboard/    -> Protected routes
-      page.tsx    -> Role dispatcher (TeacherView vs StudentView)
-      students/   -> Student management (Shadow Accounts)
-    layout.tsx    -> Root layout with Providers
+    dashboard/    -> page.tsx (Router), students/, finance/
+    legal/        -> terms, privacy
 components/
-  ui/             -> Shadcn primitives
-  auth/           -> Auth forms
+  ui/             -> Shadcn primitives (Button, Card, Input...)
+  auth/           -> LoginForm, RegisterForm, OnboardingForm
   dashboard/      -> Shell, Nav, UserNav, TeacherView, StudentView
   students/       -> AddStudentDialog, StudentTable
+  shared/         -> DenikoLogo, LanguageSwitcher
 lib/
-  db.ts           -> Prisma singleton
-  auth.ts         -> NextAuth config
+  db.ts           -> Prisma Singleton
+  auth.ts         -> NextAuth Config
+  logger.ts       -> Pino Logger
+  get-dictionary.ts -> i18n Loader

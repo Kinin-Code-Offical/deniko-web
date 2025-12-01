@@ -11,6 +11,7 @@ import { toast } from "sonner"
 
 interface VerifyClientProps {
     lang: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
 }
 
@@ -29,6 +30,7 @@ export function VerifyClient({ lang, dictionary }: VerifyClientProps) {
         if (success || error || firedRef.current) return
 
         if (!token) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setError(d.missing_token)
             return
         }
@@ -41,7 +43,6 @@ export function VerifyClient({ lang, dictionary }: VerifyClientProps) {
                 setSuccess(result.message)
             } else {
                 setError(result.message)
-                // @ts-ignore
                 if (result.email) setEmailToResend(result.email)
             }
         })

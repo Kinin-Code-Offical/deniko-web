@@ -2,25 +2,28 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Users, Calendar, BookCheck, Plus, UserPlus, FileText } from "lucide-react"
+import { Users, Calendar, BookCheck, Plus, UserPlus, FileText, CreditCard } from "lucide-react"
 import { format } from "date-fns"
 import { tr, enUS } from "date-fns/locale"
 import Link from "next/link"
 
 interface TeacherViewProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     user: any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
+    lang: string
     stats: {
         activeStudents: number
         todayLessonCount: number
         pendingHomeworkCount: number
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     upcomingLessons: any[]
 }
 
-export function TeacherView({ user, dictionary, stats, upcomingLessons }: TeacherViewProps) {
-    const dateLocale = dictionary.lang === "tr" ? tr : enUS
-
+export function TeacherView({ user, dictionary, lang, stats, upcomingLessons }: TeacherViewProps) {
+    const dateLocale = lang === "tr" ? tr : enUS
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -94,11 +97,9 @@ export function TeacherView({ user, dictionary, stats, upcomingLessons }: Teache
                                         </div>
                                         <div className="flex items-center gap-4">
                                             <div className="font-medium hidden md:block">
+                                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                                 {lesson.students.map((s: any) => s.user?.name || s.tempFirstName).join(", ")}
                                             </div>
-                                            <Button size="sm" variant="secondary">
-                                                {dictionary.dashboard.teacher.take_attendance}
-                                            </Button>
                                         </div>
                                     </div>
                                 ))
@@ -112,24 +113,24 @@ export function TeacherView({ user, dictionary, stats, upcomingLessons }: Teache
                         <CardTitle>{dictionary.dashboard.teacher.quick_actions.title}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid gap-4">
-                        <Button asChild className="w-full justify-start" variant="outline">
-                            <Link href={`/${dictionary.lang}/dashboard/students`}>
+                        <Link href={`/${lang}/dashboard/students`}>
+                            <Button className="w-full justify-start" variant="outline">
                                 <UserPlus className="mr-2 h-4 w-4" />
                                 {dictionary.dashboard.teacher.quick_actions.add_student}
-                            </Link>
-                        </Button>
-                        <Button asChild className="w-full justify-start" variant="outline">
-                            <Link href={`/${dictionary.lang}/dashboard/schedule`}>
-                                <Plus className="mr-2 h-4 w-4" />
+                            </Button>
+                        </Link>
+                        <Link href={`/${lang}/dashboard/schedule`}>
+                            <Button className="w-full justify-start" variant="outline">
+                                <Calendar className="mr-2 h-4 w-4" />
                                 {dictionary.dashboard.teacher.quick_actions.add_lesson}
-                            </Link>
-                        </Button>
-                        <Button asChild className="w-full justify-start" variant="outline">
-                            <Link href={`/${dictionary.lang}/dashboard/homework`}>
-                                <FileText className="mr-2 h-4 w-4" />
-                                {dictionary.dashboard.teacher.quick_actions.create_homework}
-                            </Link>
-                        </Button>
+                            </Button>
+                        </Link>
+                        <Link href={`/${lang}/dashboard/finance`}>
+                            <Button className="w-full justify-start" variant="outline">
+                                <CreditCard className="mr-2 h-4 w-4" />
+                                {dictionary.dashboard.teacher.quick_actions.receive_payment}
+                            </Button>
+                        </Link>
                     </CardContent>
                 </Card>
             </div>

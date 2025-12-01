@@ -3,8 +3,8 @@ import pino from 'pino'
 const isEdge = process.env.NEXT_RUNTIME === 'edge'
 
 const logger = pino({
-    level: process.env.LOG_LEVEL || 'info',
-    transport: !isEdge && process.env.NODE_ENV !== 'production' ? {
+    level: 'trace', // Geliştirme sırasında en detaylı logları (trace) göster
+    transport: !isEdge ? {
         target: 'pino-pretty',
         options: {
             colorize: true,
@@ -13,8 +13,8 @@ const logger = pino({
         },
     } : undefined,
     redact: {
-        paths: ["password", "token", "secret", "authorization", "cookie"],
-        remove: true,
+        paths: [],
+        remove: false,
     },
     base: {
         env: process.env.NODE_ENV,

@@ -181,7 +181,8 @@
                 "title": "Hızlı İşlemler",
                 "add_student": "Öğrenci Ekle",
                 "add_lesson": "Ders Ekle",
-                "create_homework": "Ödev Oluştur"
+                "create_homework": "Ödev Oluştur",
+                "receive_payment": "Ödeme Al"
             }
         },
         "students": {
@@ -191,7 +192,13 @@
                 "name": "İsim",
                 "number": "Öğrenci No",
                 "status": "Durum",
-                "action": "İşlem"
+                "action": "İşlem",
+                "empty": "Öğrenci bulunamadı.",
+                "shadow_account": "Gölge Hesap"
+            },
+            "status": {
+                "claimed": "Aktif",
+                "shadow": "Davet Bekliyor"
             },
             "add_dialog": {
                 "title": "Yeni Öğrenci Ekle",
@@ -202,7 +209,8 @@
                 "student_no": "Öğrenci No",
                 "phone_number": "Telefon Numarası",
                 "submit": "Öğrenci Ekle",
-                "success": "Öğrenci başarıyla eklendi!"
+                "success": "Öğrenci başarıyla eklendi!",
+                "copy_invite": "Davet linki kopyalandı"
             }
         },
         "student": {

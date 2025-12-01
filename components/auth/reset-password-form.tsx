@@ -25,6 +25,7 @@ import Link from "next/link"
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/
 
 interface ResetPasswordFormProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
     lang: Locale
     token: string

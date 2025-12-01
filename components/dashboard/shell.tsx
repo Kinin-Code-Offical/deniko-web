@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -20,6 +20,7 @@ interface DashboardShellProps {
         image?: string | null
         role?: "TEACHER" | "STUDENT" | "ADMIN" | null
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
     lang: string
 }
@@ -30,6 +31,7 @@ export function DashboardShell({ children, user, dictionary, lang }: DashboardSh
 
     const navConfig = user.role === "TEACHER" ? teacherNav : studentNav
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const NavItem = ({ item, mobile = false }: { item: any, mobile?: boolean }) => {
         const href = `/${lang}${item.href}`
         const isActive = pathname === href
@@ -86,7 +88,7 @@ export function DashboardShell({ children, user, dictionary, lang }: DashboardSh
                     </div>
                     <Sheet open={open} onOpenChange={setOpen}>
                         <SheetTrigger asChild>
-                            <Button variant="ghost" size="icon">
+                            <Button variant="ghost" size="icon" suppressHydrationWarning>
                                 <Menu className="h-6 w-6" />
                             </Button>
                         </SheetTrigger>

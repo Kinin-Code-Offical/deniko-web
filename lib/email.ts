@@ -19,7 +19,6 @@ export async function sendPasswordResetEmail(email: string, token: string, lang:
   const dictionary = await getDictionary(lang as Locale)
   const resetLink = `${process.env.NEXTAUTH_URL}/${lang}/reset-password?token=${token}`
 
-  // @ts-ignore
   const content = dictionary.email.password_reset
 
   const html = getVerificationEmailTemplate(resetLink, lang as Locale, content)
@@ -32,6 +31,7 @@ export async function sendPasswordResetEmail(email: string, token: string, lang:
   })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getVerificationEmailTemplate(url: string, lang: Locale, content: any) {
   return `
 <!DOCTYPE html>
@@ -140,7 +140,6 @@ function getVerificationEmailTemplate(url: string, lang: Locale, content: any) {
   const confirmLink = `${process.env.NEXTAUTH_URL}/${lang}/verify?token=${token}`
 
   const dictionary = await getDictionary(lang)
-  // @ts-ignore
   const content = dictionary.email.verification
 
   const html = getVerificationEmailTemplate(confirmLink, lang, content);

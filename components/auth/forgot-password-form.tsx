@@ -20,6 +20,7 @@ import { toast } from "sonner"
 import Link from "next/link"
 
 interface ForgotPasswordFormProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
     lang: string
 }

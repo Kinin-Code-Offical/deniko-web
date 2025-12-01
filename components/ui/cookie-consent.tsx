@@ -49,7 +49,7 @@ export function CookieConsent() {
                         </h3>
                         <p className="text-sm text-slate-600 leading-relaxed">
                             Deniko olarak deneyiminizi iyileştirmek, analitik veriler toplamak ve size özel içerikler sunmak için çerezler kullanıyoruz.
-                            Detaylı bilgi için <Link href="/tr/legal/cookies" className="text-blue-600 hover:underline font-medium">Çerez Politikası</Link>'nı inceleyebilirsiniz.
+                            Detaylı bilgi için <Link href="/tr/legal/cookies" className="text-blue-600 hover:underline font-medium">Çerez Politikası</Link>&apos;nı inceleyebilirsiniz.
                         </p>
                     </div>
                 </div>

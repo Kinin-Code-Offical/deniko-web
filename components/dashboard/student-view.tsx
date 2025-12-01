@@ -6,17 +6,21 @@ import { format } from "date-fns"
 import { tr, enUS } from "date-fns/locale"
 
 interface StudentViewProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     user: any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
+    lang: string
     stats: {
         completedLessons: number
         pendingHomework: number
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     upcomingLessons: any[]
 }
 
-export function StudentView({ user, dictionary, stats, upcomingLessons }: StudentViewProps) {
-    const dateLocale = dictionary.lang === "tr" ? tr : enUS
+export function StudentView({ user, dictionary, lang, stats, upcomingLessons }: StudentViewProps) {
+    const dateLocale = lang === "tr" ? tr : enUS
 
     return (
         <div className="space-y-6">

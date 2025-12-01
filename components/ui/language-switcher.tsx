@@ -18,6 +18,7 @@ export function LanguageSwitcher() {
     const currentLocale = pathname.split("/")[1] || i18n.defaultLocale
 
     const handleLanguageChange = (locale: string) => {
+        // eslint-disable-next-line react-hooks/immutability
         document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000; SameSite=Lax`
         router.push(redirectedPathName(locale))
     }

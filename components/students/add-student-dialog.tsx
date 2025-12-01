@@ -4,7 +4,7 @@ import { useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { createShadowStudent } from "@/lib/actions/student"
+import { createStudent } from "@/app/actions/student"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -37,6 +37,7 @@ const formSchema = z.object({
     avatar: z.any().optional(),
 })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function AddStudentDialog({ dictionary }: { dictionary: any }) {
     const [open, setOpen] = useState(false)
     const [isPending, startTransition] = useTransition()
@@ -54,16 +55,7 @@ export function AddStudentDialog({ dictionary }: { dictionary: any }) {
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         startTransition(async () => {
-            const formData = new FormData()
-            formData.append("name", values.name)
-            formData.append("surname", values.surname)
-            if (values.studentNo) formData.append("studentNo", values.studentNo)
-            if (values.grade) formData.append("grade", values.grade)
-            if (values.phoneNumber) formData.append("phoneNumber", values.phoneNumber)
-            // Avatar upload logic will be implemented later
-            // if (values.avatar) formData.append("avatarUrl", "URL_FROM_UPLOAD")
-
-            const result = await createShadowStudent(null, formData)
+            const result = await createStudent(values)
             if (result?.success) {
                 toast.success(dictionary.dashboard.students.add_dialog.success)
                 setOpen(false)

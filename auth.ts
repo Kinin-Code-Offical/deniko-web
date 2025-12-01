@@ -86,6 +86,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
         async session({ session, token }) {
             // Strict validation: If token is invalid/null, invalidate session
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if (!token || !token.sub) return null as any
 
             if (token.sub && session.user) {

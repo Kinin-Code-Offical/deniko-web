@@ -8,6 +8,7 @@ import { Locale } from "@/i18n-config"
 
 export default async function DashboardPage({ params }: { params: Promise<{ lang: string }> }) {
     const { lang } = await params
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const dictionary = await getDictionary(lang as Locale) as any
     const session = await auth()
 
@@ -27,7 +28,13 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
         redirect(`/${lang}/login`)
     }
 
-    if (user.role === "TEACHER" && user.teacherProfile) {
+    // Role Dispatch
+    if (user.role === "TEACHER") {
+        if (!user.teacherProfile) {
+            // Data inconsistency: Teacher role but no profile
+            redirect(`/${lang}/onboarding`)
+        }
+
         const activeStudents = await db.studentTeacherRelation.count({
             where: {
                 teacherId: user.teacherProfile.id,
@@ -92,6 +99,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
         return <TeacherView
             user={user}
             dictionary={dictionary}
+            lang={lang}
             stats={{
                 activeStudents,
                 todayLessonCount,
@@ -101,15 +109,23 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
         />
     }
 
-    if (user.role === "STUDENT" && user.studentProfile) {
-        const completedLessons = await db.lesson.count({
+    if (user.role === "STUDENT") {
+        if (!user.studentProfile) {
+            // Data inconsistency: Student role but no profile
+            redirect(`/${lang}/onboarding`)
+        }
+
+        const completedLessons = await db.attendance.count({
             where: {
-                students: {
-                    some: {
-                        id: user.studentProfile.id
-                    }
-                },
-                status: 'COMPLETED'
+                studentId: user.studentProfile.id,
+                status: 'PRESENT'
+            }
+        })
+
+        const pendingHomework = await db.homeworkTracking.count({
+            where: {
+                studentId: user.studentProfile.id,
+                status: 'PENDING'
             }
         })
 
@@ -122,24 +138,29 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
                 },
                 startTime: {
                     gte: new Date()
+                },
+                status: {
+                    not: 'CANCELLED'
                 }
             },
-            take: 5,
+            take: 3,
             orderBy: {
                 startTime: 'asc'
-            }
-        })
-
-        const pendingHomework = await db.homeworkTracking.count({
-            where: {
-                studentId: user.studentProfile.id,
-                status: 'PENDING'
+            },
+            include: {
+                teacher: {
+                    include: {
+                        user: true
+                    }
+                },
+                classroom: true
             }
         })
 
         return <StudentView
             user={user}
             dictionary={dictionary}
+            lang={lang}
             stats={{
                 completedLessons,
                 pendingHomework
@@ -148,5 +169,11 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
         />
     }
 
-    return null
+    // Fallback for other roles or no role
+    return (
+        <div className="flex flex-col items-center justify-center h-[50vh]">
+            <h1 className="text-2xl font-bold">Welcome to Deniko</h1>
+            <p className="text-muted-foreground">Please contact support if you see this screen.</p>
+        </div>
+    )
 }

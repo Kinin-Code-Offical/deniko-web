@@ -8,6 +8,7 @@ import logger from '@/lib/logger'
 function getLocale(request: NextRequest): string | undefined {
     // 1. Check cookie
     const cookieLocale = request.cookies.get("NEXT_LOCALE")?.value
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (cookieLocale && i18n.locales.includes(cookieLocale as any)) {
         return cookieLocale
     }
@@ -15,7 +16,7 @@ function getLocale(request: NextRequest): string | undefined {
     const negotiatorHeaders: Record<string, string> = {}
     request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
 
-    // @ts-ignore locales are readonly
+    // @ts-expect-error locales are readonly
     const locales: string[] = i18n.locales
     const languages = new Negotiator({ headers: negotiatorHeaders }).languages()
 
@@ -36,6 +37,7 @@ export default function proxy(request: NextRequest) {
         requestId,
         method: request.method,
         url: pathname,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ip: (request as any).ip || request.headers.get('x-forwarded-for'),
         userAgent: request.headers.get('user-agent')
     })

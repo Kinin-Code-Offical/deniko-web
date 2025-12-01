@@ -5,12 +5,13 @@ import { db } from "@/lib/db"
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
 import { randomBytes } from "crypto"
+import logger from "@/lib/logger"
 
 const createStudentSchema = z.object({
-    firstName: z.string().min(2, "İsim en az 2 karakter olmalıdır"),
-    lastName: z.string().min(2, "Soyisim en az 2 karakter olmalıdır"),
+    name: z.string().min(2, "İsim en az 2 karakter olmalıdır"),
+    surname: z.string().min(2, "Soyisim en az 2 karakter olmalıdır"),
     studentNo: z.string().optional(),
-    gradeLevel: z.string().optional(),
+    grade: z.string().optional(),
     phoneNumber: z.string().optional(),
 })
 
@@ -18,7 +19,8 @@ export async function createStudent(data: z.infer<typeof createStudentSchema>) {
     const session = await auth()
 
     if (!session?.user?.id) {
-        throw new Error("Unauthorized")
+        logger.warn({ context: "createStudent" }, "Unauthorized attempt")
+        return { success: false, error: "Unauthorized" }
     }
 
     const user = await db.user.findUnique({
@@ -27,16 +29,18 @@ export async function createStudent(data: z.infer<typeof createStudentSchema>) {
     })
 
     if (!user?.teacherProfile) {
-        throw new Error("Teacher profile not found")
+        logger.warn({ context: "createStudent", userId: session.user.id }, "Teacher profile not found")
+        return { success: false, error: "Teacher profile not found" }
     }
 
     const validatedFields = createStudentSchema.safeParse(data)
 
     if (!validatedFields.success) {
-        throw new Error("Invalid fields")
+        logger.warn({ context: "createStudent", errors: validatedFields.error }, "Invalid fields")
+        return { success: false, error: "Invalid fields" }
     }
 
-    const { firstName, lastName, studentNo, gradeLevel, phoneNumber } = validatedFields.data
+    const { name, surname, studentNo, grade, phoneNumber } = validatedFields.data
 
     // Generate a unique invite token
     const inviteToken = randomBytes(16).toString("hex")
@@ -46,10 +50,10 @@ export async function createStudent(data: z.infer<typeof createStudentSchema>) {
             // 1. Create the Student Profile (Shadow Account)
             const student = await tx.studentProfile.create({
                 data: {
-                    tempFirstName: firstName,
-                    tempLastName: lastName,
+                    tempFirstName: name,
+                    tempLastName: surname,
                     studentNo,
-                    gradeLevel,
+                    gradeLevel: grade,
                     phoneNumber,
                     inviteToken,
                     creatorTeacherId: user.teacherProfile!.id,
@@ -68,10 +72,11 @@ export async function createStudent(data: z.infer<typeof createStudentSchema>) {
             })
         })
 
+        logger.info({ context: "createStudent", teacherId: user.teacherProfile.id }, "Student created successfully")
         revalidatePath("/dashboard/students")
         return { success: true, message: "Öğrenci başarıyla oluşturuldu" }
     } catch (error) {
-        console.error("Create Student Error:", error)
-        return { success: false, message: "Öğrenci oluşturulurken bir hata oluştu" }
+        logger.error({ context: "createStudent", error }, "Failed to create student")
+        return { success: false, error: "Öğrenci oluşturulurken bir hata oluştu" }
     }
 }
