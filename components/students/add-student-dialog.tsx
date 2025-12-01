@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useState, useTransition, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input"
 import { PhoneInput } from "@/components/ui/phone-input"
 import { UserPlus, Loader2 } from "lucide-react"
 import { toast } from "sonner"
+import { useSearchParams, useRouter, usePathname } from "next/navigation"
 
 const formSchema = z.object({
     name: z.string().min(2),
@@ -41,6 +42,24 @@ const formSchema = z.object({
 export function AddStudentDialog({ dictionary }: { dictionary: any }) {
     const [open, setOpen] = useState(false)
     const [isPending, startTransition] = useTransition()
+    const searchParams = useSearchParams()
+    const router = useRouter()
+    const pathname = usePathname()
+
+    useEffect(() => {
+        if (searchParams.get("action") === "new-student") {
+            setOpen(true)
+        }
+    }, [searchParams])
+
+    const handleOpenChange = (newOpen: boolean) => {
+        setOpen(newOpen)
+        if (!newOpen && searchParams.get("action") === "new-student") {
+            const params = new URLSearchParams(searchParams.toString())
+            params.delete("action")
+            router.replace(`${pathname}?${params.toString()}`)
+        }
+    }
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -58,7 +77,7 @@ export function AddStudentDialog({ dictionary }: { dictionary: any }) {
             const result = await createStudent(values)
             if (result?.success) {
                 toast.success(dictionary.dashboard.students.add_dialog.success)
-                setOpen(false)
+                handleOpenChange(false)
                 form.reset()
             } else {
                 toast.error(result?.error || "Error")
@@ -67,7 +86,7 @@ export function AddStudentDialog({ dictionary }: { dictionary: any }) {
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
                 <Button>
                     <UserPlus className="mr-2 h-4 w-4" /> {dictionary.dashboard.students.add_student}

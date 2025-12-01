@@ -7,10 +7,16 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
 import { UserNav } from "@/components/dashboard/user-nav"
-import { Menu } from "lucide-react"
+import { Menu, Plus } from "lucide-react"
 import { teacherNav, studentNav } from "@/config/dashboard"
 import { DenikoLogo } from "@/components/ui/deniko-logo"
 import { LanguageSwitcher } from "@/components/ui/language-switcher"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 interface DashboardShellProps {
     children: React.ReactNode
@@ -72,8 +78,22 @@ export function DashboardShell({ children, user, dictionary, lang }: DashboardSh
                     </nav>
                 </div>
                 <div className="border-t p-4 space-y-4">
-                    <div className="flex justify-center w-full">
+                    <div className="flex justify-center w-full gap-2">
                         <LanguageSwitcher />
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="icon">
+                                    <Plus className="h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuItem asChild>
+                                    <Link href={`/${lang}/dashboard/students?action=new-student`}>
+                                        {dictionary.dashboard.students.add_student}
+                                    </Link>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
                     <UserNav user={user} />
                 </div>
@@ -108,8 +128,22 @@ export function DashboardShell({ children, user, dictionary, lang }: DashboardSh
                                 </nav>
                             </div>
                             <div className="border-t p-4 space-y-4">
-                                <div className="flex justify-center w-full">
+                                <div className="flex justify-center w-full gap-2">
                                     <LanguageSwitcher />
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="outline" size="icon">
+                                                <Plus className="h-4 w-4" />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                            <DropdownMenuItem asChild>
+                                                <Link href={`/${lang}/dashboard/students?action=new-student`}>
+                                                    {dictionary.dashboard.students.add_student}
+                                                </Link>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 </div>
                                 <UserNav user={user} />
                             </div>
