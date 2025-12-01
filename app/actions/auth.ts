@@ -13,6 +13,7 @@ import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email"
 import { AuthError } from "next-auth"
 import { getDictionary } from "@/lib/get-dictionary"
 import { Locale } from "@/i18n-config"
+import logger from "@/lib/logger"
 
 export async function logout() {
     await signOut({ redirectTo: "/login" })
@@ -38,10 +39,13 @@ export async function login(formData: z.infer<typeof loginSchemaBase>, lang: str
     const validatedFields = loginSchema.safeParse(formData)
 
     if (!validatedFields.success) {
+        logger.warn({ msg: "Login validation failed", errors: validatedFields.error.flatten() })
         return { success: false, message: dict.auth.register.errors.invalid_data }
     }
 
     const { email, password } = validatedFields.data
+
+    logger.info({ msg: "Login attempt", email })
 
     try {
         await signIn("credentials", {
@@ -51,6 +55,7 @@ export async function login(formData: z.infer<typeof loginSchemaBase>, lang: str
         })
     } catch (error) {
         if (error instanceof AuthError) {
+            logger.warn({ msg: "Login failed", email, error: error.type })
             switch (error.type) {
                 case "CredentialsSignin":
                     return { success: false, message: dict.auth.login.validation.invalid_credentials }
@@ -59,6 +64,7 @@ export async function login(formData: z.infer<typeof loginSchemaBase>, lang: str
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const cause = error.cause as any
                     if (cause?.err?.message === "Email not verified") {
+                        logger.info({ msg: "Login blocked: Email not verified", email })
                         return { success: false, error: "NOT_VERIFIED", email: email, message: dict.auth.verification.unverified_desc }
                     }
                     return { success: false, message: dict.auth.register.errors.generic }

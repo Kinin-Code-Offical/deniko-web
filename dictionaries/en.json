@@ -159,60 +159,6 @@
         }
     },
     "dashboard": {
-        "teacher": {
-            "welcome": "Welcome, {name}",
-            "stats": {
-                "active_students": "Active Students",
-                "total_lessons": "Total Lessons",
-                "income": "Monthly Income",
-                "success_rate": "Success Rate",
-                "success_desc": "Homework completion rate",
-                "recent_activity": "Recent Activity",
-                "upcoming_lessons": "Upcoming Lessons",
-                "schedule_placeholder": "Schedule calendar will be here"
-            },
-            "students": {
-                "title": "My Students",
-                "subtitle": "Manage all your students and add new ones here.",
-                "add_new": "Add New Student",
-                "add_dialog": {
-                    "title": "Add New Student",
-                    "desc": "Create a shadow account by entering student details. They can claim it later via invite link.",
-                    "first_name": "First Name",
-                    "last_name": "Last Name",
-                    "student_no": "Student No (Optional)",
-                    "grade_level": "Grade Level (Optional)",
-                    "placeholder_name": "John",
-                    "success": "Student created successfully",
-                    "copy_invite": "Invite link copied"
-                },
-                "table": {
-                    "name": "Student Name",
-                    "status": "Status",
-                    "school_no": "School Info",
-                    "actions": "Actions",
-                    "empty": "No students added yet.",
-                    "shadow_account": "Shadow Account",
-                    "copy_invite": "Copy Invite Link"
-                },
-                "status": {
-                    "shadow": "Pending Invite",
-                    "claimed": "Active"
-                }
-            }
-        },
-        "student": {
-            "welcome": "Hello, {name}",
-            "subtitle": "Access your lessons and homework here.",
-            "stats": {
-                "next_lesson": "Next Lesson",
-                "homework": "Pending Homework",
-                "completed_lessons": "Completed Lessons",
-                "average_success": "Average Success",
-                "weekly_schedule": "Weekly Schedule",
-                "homework_status": "Homework Status"
-            }
-        },
         "nav": {
             "dashboard": "Dashboard",
             "students": "My Students",
@@ -223,6 +169,52 @@
             "exams": "Exams",
             "settings": "Settings",
             "logout": "Logout"
+        },
+        "teacher": {
+            "welcome": "Welcome, ",
+            "active_students": "Active Students",
+            "today_lessons_count": "Today's Lessons",
+            "pending_homework_count": "Pending Homework",
+            "upcoming_lessons": "Today's Schedule",
+            "no_lessons_today": "No lessons scheduled for today.",
+            "take_attendance": "Take Attendance",
+            "quick_actions": {
+                "title": "Quick Actions",
+                "add_student": "Add Student",
+                "add_lesson": "Add Lesson",
+                "create_homework": "Create Homework"
+            }
+        },
+        "students": {
+            "title": "My Students",
+            "add_student": "Add Student",
+            "table": {
+                "name": "Name",
+                "number": "Student No",
+                "status": "Status",
+                "action": "Action"
+            },
+            "add_dialog": {
+                "title": "Add New Student",
+                "desc": "Create a shadow account for your student. You can invite them later.",
+                "name": "First Name",
+                "surname": "Last Name",
+                "grade": "Grade Level",
+                "student_no": "Student No",
+                "phone_number": "Phone Number",
+                "submit": "Add Student",
+                "success": "Student added successfully!"
+            }
+        },
+        "student": {
+            "welcome": "Hello, ",
+            "upcoming_lessons": "Upcoming Lessons",
+            "completed_lessons": "Completed Lessons",
+            "pending_homework": "Pending Homework",
+            "no_upcoming_lessons": "No upcoming lessons.",
+            "next_lesson": "Next Lesson",
+            "assignments_todo": "Assignments To-Do",
+            "weekly_schedule": "Weekly Schedule"
         }
     },
     "email": {

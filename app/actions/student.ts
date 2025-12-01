@@ -11,6 +11,7 @@ const createStudentSchema = z.object({
     lastName: z.string().min(2, "Soyisim en az 2 karakter olmalıdır"),
     studentNo: z.string().optional(),
     gradeLevel: z.string().optional(),
+    phoneNumber: z.string().optional(),
 })
 
 export async function createStudent(data: z.infer<typeof createStudentSchema>) {
@@ -35,7 +36,7 @@ export async function createStudent(data: z.infer<typeof createStudentSchema>) {
         throw new Error("Invalid fields")
     }
 
-    const { firstName, lastName, studentNo, gradeLevel } = validatedFields.data
+    const { firstName, lastName, studentNo, gradeLevel, phoneNumber } = validatedFields.data
 
     // Generate a unique invite token
     const inviteToken = randomBytes(16).toString("hex")
@@ -49,6 +50,7 @@ export async function createStudent(data: z.infer<typeof createStudentSchema>) {
                     tempLastName: lastName,
                     studentNo,
                     gradeLevel,
+                    phoneNumber,
                     inviteToken,
                     creatorTeacherId: user.teacherProfile!.id,
                     isClaimed: false,

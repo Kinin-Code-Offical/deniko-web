@@ -183,9 +183,11 @@ model StudentProfile {
   inviteToken String? @unique // Davet Linki: deniko.net/join/CODE
   isClaimed   Boolean @default(false) // Hesap gerçek kullanıcıya bağlandı mı?
 
+  phoneNumber String? // Öğrencinin kendi telefonu (Gölge hesap için)
+  avatarUrl   String? // Profil fotoğrafı URL
   // --- C. AKADEMİK BİLGİLER ---
-  studentNo  String?
-  gradeLevel String? // "12. Sınıf", "Mezun"
+  studentNo   String?
+  gradeLevel  String? // "12. Sınıf", "Mezun"
 
   // Veli İletişim (Acil Durum)
   parentName  String?
@@ -425,6 +427,7 @@ model HomeworkSubmission {
 
 enum HomeworkStatus {
   PENDING
+  SUBMITTED
   COMPLETED
   INCOMPLETE
   MISSING

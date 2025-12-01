@@ -38,7 +38,7 @@ export default async function DashboardLayout({
     }
 
     return (
-        <DashboardShell user={user} dictionary={dictionary}>
+        <DashboardShell user={user} dictionary={dictionary} lang={lang}>
             {children}
         </DashboardShell>
     )

@@ -159,60 +159,6 @@
         }
     },
     "dashboard": {
-        "teacher": {
-            "welcome": "Hoş Geldin, {name}",
-            "stats": {
-                "active_students": "Aktif Öğrenci",
-                "total_lessons": "Toplam Ders",
-                "income": "Aylık Gelir",
-                "success_rate": "Başarı Oranı",
-                "success_desc": "Ödev tamamlama oranı",
-                "recent_activity": "Son Aktiviteler",
-                "upcoming_lessons": "Yaklaşan Dersler",
-                "schedule_placeholder": "Ders programı takvimi burada olacak"
-            },
-            "students": {
-                "title": "Öğrencilerim",
-                "subtitle": "Tüm öğrencilerinizi buradan yönetebilir ve yeni öğrenci ekleyebilirsiniz.",
-                "add_new": "Yeni Öğrenci Ekle",
-                "add_dialog": {
-                    "title": "Yeni Öğrenci Ekle",
-                    "desc": "Öğrencinin bilgilerini girerek bir gölge hesap oluşturun. Daha sonra davet linki ile öğrenci hesabını devralabilir.",
-                    "first_name": "İsim",
-                    "last_name": "Soyisim",
-                    "student_no": "Öğrenci No (İsteğe bağlı)",
-                    "grade_level": "Sınıf Seviyesi (İsteğe bağlı)",
-                    "placeholder_name": "Ahmet",
-                    "success": "Öğrenci başarıyla oluşturuldu",
-                    "copy_invite": "Davet linki kopyalandı"
-                },
-                "table": {
-                    "name": "Öğrenci Adı",
-                    "status": "Durum",
-                    "school_no": "Okul Bilgisi",
-                    "actions": "İşlemler",
-                    "empty": "Henüz öğrenci eklenmemiş.",
-                    "shadow_account": "Gölge Hesap",
-                    "copy_invite": "Davet Linkini Kopyala"
-                },
-                "status": {
-                    "shadow": "Davet Bekliyor",
-                    "claimed": "Aktif"
-                }
-            }
-        },
-        "student": {
-            "welcome": "Merhaba, {name}",
-            "subtitle": "Derslerine ve ödevlerine buradan ulaşabilirsin.",
-            "stats": {
-                "next_lesson": "Sıradaki Ders",
-                "homework": "Bekleyen Ödevler",
-                "completed_lessons": "Tamamlanan Dersler",
-                "average_success": "Ortalama Başarı",
-                "weekly_schedule": "Haftalık Programım",
-                "homework_status": "Ödev Durumu"
-            }
-        },
         "nav": {
             "dashboard": "Kontrol Paneli",
             "students": "Öğrencilerim",
@@ -223,6 +169,51 @@
             "exams": "Sınavlar",
             "settings": "Ayarlar",
             "logout": "Çıkış Yap"
+        },
+        "teacher": {
+            "welcome": "Hoş geldiniz, ",
+            "active_students": "Aktif Öğrenciler",
+            "today_lessons_count": "Bugünkü Dersler",
+            "pending_homework_count": "Bekleyen Ödevler",
+            "upcoming_lessons": "Bugünkü Program",
+            "no_lessons_today": "Bugün için planlanmış ders yok.",
+            "quick_actions": {
+                "title": "Hızlı İşlemler",
+                "add_student": "Öğrenci Ekle",
+                "add_lesson": "Ders Ekle",
+                "create_homework": "Ödev Oluştur"
+            }
+        },
+        "students": {
+            "title": "Öğrencilerim",
+            "add_student": "Öğrenci Ekle",
+            "table": {
+                "name": "İsim",
+                "number": "Öğrenci No",
+                "status": "Durum",
+                "action": "İşlem"
+            },
+            "add_dialog": {
+                "title": "Yeni Öğrenci Ekle",
+                "desc": "Öğrenciniz için bir gölge hesap oluşturun. Daha sonra davet edebilirsiniz.",
+                "name": "İsim",
+                "surname": "Soyisim",
+                "grade": "Sınıf Seviyesi",
+                "student_no": "Öğrenci No",
+                "phone_number": "Telefon Numarası",
+                "submit": "Öğrenci Ekle",
+                "success": "Öğrenci başarıyla eklendi!"
+            }
+        },
+        "student": {
+            "welcome": "Merhaba, ",
+            "upcoming_lessons": "Yaklaşan Dersler",
+            "completed_lessons": "Tamamlanan Dersler",
+            "pending_homework": "Bekleyen Ödevler",
+            "no_upcoming_lessons": "Planlanmış ders bulunmuyor.",
+            "next_lesson": "Sıradaki Ders",
+            "assignments_todo": "Yapılacak Ödevler",
+            "weekly_schedule": "Haftalık Ders Programım"
         }
     },
     "email": {

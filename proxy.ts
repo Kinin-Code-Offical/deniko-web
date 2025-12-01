@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server'
 import { i18n } from './i18n-config'
 import { match as matchLocale } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
+import logger from '@/lib/logger'
 
 function getLocale(request: NextRequest): string | undefined {
     // 1. Check cookie
@@ -25,8 +26,19 @@ function getLocale(request: NextRequest): string | undefined {
     }
 }
 
-export function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
+    const requestId = crypto.randomUUID()
     const pathname = request.nextUrl.pathname
+
+    // Log Request
+    logger.info({
+        msg: "Incoming Request",
+        requestId,
+        method: request.method,
+        url: pathname,
+        ip: (request as any).ip || request.headers.get('x-forwarded-for'),
+        userAgent: request.headers.get('user-agent')
+    })
 
     // Check if there is any supported locale in the pathname
     const pathnameIsMissingLocale = i18n.locales.every(
@@ -49,6 +61,9 @@ export function middleware(request: NextRequest) {
 
         const response = NextResponse.redirect(newUrl)
 
+        // Add Request ID
+        response.headers.set('x-request-id', requestId)
+
         // Set cookie if missing or different
         if (request.cookies.get("NEXT_LOCALE")?.value !== locale) {
             response.cookies.set("NEXT_LOCALE", locale as string, { path: '/', maxAge: 31536000, sameSite: 'lax' })
@@ -63,6 +78,10 @@ export function middleware(request: NextRequest) {
 
         if (localeInPath) {
             const response = NextResponse.next()
+
+            // Add Request ID
+            response.headers.set('x-request-id', requestId)
+
             if (request.cookies.get("NEXT_LOCALE")?.value !== localeInPath) {
                 response.cookies.set("NEXT_LOCALE", localeInPath, { path: '/', maxAge: 31536000, sameSite: 'lax' })
             }

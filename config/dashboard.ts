@@ -1,67 +1,57 @@
-import {
-    LayoutDashboard,
-    Users,
-    Calendar,
-    CreditCard,
-    Settings,
-    BookOpen,
-    FileText,
-    GraduationCap,
-} from "lucide-react"
+import { LayoutDashboard, Users, Calendar, CreditCard, Settings, BookOpen, FileText, PenTool } from "lucide-react"
 
-export const dashboardConfig = {
-    teacherNav: [
-        {
-            title: "Dashboard",
-            href: "/dashboard",
-            icon: LayoutDashboard,
-        },
-        {
-            title: "Öğrencilerim",
-            href: "/dashboard/students",
-            icon: Users,
-        },
-        {
-            title: "Ders Programı",
-            href: "/dashboard/schedule",
-            icon: Calendar,
-        },
-        {
-            title: "Finans",
-            href: "/dashboard/finance",
-            icon: CreditCard,
-        },
-        {
-            title: "Ayarlar",
-            href: "/dashboard/settings",
-            icon: Settings,
-        },
-    ],
-    studentNav: [
-        {
-            title: "Dashboard",
-            href: "/dashboard",
-            icon: LayoutDashboard,
-        },
-        {
-            title: "Derslerim",
-            href: "/dashboard/lessons",
-            icon: BookOpen,
-        },
-        {
-            title: "Ödevlerim",
-            href: "/dashboard/homework",
-            icon: FileText,
-        },
-        {
-            title: "Sınavlarım",
-            href: "/dashboard/exams",
-            icon: GraduationCap,
-        },
-        {
-            title: "Ayarlar",
-            href: "/dashboard/settings",
-            icon: Settings,
-        },
-    ],
-}
+export const teacherNav = [
+    {
+        title: "dashboard",
+        href: "/dashboard",
+        icon: LayoutDashboard,
+    },
+    {
+        title: "students",
+        href: "/dashboard/students",
+        icon: Users,
+    },
+    {
+        title: "schedule",
+        href: "/dashboard/schedule",
+        icon: Calendar,
+    },
+    {
+        title: "finance",
+        href: "/dashboard/finance",
+        icon: CreditCard,
+    },
+    {
+        title: "settings",
+        href: "/dashboard/settings",
+        icon: Settings,
+    },
+]
+
+export const studentNav = [
+    {
+        title: "dashboard",
+        href: "/dashboard",
+        icon: LayoutDashboard,
+    },
+    {
+        title: "lessons",
+        href: "/dashboard/lessons",
+        icon: BookOpen,
+    },
+    {
+        title: "homework",
+        href: "/dashboard/homework",
+        icon: FileText,
+    },
+    {
+        title: "exams",
+        href: "/dashboard/exams",
+        icon: PenTool,
+    },
+    {
+        title: "settings",
+        href: "/dashboard/settings",
+        icon: Settings,
+    },
+]

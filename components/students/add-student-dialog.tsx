@@ -4,7 +4,7 @@ import { useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { createStudent } from "@/app/actions/student"
+import { createShadowStudent } from "@/lib/actions/student"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -24,14 +24,17 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Plus, Loader2 } from "lucide-react"
+import { PhoneInput } from "@/components/ui/phone-input"
+import { UserPlus, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 
 const formSchema = z.object({
-    firstName: z.string().min(2, "İsim en az 2 karakter olmalıdır"),
-    lastName: z.string().min(2, "Soyisim en az 2 karakter olmalıdır"),
+    name: z.string().min(2),
+    surname: z.string().min(2),
     studentNo: z.string().optional(),
-    gradeLevel: z.string().optional(),
+    grade: z.string().optional(),
+    phoneNumber: z.string().optional(),
+    avatar: z.any().optional(),
 })
 
 export function AddStudentDialog({ dictionary }: { dictionary: any }) {
@@ -41,22 +44,32 @@ export function AddStudentDialog({ dictionary }: { dictionary: any }) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            firstName: "",
-            lastName: "",
+            name: "",
+            surname: "",
             studentNo: "",
-            gradeLevel: "",
+            grade: "",
+            phoneNumber: "",
         },
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         startTransition(async () => {
-            const result = await createStudent(values)
-            if (result.success) {
-                toast.success(result.message)
+            const formData = new FormData()
+            formData.append("name", values.name)
+            formData.append("surname", values.surname)
+            if (values.studentNo) formData.append("studentNo", values.studentNo)
+            if (values.grade) formData.append("grade", values.grade)
+            if (values.phoneNumber) formData.append("phoneNumber", values.phoneNumber)
+            // Avatar upload logic will be implemented later
+            // if (values.avatar) formData.append("avatarUrl", "URL_FROM_UPLOAD")
+
+            const result = await createShadowStudent(null, formData)
+            if (result?.success) {
+                toast.success(dictionary.dashboard.students.add_dialog.success)
                 setOpen(false)
                 form.reset()
             } else {
-                toast.error(result.message)
+                toast.error(result?.error || "Error")
             }
         })
     }
@@ -65,14 +78,14 @@ export function AddStudentDialog({ dictionary }: { dictionary: any }) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button>
-                    <Plus className="mr-2 h-4 w-4" /> {dictionary.dashboard.teacher.students.add_new}
+                    <UserPlus className="mr-2 h-4 w-4" /> {dictionary.dashboard.students.add_student}
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{dictionary.dashboard.teacher.students.add_dialog.title}</DialogTitle>
+                    <DialogTitle>{dictionary.dashboard.students.add_dialog.title}</DialogTitle>
                     <DialogDescription>
-                        {dictionary.dashboard.teacher.students.add_dialog.desc}
+                        {dictionary.dashboard.students.add_dialog.desc}
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -80,12 +93,12 @@ export function AddStudentDialog({ dictionary }: { dictionary: any }) {
                         <div className="grid grid-cols-2 gap-4">
                             <FormField
                                 control={form.control}
-                                name="firstName"
+                                name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>{dictionary.dashboard.teacher.students.add_dialog.first_name}</FormLabel>
+                                        <FormLabel>{dictionary.dashboard.students.add_dialog.name}</FormLabel>
                                         <FormControl>
-                                            <Input placeholder={dictionary.dashboard.teacher.students.add_dialog.placeholder_name} {...field} />
+                                            <Input {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -93,12 +106,12 @@ export function AddStudentDialog({ dictionary }: { dictionary: any }) {
                             />
                             <FormField
                                 control={form.control}
-                                name="lastName"
+                                name="surname"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>{dictionary.dashboard.teacher.students.add_dialog.last_name}</FormLabel>
+                                        <FormLabel>{dictionary.dashboard.students.add_dialog.surname}</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="" {...field} />
+                                            <Input {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -111,9 +124,9 @@ export function AddStudentDialog({ dictionary }: { dictionary: any }) {
                                 name="studentNo"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>{dictionary.dashboard.teacher.students.add_dialog.student_no}</FormLabel>
+                                        <FormLabel>{dictionary.dashboard.students.add_dialog.student_no}</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="1234" {...field} />
+                                            <Input {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -121,22 +134,58 @@ export function AddStudentDialog({ dictionary }: { dictionary: any }) {
                             />
                             <FormField
                                 control={form.control}
-                                name="gradeLevel"
+                                name="grade"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>{dictionary.dashboard.teacher.students.add_dialog.grade_level}</FormLabel>
+                                        <FormLabel>{dictionary.dashboard.students.add_dialog.grade}</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="12. Sınıf" {...field} />
+                                            <Input {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
                         </div>
+                        <FormField
+                            control={form.control}
+                            name="phoneNumber"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{dictionary.dashboard.students.add_dialog.phone_number}</FormLabel>
+                                    <FormControl>
+                                        <PhoneInput
+                                            value={field.value || ""}
+                                            onChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="avatar"
+                            render={({ field: { value, onChange, ...field } }) => (
+                                <FormItem>
+                                    <FormLabel>Profile Photo</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={(event) => {
+                                                onChange(event.target.files?.[0])
+                                            }}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                         <DialogFooter>
                             <Button type="submit" disabled={isPending}>
                                 {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                {dictionary.dashboard.teacher.students.add_new}
+                                {dictionary.dashboard.students.add_dialog.submit}
                             </Button>
                         </DialogFooter>
                     </form>
