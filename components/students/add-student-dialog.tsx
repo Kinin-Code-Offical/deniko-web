@@ -28,18 +28,27 @@ import { PhoneInput } from "@/components/ui/phone-input"
 import { UserPlus, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 const formSchema = z.object({
     name: z.string().min(2),
     surname: z.string().min(2),
     studentNo: z.string().optional(),
     grade: z.string().optional(),
-    phoneNumber: z.string().optional(),
-    avatar: z.any().optional(),
+    tempPhone: z.string().optional(),
+    tempEmail: z.string().email().optional().or(z.literal("")),
+    tempAvatar: z.string().optional(),
+    classroomId: z.string().optional(),
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function AddStudentDialog({ dictionary }: { dictionary: any }) {
+export function AddStudentDialog({ dictionary, classrooms = [] }: { dictionary: any, classrooms?: { id: string, name: string }[] }) {
     const [open, setOpen] = useState(false)
     const [isPending, startTransition] = useTransition()
     const searchParams = useSearchParams()
@@ -68,7 +77,10 @@ export function AddStudentDialog({ dictionary }: { dictionary: any }) {
             surname: "",
             studentNo: "",
             grade: "",
-            phoneNumber: "",
+            tempPhone: "",
+            tempEmail: "",
+            tempAvatar: "",
+            classroomId: "",
         },
     })
 
@@ -159,7 +171,7 @@ export function AddStudentDialog({ dictionary }: { dictionary: any }) {
                         </div>
                         <FormField
                             control={form.control}
-                            name="phoneNumber"
+                            name="tempPhone"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{dictionary.dashboard.students.add_dialog.phone_number}</FormLabel>
@@ -167,6 +179,8 @@ export function AddStudentDialog({ dictionary }: { dictionary: any }) {
                                         <PhoneInput
                                             value={field.value || ""}
                                             onChange={field.onChange}
+                                            searchPlaceholder={dictionary.components.phone_input.search_country}
+                                            noResultsMessage={dictionary.components.phone_input.no_country_found}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -175,20 +189,37 @@ export function AddStudentDialog({ dictionary }: { dictionary: any }) {
                         />
                         <FormField
                             control={form.control}
-                            name="avatar"
-                            render={({ field: { value, onChange, ...field } }) => (
+                            name="tempEmail"
+                            render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Profile Photo</FormLabel>
+                                    <FormLabel>E-posta (Opsiyonel)</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            {...field}
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={(event) => {
-                                                onChange(event.target.files?.[0])
-                                            }}
-                                        />
+                                        <Input {...field} type="email" placeholder="ornek@email.com" />
                                     </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="classroomId"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Sınıf (Opsiyonel)</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Sınıf Seçin" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {classrooms.map((c) => (
+                                                <SelectItem key={c.id} value={c.id}>
+                                                    {c.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                     <FormMessage />
                                 </FormItem>
                             )}

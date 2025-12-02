@@ -18,6 +18,13 @@ import { useState } from "react"
 
 interface StudentData {
     id: string
+    // Raw fields for name logic
+    user?: { name?: string | null } | null
+    tempFirstName?: string | null
+    tempLastName?: string | null
+    relation?: { customName?: string | null } | null
+
+    // Fallback or pre-calculated
     name: string
     email?: string | null
     status: string
@@ -25,6 +32,7 @@ interface StudentData {
     inviteToken: string | null
     isClaimed: boolean
     gradeLevel: string | null
+    classrooms: { name: string }[]
 }
 
 interface StudentTableProps {
@@ -43,10 +51,21 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
         toast.success(lang === 'tr' ? "Davet linki kopyalandı" : "Invite link copied")
     }
 
-    const filteredData = data.filter(student =>
-        student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (student.studentNo && student.studentNo.includes(searchQuery))
-    )
+    // Helper to get display name
+    const getDisplayName = (student: StudentData) => {
+        if (student.relation?.customName) return student.relation.customName
+        if (student.user?.name) return student.user.name
+        if (student.tempFirstName || student.tempLastName) {
+            return `${student.tempFirstName || ''} ${student.tempLastName || ''}`.trim()
+        }
+        return student.name || "Unknown"
+    }
+
+    const filteredData = data.filter(student => {
+        const displayName = getDisplayName(student)
+        return displayName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (student.studentNo && student.studentNo.includes(searchQuery))
+    })
 
     return (
         <div className="space-y-4">
@@ -67,6 +86,7 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
                     <TableHeader>
                         <TableRow>
                             <TableHead>{dictionary.dashboard.students.table.name}</TableHead>
+                            <TableHead>Sınıflar</TableHead>
                             <TableHead>{dictionary.dashboard.students.table.status}</TableHead>
                             <TableHead>{dictionary.dashboard.students.table.student_no}</TableHead>
                             <TableHead>{dictionary.dashboard.students.table.grade}</TableHead>
@@ -76,7 +96,7 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
                     <TableBody>
                         {filteredData.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={5} className="h-24 text-center">
+                                <TableCell colSpan={6} className="h-24 text-center">
                                     {dictionary.dashboard.students.no_results || "No students found."}
                                 </TableCell>
                             </TableRow>
@@ -85,9 +105,22 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
                                 <TableRow key={student.id}>
                                     <TableCell>
                                         <div className="flex flex-col">
-                                            <span className="font-medium">{student.name}</span>
+                                            <span className="font-medium">{getDisplayName(student)}</span>
                                             {student.email && (
                                                 <span className="text-xs text-muted-foreground">{student.email}</span>
+                                            )}
+                                        </div>
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="flex flex-wrap gap-1">
+                                            {student.classrooms && student.classrooms.length > 0 ? (
+                                                student.classrooms.map((c, i) => (
+                                                    <Badge key={i} variant="outline" className="text-xs">
+                                                        {c.name}
+                                                    </Badge>
+                                                ))
+                                            ) : (
+                                                <span className="text-muted-foreground text-xs">-</span>
                                             )}
                                         </div>
                                     </TableCell>

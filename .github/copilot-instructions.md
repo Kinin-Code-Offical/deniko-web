@@ -1,73 +1,91 @@
-# 🧠 Deniko - Master System Instructions & Rules (Fix & Polish Phase)
+# 🧠 Deniko - Master System Instructions & Rules (Phase 2)
 
-## 1. Project Status & Context
-**Deniko** is a live SaaS platform. We are in the **"Strict Polish & Core Logic"** phase.
-- **Goal:** Eliminate all bugs, standardize UI, and enforce security rules.
-- **Current State:** Auth is working, Dashboard is scaffolded but needs logic fixes.
+## 1. Project Context & Identity
+**Deniko** is a professional SaaS platform for hybrid tutors (freelance & institution-based). It manages academic processes, finances, and communication.
+- **Current Phase:** Core Feature Development (Dashboard & Student Management).
+- **Design Philosophy:** "Sophisticated Simplicity." High-end, trustworthy, and clean.
+- **Brand Assets:** Primary Logo is `/public/logo.svg` (The Blue 'D' with Graduation Cap). Primary Color: **Deep Blue** (Blue-600).
 
-## 2. Tech Stack (Immutable Rules)
-- **Framework:** Next.js 15 (App Router) with **i18n** (`app/[lang]/...`).
-- **Database:** PostgreSQL via **Prisma ORM v6** (`lib/db.ts`).
-- **Auth:** NextAuth.js v5 Beta (`auth.ts`).
+## 2. Tech Stack (Strict Versions)
+- **Framework:** Next.js 15 (App Router) with **i18n routing** (`app/[lang]/...`).
+- **Language:** TypeScript (Strict mode).
+- **Database:** PostgreSQL (Google Cloud SQL) via **Prisma ORM v6** (`lib/db.ts` singleton).
+- **Auth:** NextAuth.js (Auth.js) v5 Beta (Prisma Adapter).
 - **UI:** Tailwind CSS v4 + **Shadcn/UI**.
-- **Logging:** Pino (Structured Logging).
+- **Infrastructure:** Google Cloud Run (Docker Standalone).
 
-## 3. CRITICAL BUG FIXING RULES (Must Follow)
+## 3. Critical Architecture & Workflows
 
-### A. Dashboard & Onboarding Logic
-1.  **No Dead Ends:** In `dashboard/page.tsx`, if `user.role` is missing or `isOnboardingCompleted` is false, **IMMEDIATELY redirect** to `/[lang]/onboarding`. Never return `null` or empty fragments.
-2.  **Loop Prevention:** In `onboarding/page.tsx`, if `user.isOnboardingCompleted` is true, **IMMEDIATELY redirect** to `/[lang]/dashboard`.
-3.  **Session Sync:** After `completeOnboarding` action success, the Client Component MUST call `await update()` and then force a hard navigation (`window.location.href`) to refresh cookies.
+### A. Internationalization (i18n) - **MANDATORY**
+- **Structure:** All pages MUST reside under `app/[lang]/...`. Never create a page outside this dynamic route.
+- **Dictionaries:** Use `getDictionary(lang)` from `lib/get-dictionary.ts` for all static text.
+- **Client Components:** Pass dictionary data as props to Client Components.
 
-### B. Authentication Security
-1.  **Resend Cookie:** The `login` Server Action MUST explicitly delete the `resend_cooldown` cookie upon a successful redirect (catch the `NEXT_REDIRECT` error).
-2.  **Safe Links:** `auth.ts` MUST have `allowDangerousEmailAccountLinking: true`.
-3.  **Session Validation:** The `session` callback must return `null` if the user is deleted from the DB.
+### B. Authentication & Onboarding (Fixed Logic)
+- **Middleware:** Protected routes redirect unauthenticated users to `/[lang]/login`.
+- **Account Linking:** `allowDangerousEmailAccountLinking: true` is ENABLED in `auth.ts` to merge Google/Manual accounts.
+- **Onboarding Flow:**
+  1. User Register/Login (Google or Manual).
+  2. Middleware checks `isOnboardingCompleted` (or role).
+  3. If incomplete -> Force redirect to `/[lang]/onboarding`.
+  4. **Onboarding Page:** Collects Role, Phone, and Password (if missing).
+  5. **Completion:** Server Action updates DB -> Client calls `update()` session -> Redirects to `/dashboard`.
+  
+### C. Mobile-First UI Standards (CRITICAL)
+1.  **Layout Strategy:**
+    - **Auth Pages:** On mobile, stack elements vertically (`flex-col`). On desktop, use side-by-side (`md:flex-row`).
+    - **Dashboard:**
+      - **Desktop:** Fixed Sidebar (Left).
+      - **Mobile:** Top Header with a Hamburger Menu that opens a **Shadcn Sheet** (Drawer).
+2.  **Tables & Data:**
+    - All tables MUST have a wrapper with `overflow-x-auto` to prevent breaking layout on small screens.
+    - Consider using "Card View" for data lists on mobile instead of complex tables.
+3.  **Touch Targets:** Buttons and inputs must be easily tappable (min height 44px on mobile).
+4.  **Navigation:** Use `<Sheet>` component for mobile navigation menus.
 
-### C. Logging Standards (STRICT)
-- **FORBIDDEN:** `console.log`, `console.error`, `console.warn`.
-- **REQUIRED:** Import `logger` from `@/lib/logger`.
-- **Usage:** `logger.info({ userId: session.user.id, context: "onboarding" }, "User completed onboarding")`.
+### D. Dashboard Architecture (The Next Step)
+- **Route:** `/[lang]/dashboard` is the main entry.
+- **Role Separation:**
+  - **Teacher:** Sees "Students", "Schedule", "Finance".
+  - **Student:** Sees "My Lessons", "Homework", "Exams".
+- **Layout:** Use `components/dashboard/shell.tsx` (Sidebar + Header).
 
-## 4. UI/UX & Design System
+## 4. Coding Standards
 
-### Layouts & Responsiveness
-- **Auth Pages:** - **Mobile:** Vertical Stack (Header Top, Form Bottom).
-  - **Desktop:** 50/50 Split (Brand Left, Form Right).
-- **Dashboard:**
-  - **Mobile:** Sticky Header + Hamburger Menu (Sheet).
-  - **Desktop:** Fixed Sidebar (w-64).
-- **Tables:** ALWAYS wrap tables in `<div className="overflow-x-auto">` to prevent mobile overflow.
+### Server Actions & Mutations
+- **Pattern:** Use Server Actions for ALL data mutations (Create/Update/Delete).
+- **Validation:** MUST use **Zod** schemas for input validation inside the action.
+- **Auth Check:** Always call `const session = await auth()` inside actions. If null, throw "Unauthorized".
+- **Error Handling:** Return `{ error: string }` or `{ success: true, data: ... }`. Do not just throw errors if UI needs to handle them gracefully.
 
-### Branding Assets
-- **Logo:** Use `<DenikoLogo />` (SVG). 
-  - **Blue Background:** Use `text-white`.
-  - **White Background:** Use `text-[#2062A3]`.
-- **Colors:** Primary Brand Color is **Deep Blue** (`#2062A3`).
+### UI/UX Guidelines
+- **Components:** Reuse `components/ui/*`. Do not reinvent primitives.
+- **Branding:** Use `<DenikoLogo />` component for branding.
+- **Responsive:** All tables and layouts must work on mobile (use `Sheet` for menus).
+- **Back Button:** Auth pages must have a "Go Back" button.
 
-## 5. Code Quality & i18n
-- **No Hardcoded Text:** EVERY visible string must come from `dictionary` (e.g., `dictionary.auth.login.title`).
-- **Server Actions:**
-  - Must use **Zod** for validation.
-  - Must check `await auth()` at the start.
-  - Must return standardized objects: `{ success: boolean, message?: string, error?: string }`.
-- **Imports:** Use absolute paths (`@/components/...`, `@/lib/...`).
-
-## 6. Directory Structure Reference
+## 5. Directory Structure Reference
 ```text
 app/
   [lang]/
     (auth)/       -> login, register, verify, onboarding
-    dashboard/    -> page.tsx (Router), students/, finance/
-    legal/        -> terms, privacy
+    dashboard/    -> Protected routes
+      page.tsx    -> Role dispatcher (TeacherView vs StudentView)
+      students/   -> Student management module
+      finance/    -> Finance module
+    layout.tsx    -> Root layout with Providers
 components/
-  ui/             -> Shadcn primitives (Button, Card, Input...)
-  auth/           -> LoginForm, RegisterForm, OnboardingForm
-  dashboard/      -> Shell, Nav, UserNav, TeacherView, StudentView
+  ui/             -> Shadcn primitives (button, card, etc.)
+  auth/           -> Auth forms (LoginForm, RegisterForm, ResendAlert)
+  dashboard/      -> Shell, Nav, UserNav
   students/       -> AddStudentDialog, StudentTable
-  shared/         -> DenikoLogo, LanguageSwitcher
 lib/
-  db.ts           -> Prisma Singleton
-  auth.ts         -> NextAuth Config
-  logger.ts       -> Pino Logger
-  get-dictionary.ts -> i18n Loader
+  db.ts           -> Prisma singleton (DO NOT import PrismaClient directly)
+  auth.ts         -> NextAuth config
+  email.ts        -> Nodemailer utility
+```
+
+## 6. Docker & Deployment Safety
+- **Output:** `next.config.ts` has `output: "standalone"`. Do not break this.
+- **Env Vars:** Use `process.env`. Do not hardcode secrets.
+- **Images:** External images (Google user content) are allowed in config.

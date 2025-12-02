@@ -5,6 +5,7 @@ at the path `@/auth`. This function is likely used for handling user authenticat
 in users using different methods like Google sign-in or credentials sign-in. */
 import { signIn, signOut } from "@/auth"
 import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import { z } from "zod"
 import bcrypt from "bcryptjs"
@@ -51,7 +52,7 @@ export async function login(formData: z.infer<typeof loginSchemaBase>, lang: str
         await signIn("credentials", {
             email,
             password,
-            redirectTo: `/${lang}/dashboard`,
+            redirect: false,
         })
     } catch (error) {
         if (error instanceof AuthError) {
@@ -70,14 +71,15 @@ export async function login(formData: z.infer<typeof loginSchemaBase>, lang: str
                     return { success: false, message: dict.auth.register.errors.generic }
             }
         }
-
-        // If we are here, it's likely a successful redirect
-        // Clear the cooldown cookie
-        const cookieStore = await cookies()
-        cookieStore.delete({ name: "resend_cooldown", path: "/" })
-
         throw error
     }
+
+    // If we reached here, login was successful!
+    // Delete the cooldown cookie
+    const cookieStore = await cookies()
+    cookieStore.delete("resend_cooldown")
+
+    redirect(`/${lang}/dashboard`)
 }
 
 export async function resendVerificationCode(email: string, lang: string = "tr") {

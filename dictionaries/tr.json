@@ -1,4 +1,10 @@
 {
+    "components": {
+        "phone_input": {
+            "search_country": "Ülke ara...",
+            "no_country_found": "Ülke bulunamadı."
+        }
+    },
     "join": {
         "title": "Davetiyeyi Kabul Et",
         "desc": "{teacher} sizi öğrencisi olarak eklemek istiyor.",

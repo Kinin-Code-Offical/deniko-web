@@ -206,6 +206,8 @@ export function OnboardingClientPage({ dictionary, lang, userId }: OnboardingCli
                             <PhoneInput
                                 value={phoneNumber}
                                 onChange={setPhoneNumber}
+                                searchPlaceholder={dictionary.components.phone_input.search_country}
+                                noResultsMessage={dictionary.components.phone_input.no_country_found}
                             />
                         </div>
 

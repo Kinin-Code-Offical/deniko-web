@@ -12,7 +12,10 @@ const createStudentSchema = z.object({
     surname: z.string().min(2, "Soyisim en az 2 karakter olmalıdır"),
     studentNo: z.string().optional(),
     grade: z.string().optional(),
-    phoneNumber: z.string().optional(),
+    tempPhone: z.string().optional(),
+    tempEmail: z.string().email("Geçerli bir e-posta adresi giriniz").optional().or(z.literal("")),
+    tempAvatar: z.string().optional(),
+    classroomId: z.string().optional(),
 })
 
 export async function createStudent(data: z.infer<typeof createStudentSchema>) {
@@ -40,7 +43,7 @@ export async function createStudent(data: z.infer<typeof createStudentSchema>) {
         return { success: false, error: "Invalid fields" }
     }
 
-    const { name, surname, studentNo, grade, phoneNumber } = validatedFields.data
+    const { name, surname, studentNo, grade, tempPhone, tempEmail, tempAvatar, classroomId } = validatedFields.data
 
     // Generate a unique invite token
     const inviteToken = randomBytes(16).toString("hex")
@@ -54,10 +57,15 @@ export async function createStudent(data: z.infer<typeof createStudentSchema>) {
                     tempLastName: surname,
                     studentNo,
                     gradeLevel: grade,
-                    phoneNumber,
+                    tempPhone,
+                    tempEmail,
+                    tempAvatar,
                     inviteToken,
                     creatorTeacherId: user.teacherProfile!.id,
                     isClaimed: false,
+                    classrooms: classroomId ? {
+                        connect: { id: classroomId }
+                    } : undefined,
                 },
             })
 
@@ -68,6 +76,7 @@ export async function createStudent(data: z.infer<typeof createStudentSchema>) {
                     studentId: student.id,
                     isCreator: true,
                     status: "ACTIVE",
+                    customName: `${name} ${surname}`,
                 },
             })
         })
@@ -199,14 +208,9 @@ export async function claimStudentProfile(token: string) {
                     data: { studentId: existingProfile.id }
                 })
 
-                // C. Handle Classroom (One-to-Many)
-                // If existingProfile has no classroom, and targetProfile has one, take it.
-                if (!existingProfile.classroomId && targetProfile.classroomId) {
-                    await tx.studentProfile.update({
-                        where: { id: existingProfile.id },
-                        data: { classroomId: targetProfile.classroomId }
-                    })
-                }
+                // C. Handle Classroom (Many-to-Many)
+                // Note: Complex merge for M-N classrooms is skipped for now or handled elsewhere.
+                // Since classroomId column is removed, we remove the old logic.
 
                 // 3. Delete the shadow profile
                 await tx.studentProfile.delete({
@@ -215,6 +219,32 @@ export async function claimStudentProfile(token: string) {
 
             } else {
                 // --- STANDARD CLAIM SCENARIO ---
+
+                // Update customName for creator teacher so they keep seeing the name they know
+                if (targetProfile.creatorTeacherId) {
+                    const tempName = `${targetProfile.tempFirstName || ''} ${targetProfile.tempLastName || ''}`.trim()
+
+                    const relation = await tx.studentTeacherRelation.findUnique({
+                        where: {
+                            teacherId_studentId: {
+                                teacherId: targetProfile.creatorTeacherId,
+                                studentId: targetProfile.id
+                            }
+                        }
+                    })
+
+                    if (relation) {
+                        await tx.studentTeacherRelation.update({
+                            where: { id: relation.id },
+                            data: {
+                                // Only set if not already set, or overwrite? Prompt says "Copy...". 
+                                // Usually we want to preserve what the teacher sees.
+                                customName: relation.customName || tempName
+                            }
+                        })
+                    }
+                }
+
                 // Link profile to user
                 await tx.studentProfile.update({
                     where: { id: targetProfile.id },
@@ -265,11 +295,12 @@ const updateStudentSchema = z.object({
     surname: z.string().min(2, "Soyisim en az 2 karakter olmalıdır"),
     studentNo: z.string().optional(),
     grade: z.string().optional(),
-    phoneNumber: z.string().optional(),
+    tempPhone: z.string().optional(),
+    tempEmail: z.string().email().optional().or(z.literal("")),
+    tempAvatar: z.string().optional(),
     parentName: z.string().optional(),
     parentPhone: z.string().optional(),
     parentEmail: z.string().email().optional().or(z.literal("")),
-    avatarUrl: z.string().optional(),
 })
 
 export async function updateStudent(data: z.infer<typeof updateStudentSchema>) {
@@ -285,7 +316,7 @@ export async function updateStudent(data: z.infer<typeof updateStudentSchema>) {
         return { success: false, error: "Invalid fields" }
     }
 
-    const { studentId, name, surname, studentNo, grade, phoneNumber, parentName, parentPhone, parentEmail, avatarUrl } = validatedFields.data
+    const { studentId, name, surname, studentNo, grade, tempPhone, tempEmail, tempAvatar, parentName, parentPhone, parentEmail } = validatedFields.data
 
     try {
         const user = await db.user.findUnique({
@@ -325,7 +356,6 @@ export async function updateStudent(data: z.infer<typeof updateStudentSchema>) {
                 where: { id: relation.id },
                 data: {
                     customName: `${name} ${surname}`,
-                    customAvatar: avatarUrl
                 }
             })
 
@@ -341,11 +371,12 @@ export async function updateStudent(data: z.infer<typeof updateStudentSchema>) {
                     tempLastName: surname,
                     studentNo,
                     gradeLevel: grade,
-                    phoneNumber,
+                    tempPhone,
+                    tempEmail,
+                    tempAvatar,
                     parentName,
                     parentPhone,
                     parentEmail,
-                    avatarUrl
                 }
             })
 

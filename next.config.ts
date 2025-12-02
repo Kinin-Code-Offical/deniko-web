@@ -1,17 +1,42 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone", // <-- BU SATIR ÇOK ÖNEMLİ
+  output: "standalone",
 
   serverExternalPackages: ["pino", "pino-pretty"],
 
-  // Resim optimizasyonu için domainlere izin ver (Google User Content vb.)
   images: {
     remotePatterns: [
-      { hostname: "lh3.googleusercontent.com" }, // Google Login fotoları
-      { hostname: "storage.googleapis.com" },    // Senin Cloud Storage bucket'ın
+      { hostname: "lh3.googleusercontent.com" }, // Google Profil Fotoları
+      { hostname: "storage.googleapis.com" },    // Google Cloud Storage
     ],
+  },
+
+  // Güvenlik Başlıkları (Headers) Ekliyoruz
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self';",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline';", // Next.js scriptlerine izin ver
+              "style-src 'self' 'unsafe-inline';", // Tailwind CSS için
+              "img-src 'self' blob: data: https://lh3.googleusercontent.com https://storage.googleapis.com;", // Resim kaynakları
+              "font-src 'self';",
+              "object-src 'none';",
+              "base-uri 'self';",
+              "form-action 'self';",
+              "frame-ancestors 'none';",
+              "upgrade-insecure-requests;",
+            ].join(" "),
+          },
+        ],
+      },
+    ];
   },
 };
 
-export default nextConfig;
+export default nextConfig;  

@@ -58,12 +58,18 @@ export function LoginForm({ dictionary, lang }: LoginFormProps) {
     function onSubmit(values: z.infer<typeof formSchema>) {
         setUnverifiedEmail(null) // Reset state on new attempt
         startTransition(async () => {
-            const result = await login(values, lang)
-            if (result && !result.success) {
-                if (result.error === "NOT_VERIFIED" && result.email) {
-                    setUnverifiedEmail(result.email)
+            try {
+                const result = await login(values, lang)
+                if (result && !result.success) {
+                    if (result.error === "NOT_VERIFIED" && result.email) {
+                        setUnverifiedEmail(result.email)
+                    }
+                    toast.error(result.message)
                 }
-                toast.error(result.message)
+            } catch (error) {
+                // Verify if it's a redirect error (usually has a DIGEST property or just ignore)
+                // Since we redirect from server, this catch block might catch the redirect.
+                // We can simply ignore it as the browser will navigate away.
             }
         })
     }

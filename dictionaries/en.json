@@ -1,4 +1,10 @@
 {
+    "components": {
+        "phone_input": {
+            "search_country": "Search country...",
+            "no_country_found": "No country found."
+        }
+    },
     "join": {
         "title": "Accept Invitation",
         "desc": "{teacher} wants to add you as a student.",

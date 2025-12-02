@@ -212,6 +212,8 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                                             value={field.value}
                                             onChange={field.onChange}
                                             className="h-11"
+                                            searchPlaceholder={dictionary.components.phone_input.search_country}
+                                            noResultsMessage={dictionary.components.phone_input.no_country_found}
                                         />
                                     </FormControl>
                                     <FormMessage />

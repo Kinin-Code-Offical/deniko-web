@@ -33,15 +33,25 @@ export default async function StudentsPage({ params }: { params: Promise<{ lang:
         include: {
             student: {
                 include: {
-                    user: true
+                    user: true,
+                    classrooms: true
                 }
             }
         },
         orderBy: { createdAt: 'desc' }
     })
 
+    const classrooms = await db.classroom.findMany({
+        where: { teacherId: user.teacherProfile.id },
+        select: { id: true, name: true }
+    })
+
     const students = relations.map(rel => ({
         id: rel.student.id,
+        user: rel.student.user,
+        tempFirstName: rel.student.tempFirstName,
+        tempLastName: rel.student.tempLastName,
+        relation: { customName: rel.customName },
         name: rel.customName || (rel.student.isClaimed && rel.student.user?.name
             ? rel.student.user.name
             : `${rel.student.tempFirstName || ''} ${rel.student.tempLastName || ''}`.trim()),
@@ -50,7 +60,8 @@ export default async function StudentsPage({ params }: { params: Promise<{ lang:
         studentNo: rel.student.studentNo,
         inviteToken: rel.student.inviteToken,
         isClaimed: rel.student.isClaimed,
-        gradeLevel: rel.student.gradeLevel
+        gradeLevel: rel.student.gradeLevel,
+        classrooms: rel.student.classrooms
     }))
 
     return (
@@ -59,7 +70,7 @@ export default async function StudentsPage({ params }: { params: Promise<{ lang:
                 <h2 className="text-3xl font-bold tracking-tight">
                     {dictionary.dashboard.students.title}
                 </h2>
-                <AddStudentDialog dictionary={dictionary} />
+                <AddStudentDialog dictionary={dictionary} classrooms={classrooms} />
             </div>
 
             <Card>
