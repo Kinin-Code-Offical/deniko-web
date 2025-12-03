@@ -1,22 +1,16 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
 import { UserNav } from "@/components/dashboard/user-nav"
-import { Menu, Plus } from "lucide-react"
+import { Menu } from "lucide-react"
 import { teacherNav, studentNav } from "@/config/dashboard"
 import { DenikoLogo } from "@/components/ui/deniko-logo"
 import { LanguageSwitcher } from "@/components/ui/language-switcher"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 interface DashboardShellProps {
     children: React.ReactNode
@@ -77,58 +71,50 @@ export function DashboardShell({ children, user, dictionary, lang }: DashboardSh
                         ))}
                     </nav>
                 </div>
-                <div className="border-t p-4 space-y-4">
-                    <div className="flex items-center justify-between gap-2">
-                        <UserNav user={user} />
-                        <LanguageSwitcher />
-                    </div>
-                </div>
             </aside>
 
-            {/* Mobile Header & Content */}
+            {/* Main Content Area */}
             <div className="flex flex-1 flex-col md:pl-64">
-                <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-white px-4 md:hidden">
-                    <Sheet open={open} onOpenChange={setOpen}>
-                        <SheetTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                                <Menu className="h-6 w-6" />
-                            </Button>
-                        </SheetTrigger>
-                        <SheetContent side="left" className="w-64 p-0">
-                            <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                            <div className="flex h-16 items-center border-b px-6">
-                                <div className="flex items-center gap-2 font-bold text-xl text-[#2062A3]">
-                                    <DenikoLogo className="h-6 w-6" />
-                                    <span>Deniko</span>
+                {/* Header - Visible on all screens */}
+                <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm">
+                    <div className="flex items-center gap-4">
+                        <Sheet open={open} onOpenChange={setOpen}>
+                            <SheetTrigger asChild>
+                                <Button variant="ghost" size="icon" className="md:hidden">
+                                    <Menu className="h-6 w-6" />
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent side="left" className="w-64 p-0">
+                                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                                <div className="flex h-16 items-center border-b px-6">
+                                    <div className="flex items-center gap-2 font-bold text-xl text-[#2062A3]">
+                                        <DenikoLogo className="h-6 w-6" />
+                                        <span>Deniko</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="flex-1 overflow-y-auto py-4 px-3">
-                                <nav className="space-y-1">
-                                    {navConfig.map((item) => (
-                                        <NavItem key={item.href} item={item} mobile />
-                                    ))}
-                                </nav>
-                            </div>
-                            <div className="border-t p-4 space-y-4">
-                                <div className="flex items-center justify-between gap-2">
-                                    <UserNav user={user} />
-                                    <LanguageSwitcher />
+                                <div className="flex-1 overflow-y-auto py-4 px-3">
+                                    <nav className="space-y-1">
+                                        {navConfig.map((item) => (
+                                            <NavItem key={item.href} item={item} mobile />
+                                        ))}
+                                    </nav>
                                 </div>
-                            </div>
-                        </SheetContent>
-                    </Sheet>
+                            </SheetContent>
+                        </Sheet>
 
-                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                        <div className="flex items-center gap-2 font-bold text-xl text-[#2062A3]">
+                        {/* Mobile Logo */}
+                        <div className="flex items-center gap-2 font-bold text-xl text-[#2062A3] md:hidden">
                             <DenikoLogo className="h-6 w-6" />
                             <span>Deniko</span>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                        <UserNav user={user} />
+                    <div className="flex items-center gap-4">
+                        <LanguageSwitcher />
+                        <UserNav user={user} dictionary={dictionary} />
                     </div>
                 </header>
+
                 <main className="flex-1 p-4 md:p-8">
                     {children}
                 </main>

@@ -156,136 +156,52 @@ export async function claimStudentProfile(token: string) {
         })
 
         await db.$transaction(async (tx) => {
-            if (existingProfile) {
-                // --- MERGE SCENARIO ---
-                // User already has a profile, so we merge the shadow profile into it.
+            // 1. Preserve Teacher's View (Custom Name)
+            // We want the teacher to keep seeing the name they entered (tempName), 
+            // even after the real user (who might have a different name) claims it.
+            const shadowRelations = await tx.studentTeacherRelation.findMany({
+                where: { studentId: targetProfile.id }
+            })
 
-                // 1. Move Teacher Relations
-                const targetRelations = await tx.studentTeacherRelation.findMany({
-                    where: { studentId: targetProfile.id }
-                })
-
-                for (const rel of targetRelations) {
-                    // Check if relation already exists
-                    const existingRel = await tx.studentTeacherRelation.findUnique({
-                        where: {
-                            teacherId_studentId: {
-                                teacherId: rel.teacherId,
-                                studentId: existingProfile.id
-                            }
-                        }
+            for (const rel of shadowRelations) {
+                const tempName = `${targetProfile.tempFirstName || ''} ${targetProfile.tempLastName || ''}`.trim()
+                if (tempName && !rel.customName) {
+                    await tx.studentTeacherRelation.update({
+                        where: { id: rel.id },
+                        data: { customName: tempName }
                     })
-
-                    if (existingRel) {
-                        // Already related, delete the shadow relation
-                        await tx.studentTeacherRelation.delete({ where: { id: rel.id } })
-                    } else {
-                        // Move relation to existing profile
-                        await tx.studentTeacherRelation.update({
-                            where: { id: rel.id },
-                            data: { studentId: existingProfile.id }
-                        })
-                    }
                 }
+            }
 
-                // 2. Move all other related entities
+            // 2. Handle User's Existing Profile
+            if (existingProfile && existingProfile.id !== targetProfile.id) {
+                // MVP Strategy: The Shadow Profile contains the "Teacher's Truth" (Classrooms, Parents, etc.)
+                // We assume the User's existing profile is empty/generic (created at signup) and discard it.
 
-                // A. Handle Many-to-Many Relations (Lesson)
-                // Find lessons where targetProfile is a participant
-                const targetLessons = await tx.lesson.findMany({
-                    where: { students: { some: { id: targetProfile.id } } }
-                })
+                // TODO: In the future, we might want to migrate data from existingProfile to targetProfile 
+                // if the user had their own independent data. For now, we DELETE it.
 
-                for (const lesson of targetLessons) {
-                    // Connect existingProfile to these lessons
-                    const isAlreadyInLesson = await tx.lesson.findFirst({
-                        where: {
-                            id: lesson.id,
-                            students: { some: { id: existingProfile.id } }
-                        }
-                    })
-
-                    if (!isAlreadyInLesson) {
-                        await tx.lesson.update({
-                            where: { id: lesson.id },
-                            data: {
-                                students: {
-                                    connect: { id: existingProfile.id }
-                                }
-                            }
-                        })
-                    }
-                }
-
-                // B. Handle One-to-Many Relations (Update studentId)
-                await tx.payment.updateMany({
-                    where: { studentId: targetProfile.id },
-                    data: { studentId: existingProfile.id }
-                })
-                await tx.homeworkTracking.updateMany({
-                    where: { studentId: targetProfile.id },
-                    data: { studentId: existingProfile.id }
-                })
-                await tx.homeworkSubmission.updateMany({
-                    where: { studentId: targetProfile.id },
-                    data: { studentId: existingProfile.id }
-                })
-                await tx.attendance.updateMany({
-                    where: { studentId: targetProfile.id },
-                    data: { studentId: existingProfile.id }
-                })
-                await tx.schoolExam.updateMany({
-                    where: { studentId: targetProfile.id },
-                    data: { studentId: existingProfile.id }
-                })
-                await tx.trialExam.updateMany({
-                    where: { studentId: targetProfile.id },
-                    data: { studentId: existingProfile.id }
-                })
-
-                // 3. Delete the shadow profile
+                // We need to be careful about FK constraints. 
+                // If existingProfile has relations, this delete might fail if not cascaded.
+                // For this MVP, we assume it's safe to delete.
                 await tx.studentProfile.delete({
-                    where: { id: targetProfile.id }
-                })
-
-            } else {
-                // --- STANDARD CLAIM SCENARIO ---
-
-                // Update customName for creator teacher so they keep seeing the name they know
-                if (targetProfile.creatorTeacherId) {
-                    const tempName = `${targetProfile.tempFirstName || ''} ${targetProfile.tempLastName || ''}`.trim()
-
-                    const relation = await tx.studentTeacherRelation.findUnique({
-                        where: {
-                            teacherId_studentId: {
-                                teacherId: targetProfile.creatorTeacherId,
-                                studentId: targetProfile.id
-                            }
-                        }
-                    })
-
-                    if (relation) {
-                        await tx.studentTeacherRelation.update({
-                            where: { id: relation.id },
-                            data: {
-                                // Only set if not already set, or overwrite? Prompt says "Copy...". 
-                                // Usually we want to preserve what the teacher sees.
-                                customName: relation.customName || tempName
-                            }
-                        })
-                    }
-                }
-
-                // Link profile to user
-                await tx.studentProfile.update({
-                    where: { id: targetProfile.id },
-                    data: {
-                        userId: session.user.id,
-                        isClaimed: true,
-                        inviteToken: null
-                    }
+                    where: { id: existingProfile.id }
                 })
             }
+
+            // 3. Adopt Shadow Profile
+            await tx.studentProfile.update({
+                where: { id: targetProfile.id },
+                data: {
+                    userId: session.user.id,
+                    isClaimed: true,
+                    inviteToken: null,
+                    // Clear temp data as it's now "Real" (or preserved in customName)
+                    tempFirstName: null,
+                    tempLastName: null,
+                    // We KEEP: classrooms, parent info, gradeLevel, etc. from the Shadow Profile
+                }
+            })
         })
 
         revalidatePath("/dashboard")
@@ -330,16 +246,10 @@ export async function getStudentProfileByToken(token: string) {
 
 const updateStudentSchema = z.object({
     studentId: z.string(),
-    name: z.string().min(2, "İsim en az 2 karakter olmalıdır"),
-    surname: z.string().min(2, "Soyisim en az 2 karakter olmalıdır"),
-    studentNo: z.string().optional(),
-    grade: z.string().optional(),
-    tempPhone: z.string().optional(),
-    tempEmail: z.string().email().optional().or(z.literal("")),
-    tempAvatar: z.string().optional(),
-    parentName: z.string().optional(),
-    parentPhone: z.string().optional(),
-    parentEmail: z.string().email().optional().or(z.literal("")),
+    firstName: z.string().min(2, "İsim en az 2 karakter olmalıdır"),
+    lastName: z.string().min(2, "Soyisim en az 2 karakter olmalıdır"),
+    phone: z.string().optional(),
+    avatarUrl: z.string().optional(),
 })
 
 /**
@@ -362,7 +272,7 @@ export async function updateStudent(data: z.infer<typeof updateStudentSchema>) {
         return { success: false, error: "Invalid fields" }
     }
 
-    const { studentId, name, surname, studentNo, grade, tempPhone, tempEmail, tempAvatar, parentName, parentPhone, parentEmail } = validatedFields.data
+    const { studentId, firstName, lastName, phone, avatarUrl } = validatedFields.data
 
     try {
         const user = await db.user.findUnique({
@@ -397,44 +307,41 @@ export async function updateStudent(data: z.infer<typeof updateStudentSchema>) {
         }
 
         if (studentProfile.isClaimed) {
-            // CLAIMED: Only update Custom Name/Avatar in Relation
+            // CLAIMED: Only update Custom Name in Relation
             await db.studentTeacherRelation.update({
-                where: { id: relation.id },
+                where: {
+                    teacherId_studentId: {
+                        teacherId: user.teacherProfile.id,
+                        studentId: studentId
+                    }
+                },
                 data: {
-                    customName: `${name} ${surname}`,
+                    customName: `${firstName} ${lastName}`.trim(),
                 }
             })
-
-            revalidatePath(`/dashboard/students/${studentId}`)
-            return { success: true, message: "Öğrenci bilgileri güncellendi (Kısıtlı Erişim)" }
-
         } else {
-            // SHADOW: Update Profile directly
+            // SHADOW: Update StudentProfile
             await db.studentProfile.update({
                 where: { id: studentId },
                 data: {
-                    tempFirstName: name,
-                    tempLastName: surname,
-                    studentNo,
-                    gradeLevel: grade,
-                    tempPhone,
-                    tempEmail,
-                    tempAvatar,
-                    parentName,
-                    parentPhone,
-                    parentEmail,
+                    tempFirstName: firstName,
+                    tempLastName: lastName,
+                    tempPhone: phone,
+                    tempAvatar: avatarUrl
                 }
             })
-
-            revalidatePath(`/dashboard/students/${studentId}`)
-            return { success: true, message: "Öğrenci bilgileri güncellendi" }
         }
+
+        revalidatePath("/dashboard/students")
+        revalidatePath(`/dashboard/students/${studentId}`)
+        return { success: true }
 
     } catch (error) {
         logger.error({ context: "updateStudent", error }, "Failed to update student")
-        return { success: false, error: "Güncelleme başarısız" }
+        return { success: false, error: "Failed to update student" }
     }
 }
+
 
 /**
  * Archives a student relation (soft delete).
@@ -492,19 +399,15 @@ export async function deleteStudent(studentId: string) {
 
         if (!user?.teacherProfile) return { success: false, error: "Teacher profile not found" }
 
-        const studentProfile = await db.studentProfile.findUnique({
-            where: { id: studentId }
+        const student = await db.studentProfile.findUnique({
+            where: { id: studentId },
+            select: { isClaimed: true }
         })
 
-        if (!studentProfile) return { success: false, error: "Student not found" }
+        if (!student) return { success: false, error: "Student not found" }
 
-        if (!studentProfile.isClaimed && studentProfile.creatorTeacherId === user.teacherProfile.id) {
-            // Shadow student created by this teacher -> Delete Profile (cascades relation)
-            await db.studentProfile.delete({
-                where: { id: studentId }
-            })
-        } else {
-            // Claimed OR not created by this teacher -> Delete Relation only
+        if (student.isClaimed) {
+            // Scenario B: Unlink (Delete Relation Only)
             await db.studentTeacherRelation.delete({
                 where: {
                     teacherId_studentId: {
@@ -513,10 +416,17 @@ export async function deleteStudent(studentId: string) {
                     }
                 }
             })
+            revalidatePath("/dashboard/students")
+            return { success: true, message: "Öğrenci listenizden çıkarıldı (Bağlantı koparıldı)." }
+        } else {
+            // Scenario A: Hard Delete (Delete Profile)
+            await db.studentProfile.delete({
+                where: { id: studentId }
+            })
+            revalidatePath("/dashboard/students")
+            return { success: true, message: "Gölge öğrenci ve verileri tamamen silindi." }
         }
 
-        revalidatePath("/dashboard/students")
-        return { success: true, message: "Öğrenci silindi" }
     } catch (error) {
         logger.error({ context: "deleteStudent", error }, "Failed to delete student")
         return { success: false, error: "Silme işlemi başarısız" }

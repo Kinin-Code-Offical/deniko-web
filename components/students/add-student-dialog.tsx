@@ -158,7 +158,7 @@ export function AddStudentDialog({ dictionary, classrooms = [] }: { dictionary: 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <div className="flex flex-col gap-3">
-                            <FormLabel>Profil Fotoğrafı (Opsiyonel)</FormLabel>
+                            <FormLabel>{dictionary.dashboard.students.add_dialog.avatar}</FormLabel>
 
                             <div className="flex gap-2 overflow-x-auto pb-2">
                                 {DEFAULT_AVATARS.map((avatar) => (
@@ -212,7 +212,7 @@ export function AddStudentDialog({ dictionary, classrooms = [] }: { dictionary: 
                                             setSelectedAvatar(null)
                                         }}
                                     >
-                                        Temizle
+                                        {dictionary.dashboard.students.add_dialog.clear}
                                     </Button>
                                 )}
                             </div>
@@ -268,7 +268,7 @@ export function AddStudentDialog({ dictionary, classrooms = [] }: { dictionary: 
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="Seviye Seçin" />
+                                                    <SelectValue placeholder={dictionary.dashboard.students.add_dialog.select_grade} />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
@@ -308,7 +308,7 @@ export function AddStudentDialog({ dictionary, classrooms = [] }: { dictionary: 
                             name="tempEmail"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>E-posta (Opsiyonel)</FormLabel>
+                                    <FormLabel>{dictionary.dashboard.students.add_dialog.email}</FormLabel>
                                     <FormControl>
                                         <Input {...field} type="email" placeholder="ornek@email.com" />
                                     </FormControl>
@@ -321,7 +321,7 @@ export function AddStudentDialog({ dictionary, classrooms = [] }: { dictionary: 
                             name="classroomIds"
                             render={({ field }) => (
                                 <FormItem className="flex flex-col">
-                                    <FormLabel>Sınıflar (Opsiyonel)</FormLabel>
+                                    <FormLabel>{dictionary.dashboard.students.add_dialog.classrooms}</FormLabel>
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <FormControl>
@@ -342,7 +342,7 @@ export function AddStudentDialog({ dictionary, classrooms = [] }: { dictionary: 
                                                             ))}
                                                         </div>
                                                     ) : (
-                                                        "Sınıf Seçiniz"
+                                                        dictionary.dashboard.students.add_dialog.select_classrooms
                                                     )}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                 </Button>
@@ -350,9 +350,9 @@ export function AddStudentDialog({ dictionary, classrooms = [] }: { dictionary: 
                                         </PopoverTrigger>
                                         <PopoverContent className="w-[400px] p-0">
                                             <Command>
-                                                <CommandInput placeholder="Sınıf ara..." />
+                                                <CommandInput placeholder={dictionary.dashboard.students.add_dialog.search_classroom} />
                                                 <CommandList>
-                                                    <CommandEmpty>Sınıf bulunamadı.</CommandEmpty>
+                                                    <CommandEmpty>{dictionary.dashboard.students.add_dialog.no_classroom_found}</CommandEmpty>
                                                     <CommandGroup>
                                                         {classrooms.map((classroom) => (
                                                             <CommandItem

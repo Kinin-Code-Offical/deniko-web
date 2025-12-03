@@ -58,14 +58,17 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
         startTransition(async () => {
             const result = await updateStudent({
                 studentId: student.id,
-                ...formData
+                firstName: formData.name,
+                lastName: formData.surname,
+                phone: formData.phoneNumber,
+                avatarUrl: formData.avatarUrl
             })
 
             if (result.success) {
-                toast.success(result.message)
+                toast.success("Student updated successfully")
                 router.refresh()
             } else {
-                toast.error(result.error)
+                toast.error(result.error || "Failed to update")
             }
         })
     }

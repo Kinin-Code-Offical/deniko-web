@@ -1,4 +1,89 @@
 {
+    "dashboard": {
+        "nav": {
+            "dashboard": "Dashboard",
+            "students": "Students",
+            "schedule": "Schedule",
+            "finance": "Finance",
+            "settings": "Settings",
+            "lessons": "Lessons",
+            "homework": "Homework",
+            "exams": "Exams"
+        },
+        "header": {
+            "search_placeholder": "Search...",
+            "profile": "Profile",
+            "settings": "Settings",
+            "logout": "Log out"
+        },
+        "students": {
+            "title": "Students",
+            "add_student": "Add Student",
+            "search_placeholder": "Search by name...",
+            "no_results": "No students found.",
+            "columns": {
+                "name": "Student Name",
+                "no": "Number",
+                "class": "Class",
+                "status": "Status",
+                "actions": "Actions"
+            },
+            "actions": {
+                "edit": "Edit",
+                "archive": "Archive",
+                "delete": "Delete",
+                "copy_invite": "Copy Invite Link"
+            },
+            "status": {
+                "shadow": "Pending Invite",
+                "active": "Active"
+            },
+            "table": {
+                "name": "Student",
+                "status": "Status",
+                "student_no": "Student No",
+                "grade": "Grade",
+                "actions": "Actions"
+            },
+            "add_dialog": {
+                "title": "Add New Student",
+                "desc": "Enter student details. An invite link will be generated.",
+                "name": "Name",
+                "surname": "Surname",
+                "student_no": "Student No (Optional)",
+                "grade": "Grade Level",
+                "phone": "Phone (Optional)",
+                "email": "Email (Optional)",
+                "classrooms": "Classrooms",
+                "select_classrooms": "Select classrooms...",
+                "avatar": "Profile Photo",
+                "upload_photo": "Upload Photo",
+                "or_choose": "or choose avatar",
+                "cancel": "Cancel",
+                "save": "Save",
+                "clear": "Clear",
+                "search_classroom": "Search classroom...",
+                "no_classroom_found": "No classroom found.",
+                "select_grade": "Select Grade",
+                "success": "Student created successfully"
+            }
+        },
+        "student": {
+            "welcome": "Welcome back,",
+            "next_lesson": "Next Lesson"
+        },
+        "teacher": {
+            "welcome": "Welcome back,",
+            "active_students": "Active Students"
+        },
+        "common": {
+            "loading": "Loading...",
+            "save": "Save",
+            "cancel": "Cancel",
+            "delete_confirm": "Are you sure?",
+            "delete_desc": "This action cannot be undone."
+        }
+    },
     "common": {
         "back": "Back",
         "back_to_home": "Back to Home"
@@ -13,6 +98,7 @@
         "tabs": {
             "overview": "Overview",
             "lessons": "Lessons",
+            "homework": "Homework",
             "finance": "Finance",
             "settings": "Settings"
         },

@@ -1,4 +1,89 @@
 {
+    "dashboard": {
+        "nav": {
+            "dashboard": "Panel",
+            "students": "Öğrenciler",
+            "schedule": "Takvim",
+            "finance": "Finans",
+            "settings": "Ayarlar",
+            "lessons": "Dersler",
+            "homework": "Ödevler",
+            "exams": "Sınavlar"
+        },
+        "header": {
+            "search_placeholder": "Arama yap...",
+            "profile": "Profil",
+            "settings": "Ayarlar",
+            "logout": "Çıkış Yap"
+        },
+        "students": {
+            "title": "Öğrenciler",
+            "add_student": "Öğrenci Ekle",
+            "search_placeholder": "İsim ile ara...",
+            "no_results": "Öğrenci bulunamadı.",
+            "columns": {
+                "name": "Öğrenci Adı",
+                "no": "Numara",
+                "class": "Sınıf",
+                "status": "Durum",
+                "actions": "İşlemler"
+            },
+            "actions": {
+                "edit": "Düzenle",
+                "archive": "Arşivle",
+                "delete": "Sil",
+                "copy_invite": "Davet Linki"
+            },
+            "status": {
+                "shadow": "Davet Bekliyor",
+                "active": "Aktif"
+            },
+            "table": {
+                "name": "Öğrenci",
+                "status": "Durum",
+                "student_no": "Öğrenci No",
+                "grade": "Sınıf",
+                "actions": "İşlemler"
+            },
+            "add_dialog": {
+                "title": "Yeni Öğrenci Ekle",
+                "desc": "Öğrenci bilgilerini giriniz. Davet linki oluşturulacaktır.",
+                "name": "Ad",
+                "surname": "Soyad",
+                "student_no": "Öğrenci No (İsteğe bağlı)",
+                "grade": "Sınıf Seviyesi",
+                "phone": "Telefon (İsteğe bağlı)",
+                "email": "E-posta (İsteğe bağlı)",
+                "classrooms": "Sınıflar",
+                "select_classrooms": "Sınıf seçiniz...",
+                "avatar": "Profil Fotoğrafı",
+                "upload_photo": "Fotoğraf Yükle",
+                "or_choose": "veya avatar seç",
+                "cancel": "İptal",
+                "save": "Kaydet",
+                "clear": "Temizle",
+                "search_classroom": "Sınıf ara...",
+                "no_classroom_found": "Sınıf bulunamadı.",
+                "select_grade": "Seviye Seçin",
+                "success": "Öğrenci başarıyla oluşturuldu"
+            }
+        },
+        "student": {
+            "welcome": "Hoş geldin,",
+            "next_lesson": "Sonraki Ders"
+        },
+        "teacher": {
+            "welcome": "Hoş geldin,",
+            "active_students": "Aktif Öğrenciler"
+        },
+        "common": {
+            "loading": "Yükleniyor...",
+            "save": "Kaydet",
+            "cancel": "İptal",
+            "delete_confirm": "Emin misiniz?",
+            "delete_desc": "Bu işlem geri alınamaz."
+        }
+    },
     "common": {
         "back": "Geri",
         "back_to_home": "Ana Sayfaya Dön"
@@ -13,6 +98,7 @@
         "tabs": {
             "overview": "Genel",
             "lessons": "Dersler",
+            "homework": "Ödevler",
             "finance": "Finans",
             "settings": "Ayarlar"
         },

@@ -75,7 +75,7 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
                 <div className="relative flex-1 max-w-sm">
                     <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
-                        placeholder={dictionary.dashboard.students.search_placeholder || "Search students..."}
+                        placeholder={dictionary.dashboard.students.search_placeholder}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="pl-8"
@@ -87,19 +87,19 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>{dictionary.dashboard.students.table.name}</TableHead>
-                            <TableHead>Sınıflar</TableHead>
-                            <TableHead>{dictionary.dashboard.students.table.status}</TableHead>
-                            <TableHead>{dictionary.dashboard.students.table.student_no}</TableHead>
+                            <TableHead>{dictionary.dashboard.students.columns.name}</TableHead>
+                            <TableHead>{dictionary.dashboard.students.columns.class}</TableHead>
+                            <TableHead>{dictionary.dashboard.students.columns.status}</TableHead>
+                            <TableHead>{dictionary.dashboard.students.columns.no}</TableHead>
                             <TableHead>{dictionary.dashboard.students.table.grade}</TableHead>
-                            <TableHead className="text-right">{dictionary.dashboard.students.table.actions}</TableHead>
+                            <TableHead className="text-right">{dictionary.dashboard.students.columns.actions}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {filteredData.length === 0 ? (
                             <TableRow>
                                 <TableCell colSpan={6} className="h-24 text-center">
-                                    {dictionary.dashboard.students.no_results || "No students found."}
+                                    {dictionary.dashboard.students.no_results}
                                 </TableCell>
                             </TableRow>
                         ) : (
@@ -150,11 +150,11 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
                                     <TableCell>
                                         {student.isClaimed ? (
                                             <Badge variant="default" className="bg-green-600 hover:bg-green-700">
-                                                {lang === 'tr' ? 'Onaylı' : 'Verified'}
+                                                {dictionary.dashboard.students.status.verified}
                                             </Badge>
                                         ) : (
                                             <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200">
-                                                {lang === 'tr' ? 'Davet Bekliyor' : 'Pending Invite'}
+                                                {dictionary.dashboard.students.status.pending}
                                             </Badge>
                                         )}
                                     </TableCell>
@@ -168,16 +168,16 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
                                                     size="icon"
                                                     className="h-8 w-8"
                                                     onClick={() => copyInviteLink(student.inviteToken!)}
-                                                    title={lang === 'tr' ? 'Davet Linkini Kopyala' : 'Copy Invite Link'}
+                                                    title={dictionary.dashboard.students.actions.copy_invite}
                                                 >
                                                     <Copy className="h-4 w-4" />
-                                                    <span className="sr-only">Copy Invite Link</span>
+                                                    <span className="sr-only">{dictionary.dashboard.students.actions.copy_invite}</span>
                                                 </Button>
                                             )}
                                             <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
                                                 <Link href={`/${lang}/dashboard/students/${student.id}`}>
                                                     <Eye className="h-4 w-4" />
-                                                    <span className="sr-only">View Details</span>
+                                                    <span className="sr-only">{dictionary.dashboard.students.actions.view_details}</span>
                                                 </Link>
                                             </Button>
                                         </div>

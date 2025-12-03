@@ -83,7 +83,7 @@ export default async function StudentPage({ params }: StudentPageProps) {
                     <TabsList className="grid w-full grid-cols-4 lg:w-[400px]">
                         <TabsTrigger value="overview">{dictionary.student_detail.tabs.overview}</TabsTrigger>
                         <TabsTrigger value="lessons">{dictionary.student_detail.tabs.lessons}</TabsTrigger>
-                        <TabsTrigger value="finance">{dictionary.student_detail.tabs.finance}</TabsTrigger>
+                        <TabsTrigger value="homework">{dictionary.student_detail.tabs.homework || "Homework"}</TabsTrigger>
                         <TabsTrigger value="settings">{dictionary.student_detail.tabs.settings}</TabsTrigger>
                     </TabsList>
 
@@ -112,13 +112,13 @@ export default async function StudentPage({ params }: StudentPageProps) {
                         </Card>
                     </TabsContent>
 
-                    <TabsContent value="finance" className="mt-6">
+                    <TabsContent value="homework" className="mt-6">
                         <Card>
                             <CardHeader>
-                                <CardTitle>{dictionary.student_detail.finance.title}</CardTitle>
+                                <CardTitle>{dictionary.student_detail.tabs.homework || "Homework"}</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-sm text-muted-foreground">{dictionary.student_detail.finance.empty}</p>
+                                <p className="text-sm text-muted-foreground">No homework assigned yet.</p>
                             </CardContent>
                         </Card>
                     </TabsContent>

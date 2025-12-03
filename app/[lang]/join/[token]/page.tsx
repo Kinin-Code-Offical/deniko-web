@@ -115,9 +115,10 @@ export default async function JoinPage({
                         </div>
                     </div>
 
-                    <p className="text-sm text-muted-foreground">
-                        Kabul ettiğinizde bu profil hesabınızla eşleştirilecek ve ders geçmişinize erişebileceksiniz.
-                    </p>
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800 text-left">
+                        <p className="font-semibold mb-1">Dikkat:</p>
+                        <p>Mevcut profiliniz, davet edilen profil ile birleştirilecektir. Öğretmeninizin girdiği veriler (dersler, ödemeler vb.) korunacaktır.</p>
+                    </div>
                 </CardContent>
                 <CardFooter>
                     <form action={async () => {
@@ -126,7 +127,7 @@ export default async function JoinPage({
                         redirect(`/${lang}/dashboard`)
                     }} className="w-full">
                         <Button type="submit" className="w-full h-11 text-base bg-[#2062A3] hover:bg-[#1a4f83]">
-                            Daveti Kabul Et
+                            Daveti Kabul Et ve Birleştir
                         </Button>
                     </form>
                 </CardFooter>

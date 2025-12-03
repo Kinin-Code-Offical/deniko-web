@@ -23,9 +23,17 @@ interface UserNavProps {
         email?: string | null
         image?: string | null
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dictionary?: any
 }
 
-export function UserNav({ user }: UserNavProps) {
+export function UserNav({ user, dictionary }: UserNavProps) {
+    const t = dictionary?.dashboard?.header || {
+        profile: "Profile",
+        settings: "Settings",
+        logout: "Log out"
+    }
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -48,15 +56,15 @@ export function UserNav({ user }: UserNavProps) {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
-                        Profil
+                        {t.profile}
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        Ayarlar
+                        {t.settings}
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => signOutAction()}>
-                    Çıkış Yap
+                    {t.logout}
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
