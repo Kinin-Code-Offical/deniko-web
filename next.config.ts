@@ -3,16 +3,17 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
 
-  serverExternalPackages: ["pino", "pino-pretty"],
+  // 👇 BU SATIRI GÜNCELLEYİN
+  // bcryptjs ve @google-cloud/storage kütüphanelerini buraya ekliyoruz.
+  serverExternalPackages: ["pino", "pino-pretty", "bcryptjs", "@google-cloud/storage"],
 
   images: {
     remotePatterns: [
-      { hostname: "lh3.googleusercontent.com" }, // Google Profil Fotoları
-      { hostname: "storage.googleapis.com" },    // Google Cloud Storage
+      { hostname: "lh3.googleusercontent.com" },
+      { hostname: "storage.googleapis.com" },
     ],
   },
 
-  // Güvenlik Başlıkları (Headers) Ekliyoruz
   async headers() {
     return [
       {
@@ -39,4 +40,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;  
+export default nextConfig;
