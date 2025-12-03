@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
+import { Prisma } from "@prisma/client"
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
 import { randomBytes } from "crypto"
@@ -84,7 +85,7 @@ export async function createStudent(formData: FormData) {
     const inviteTokenExpires = new Date(Date.now() + 48 * 60 * 60 * 1000)
 
     try {
-        await db.$transaction(async (tx) => {
+        await db.$transaction(async (tx: Prisma.TransactionClient) => {
             // 1. Create the Student Profile (Shadow Account)
             const student = await tx.studentProfile.create({
                 data: {
@@ -170,7 +171,7 @@ export async function claimStudentProfile(token: string, preferences: MergePrefe
             where: { userId: session.user.id }
         })
 
-        await db.$transaction(async (tx) => {
+        await db.$transaction(async (tx: Prisma.TransactionClient) => {
             // 1. Preserve Teacher's View (Custom Name)
             // We want the teacher to keep seeing the name they entered (tempName), 
             // even after the real user (who might have a different name) claims it.
@@ -580,7 +581,7 @@ export async function updateStudentRelation(studentId: string, data: z.infer<typ
 
         if (!relation) return { success: false, error: "Relation not found" }
 
-        await db.$transaction(async (tx) => {
+        await db.$transaction(async (tx: Prisma.TransactionClient) => {
             // 2. Update Relation
             await tx.studentTeacherRelation.update({
                 where: { id: relation.id },
@@ -808,7 +809,7 @@ export async function updateStudentSettings(studentId: string, formData: FormDat
             newAvatarPath = avatarUrl
         }
 
-        await db.$transaction(async (tx) => {
+        await db.$transaction(async (tx: Prisma.TransactionClient) => {
             // Update Relation
             await tx.studentTeacherRelation.update({
                 where: { id: relation.id },

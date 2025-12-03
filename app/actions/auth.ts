@@ -4,6 +4,7 @@ import { signIn, signOut } from "@/auth"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
+import { Prisma } from "@prisma/client"
 import { z } from "zod"
 import * as bcrypt from "bcryptjs"
 import { randomBytes } from "crypto"
@@ -217,7 +218,7 @@ export async function registerUser(formData: z.infer<typeof _registerSchemaBase>
         const hashedPassword = await bcrypt.hash(password, 10)
 
         // 3. Create User & Profile
-        await db.$transaction(async (tx) => {
+        await db.$transaction(async (tx: Prisma.TransactionClient) => {
             const user = await tx.user.create({
                 data: {
                     email,

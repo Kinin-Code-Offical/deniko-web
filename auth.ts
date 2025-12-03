@@ -5,7 +5,6 @@ import Credentials from "next-auth/providers/credentials"
 import { db } from "@/lib/db"
 import * as bcrypt from "bcryptjs"
 import { z } from "zod"
-import { SignJWT } from "jose"
 import { Role } from "@prisma/client"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({

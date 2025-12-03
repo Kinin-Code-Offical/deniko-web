@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
+import { Prisma } from "@prisma/client"
 import { revalidatePath } from "next/cache"
 import bcrypt from "bcryptjs"
 import logger from "@/lib/logger"
@@ -73,7 +74,7 @@ export async function completeOnboarding(data: {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await db.$transaction(async (tx) => {
+        await db.$transaction(async (tx: Prisma.TransactionClient) => {
             // 1. Update User Role, Phone Number and Password
             await tx.user.update({
                 where: { id: userId },
