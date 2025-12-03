@@ -3,9 +3,14 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
 
-  // 👇 BU SATIRI GÜNCELLEYİN
-  // bcryptjs ve @google-cloud/storage kütüphanelerini buraya ekliyoruz.
-  serverExternalPackages: ["pino", "pino-pretty", "bcryptjs", "@google-cloud/storage"],
+  // 👇 BU KISIM KRİTİK: Hata veren kütüphaneleri buraya ekliyoruz
+  serverExternalPackages: [
+    "pino",
+    "pino-pretty",
+    "bcryptjs",
+    "@google-cloud/storage",
+    "nodemailer"
+  ],
 
   images: {
     remotePatterns: [

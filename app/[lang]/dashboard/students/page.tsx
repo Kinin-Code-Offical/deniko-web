@@ -46,7 +46,8 @@ export default async function StudentsPage({ params }: { params: Promise<{ lang:
         select: { id: true, name: true }
     })
 
-    const students = relations.map(rel => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const students = relations.map((rel: any) => ({
         id: rel.student.id,
         user: rel.student.user,
         tempFirstName: rel.student.tempFirstName,
