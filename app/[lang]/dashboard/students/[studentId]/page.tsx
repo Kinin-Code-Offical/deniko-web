@@ -75,7 +75,7 @@ export default async function StudentPage({ params }: StudentPageProps) {
                 </Button>
             </div>
 
-            <StudentHeader relation={relation} dictionary={dictionary} />
+            <StudentHeader relation={relation} dictionary={dictionary} lang={lang} />
 
             <Tabs defaultValue="overview" className="w-full">
                 <TabsList className="grid w-full grid-cols-4 lg:w-[400px]">
