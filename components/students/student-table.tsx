@@ -15,13 +15,15 @@ import { toast } from "sonner"
 import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 interface StudentData {
     id: string
     // Raw fields for name logic
-    user?: { name?: string | null } | null
+    user?: { name?: string | null, image?: string | null } | null
     tempFirstName?: string | null
     tempLastName?: string | null
+    tempAvatar?: string | null
     relation?: { customName?: string | null } | null
 
     // Fallback or pre-calculated
@@ -104,11 +106,28 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
                             filteredData.map((student) => (
                                 <TableRow key={student.id}>
                                     <TableCell>
-                                        <div className="flex flex-col">
-                                            <span className="font-medium">{getDisplayName(student)}</span>
-                                            {student.email && (
-                                                <span className="text-xs text-muted-foreground">{student.email}</span>
-                                            )}
+                                        <div className="flex items-center gap-3">
+                                            <Avatar className="h-9 w-9">
+                                                <AvatarImage
+                                                    src={
+                                                        student.isClaimed && student.user?.image
+                                                            ? student.user.image
+                                                            : student.tempAvatar
+                                                                ? `/api/files/${student.tempAvatar}`
+                                                                : undefined
+                                                    }
+                                                    alt={getDisplayName(student)}
+                                                />
+                                                <AvatarFallback>
+                                                    {getDisplayName(student).substring(0, 2).toUpperCase()}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex flex-col">
+                                                <span className="font-medium">{getDisplayName(student)}</span>
+                                                {student.email && (
+                                                    <span className="text-xs text-muted-foreground">{student.email}</span>
+                                                )}
+                                            </div>
                                         </div>
                                     </TableCell>
                                     <TableCell>

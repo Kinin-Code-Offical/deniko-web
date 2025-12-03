@@ -39,7 +39,8 @@ const PhoneInput = React.forwardRef<React.ElementRef<typeof RPNInput.default>, P
                 ref={ref}
                 defaultCountry="TR"
                 international={false}
-                className={cn("flex", className)}
+                smartCaret={false}
+                className={cn("flex items-center", className)}
                 flagComponent={FlagComponent}
                 countrySelectComponent={(props) => <CountrySelect {...props} searchPlaceholder={searchPlaceholder} noResultsMessage={noResultsMessage} />}
                 inputComponent={InputComponent}
@@ -63,8 +64,9 @@ PhoneInput.displayName = "PhoneInput"
 const InputComponent = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
     ({ className, ...props }, ref) => (
         <Input
-            className={cn("rounded-e-lg rounded-s-none", className)}
+            className={cn("rounded-e-lg rounded-s-none flex-shrink-1 ", className)}
             {...props}
+            maxLength={13}
             ref={ref}
         />
     )
@@ -103,7 +105,7 @@ const CountrySelect = ({
                 <Button
                     type="button"
                     variant={"outline"}
-                    className={cn("flex gap-1 rounded-e-none rounded-s-lg px-3")}
+                    className={cn("flex gap-1 rounded-e-none rounded-s-lg px-3  items-center")}
                     disabled={disabled}
                 >
                     <FlagComponent country={value} countryName={value} />
@@ -162,7 +164,7 @@ const FlagComponent = ({ country, countryName }: RPNInput.FlagProps) => {
     const Flag = flags[country]
 
     return (
-        <span className="flex h-6 w-8 overflow-hidden rounded-sm [&_svg]:h-full [&_svg]:w-full [&_svg]:object-cover">
+        <span className="h-5 w-5  overflow-hidden rounded-sm [&_svg]:!h-full [&_svg]:!w-full [&_svg]:block">
             {Flag && <Flag title={countryName} />}
         </span>
     )

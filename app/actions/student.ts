@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache"
 import { z } from "zod"
 import { randomBytes } from "crypto"
 import logger from "@/lib/logger"
+import { uploadFile } from "@/lib/storage"
 
 const createStudentSchema = z.object({
     name: z.string().min(2, "İsim en az 2 karakter olmalıdır"),
@@ -14,11 +15,10 @@ const createStudentSchema = z.object({
     grade: z.string().optional(),
     tempPhone: z.string().optional(),
     tempEmail: z.string().email("Geçerli bir e-posta adresi giriniz").optional().or(z.literal("")),
-    tempAvatar: z.string().optional(),
-    classroomId: z.string().optional(),
+    classroomIds: z.array(z.string()).optional().default([]),
 })
 
-export async function createStudent(data: z.infer<typeof createStudentSchema>) {
+export async function createStudent(formData: FormData) {
     const session = await auth()
 
     if (!session?.user?.id) {
@@ -36,14 +36,36 @@ export async function createStudent(data: z.infer<typeof createStudentSchema>) {
         return { success: false, error: "Teacher profile not found" }
     }
 
-    const validatedFields = createStudentSchema.safeParse(data)
+    const rawData = {
+        name: formData.get("name") as string,
+        surname: formData.get("surname") as string,
+        studentNo: formData.get("studentNo") as string || undefined,
+        grade: formData.get("grade") as string || undefined,
+        tempPhone: formData.get("tempPhone") as string || undefined,
+        tempEmail: formData.get("tempEmail") as string || undefined,
+        classroomIds: formData.getAll("classroomIds") as string[],
+    }
+
+    const validatedFields = createStudentSchema.safeParse(rawData)
 
     if (!validatedFields.success) {
         logger.warn({ context: "createStudent", errors: validatedFields.error }, "Invalid fields")
         return { success: false, error: "Invalid fields" }
     }
 
-    const { name, surname, studentNo, grade, tempPhone, tempEmail, tempAvatar, classroomId } = validatedFields.data
+    const { name, surname, studentNo, grade, tempPhone, tempEmail, classroomIds } = validatedFields.data
+
+    let avatarUrl: string | undefined
+
+    const file = formData.get("avatar") as File | null
+    if (file && file.size > 0) {
+        try {
+            avatarUrl = await uploadFile(file, "students")
+        } catch (error) {
+            logger.error({ context: "createStudent", error }, "Failed to upload avatar")
+            return { success: false, error: "Avatar yüklenirken bir hata oluştu" }
+        }
+    }
 
     // Generate a unique invite token
     const inviteToken = randomBytes(16).toString("hex")
@@ -59,13 +81,13 @@ export async function createStudent(data: z.infer<typeof createStudentSchema>) {
                     gradeLevel: grade,
                     tempPhone,
                     tempEmail,
-                    tempAvatar,
+                    tempAvatar: avatarUrl,
                     inviteToken,
                     creatorTeacherId: user.teacherProfile!.id,
                     isClaimed: false,
-                    classrooms: classroomId ? {
-                        connect: { id: classroomId }
-                    } : undefined,
+                    classrooms: {
+                        connect: classroomIds.map((id) => ({ id })),
+                    },
                 },
             })
 
