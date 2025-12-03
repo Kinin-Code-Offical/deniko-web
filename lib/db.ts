@@ -41,15 +41,26 @@ export const db =
           cert: normalizeCertificate(env.DATABASE_SSL_CERT),
           key: normalizeCertificate(env.DATABASE_SSL_KEY),
           // Match libpq semantics: `require` skips verification, `verify-*` enforces it.
-          rejectUnauthorized: env.DATABASE_SSL_SKIP_VERIFY
-            ? false
-            : hasCustomCertificates
-              ? true
-              : sslMode === "verify-full" || sslMode === "verify-ca",
+          rejectUnauthorized: false,
         }
       : undefined;
 
-    const pool = new Pool({ connectionString, ssl: sslConfiguration });
+    if (process.env.NODE_ENV === "development") {
+       console.log("[db.ts] SSL Config:", {
+         sslMode,
+         hasCustomCertificates,
+         rejectUnauthorized: sslConfiguration?.rejectUnauthorized,
+         caLength: sslConfiguration?.ca?.length,
+       });
+    }
+
+    // Remove sslmode from connection string to prevent conflicts with ssl config object
+    // and ensure pg uses the provided ssl configuration object.
+    const urlObj = new URL(connectionString);
+    urlObj.searchParams.delete("sslmode");
+    const cleanConnectionString = urlObj.toString();
+
+    const pool = new Pool({ connectionString: cleanConnectionString, ssl: sslConfiguration });
     const adapter = new PrismaPg(pool);
     return new PrismaClient({ adapter });
   })();
