@@ -5,6 +5,65 @@
             "no_country_found": "Ülke bulunamadı."
         }
     },
+    "student_detail": {
+        "tabs": {
+            "overview": "Genel",
+            "lessons": "Dersler",
+            "finance": "Finans",
+            "settings": "Ayarlar"
+        },
+        "overview": {
+            "total_lessons": "Toplam Ders"
+        },
+        "lessons": {
+            "title": "Ders Geçmişi",
+            "empty": "Ders listesi buraya gelecek..."
+        },
+        "finance": {
+            "title": "Ödemeler",
+            "empty": "Ödeme geçmişi buraya gelecek..."
+        },
+        "header": {
+            "verified": "Onaylı",
+            "pending": "Bekliyor",
+            "no_level": "Seviye Yok",
+            "no_number": "No Yok",
+            "invite_link": "Davet Linki",
+            "copy_link": "Linki Kopyala",
+            "link_copied": "Davet linki kopyalandı"
+        },
+        "settings": {
+            "title": "Öğrenci Ayarları",
+            "desc": "Öğrenci bilgilerini ve tercihlerini yönetin.",
+            "custom_name": "Görünen İsim",
+            "custom_name_desc": "Bu ismi sadece siz göreceksiniz.",
+            "phone": "Telefon Numarası",
+            "phone_desc": "Bildirimler için iletişim numarası.",
+            "phone_claimed_desc": "Bu öğrenci hesabını onayladığı için telefon numarasını sadece kendisi değiştirebilir.",
+            "notes": "Özel Notlar",
+            "notes_desc": "Sadece sizin görebileceğiniz notlar.",
+            "save": "Değişiklikleri Kaydet",
+            "saving": "Kaydediliyor...",
+            "success": "Ayarlar güncellendi",
+            "danger_zone": "Tehlikeli Bölge",
+            "archive": {
+                "title": "Öğrenciyi Arşivle",
+                "desc": "Bu öğrenciyi aktif listenizden kaldırın. Geçmiş veriler korunur.",
+                "button": "Öğrenciyi Arşivle",
+                "confirm_title": "Emin misiniz?",
+                "confirm_desc": "Bu işlem öğrenciyi arşivinize taşıyacaktır. Daha sonra geri yükleyebilirsiniz.",
+                "success": "Öğrenci arşivlendi"
+            },
+            "delete": {
+                "title": "Öğrenciyi Sil",
+                "desc": "Bu öğrenciyi ve tüm ilişkili verileri kalıcı olarak silin.",
+                "button": "Öğrenciyi Sil",
+                "confirm_title": "Kesinlikle emin misiniz?",
+                "confirm_desc": "Bu işlem geri alınamaz. Öğrenci profili ve verileriniz sunucularımızdan kalıcı olarak silinecektir.",
+                "success": "Öğrenci silindi"
+            }
+        }
+    },
     "join": {
         "title": "Davetiyeyi Kabul Et",
         "desc": "{teacher} sizi öğrencisi olarak eklemek istiyor.",

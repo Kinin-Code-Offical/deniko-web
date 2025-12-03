@@ -1,156 +1,122 @@
 import { auth } from "@/auth"
-import { getDictionary } from "@/lib/get-dictionary"
-import { Locale } from "@/i18n-config"
 import { db } from "@/lib/db"
+import { getDictionary } from "@/lib/get-dictionary"
 import { notFound, redirect } from "next/navigation"
+import { DashboardShell } from "@/components/dashboard/shell"
+import { StudentHeader } from "@/components/students/student-header"
+import { StudentSettingsTab } from "@/components/students/settings-tab"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { StudentDetailHeader } from "@/components/students/student-detail-header"
-import { StudentLessonsTab } from "@/components/students/student-lessons-tab"
-import { StudentFinanceTab } from "@/components/students/student-finance-tab"
-import { StudentHomeworkTab } from "@/components/students/student-homework-tab"
-import { StudentEditForm } from "@/components/students/student-edit-form"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-export default async function StudentDetailPage({
-    params,
-}: {
-    params: Promise<{ lang: Locale; studentId: string }>
-}) {
+interface StudentPageProps {
+    params: Promise<{
+        lang: string
+        studentId: string
+    }>
+}
+
+export default async function StudentPage({ params }: StudentPageProps) {
     const { lang, studentId } = await params
     const session = await auth()
-    if (!session?.user?.id) redirect(`/${lang}/login`)
+    const dictionary = await getDictionary(lang as "en" | "tr")
 
-    const dictionary = await getDictionary(lang)
+    if (!session?.user?.id) {
+        redirect(`/${lang}/login`)
+    }
 
-    // 1. Fetch Teacher Profile
     const user = await db.user.findUnique({
         where: { id: session.user.id },
         include: { teacherProfile: true },
     })
 
-    if (!user?.teacherProfile) redirect(`/${lang}/dashboard`)
+    if (!user?.teacherProfile) {
+        redirect(`/${lang}/onboarding`)
+    }
 
-    // 2. Fetch Student Data with Security Check
-    // Ensure the student is related to this teacher
-    const student = await db.studentProfile.findFirst({
+    // Fetch Student Relation
+    const relation = await db.studentTeacherRelation.findUnique({
         where: {
-            id: studentId,
-            teacherRelations: {
-                some: {
-                    teacherId: user.teacherProfile.id
-                }
-            }
+            teacherId_studentId: {
+                teacherId: user.teacherProfile.id,
+                studentId: studentId,
+            },
         },
         include: {
-            user: true,
-            teacherRelations: {
-                where: { teacherId: user.teacherProfile.id }
-            },
-            lessons: {
-                where: { teacherId: user.teacherProfile.id },
-                orderBy: { startTime: 'desc' }
-            },
-            payments: {
-                where: { teacherId: user.teacherProfile.id },
-                orderBy: { date: 'desc' }
-            },
-            homeworkTrackings: {
+            student: {
                 include: {
-                    homework: {
-                        include: { lesson: true }
-                    }
+                    user: true,
+                    lessons: {
+                        orderBy: { startTime: 'desc' },
+                        take: 5,
+                    },
+                    payments: {
+                        orderBy: { date: 'desc' },
+                        take: 5,
+                    },
                 },
-                orderBy: { homework: { dueDate: 'desc' } }
-            }
-        }
+            },
+        },
     })
 
-    if (!student) {
+    if (!relation || relation.status === "ARCHIVED") {
         notFound()
     }
 
-    // 3. Calculate Financials
-    // Total Lesson Fees (where price is set and not paid? Or just total value?)
-    // Usually Balance = (Total Lesson Prices) - (Total Payments Received)
-
-    // Calculate total lesson value
-    const totalLessonValue = student.lessons.reduce((acc, lesson) => {
-        return acc + (lesson.price ? Number(lesson.price) : 0)
-    }, 0)
-
-    // Calculate total payments received
-    const totalPayments = student.payments.reduce((acc, payment) => {
-        return acc + Number(payment.amount)
-    }, 0)
-
-    const balance = totalPayments - totalLessonValue // Positive means student overpaid (credit), Negative means student owes money
-
-    // Combine transactions for the Finance Tab
-    // We need to merge Lessons (as debt) and Payments (as credit) into a single timeline
-    const transactions = [
-        ...student.lessons.map(l => ({
-            id: l.id,
-            date: l.startTime,
-            type: "LESSON_FEE",
-            description: l.title,
-            amount: l.price ? Number(l.price) : 0
-        })),
-        ...student.payments.map(p => ({
-            id: p.id,
-            date: p.date,
-            type: "PAYMENT",
-            description: p.note || "Payment",
-            amount: Number(p.amount)
-        }))
-    ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-
     return (
-        <div className="flex-1 space-y-4 p-8 pt-6">
-            <StudentDetailHeader
-                student={student}
-                dictionary={dictionary}
-                totalLessons={student.lessons.length}
-                balance={balance}
-            />
+        <DashboardShell user={session.user} dictionary={dictionary} lang={lang}>
+            <div className="flex flex-col gap-6">
+                <StudentHeader relation={relation} dictionary={dictionary} />
 
-            <Tabs defaultValue="lessons" className="space-y-4">
-                <TabsList>
-                    <TabsTrigger value="lessons">{dictionary.dashboard.student_detail.tabs.lessons}</TabsTrigger>
-                    <TabsTrigger value="homework">{dictionary.dashboard.student_detail.tabs.homework}</TabsTrigger>
-                    <TabsTrigger value="finance">{dictionary.dashboard.student_detail.tabs.finance}</TabsTrigger>
-                    <TabsTrigger value="profile">{dictionary.dashboard.student_detail.tabs.profile}</TabsTrigger>
-                </TabsList>
+                <Tabs defaultValue="overview" className="w-full">
+                    <TabsList className="grid w-full grid-cols-4 lg:w-[400px]">
+                        <TabsTrigger value="overview">{dictionary.student_detail.tabs.overview}</TabsTrigger>
+                        <TabsTrigger value="lessons">{dictionary.student_detail.tabs.lessons}</TabsTrigger>
+                        <TabsTrigger value="finance">{dictionary.student_detail.tabs.finance}</TabsTrigger>
+                        <TabsTrigger value="settings">{dictionary.student_detail.tabs.settings}</TabsTrigger>
+                    </TabsList>
 
-                <TabsContent value="lessons" className="space-y-4">
-                    <StudentLessonsTab
-                        lessons={student.lessons}
-                        dictionary={dictionary}
-                        lang={lang}
-                    />
-                </TabsContent>
+                    <TabsContent value="overview" className="mt-6">
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                            <Card>
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">{dictionary.student_detail.overview.total_lessons}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">{relation.student.lessons.length}</div>
+                                </CardContent>
+                            </Card>
+                            {/* Add more stats here */}
+                        </div>
+                    </TabsContent>
 
-                <TabsContent value="homework" className="space-y-4">
-                    <StudentHomeworkTab
-                        homeworks={student.homeworkTrackings}
-                        dictionary={dictionary}
-                        lang={lang}
-                    />
-                </TabsContent>
+                    <TabsContent value="lessons" className="mt-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>{dictionary.student_detail.lessons.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-sm text-muted-foreground">{dictionary.student_detail.lessons.empty}</p>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
 
-                <TabsContent value="finance" className="space-y-4">
-                    <StudentFinanceTab
-                        transactions={transactions}
-                        dictionary={dictionary}
-                        lang={lang}
-                    />
-                </TabsContent>
+                    <TabsContent value="finance" className="mt-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>{dictionary.student_detail.finance.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-sm text-muted-foreground">{dictionary.student_detail.finance.empty}</p>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
 
-                <TabsContent value="profile" className="space-y-4">
-                    <StudentEditForm
-                        student={student}
-                        dictionary={dictionary}
-                    />
-                </TabsContent>
-            </Tabs>
-        </div>
+                    <TabsContent value="settings" className="mt-6">
+                        <StudentSettingsTab relation={relation} studentId={studentId} dictionary={dictionary} />
+                    </TabsContent>
+                </Tabs>
+            </div>
+        </DashboardShell>
     )
 }
+

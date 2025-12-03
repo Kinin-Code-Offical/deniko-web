@@ -1,91 +1,82 @@
-# 🧠 Deniko - Master System Instructions & Rules (Phase 2)
+# 🧠 Deniko - Master System Instructions & Rules (Final Production Phase)
 
-## 1. Project Context & Identity
-**Deniko** is a professional SaaS platform for hybrid tutors (freelance & institution-based). It manages academic processes, finances, and communication.
-- **Current Phase:** Core Feature Development (Dashboard & Student Management).
-- **Design Philosophy:** "Sophisticated Simplicity." High-end, trustworthy, and clean.
-- **Brand Assets:** Primary Logo is `/public/logo.svg` (The Blue 'D' with Graduation Cap). Primary Color: **Deep Blue** (Blue-600).
+## 1. Project Identity & Mission
+**Deniko** is a high-end, professional SaaS platform for hybrid tutors.
+- **Goal:** To provide a "Sophisticated Simplicity" experience. It should feel like a premium tool (e.g., Linear, Raycast), not a generic admin panel.
+- **Design Language:** Clean, spacious, mobile-first. Use subtle gradients, soft shadows, and meaningful transitions.
+- **Brand Assets:**
+  - **Primary:** Deep Blue (`#2062A3`).
+  - **Logo:** `<DenikoLogo />` (SVG).
 
 ## 2. Tech Stack (Strict Versions)
-- **Framework:** Next.js 15 (App Router) with **i18n routing** (`app/[lang]/...`).
-- **Language:** TypeScript (Strict mode).
-- **Database:** PostgreSQL (Google Cloud SQL) via **Prisma ORM v6** (`lib/db.ts` singleton).
-- **Auth:** NextAuth.js (Auth.js) v5 Beta (Prisma Adapter).
+- **Framework:** Next.js 15+ (App Router) with **i18n** (`app/[lang]/...`).
+- **Database:** PostgreSQL via **Prisma ORM v6** (`lib/db.ts` singleton).
+- **Auth:** NextAuth.js v5 Beta (Prisma Adapter).
 - **UI:** Tailwind CSS v4 + **Shadcn/UI**.
-- **Infrastructure:** Google Cloud Run (Docker Standalone).
+- **Storage:** Google Cloud Storage (Private Bucket) via API Proxy.
+- **Logging:** Pino (JSON in Prod, Pretty in Dev).
 
-## 3. Critical Architecture & Workflows
+## 3. "Innovation & Polish" Guidelines (Active Initiatives)
+*The AI is expected to proactively improve UX/UI:*
+1.  **Micro-Interactions:** Add `hover:scale-[1.02]`, `active:scale-95`, and `transition-all` to clickable cards and buttons.
+2.  **Empty States:** Never show a blank table. Create beautiful "Empty State" components with an icon, a text explanation, and a "Create New" button (e.g., "Henüz dersiniz yok. İlk dersinizi planlayın.").
+3.  **Loading Skeletons:** Use `Skeleton` components that match the layout structure while data is fetching. Avoid layout shifts.
+4.  **Mobile UX:** On mobile, ensure touch targets are large (`h-12`). Use `Drawer/Sheet` for complex forms instead of full-screen modals if possible.
 
-### A. Internationalization (i18n) - **MANDATORY**
-- **Structure:** All pages MUST reside under `app/[lang]/...`. Never create a page outside this dynamic route.
-- **Dictionaries:** Use `getDictionary(lang)` from `lib/get-dictionary.ts` for all static text.
-- **Client Components:** Pass dictionary data as props to Client Components.
+## 4. Critical Architecture & Workflows
 
-### B. Authentication & Onboarding (Fixed Logic)
-- **Middleware:** Protected routes redirect unauthenticated users to `/[lang]/login`.
-- **Account Linking:** `allowDangerousEmailAccountLinking: true` is ENABLED in `auth.ts` to merge Google/Manual accounts.
-- **Onboarding Flow:**
-  1. User Register/Login (Google or Manual).
-  2. Middleware checks `isOnboardingCompleted` (or role).
-  3. If incomplete -> Force redirect to `/[lang]/onboarding`.
-  4. **Onboarding Page:** Collects Role, Phone, and Password (if missing).
-  5. **Completion:** Server Action updates DB -> Client calls `update()` session -> Redirects to `/dashboard`.
-  
-### C. Mobile-First UI Standards (CRITICAL)
-1.  **Layout Strategy:**
-    - **Auth Pages:** On mobile, stack elements vertically (`flex-col`). On desktop, use side-by-side (`md:flex-row`).
-    - **Dashboard:**
-      - **Desktop:** Fixed Sidebar (Left).
-      - **Mobile:** Top Header with a Hamburger Menu that opens a **Shadcn Sheet** (Drawer).
-2.  **Tables & Data:**
-    - All tables MUST have a wrapper with `overflow-x-auto` to prevent breaking layout on small screens.
-    - Consider using "Card View" for data lists on mobile instead of complex tables.
-3.  **Touch Targets:** Buttons and inputs must be easily tappable (min height 44px on mobile).
-4.  **Navigation:** Use `<Sheet>` component for mobile navigation menus.
+### A. Authentication & Onboarding (No-Loop Logic)
+- **Account Linking:** `allowDangerousEmailAccountLinking: true` is ENABLED.
+- **Resend Cooldown:** Client uses cookie; Server (`login` action) **DELETES** cookie on success.
+- **Onboarding Gate:**
+  - Check `user.isOnboardingCompleted`. If false -> Redirect `/onboarding`.
+  - **Action:** Updates DB (Role/Phone/Pass) -> Sets `isOnboardingCompleted: true` -> Client calls `update()` -> Hard Redirect (`window.location.href`) to Dashboard.
 
-### D. Dashboard Architecture (The Next Step)
-- **Route:** `/[lang]/dashboard` is the main entry.
-- **Role Separation:**
-  - **Teacher:** Sees "Students", "Schedule", "Finance".
-  - **Student:** Sees "My Lessons", "Homework", "Exams".
-- **Layout:** Use `components/dashboard/shell.tsx` (Sidebar + Header).
+### B. Student Management (Shadow & Claim Logic)
+- **Shadow Account:** Teacher creates a profile (`userId: null`).
+  - *Data:* `tempFirstName`, `phoneNumber` (saved to Profile).
+  - *Avatar:* Uploaded to secure GCS bucket, path saved to DB.
+- **Claiming (The Merge):** Student clicks `/join/[token]`.
+  - *Logic:* `claimStudentProfile` action updates `userId` to real user, sets `isClaimed: true`.
+  - *Preservation:* Copies Shadow Name to `StudentTeacherRelation.customName` so the teacher sees the name they know.
+- **Permissions:**
+  - Teacher CAN update: `customName`, `privateNotes`, and Shadow Profile data.
+  - Teacher CANNOT update: Real User's `email`, `password`.
 
-## 4. Coding Standards
+### C. Secure File Storage
+- **Bucket:** Private (No public access).
+- **Upload:** Server Action streams file to GCS, saves **path** (not URL) to DB.
+- **Serving:** `<Avatar src="/api/files/..." />` calls a Proxy Route that checks `auth()` session before streaming the file from GCS.
 
-### Server Actions & Mutations
-- **Pattern:** Use Server Actions for ALL data mutations (Create/Update/Delete).
-- **Validation:** MUST use **Zod** schemas for input validation inside the action.
-- **Auth Check:** Always call `const session = await auth()` inside actions. If null, throw "Unauthorized".
-- **Error Handling:** Return `{ error: string }` or `{ success: true, data: ... }`. Do not just throw errors if UI needs to handle them gracefully.
+### D. Dashboard Logic
+- **Teacher View:**
+  - **Hides Financials:** Income/Wallet data is strictly for the "Finance" page.
+  - **Focus:** Active Students, Schedule, Homework Review.
+- **Student View:** Next Lesson, Homework To-Do.
 
-### UI/UX Guidelines
-- **Components:** Reuse `components/ui/*`. Do not reinvent primitives.
-- **Branding:** Use `<DenikoLogo />` component for branding.
-- **Responsive:** All tables and layouts must work on mobile (use `Sheet` for menus).
-- **Back Button:** Auth pages must have a "Go Back" button.
+## 5. Internationalization (i18n) Standards
+- **Route:** ALL pages must be in `app/[lang]/`.
+- **Dictionary:** Use `getDictionary(lang)` for ALL text.
+  - *Bad:* `<h1>Welcome</h1>`
+  - *Good:* `<h1>{dictionary.dashboard.welcome}</h1>`
+- **Persistence:** `proxy.ts` (middleware) reads/writes `NEXT_LOCALE` cookie.
 
-## 5. Directory Structure Reference
+## 6. Directory Structure Reference
 ```text
 app/
   [lang]/
     (auth)/       -> login, register, verify, onboarding
     dashboard/    -> Protected routes
-      page.tsx    -> Role dispatcher (TeacherView vs StudentView)
-      students/   -> Student management module
-      finance/    -> Finance module
-    layout.tsx    -> Root layout with Providers
+      page.tsx    -> Role dispatcher
+      students/   -> List & Create (Shadow)
+      files/      -> Secure Proxy Route (API)
+    join/         -> Invite acceptance page
 components/
-  ui/             -> Shadcn primitives (button, card, etc.)
-  auth/           -> Auth forms (LoginForm, RegisterForm, ResendAlert)
-  dashboard/      -> Shell, Nav, UserNav
-  students/       -> AddStudentDialog, StudentTable
+  ui/             -> Shadcn primitives
+  auth/           -> Auth forms
+  dashboard/      -> Shell, Nav, TeacherView, StudentView
+  students/       -> AddStudentDialog, StudentTable, StudentHeader
 lib/
-  db.ts           -> Prisma singleton (DO NOT import PrismaClient directly)
-  auth.ts         -> NextAuth config
-  email.ts        -> Nodemailer utility
-```
-
-## 6. Docker & Deployment Safety
-- **Output:** `next.config.ts` has `output: "standalone"`. Do not break this.
-- **Env Vars:** Use `process.env`. Do not hardcode secrets.
-- **Images:** External images (Google user content) are allowed in config.
+  db.ts           -> Prisma Singleton
+  storage.ts      -> GCS Utility (Private)
+  logger.ts       -> Structured Logger

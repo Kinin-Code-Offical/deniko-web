@@ -488,3 +488,109 @@ export async function deleteStudent(studentId: string) {
         return { success: false, error: "Silme işlemi başarısız" }
     }
 }
+
+const updateStudentRelationSchema = z.object({
+    customName: z.string().optional(),
+    privateNotes: z.string().optional(),
+    phoneNumber: z.string().optional(),
+})
+
+export async function updateStudentRelation(studentId: string, data: z.infer<typeof updateStudentRelationSchema>) {
+    const session = await auth()
+    if (!session?.user?.id) return { success: false, error: "Unauthorized" }
+
+    const user = await db.user.findUnique({
+        where: { id: session.user.id },
+        include: { teacherProfile: true },
+    })
+
+    if (!user?.teacherProfile) return { success: false, error: "Teacher profile not found" }
+
+    try {
+        // 1. Check if relation exists
+        const relation = await db.studentTeacherRelation.findUnique({
+            where: {
+                teacherId_studentId: {
+                    teacherId: user.teacherProfile.id,
+                    studentId: studentId,
+                },
+            },
+            include: { student: true },
+        })
+
+        if (!relation) return { success: false, error: "Relation not found" }
+
+        await db.$transaction(async (tx) => {
+            // 2. Update Relation
+            await tx.studentTeacherRelation.update({
+                where: { id: relation.id },
+                data: {
+                    customName: data.customName,
+                    privateNotes: data.privateNotes,
+                },
+            })
+
+            // 3. If Shadow & Phone provided, update Profile
+            if (!relation.student.isClaimed && data.phoneNumber !== undefined) {
+                await tx.studentProfile.update({
+                    where: { id: studentId },
+                    data: { tempPhone: data.phoneNumber },
+                })
+            }
+        })
+
+        revalidatePath("/dashboard/students")
+        revalidatePath(`/dashboard/students/${studentId}`)
+        return { success: true }
+    } catch (error) {
+        logger.error({ context: "updateStudentRelation", error }, "Failed to update student")
+        return { success: false, error: "Failed to update student" }
+    }
+}
+
+
+
+export async function deleteShadowStudent(studentId: string) {
+    const session = await auth()
+    if (!session?.user?.id) return { success: false, error: "Unauthorized" }
+
+    const user = await db.user.findUnique({
+        where: { id: session.user.id },
+        include: { teacherProfile: true },
+    })
+
+    if (!user?.teacherProfile) return { success: false, error: "Teacher profile not found" }
+
+    try {
+        const student = await db.studentProfile.findUnique({
+            where: { id: studentId },
+        })
+
+        if (!student) return { success: false, error: "Student not found" }
+        if (student.isClaimed) return { success: false, error: "Cannot delete claimed student" }
+
+        // Verify ownership/creator if needed, or just allow if relation exists
+        // For now, we check if the teacher has a relation
+        const relation = await db.studentTeacherRelation.findUnique({
+            where: {
+                teacherId_studentId: {
+                    teacherId: user.teacherProfile.id,
+                    studentId: studentId,
+                },
+            },
+        })
+
+        if (!relation) return { success: false, error: "Relation not found" }
+
+        // Delete Profile (Cascades to Relation)
+        await db.studentProfile.delete({
+            where: { id: studentId },
+        })
+
+        revalidatePath("/dashboard/students")
+        return { success: true }
+    } catch (error) {
+        logger.error({ context: "deleteShadowStudent", error }, "Failed to delete student")
+        return { success: false, error: "Failed to delete student" }
+    }
+}

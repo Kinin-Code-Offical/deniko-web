@@ -5,6 +5,65 @@
             "no_country_found": "No country found."
         }
     },
+    "student_detail": {
+        "tabs": {
+            "overview": "Overview",
+            "lessons": "Lessons",
+            "finance": "Finance",
+            "settings": "Settings"
+        },
+        "overview": {
+            "total_lessons": "Total Lessons"
+        },
+        "lessons": {
+            "title": "Lesson History",
+            "empty": "Lesson list will be here..."
+        },
+        "finance": {
+            "title": "Payments",
+            "empty": "Payment history will be here..."
+        },
+        "header": {
+            "verified": "Verified",
+            "pending": "Pending",
+            "no_level": "No Level",
+            "no_number": "No Number",
+            "invite_link": "Invite Link",
+            "copy_link": "Copy Link",
+            "link_copied": "Invite link copied"
+        },
+        "settings": {
+            "title": "Student Settings",
+            "desc": "Manage student information and preferences.",
+            "custom_name": "Display Name",
+            "custom_name_desc": "Only you will see this name.",
+            "phone": "Phone Number",
+            "phone_desc": "Contact number for notifications.",
+            "phone_claimed_desc": "Since this student has verified their account, only they can change their phone number.",
+            "notes": "Private Notes",
+            "notes_desc": "Notes only visible to you.",
+            "save": "Save Changes",
+            "saving": "Saving...",
+            "success": "Settings updated",
+            "danger_zone": "Danger Zone",
+            "archive": {
+                "title": "Archive Student",
+                "desc": "Remove this student from your active list. History is preserved.",
+                "button": "Archive Student",
+                "confirm_title": "Are you sure?",
+                "confirm_desc": "This action will move the student to your archive. You can restore them later.",
+                "success": "Student archived"
+            },
+            "delete": {
+                "title": "Delete Student",
+                "desc": "Permanently delete this student and all associated data.",
+                "button": "Delete Student",
+                "confirm_title": "Are you absolutely sure?",
+                "confirm_desc": "This action cannot be undone. This will permanently delete the student profile and remove your data from our servers.",
+                "success": "Student deleted"
+            }
+        }
+    },
     "join": {
         "title": "Accept Invitation",
         "desc": "{teacher} wants to add you as a student.",
