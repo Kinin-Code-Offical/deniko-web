@@ -18,6 +18,13 @@ const createStudentSchema = z.object({
     classroomIds: z.array(z.string()).optional().default([]),
 })
 
+/**
+ * Creates a new "Shadow Student" profile.
+ * This profile is not yet linked to a real user account.
+ * 
+ * @param formData - The form data containing student details and optional avatar.
+ * @returns An object indicating success or failure.
+ */
 export async function createStudent(formData: FormData) {
     const session = await auth()
 
@@ -116,6 +123,13 @@ export async function createStudent(formData: FormData) {
     }
 }
 
+/**
+ * Claims a student profile using an invitation token.
+ * Merges the shadow profile with the authenticated user's profile if needed.
+ * 
+ * @param token - The invitation token.
+ * @returns An object indicating success or failure.
+ */
 export async function claimStudentProfile(token: string) {
     const session = await auth()
 
@@ -184,11 +198,6 @@ export async function claimStudentProfile(token: string) {
 
                 for (const lesson of targetLessons) {
                     // Connect existingProfile to these lessons
-                    // We use 'connect' which is safe even if already connected (in some Prisma versions, but better check or just try)
-                    // Actually, if already connected, connect might throw or do nothing.
-                    // To be safe, we can check or just ignore error? 
-                    // Better: check if existingProfile is already in the lesson.
-
                     const isAlreadyInLesson = await tx.lesson.findFirst({
                         where: {
                             id: lesson.id,
@@ -233,10 +242,6 @@ export async function claimStudentProfile(token: string) {
                     where: { studentId: targetProfile.id },
                     data: { studentId: existingProfile.id }
                 })
-
-                // C. Handle Classroom (Many-to-Many)
-                // Note: Complex merge for M-N classrooms is skipped for now or handled elsewhere.
-                // Since classroomId column is removed, we remove the old logic.
 
                 // 3. Delete the shadow profile
                 await tx.studentProfile.delete({
@@ -292,6 +297,12 @@ export async function claimStudentProfile(token: string) {
     }
 }
 
+/**
+ * Retrieves a student profile by its invitation token.
+ * 
+ * @param token - The invitation token.
+ * @returns The student profile or null.
+ */
 export async function getStudentProfileByToken(token: string) {
     try {
         const studentProfile = await db.studentProfile.findUnique({
@@ -331,6 +342,13 @@ const updateStudentSchema = z.object({
     parentEmail: z.string().email().optional().or(z.literal("")),
 })
 
+/**
+ * Updates a student's information.
+ * Handles both Shadow and Claimed profiles differently.
+ * 
+ * @param data - The update data.
+ * @returns An object indicating success or failure.
+ */
 export async function updateStudent(data: z.infer<typeof updateStudentSchema>) {
     const session = await auth()
 
@@ -418,6 +436,12 @@ export async function updateStudent(data: z.infer<typeof updateStudentSchema>) {
     }
 }
 
+/**
+ * Archives a student relation (soft delete).
+ * 
+ * @param studentId - The ID of the student to unlink.
+ * @returns An object indicating success or failure.
+ */
 export async function unlinkStudent(studentId: string) {
     const session = await auth()
     if (!session?.user?.id) return { success: false, error: "Unauthorized" }
@@ -448,6 +472,14 @@ export async function unlinkStudent(studentId: string) {
     }
 }
 
+/**
+ * Deletes a student or relation.
+ * If the student is a shadow student created by the teacher, the profile is deleted.
+ * Otherwise, only the relation is deleted.
+ * 
+ * @param studentId - The ID of the student to delete.
+ * @returns An object indicating success or failure.
+ */
 export async function deleteStudent(studentId: string) {
     const session = await auth()
     if (!session?.user?.id) return { success: false, error: "Unauthorized" }
@@ -497,6 +529,13 @@ const updateStudentRelationSchema = z.object({
     phoneNumber: z.string().optional(),
 })
 
+/**
+ * Updates the relation details between a teacher and a student.
+ * 
+ * @param studentId - The student ID.
+ * @param data - The update data (custom name, notes, etc.).
+ * @returns An object indicating success or failure.
+ */
 export async function updateStudentRelation(studentId: string, data: z.infer<typeof updateStudentRelationSchema>) {
     const session = await auth()
     if (!session?.user?.id) return { success: false, error: "Unauthorized" }
@@ -551,7 +590,12 @@ export async function updateStudentRelation(studentId: string, data: z.infer<typ
 }
 
 
-
+/**
+ * Deletes a shadow student profile.
+ * 
+ * @param studentId - The ID of the student to delete.
+ * @returns An object indicating success or failure.
+ */
 export async function deleteShadowStudent(studentId: string) {
     const session = await auth()
     if (!session?.user?.id) return { success: false, error: "Unauthorized" }
@@ -596,3 +640,4 @@ export async function deleteShadowStudent(studentId: string) {
         return { success: false, error: "Failed to delete student" }
     }
 }
+

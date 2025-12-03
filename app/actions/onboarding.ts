@@ -4,26 +4,30 @@ import { auth } from "@/auth"
 import { db } from "@/lib/db"
 import { revalidatePath } from "next/cache"
 import bcrypt from "bcryptjs"
+import logger from "@/lib/logger"
 
+/**
+ * Completes the onboarding process for a user.
+ * Updates the user's role, phone number, password, and creates the corresponding profile.
+ * 
+ * @param data - The onboarding data (role, phone, password, etc.).
+ * @returns An object indicating success or failure.
+ */
 export async function completeOnboarding(data: {
     role: "TEACHER" | "STUDENT",
     phoneNumber: string,
     password?: string,
     confirmPassword?: string,
-    userId?: string, // Fallback for debugging
     terms?: boolean,
     marketingConsent?: boolean
 }) {
     const session = await auth()
-    console.log("Session in Action:", session)
 
-    // Prioritize session ID, fallback to provided userId (DEBUG ONLY)
-    const userId = session?.user?.id || data.userId
-
-    if (!userId) {
+    if (!session?.user?.id) {
         return { success: false, error: "Oturum bulunamadı. Lütfen tekrar giriş yapın." }
     }
 
+    const userId = session.user.id
     const { role, phoneNumber, password, confirmPassword, terms } = data
 
     // Validation
@@ -53,20 +57,20 @@ export async function completeOnboarding(data: {
         return { success: false, error: "Şifre en az bir büyük harf, bir küçük harf, bir rakam ve bir özel karakter içermelidir." }
     }
 
-    // Check if user already has a profile to prevent overwriting
-    const existingUser = await db.user.findUnique({
-        where: { id: userId },
-        include: {
-            teacherProfile: true,
-            studentProfile: true,
-        },
-    })
-
-    if (existingUser?.teacherProfile || existingUser?.studentProfile) {
-        return { success: true }
-    }
-
     try {
+        // Check if user already has a profile to prevent overwriting
+        const existingUser = await db.user.findUnique({
+            where: { id: userId },
+            include: {
+                teacherProfile: true,
+                studentProfile: true,
+            },
+        })
+
+        if (existingUser?.teacherProfile || existingUser?.studentProfile) {
+            return { success: true }
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
         await db.$transaction(async (tx) => {
@@ -105,7 +109,8 @@ export async function completeOnboarding(data: {
         revalidatePath("/dashboard")
         return { success: true }
     } catch (error) {
-        console.error("Onboarding Error:", error)
+        logger.error({ context: "completeOnboarding", error }, "Onboarding Error")
         return { success: false, error: "Bir hata oluştu. Lütfen tekrar deneyin." }
     }
 }
+

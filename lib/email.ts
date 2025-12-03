@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer"
 import { getDictionary } from "@/lib/get-dictionary"
 import { Locale } from "@/i18n-config"
+import logger from "@/lib/logger"
 
 const transporter = nodemailer.createTransport({
   pool: true,
@@ -15,20 +16,32 @@ const transporter = nodemailer.createTransport({
   maxMessages: 100,
 })
 
+/**
+ * Sends a password reset email to the user.
+ * 
+ * @param email - The recipient's email address.
+ * @param token - The password reset token.
+ * @param lang - The language locale.
+ */
 export async function sendPasswordResetEmail(email: string, token: string, lang: string = "tr") {
-  const dictionary = await getDictionary(lang as Locale)
-  const resetLink = `${process.env.NEXTAUTH_URL}/${lang}/reset-password?token=${token}`
+  try {
+    const dictionary = await getDictionary(lang as Locale)
+    const resetLink = `${process.env.NEXTAUTH_URL}/${lang}/reset-password?token=${token}`
 
-  const content = dictionary.email.password_reset
+    const content = dictionary.email.password_reset
 
-  const html = getVerificationEmailTemplate(resetLink, lang as Locale, content)
+    const html = getVerificationEmailTemplate(resetLink, lang as Locale, content)
 
-  await transporter.sendMail({
-    from: `"Deniko" <${process.env.EMAIL_USER}>`,
-    to: email,
-    subject: content.subject,
-    html,
-  })
+    await transporter.sendMail({
+      from: `"Deniko" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: content.subject,
+      html,
+    })
+  } catch (error) {
+    logger.error({ context: "sendPasswordResetEmail", error }, "Failed to send password reset email")
+    throw error // Re-throw to be handled by the caller
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -136,7 +149,17 @@ function getVerificationEmailTemplate(url: string, lang: Locale, content: any) {
 </body>
 </html>
     `;
-} export async function sendVerificationEmail(email: string, token: string, lang: Locale = "tr") {
+}
+
+/**
+ * Sends a verification email to the user.
+ * 
+ * @param email - The recipient's email address.
+ * @param token - The verification token.
+ * @param lang - The language locale.
+ * @returns An object indicating success or failure.
+ */
+export async function sendVerificationEmail(email: string, token: string, lang: Locale = "tr") {
   const confirmLink = `${process.env.NEXTAUTH_URL}/${lang}/verify?token=${token}`
 
   const dictionary = await getDictionary(lang)
@@ -153,7 +176,8 @@ function getVerificationEmailTemplate(url: string, lang: Locale, content: any) {
     })
     return { success: true }
   } catch (error) {
-    console.error("Email sending failed:", error)
+    logger.error({ context: "sendVerificationEmail", error }, "Email sending failed")
     return { success: false, error: "Failed to send email" }
   }
 }
+

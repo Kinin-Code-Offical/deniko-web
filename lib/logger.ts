@@ -1,15 +1,20 @@
 import pino from 'pino'
 
-// Edge Runtime kontrolü (Next.js middleware vb. için)
+// Edge Runtime check (for Next.js middleware etc.)
 const isEdge = process.env.NEXT_RUNTIME === 'edge'
-// Sadece Development ortamında pino-pretty kullan
+// Use pino-pretty only in Development
 const isDev = process.env.NODE_ENV === 'development'
 
+/**
+ * Structured logger instance using Pino.
+ * Configured for pretty printing in development and JSON in production.
+ * Redacts sensitive fields like passwords and tokens.
+ */
 const logger = pino({
-    // Production'da 'info', Development'ta 'trace' seviyesi
+    // 'info' level in Production, 'trace' in Development
     level: isDev ? 'trace' : 'info',
 
-    // Transport ayarı: Sadece Development ortamında ve Edge değilse pino-pretty kullan
+    // Transport setting: Use pino-pretty only in Development and not Edge
     transport: (isDev && !isEdge) ? {
         target: 'pino-pretty',
         options: {
@@ -21,14 +26,14 @@ const logger = pino({
 
     redact: {
         paths: ["password", "token", "secret", "authorization", "cookie"],
-        remove: true, // Hassas verileri tamamen sil
+        remove: true, // Completely remove sensitive data
     },
 
     base: {
         env: process.env.NODE_ENV,
     },
 
-    // Production'da ISO zaman damgası
+    // ISO timestamp in Production
     timestamp: pino.stdTimeFunctions.isoTime,
 })
 

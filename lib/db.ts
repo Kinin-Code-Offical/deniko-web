@@ -1,12 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 
-// Global değişken tanımı (TypeScript için)
+// Global definition for Prisma to prevent multiple instances in development
 const globalForPrisma = globalThis as unknown as {
     prisma: PrismaClient | undefined;
 };
 
-// Prisma istemcisini oluştur
+/**
+ * The shared Prisma Client instance.
+ * Uses a global variable in development to prevent exhausting database connections.
+ */
 export const db = globalForPrisma.prisma ?? new PrismaClient();
 
-// Development ortamında sürekli yeni bağlantı açmasın diye global değişkene atıyoruz
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
