@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
 
-  // 👇 BU KISIM KRİTİK: Hata veren kütüphaneleri buraya ekliyoruz
+  // 👇 BU KISIM EKSİK OLDUĞU İÇİN HATA ALIYORSUNUZ
   serverExternalPackages: [
     "pino",
     "pino-pretty",
