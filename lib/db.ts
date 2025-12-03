@@ -8,10 +8,6 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-/**
- * The shared Prisma Client instance.
- * Uses a global variable in development to prevent exhausting database connections.
- */
 export const db =
   globalForPrisma.prisma ??
   (() => {
