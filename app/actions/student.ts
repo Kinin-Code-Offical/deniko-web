@@ -58,6 +58,8 @@ export async function createStudent(formData: FormData) {
     let avatarUrl: string | undefined
 
     const file = formData.get("avatar") as File | null
+    const selectedAvatar = formData.get("selectedAvatar") as string | null
+
     if (file && file.size > 0) {
         try {
             avatarUrl = await uploadFile(file, "students")
@@ -65,6 +67,8 @@ export async function createStudent(formData: FormData) {
             logger.error({ context: "createStudent", error }, "Failed to upload avatar")
             return { success: false, error: "Avatar yüklenirken bir hata oluştu" }
         }
+    } else if (selectedAvatar) {
+        avatarUrl = selectedAvatar
     }
 
     // Generate a unique invite token

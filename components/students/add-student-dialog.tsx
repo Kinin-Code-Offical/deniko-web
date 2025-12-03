@@ -51,6 +51,15 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
+const DEFAULT_AVATARS = [
+    "defaults/Felix.svg",
+    "defaults/Aneka.svg",
+    "defaults/Zoe.svg",
+    "defaults/Jack.svg",
+    "defaults/Precious.svg",
+    "defaults/Sam.svg",
+]
+
 const formSchema = z.object({
     name: z.string().min(2),
     surname: z.string().min(2),
@@ -58,7 +67,7 @@ const formSchema = z.object({
     grade: z.string().optional(),
     tempPhone: z.string().optional(),
     tempEmail: z.string().email().optional().or(z.literal("")),
-    classroomIds: z.array(z.string()).default([]),
+    classroomIds: z.array(z.string()).optional(),
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -66,6 +75,7 @@ export function AddStudentDialog({ dictionary, classrooms = [] }: { dictionary: 
     const [open, setOpen] = useState(false)
     const [isPending, startTransition] = useTransition()
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
+    const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null)
     const searchParams = useSearchParams()
     const router = useRouter()
     const pathname = usePathname()
@@ -108,10 +118,14 @@ export function AddStudentDialog({ dictionary, classrooms = [] }: { dictionary: 
             if (values.tempPhone) formData.append("tempPhone", values.tempPhone)
             if (values.tempEmail) formData.append("tempEmail", values.tempEmail)
 
-            values.classroomIds.forEach((id) => formData.append("classroomIds", id))
+            if (values.classroomIds) {
+                values.classroomIds.forEach((id) => formData.append("classroomIds", id))
+            }
 
             if (selectedFile) {
                 formData.append("avatar", selectedFile)
+            } else if (selectedAvatar) {
+                formData.append("selectedAvatar", selectedAvatar)
             }
 
             const result = await createStudent(formData)
@@ -120,6 +134,7 @@ export function AddStudentDialog({ dictionary, classrooms = [] }: { dictionary: 
                 handleOpenChange(false)
                 form.reset()
                 setSelectedFile(null)
+                setSelectedAvatar(null)
             } else {
                 toast.error(result?.error || "Error")
             }
@@ -142,13 +157,65 @@ export function AddStudentDialog({ dictionary, classrooms = [] }: { dictionary: 
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-3">
                             <FormLabel>Profil Fotoğrafı (Opsiyonel)</FormLabel>
-                            <Input
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                            />
+
+                            <div className="flex gap-2 overflow-x-auto pb-2">
+                                {DEFAULT_AVATARS.map((avatar) => (
+                                    <div
+                                        key={avatar}
+                                        className={cn(
+                                            "relative cursor-pointer rounded-full border-2 p-0.5 transition-all",
+                                            selectedAvatar === avatar ? "border-primary" : "border-transparent hover:border-muted-foreground/50"
+                                        )}
+                                        onClick={() => {
+                                            setSelectedAvatar(avatar)
+                                            setSelectedFile(null)
+                                        }}
+                                    >
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img
+                                            src={avatar.startsWith("http") ? avatar : `/api/files/${avatar}`}
+                                            alt="Avatar"
+                                            className="h-10 w-10 rounded-full"
+                                        />
+                                        {selectedAvatar === avatar && (
+                                            <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground rounded-full p-0.5">
+                                                <Check className="h-3 w-3" />
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                                <div className="relative flex-1">
+                                    <Input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0]
+                                            if (file) {
+                                                setSelectedFile(file)
+                                                setSelectedAvatar(null)
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                {(selectedFile || selectedAvatar) && (
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => {
+                                            setSelectedFile(null)
+                                            setSelectedAvatar(null)
+                                        }}
+                                    >
+                                        Temizle
+                                    </Button>
+                                )}
+                            </div>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <FormField
@@ -263,10 +330,10 @@ export function AddStudentDialog({ dictionary, classrooms = [] }: { dictionary: 
                                                     role="combobox"
                                                     className={cn(
                                                         "w-full justify-between h-auto min-h-10",
-                                                        !field.value?.length && "text-muted-foreground"
+                                                        (!field.value || field.value.length === 0) && "text-muted-foreground"
                                                     )}
                                                 >
-                                                    {field.value?.length > 0 ? (
+                                                    {field.value && field.value.length > 0 ? (
                                                         <div className="flex gap-1 flex-wrap py-1">
                                                             {field.value.map((id) => (
                                                                 <Badge variant="secondary" key={id} className="mr-1">

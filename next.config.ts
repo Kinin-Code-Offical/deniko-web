@@ -22,9 +22,9 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self';",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline';", // Next.js scriptlerine izin ver
-              "style-src 'self' 'unsafe-inline';", // Tailwind CSS için
-              "img-src 'self' blob: data: https://lh3.googleusercontent.com https://storage.googleapis.com;", // Resim kaynakları
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline';",
+              "style-src 'self' 'unsafe-inline';",
+              "img-src 'self' blob: data: https://lh3.googleusercontent.com https://storage.googleapis.com https://api.dicebear.com;",
               "font-src 'self';",
               "object-src 'none';",
               "base-uri 'self';",

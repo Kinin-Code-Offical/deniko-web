@@ -113,7 +113,11 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
                                                         student.isClaimed && student.user?.image
                                                             ? student.user.image
                                                             : student.tempAvatar
-                                                                ? `/api/files/${student.tempAvatar}`
+                                                                ? (student.tempAvatar.startsWith("http")
+                                                                    ? (student.tempAvatar.includes("dicebear.com")
+                                                                        ? `/api/files/defaults/${new URL(student.tempAvatar).searchParams.get("seed")}.svg`
+                                                                        : student.tempAvatar)
+                                                                    : `/api/files/${student.tempAvatar}`)
                                                                 : undefined
                                                     }
                                                     alt={getDisplayName(student)}
