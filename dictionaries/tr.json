@@ -52,7 +52,8 @@
                 "surname": "Soyad",
                 "student_no": "Öğrenci No (İsteğe bağlı)",
                 "grade": "Sınıf Seviyesi",
-                "phone": "Telefon (İsteğe bağlı)",
+                "phone_number": "Telefon (İsteğe bağlı)",
+                "submit": "Öğrenci Oluştur",
                 "email": "E-posta (İsteğe bağlı)",
                 "classrooms": "Sınıflar",
                 "select_classrooms": "Sınıf seçiniz...",
@@ -69,12 +70,81 @@
             }
         },
         "student": {
-            "welcome": "Hoş geldin,",
-            "next_lesson": "Sonraki Ders"
+            "welcome": "Merhaba, ",
+            "upcoming_lessons": "Yaklaşan Dersler",
+            "completed_lessons": "Tamamlanan Dersler",
+            "pending_homework": "Bekleyen Ödevler",
+            "no_upcoming_lessons": "Planlanmış ders bulunmuyor.",
+            "next_lesson": "Sıradaki Ders",
+            "assignments_todo": "Yapılacak Ödevler",
+            "weekly_schedule": "Haftalık Ders Programım"
         },
         "teacher": {
-            "welcome": "Hoş geldin,",
-            "active_students": "Aktif Öğrenciler"
+            "welcome": "Hoş geldiniz, ",
+            "active_students": "Aktif Öğrenciler",
+            "today_lessons_count": "Bugünkü Dersler",
+            "pending_homework_count": "Bekleyen Ödevler",
+            "upcoming_lessons": "Bugünkü Program",
+            "no_lessons_today": "Bugün için planlanmış ders yok.",
+            "quick_actions": {
+                "title": "Hızlı İşlemler",
+                "add_student": "Öğrenci Ekle",
+                "add_lesson": "Ders Ekle",
+                "create_homework": "Ödev Oluştur",
+                "receive_payment": "Ödeme Al"
+            }
+        },
+        "student_detail": {
+            "tabs": {
+                "lessons": "Dersler",
+                "homework": "Ödevler",
+                "finance": "Finans",
+                "profile": "Profil & Ayarlar"
+            },
+            "header": {
+                "total_lessons": "Toplam Ders",
+                "balance": "Kalan Bakiye",
+                "invite_link": "Davet Linkini Kopyala",
+                "status": {
+                    "active": "Aktif",
+                    "shadow": "Davet Bekliyor"
+                }
+            },
+            "lessons": {
+                "title": "Ders Geçmişi",
+                "add_lesson": "Bu Öğrenciye Ders Ekle",
+                "no_lessons": "Henüz ders kaydı bulunmuyor.",
+                "status": {
+                    "scheduled": "Planlandı",
+                    "completed": "Tamamlandı",
+                    "cancelled": "İptal",
+                    "missed": "Katılmadı"
+                }
+            },
+            "finance": {
+                "title": "Finansal Hareketler",
+                "receive_payment": "Ödeme Al",
+                "lesson_fee": "Ders Ücreti",
+                "payment_received": "Ödeme Alındı",
+                "balance": "Bakiye",
+                "no_transactions": "Henüz finansal işlem bulunmuyor."
+            },
+            "homework": {
+                "title": "Ödev Takibi",
+                "assign_homework": "Ödev Ata",
+                "no_homework": "Henüz ödev bulunmuyor.",
+                "status": {
+                    "pending": "Bekliyor",
+                    "completed": "Tamamlandı"
+                }
+            },
+            "profile": {
+                "title": "Öğrenci Bilgileri",
+                "contact_parent": "Veli İletişim",
+                "archive_student": "Öğrenciyi Arşivle",
+                "delete_student": "Öğrenciyi Sil",
+                "save": "Değişiklikleri Kaydet"
+            }
         },
         "common": {
             "loading": "Yükleniyor...",
@@ -316,124 +386,6 @@
             "title": "Modern Eğitimin Bir Parçası Olun",
             "subtitle": "Klasik yöntemleri geride bırakın. Deniko ile eğitim sürecinizi daha organize ve verimli hale getirin.",
             "button": "Hemen Başlayın"
-        }
-    },
-    "dashboard": {
-        "nav": {
-            "dashboard": "Kontrol Paneli",
-            "students": "Öğrencilerim",
-            "schedule": "Ders Programı",
-            "finance": "Finans",
-            "lessons": "Derslerim",
-            "homework": "Ödevler",
-            "exams": "Sınavlar",
-            "settings": "Ayarlar",
-            "logout": "Çıkış Yap"
-        },
-        "teacher": {
-            "welcome": "Hoş geldiniz, ",
-            "active_students": "Aktif Öğrenciler",
-            "today_lessons_count": "Bugünkü Dersler",
-            "pending_homework_count": "Bekleyen Ödevler",
-            "upcoming_lessons": "Bugünkü Program",
-            "no_lessons_today": "Bugün için planlanmış ders yok.",
-            "quick_actions": {
-                "title": "Hızlı İşlemler",
-                "add_student": "Öğrenci Ekle",
-                "add_lesson": "Ders Ekle",
-                "create_homework": "Ödev Oluştur",
-                "receive_payment": "Ödeme Al"
-            }
-        },
-        "students": {
-            "title": "Öğrencilerim",
-            "add_student": "Öğrenci Ekle",
-            "table": {
-                "name": "İsim",
-                "number": "Öğrenci No",
-                "status": "Durum",
-                "action": "İşlem",
-                "empty": "Öğrenci bulunamadı.",
-                "shadow_account": "Gölge Hesap"
-            },
-            "status": {
-                "claimed": "Aktif",
-                "shadow": "Davet Bekliyor"
-            },
-            "add_dialog": {
-                "title": "Yeni Öğrenci Ekle",
-                "desc": "Öğrenciniz için bir gölge hesap oluşturun. Daha sonra davet edebilirsiniz.",
-                "name": "İsim",
-                "surname": "Soyisim",
-                "grade": "Sınıf Seviyesi",
-                "student_no": "Öğrenci No",
-                "phone_number": "Telefon Numarası",
-                "submit": "Öğrenci Ekle",
-                "success": "Öğrenci başarıyla eklendi!",
-                "copy_invite": "Davet linki kopyalandı"
-            }
-        },
-        "student": {
-            "welcome": "Merhaba, ",
-            "upcoming_lessons": "Yaklaşan Dersler",
-            "completed_lessons": "Tamamlanan Dersler",
-            "pending_homework": "Bekleyen Ödevler",
-            "no_upcoming_lessons": "Planlanmış ders bulunmuyor.",
-            "next_lesson": "Sıradaki Ders",
-            "assignments_todo": "Yapılacak Ödevler",
-            "weekly_schedule": "Haftalık Ders Programım"
-        },
-        "student_detail": {
-            "tabs": {
-                "lessons": "Dersler",
-                "homework": "Ödevler",
-                "finance": "Finans",
-                "profile": "Profil & Ayarlar"
-            },
-            "header": {
-                "total_lessons": "Toplam Ders",
-                "balance": "Kalan Bakiye",
-                "invite_link": "Davet Linkini Kopyala",
-                "status": {
-                    "active": "Aktif",
-                    "shadow": "Davet Bekliyor"
-                }
-            },
-            "lessons": {
-                "title": "Ders Geçmişi",
-                "add_lesson": "Bu Öğrenciye Ders Ekle",
-                "no_lessons": "Henüz ders kaydı bulunmuyor.",
-                "status": {
-                    "scheduled": "Planlandı",
-                    "completed": "Tamamlandı",
-                    "cancelled": "İptal",
-                    "missed": "Katılmadı"
-                }
-            },
-            "finance": {
-                "title": "Finansal Hareketler",
-                "receive_payment": "Ödeme Al",
-                "lesson_fee": "Ders Ücreti",
-                "payment_received": "Ödeme Alındı",
-                "balance": "Bakiye",
-                "no_transactions": "Henüz finansal işlem bulunmuyor."
-            },
-            "homework": {
-                "title": "Ödev Takibi",
-                "assign_homework": "Ödev Ata",
-                "no_homework": "Henüz ödev bulunmuyor.",
-                "status": {
-                    "pending": "Bekliyor",
-                    "completed": "Tamamlandı"
-                }
-            },
-            "profile": {
-                "title": "Öğrenci Bilgileri",
-                "contact_parent": "Veli İletişim",
-                "archive_student": "Öğrenciyi Arşivle",
-                "delete_student": "Öğrenciyi Sil",
-                "save": "Değişiklikleri Kaydet"
-            }
         }
     },
     "email": {

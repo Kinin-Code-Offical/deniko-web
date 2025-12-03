@@ -52,7 +52,8 @@
                 "surname": "Surname",
                 "student_no": "Student No (Optional)",
                 "grade": "Grade Level",
-                "phone": "Phone (Optional)",
+                "phone_number": "Phone (Optional)",
+                "submit": "Create Student",
                 "email": "Email (Optional)",
                 "classrooms": "Classrooms",
                 "select_classrooms": "Select classrooms...",
@@ -69,12 +70,82 @@
             }
         },
         "student": {
-            "welcome": "Welcome back,",
-            "next_lesson": "Next Lesson"
+            "welcome": "Hello, ",
+            "upcoming_lessons": "Upcoming Lessons",
+            "completed_lessons": "Completed Lessons",
+            "pending_homework": "Pending Homework",
+            "no_upcoming_lessons": "No upcoming lessons.",
+            "next_lesson": "Next Lesson",
+            "assignments_todo": "Assignments To-Do",
+            "weekly_schedule": "Weekly Schedule"
         },
         "teacher": {
-            "welcome": "Welcome back,",
-            "active_students": "Active Students"
+            "welcome": "Welcome, ",
+            "active_students": "Active Students",
+            "today_lessons_count": "Today's Lessons",
+            "pending_homework_count": "Pending Homework",
+            "upcoming_lessons": "Today's Schedule",
+            "no_lessons_today": "No lessons scheduled for today.",
+            "take_attendance": "Take Attendance",
+            "quick_actions": {
+                "title": "Quick Actions",
+                "add_student": "Add Student",
+                "add_lesson": "Add Lesson",
+                "create_homework": "Create Homework",
+                "receive_payment": "Receive Payment"
+            }
+        },
+        "student_detail": {
+            "tabs": {
+                "lessons": "Lessons",
+                "homework": "Homework",
+                "finance": "Finance",
+                "profile": "Profile & Settings"
+            },
+            "header": {
+                "total_lessons": "Total Lessons",
+                "balance": "Balance",
+                "invite_link": "Copy Invite Link",
+                "status": {
+                    "active": "Active",
+                    "shadow": "Pending Invite"
+                }
+            },
+            "lessons": {
+                "title": "Lesson History",
+                "add_lesson": "Add Lesson for Student",
+                "no_lessons": "No lesson records found.",
+                "status": {
+                    "scheduled": "Scheduled",
+                    "completed": "Completed",
+                    "cancelled": "Cancelled",
+                    "missed": "Missed"
+                }
+            },
+            "finance": {
+                "title": "Financial Transactions",
+                "receive_payment": "Receive Payment",
+                "lesson_fee": "Lesson Fee",
+                "payment_received": "Payment Received",
+                "balance": "Balance",
+                "no_transactions": "No financial transactions found."
+            },
+            "homework": {
+                "title": "Homework Tracking",
+                "assign_homework": "Assign Homework",
+                "no_homework": "No homework found.",
+                "status": {
+                    "pending": "Pending",
+                    "completed": "Completed"
+                }
+            },
+            "profile": {
+                "title": "Student Information",
+                "contact_parent": "Parent Contact",
+                "archive_student": "Archive Student",
+                "delete_student": "Delete Student",
+                "save": "Save Changes"
+            }
         },
         "common": {
             "loading": "Loading...",
@@ -316,125 +387,6 @@
             "title": "Be Part of Modern Education",
             "subtitle": "Leave traditional methods behind. Make your education process more organized and efficient with Deniko.",
             "button": "Start Now"
-        }
-    },
-    "dashboard": {
-        "nav": {
-            "dashboard": "Dashboard",
-            "students": "My Students",
-            "schedule": "Schedule",
-            "finance": "Finance",
-            "lessons": "My Lessons",
-            "homework": "Homework",
-            "exams": "Exams",
-            "settings": "Settings",
-            "logout": "Logout"
-        },
-        "teacher": {
-            "welcome": "Welcome, ",
-            "active_students": "Active Students",
-            "today_lessons_count": "Today's Lessons",
-            "pending_homework_count": "Pending Homework",
-            "upcoming_lessons": "Today's Schedule",
-            "no_lessons_today": "No lessons scheduled for today.",
-            "take_attendance": "Take Attendance",
-            "quick_actions": {
-                "title": "Quick Actions",
-                "add_student": "Add Student",
-                "add_lesson": "Add Lesson",
-                "create_homework": "Create Homework",
-                "receive_payment": "Receive Payment"
-            }
-        },
-        "students": {
-            "title": "My Students",
-            "add_student": "Add Student",
-            "table": {
-                "name": "Name",
-                "number": "Student No",
-                "status": "Status",
-                "action": "Action",
-                "empty": "No students found.",
-                "shadow_account": "Shadow Account"
-            },
-            "status": {
-                "claimed": "Active",
-                "shadow": "Pending Invite"
-            },
-            "add_dialog": {
-                "title": "Add New Student",
-                "desc": "Create a shadow account for your student. You can invite them later.",
-                "name": "First Name",
-                "surname": "Last Name",
-                "grade": "Grade Level",
-                "student_no": "Student No",
-                "phone_number": "Phone Number",
-                "submit": "Add Student",
-                "success": "Student added successfully!",
-                "copy_invite": "Invite link copied to clipboard"
-            }
-        },
-        "student": {
-            "welcome": "Hello, ",
-            "upcoming_lessons": "Upcoming Lessons",
-            "completed_lessons": "Completed Lessons",
-            "pending_homework": "Pending Homework",
-            "no_upcoming_lessons": "No upcoming lessons.",
-            "next_lesson": "Next Lesson",
-            "assignments_todo": "Assignments To-Do",
-            "weekly_schedule": "Weekly Schedule"
-        },
-        "student_detail": {
-            "tabs": {
-                "lessons": "Lessons",
-                "homework": "Homework",
-                "finance": "Finance",
-                "profile": "Profile & Settings"
-            },
-            "header": {
-                "total_lessons": "Total Lessons",
-                "balance": "Balance",
-                "invite_link": "Copy Invite Link",
-                "status": {
-                    "active": "Active",
-                    "shadow": "Pending Invite"
-                }
-            },
-            "lessons": {
-                "title": "Lesson History",
-                "add_lesson": "Add Lesson for Student",
-                "no_lessons": "No lesson records found.",
-                "status": {
-                    "scheduled": "Scheduled",
-                    "completed": "Completed",
-                    "cancelled": "Cancelled",
-                    "missed": "Missed"
-                }
-            },
-            "finance": {
-                "title": "Financial Transactions",
-                "receive_payment": "Receive Payment",
-                "lesson_fee": "Lesson Fee",
-                "payment_received": "Payment Received",
-                "balance": "Balance",
-                "no_transactions": "No financial transactions found."
-            },
-            "homework": {
-                "title": "Homework Tracking",
-                "assign_homework": "Assign Homework",
-                "no_homework": "No homework found.",
-                "status": {
-                    "pending": "Pending",
-                    "completed": "Completed"
-                }
-            },
-            "profile": {
-                "title": "Student Information",
-                "contact_parent": "Parent Contact",
-                "archive_student": "Archive Student",
-                "delete_student": "Delete Student",
-                "save": "Save Changes"
-            }
         }
     },
     "email": {

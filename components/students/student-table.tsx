@@ -71,8 +71,8 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
 
     return (
         <div className="space-y-4">
-            <div className="flex items-center gap-2">
-                <div className="relative flex-1 max-w-sm">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                <div className="relative flex-1 w-full sm:max-w-sm">
                     <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
                         placeholder={dictionary.dashboard.students.search_placeholder}
@@ -83,7 +83,7 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
                 </div>
             </div>
 
-            <div className="rounded-md border">
+            <div className="rounded-md border overflow-x-auto">
                 <Table>
                     <TableHeader>
                         <TableRow>

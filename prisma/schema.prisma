@@ -159,9 +159,10 @@ model StudentProfile {
   tempAvatar    String?
 
   // -- C. Davet ve Durum --
-  inviteToken      String? @unique
-  isClaimed        Boolean @default(false) // Gölge hesap gerçek hesaba dönüştü mü?
-  creatorTeacherId String? // Bu öğrenciyi sisteme ilk kim ekledi?
+  inviteToken        String?   @unique
+  inviteTokenExpires DateTime? // Token'ın geçerlilik süresi
+  isClaimed          Boolean   @default(false)
+  creatorTeacherId   String? // Bu öğrenciyi sisteme ilk kim ekledi?
 
   // -- D. Akademik Bilgiler --
   studentNo   String?

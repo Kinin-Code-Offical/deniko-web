@@ -30,14 +30,6 @@ export function TeacherView({ user, dictionary, lang, stats, schedule }: Teacher
                 <h2 className="text-3xl font-bold tracking-tight">
                     {dictionary.dashboard.teacher.welcome} {user.name}
                 </h2>
-                <div className="flex items-center gap-2">
-                    <Button asChild>
-                        <Link href={`/${lang}/dashboard/students?action=new-student`}>
-                            <UserPlus className="mr-2 h-4 w-4" />
-                            {dictionary.dashboard.students.add_student}
-                        </Link>
-                    </Button>
-                </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-3">

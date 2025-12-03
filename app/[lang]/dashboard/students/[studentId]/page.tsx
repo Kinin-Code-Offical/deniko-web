@@ -2,7 +2,6 @@ import { auth } from "@/auth"
 import { db } from "@/lib/db"
 import { getDictionary } from "@/lib/get-dictionary"
 import { notFound, redirect } from "next/navigation"
-import { DashboardShell } from "@/components/dashboard/shell"
 import { StudentHeader } from "@/components/students/student-header"
 import { StudentSettingsTab } from "@/components/students/settings-tab"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -66,69 +65,67 @@ export default async function StudentPage({ params }: StudentPageProps) {
     }
 
     return (
-        <DashboardShell user={session.user} dictionary={dictionary} lang={lang}>
-            <div className="flex flex-col gap-6">
-                <div>
-                    <Button variant="ghost" size="sm" asChild className="-ml-2 text-muted-foreground">
-                        <Link href={`/${lang}/dashboard/students`}>
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            {dictionary.common?.back || "Geri"}
-                        </Link>
-                    </Button>
-                </div>
-
-                <StudentHeader relation={relation} dictionary={dictionary} />
-
-                <Tabs defaultValue="overview" className="w-full">
-                    <TabsList className="grid w-full grid-cols-4 lg:w-[400px]">
-                        <TabsTrigger value="overview">{dictionary.student_detail.tabs.overview}</TabsTrigger>
-                        <TabsTrigger value="lessons">{dictionary.student_detail.tabs.lessons}</TabsTrigger>
-                        <TabsTrigger value="homework">{dictionary.student_detail.tabs.homework || "Homework"}</TabsTrigger>
-                        <TabsTrigger value="settings">{dictionary.student_detail.tabs.settings}</TabsTrigger>
-                    </TabsList>
-
-                    <TabsContent value="overview" className="mt-6">
-                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                            <Card>
-                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                    <CardTitle className="text-sm font-medium">{dictionary.student_detail.overview.total_lessons}</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="text-2xl font-bold">{relation.student.lessons.length}</div>
-                                </CardContent>
-                            </Card>
-                            {/* Add more stats here */}
-                        </div>
-                    </TabsContent>
-
-                    <TabsContent value="lessons" className="mt-6">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>{dictionary.student_detail.lessons.title}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-sm text-muted-foreground">{dictionary.student_detail.lessons.empty}</p>
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
-                    <TabsContent value="homework" className="mt-6">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>{dictionary.student_detail.tabs.homework || "Homework"}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-sm text-muted-foreground">No homework assigned yet.</p>
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
-                    <TabsContent value="settings" className="mt-6">
-                        <StudentSettingsTab relation={relation} studentId={studentId} dictionary={dictionary} />
-                    </TabsContent>
-                </Tabs>
+        <div className="flex flex-col gap-6">
+            <div>
+                <Button variant="ghost" size="sm" asChild className="-ml-2 text-muted-foreground">
+                    <Link href={`/${lang}/dashboard/students`}>
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        {dictionary.common?.back || "Geri"}
+                    </Link>
+                </Button>
             </div>
-        </DashboardShell>
+
+            <StudentHeader relation={relation} dictionary={dictionary} />
+
+            <Tabs defaultValue="overview" className="w-full">
+                <TabsList className="grid w-full grid-cols-4 lg:w-[400px]">
+                    <TabsTrigger value="overview">{dictionary.student_detail.tabs.overview}</TabsTrigger>
+                    <TabsTrigger value="lessons">{dictionary.student_detail.tabs.lessons}</TabsTrigger>
+                    <TabsTrigger value="homework">{dictionary.student_detail.tabs.homework || "Homework"}</TabsTrigger>
+                    <TabsTrigger value="settings">{dictionary.student_detail.tabs.settings}</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="overview" className="mt-6">
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-sm font-medium">{dictionary.student_detail.overview.total_lessons}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">{relation.student.lessons.length}</div>
+                            </CardContent>
+                        </Card>
+                        {/* Add more stats here */}
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="lessons" className="mt-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>{dictionary.student_detail.lessons.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-sm text-muted-foreground">{dictionary.student_detail.lessons.empty}</p>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="homework" className="mt-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>{dictionary.student_detail.tabs.homework || "Homework"}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-sm text-muted-foreground">No homework assigned yet.</p>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="settings" className="mt-6">
+                    <StudentSettingsTab relation={relation} studentId={studentId} dictionary={dictionary} />
+                </TabsContent>
+            </Tabs>
+        </div>
     )
 }
 

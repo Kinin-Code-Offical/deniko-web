@@ -118,7 +118,7 @@ export function StudentHeader({ relation, dictionary }: StudentHeaderProps) {
                 </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
                 <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
                     <DialogTrigger asChild>
                         <Button variant="outline" size="sm">
