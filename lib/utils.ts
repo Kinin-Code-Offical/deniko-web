@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { formatPhoneNumberIntl } from 'react-phone-number-input'
+import { parsePhoneNumberFromString } from "libphonenumber-js"
 
 /**
  * Merges Tailwind CSS classes with clsx.
@@ -24,8 +24,8 @@ export function formatPhoneNumber(value: string | null | undefined) {
 
   // Fallback to standard intl format
   try {
-    const formatted = formatPhoneNumberIntl(value)
-    return formatted || value
+    const parsed = parsePhoneNumberFromString(value)
+    return parsed?.formatInternational() ?? value
   } catch {
     return value
   }
