@@ -5,7 +5,7 @@ import "dotenv/config";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { defineConfig, env } from "prisma/config";
+import { defineConfig } from "prisma/config";
 
 const ensurePrismaSslFiles = () => {
   const ca = process.env.DATABASE_SSL_CA;
@@ -59,8 +59,6 @@ const ensurePrismaSslFiles = () => {
   const caPath = writeIfPresent(ca, "ca.pem");
   const certPath = writeIfPresent(cert, "client.pem");
   const keyPath = writeIfPresent(key, "key.pem");
-
-  const shouldSkipVerify = /^(true|1)$/i.test(process.env.DATABASE_SSL_SKIP_VERIFY ?? "");
 
   const forUrl = (filePath: string) => filePath.replace(/\\/g, "/");
 
@@ -125,6 +123,5 @@ export default defineConfig({
   datasource: {
     // Pass the patched values directly instead of relying on env() lookup
     url: getRequiredEnv(process.env.DATABASE_URL, "DATABASE_URL"),
-    shadowDatabaseUrl: getRequiredEnv(process.env.DIRECT_URL, "DIRECT_URL"),
   },
 });
