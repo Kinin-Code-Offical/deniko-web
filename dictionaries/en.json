@@ -1,475 +1,519 @@
 {
-    "dashboard": {
-        "nav": {
-            "dashboard": "Dashboard",
-            "students": "Students",
-            "schedule": "Schedule",
-            "finance": "Finance",
-            "settings": "Settings",
-            "lessons": "Lessons",
-            "homework": "Homework",
-            "exams": "Exams",
-            "logout": "Log out"
-        },
-        "join": {
-            "title": "Invitation Details",
-            "desc": "Review the details provided by your teacher.",
-            "teacher_data": "Teacher's Input",
-            "your_data": "Your Info",
-            "keep_teacher_data": "Save teacher's data to my profile",
-            "conflict_grade": "Grade / Student No",
-            "conflict_parent": "Parent Info",
-            "conflict_classroom": "Classrooms",
-            "accept_merge": "Accept & Merge",
-            "reject": "Reject",
-            "success": "Profile merged successfully!",
-            "error": "Failed to merge profile."
-        },
-        "header": {
-            "search_placeholder": "Search...",
-            "profile": "Profile",
-            "settings": "Settings",
-            "logout": "Log out"
-        },
-        "students": {
-            "title": "Students",
-            "add_student": "Add Student",
-            "search_placeholder": "Search by name...",
-            "no_results": "No students found.",
-            "columns": {
-                "name": "Student Name",
-                "no": "Number",
-                "class": "Class",
-                "status": "Status",
-                "actions": "Actions"
-            },
-            "actions": {
-                "edit": "Edit",
-                "archive": "Archive",
-                "delete": "Delete",
-                "copy_invite": "Copy Invite Link",
-                "view_details": "View Details"
-            },
-            "status": {
-                "shadow": "Pending Invite",
-                "active": "Active",
-                "verified": "Verified",
-                "pending": "Pending"
-            },
-            "table": {
-                "name": "Student",
-                "status": "Status",
-                "student_no": "Student No",
-                "grade": "Grade",
-                "actions": "Actions"
-            },
-            "add_dialog": {
-                "title": "Add New Student",
-                "desc": "Enter student details. An invite link will be generated.",
-                "name": "Name",
-                "surname": "Surname",
-                "student_no": "Student No (Optional)",
-                "grade": "Grade Level",
-                "phone_number": "Phone (Optional)",
-                "submit": "Create Student",
-                "email": "Email (Optional)",
-                "classrooms": "Classrooms",
-                "select_classrooms": "Select classrooms...",
-                "avatar": "Profile Photo",
-                "upload_photo": "Upload Photo",
-                "or_choose": "or choose avatar",
-                "cancel": "Cancel",
-                "save": "Save",
-                "clear": "Clear",
-                "search_classroom": "Search classroom...",
-                "no_classroom_found": "No classroom found.",
-                "select_grade": "Select Grade",
-                "success": "Student created successfully",
-                "copy_invite": "Invite link copied to clipboard"
-            }
-        },
-        "student": {
-            "upcoming_lessons": "Upcoming Lessons",
-            "completed_lessons": "Completed Lessons",
-            "pending_homework": "Pending Homework",
-            "no_upcoming_lessons": "No upcoming lessons.",
-            "next_lesson": "Next Lesson",
-            "assignments_todo": "Assignments To-Do",
-            "weekly_schedule": "Weekly Schedule"
-        },
-        "teacher": {
-            "active_students": "Active Students",
-            "today_lessons_count": "Today's Lessons",
-            "pending_homework_count": "Pending Homework",
-            "upcoming_lessons": "Today's Schedule",
-            "no_lessons_today": "No lessons scheduled for today.",
-            "take_attendance": "Take Attendance",
-            "quick_actions": {
-                "title": "Quick Actions",
-                "add_student": "Add Student",
-                "add_lesson": "Add Lesson",
-                "create_homework": "Create Homework",
-                "receive_payment": "Receive Payment"
-            }
-        },
-        "common": {
-            "loading": "Loading...",
-            "save": "Save",
-            "cancel": "Cancel",
-            "delete_confirm": "Are you sure?",
-            "delete_desc": "This action cannot be undone."
-        }
-    },
-    "common": {
-        "loading": "Loading...",
-        "back": "Back",
-        "back_to_home": "Back to Home"
-    },
-    "teacher": {
-        "invite_link_copied": "Invite link copied",
-        "invite_link_copy_failed": "Failed to copy invite link",
-        "copy_invite_link": "Copy Invite Link"
-    },
-    "components": {
-        "phone_input": {
-            "search_country": "Search country...",
-            "no_country_found": "No country found."
-        }
-    },
-    "student_detail": {
-        "tabs": {
-            "overview": "Overview",
-            "lessons": "Lessons",
-            "homework": "Homework",
-            "finance": "Finance",
-            "settings": "Settings",
-            "exams": "Exams",
-            "attendance": "Attendance"
-        },
-        "header": {
-            "total_lessons": "Total Lessons",
-            "balance": "Balance",
-            "invite_link": "Copy Invite Link",
-            "status": {
-                "active": "Active",
-                "shadow": "Pending Invite"
-            },
-            "verified": "Verified",
-            "pending": "Pending",
-            "no_level": "No Level",
-            "no_number": "No Number",
-            "copy_link": "Copy Link",
-            "link_copied": "Invite link copied"
-        },
-        "overview": {
-            "general_info": "General Information",
-            "student_no": "Student No",
-            "grade": "Grade",
-            "phone": "Phone",
-            "email": "Email",
-            "parent_info": "Parent Information",
-            "parent_name": "Parent Name",
-            "parent_phone": "Parent Phone",
-            "parent_email": "Parent Email",
-            "private_notes": "Private Notes",
-            "no_notes": "No notes added yet.",
-            "total_lessons": "Total Lessons"
-        },
-        "lessons": {
-            "title": "Lesson History",
-            "add_lesson": "Add Lesson for Student",
-            "no_lessons": "No lesson records found.",
-            "empty": "No upcoming lessons scheduled.",
-            "status": {
-                "scheduled": "Scheduled",
-                "completed": "Completed",
-                "cancelled": "Cancelled",
-                "missed": "Missed"
-            }
-        },
-        "finance": {
-            "title": "Financial Transactions",
-            "receive_payment": "Receive Payment",
-            "lesson_fee": "Lesson Fee",
-            "payment_received": "Payment Received",
-            "balance": "Balance",
-            "no_transactions": "No financial transactions found.",
-            "empty": "Payment history will be here..."
-        },
-        "homework": {
-            "title": "Homework Tracking",
-            "assign_homework": "Assign Homework",
-            "no_homework": "No homework found.",
-            "status": {
-                "pending": "Pending",
-                "completed": "Completed"
-            }
-        },
-        "exams": {
-            "title": "Exams",
-            "no_exams": "No exams recorded yet."
-        },
-        "attendance": {
-            "title": "Attendance",
-            "present": "Present",
-            "absent": "Absent",
-            "late": "Late",
-            "no_records": "No attendance records found."
-        },
-        "settings": {
-            "title": "Student Settings",
-            "description": "Manage student profile and preferences.",
-            "profile_photo": "Profile Photo",
-            "change_photo": "Change Photo",
-            "personal_info": "Personal Information",
-            "full_name": "Full Name",
-            "student_number": "Student Number",
-            "grade_level": "Grade Level",
-            "contact_info": "Contact Information",
-            "parent_information": "Parent Information",
-            "parent_full_name": "Parent Full Name",
-            "parent_phone_number": "Parent Phone Number",
-            "parent_email_address": "Parent Email Address",
-            "invite_link": "Invite Link",
-            "invite_link_desc": "Enable or disable the invite link for this student.",
-            "invite_link_active": "Invite Link Active",
-            "invite_link_inactive": "Invite Link Inactive",
-            "copy_link": "Copy Link",
-            "danger_zone": "Danger Zone",
-            "delete_student": "Delete Student",
-            "delete_student_desc": "This action cannot be undone. This will permanently delete the student and remove their data from our servers.",
-            "delete_button": "Delete Student",
-            "save_changes": "Save Changes",
-            "saving": "Saving...",
-            "success": "Settings updated successfully.",
-            "error_message": "An error occurred while updating settings.",
-            "invite_toggled": "Invite link status updated.",
-            "link_copied": "Link copied to clipboard.",
-            "custom_name": "Display Name",
-            "custom_name_desc": "Only you will see this name.",
-            "phone": "Phone Number",
-            "phone_desc": "Contact number for notifications.",
-            "phone_claimed_desc": "Since this student has verified their account, only they can change their phone number.",
-            "notes": "Private Notes",
-            "notes_desc": "Notes only visible to you.",
-            "archive": {
-                "title": "Archive Student",
-                "desc": "Remove this student from your active list. History is preserved.",
-                "button": "Archive Student",
-                "confirm_title": "Are you sure?",
-                "confirm_desc": "This action will move the student to your archive. You can restore them later.",
-                "success": "Student archived"
-            },
-            "delete": {
-                "title": "Delete Student",
-                "desc": "Permanently delete this student and all associated data.",
-                "button": "Delete Student",
-                "confirm_title": "Are you absolutely sure?",
-                "confirm_desc": "This action cannot be undone. This will permanently delete the student profile and remove your data from our servers.",
-                "success": "Student deleted"
-            }
-        }
+  "dashboard": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "students": "Students",
+      "schedule": "Schedule",
+      "finance": "Finance",
+      "settings": "Settings",
+      "lessons": "Lessons",
+      "homework": "Homework",
+      "exams": "Exams",
+      "logout": "Log out"
     },
     "join": {
-        "title": "Accept Invitation",
-        "desc": "{teacher} wants to add you as a student.",
-        "success": "Successfully joined!",
-        "error_used": "This link is invalid or has been used.",
-        "accept_button": "Accept and Join",
-        "welcome_user": "Dear {name},"
+      "title": "Invitation Details",
+      "desc": "Review the details provided by your teacher.",
+      "teacher_data": "Teacher's Input",
+      "your_data": "Your Info",
+      "keep_teacher_data": "Save teacher's data to my profile",
+      "conflict_grade": "Grade / Student No",
+      "conflict_parent": "Parent Info",
+      "conflict_classroom": "Classrooms",
+      "accept_merge": "Accept & Merge",
+      "reject": "Reject",
+      "success": "Profile merged successfully!",
+      "error": "Failed to merge profile."
     },
-    "auth": {
-        "register": {
-            "title": "Join Deniko",
-            "subtitle": "Professional tutoring management platform",
-            "hero_title": "Join Us",
-            "hero_desc": "Take your place in this big family with thousands of students and teachers.",
-            "role_select": "Select Account Type",
-            "student": "Student",
-            "student_desc": "I want to learn and grow",
-            "teacher": "Teacher",
-            "teacher_desc": "I want to teach and manage",
-            "first_name": "First Name",
-            "last_name": "Last Name",
-            "email": "Email",
-            "phone": "Phone Number",
-            "password": "Password",
-            "password_confirm": "Confirm Password",
-            "confirm_password": "Confirm Password",
-            "submit": "Register",
-            "submitting": "Registering...",
-            "have_account": "Already have an account?",
-            "login_link": "Login",
-            "success_title": "Registration Successful!",
-            "success_desc": "We sent a verification link to your email address. Please check your inbox.",
-            "errors": {
-                "user_exists": "This email address is already in use",
-                "generic": "An error occurred during registration.",
-                "invalid_data": "Invalid form data"
-            },
-            "validation": {
-                "first_name_min": "First name must be at least 2 characters",
-                "last_name_min": "Last name must be at least 2 characters",
-                "email_invalid": "Please enter a valid email address",
-                "phone_min": "Please enter a valid phone number",
-                "role_required": "Please select a role",
-                "password_min": "Password must be at least 8 characters",
-                "password_regex": "Password must contain at least one uppercase, one lowercase, one number and one special character",
-                "password_mismatch": "Passwords do not match"
-            }
-        },
-        "login": {
-            "title": "Welcome to Deniko",
-            "subtitle": "Professional tutoring management platform",
-            "hero_title": "A New Era in Education",
-            "hero_desc": "Welcome to the modern and effective education platform that brings teachers and students together.",
-            "card_title": "Login",
-            "card_desc": "Login with Google or your email address",
-            "google_login": "Continue with Google",
-            "or_email": "Or with Email",
-            "email": "Email",
-            "password": "Password",
-            "forgot_password_link": "Forgot Password?",
-            "submit": "Login",
-            "no_account": "Don't have an account?",
-            "register_link": "Register",
-            "back_to_home": "Back to Home",
-            "validation": {
-                "email_invalid": "Please enter a valid email address",
-                "password_required": "Password is required",
-                "invalid_credentials": "Invalid email or password."
-            }
-        },
-        "forgot_password": {
-            "title": "Forgot Password?",
-            "desc": "Enter your email address and we'll send you a link to reset your password.",
-            "email_label": "Email Address",
-            "submit": "Send Reset Link",
-            "submitting": "Sending...",
-            "back_to_login": "Back to Login",
-            "try_again": "Try with a different email",
-            "success": "If an account exists with this email, you will receive a password reset link shortly."
-        },
-        "reset_password": {
-            "title": "Reset Password",
-            "desc": "Enter your new password below.",
-            "new_password": "New Password",
-            "confirm_password": "Confirm Password",
-            "submit": "Reset Password",
-            "submitting": "Resetting...",
-            "success": "Your password has been reset successfully. You can now login.",
-            "success_title": "Password Reset Successful",
-            "success_desc": "Your password has been reset successfully. You can now login.",
-            "invalid_token": "Invalid or expired token.",
-            "expired_token": "This link has expired.",
-            "user_not_found": "User not found.",
-            "invalid_link_title": "Invalid Link",
-            "invalid_link_desc": "This password reset link is invalid or has expired. Please request a new one.",
-            "same_password": "New password cannot be the same as the old password."
-        },
-        "onboarding": {
-            "title": "Complete Your Profile",
-            "subtitle": "Please fill in the missing information to continue.",
-            "submit": "Save and Continue",
-            "submitting": "Saving..."
-        },
-        "verification": {
-            "unverified_title": "Email address not verified.",
-            "unverified_desc": "Please click the verification link sent to your email address to log in.",
-            "resend_button": "Resend Verification Code",
-            "sending": "Sending...",
-            "wait": "Please wait: {time}",
-            "success": "Verification link resent.",
-            "error": "An error occurred.",
-            "user_not_found": "User not found.",
-            "already_verified": "Email already verified."
-        },
-        "verify_page": {
-            "verifying": "Verifying...",
-            "success_title": "Email Verified!",
-            "error_title": "Verification Failed",
-            "verifying_desc": "Please wait, verifying your email address.",
-            "missing_token": "Verification token not found.",
-            "resend_button": "Resend Verification Code",
-            "back_to_login": "Login",
-            "messages": {
-                "invalid_token": "Invalid verification code.",
-                "expired_token": "Verification code expired.",
-                "user_not_found": "User not found.",
-                "success": "Email address successfully verified.",
-                "error": "An error occurred during verification."
-            }
-        },
-        "errors": {
-            "generic": "An error occurred."
-        }
+    "header": {
+      "search_placeholder": "Search...",
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Log out"
     },
-    "legal": {
-        "terms_title": "Terms of Service",
-        "privacy_title": "Privacy Policy",
-        "accept_terms": "I have read and accept the [Terms of Service] and [Privacy Policy].",
-        "validation_terms": "You must accept the terms to continue.",
-        "validation_error": "You must accept the terms to continue.",
-        "marketing_consent": "I want to be informed about campaigns and announcements via email."
+    "students": {
+      "title": "Students",
+      "add_student": "Add Student",
+      "search_placeholder": "Search by name...",
+      "no_results": "No students found.",
+      "columns": {
+        "name": "Student Name",
+        "no": "Number",
+        "class": "Class",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "edit": "Edit",
+        "archive": "Archive",
+        "delete": "Delete",
+        "copy_invite": "Copy Invite Link",
+        "view_details": "View Details"
+      },
+      "status": {
+        "shadow": "Pending Invite",
+        "active": "Active",
+        "verified": "Verified",
+        "pending": "Pending"
+      },
+      "table": {
+        "name": "Student",
+        "status": "Status",
+        "student_no": "Student No",
+        "grade": "Grade",
+        "actions": "Actions"
+      },
+      "add_dialog": {
+        "title": "Add New Student",
+        "desc": "Enter student details. An invite link will be generated.",
+        "name": "Name",
+        "surname": "Surname",
+        "student_no": "Student No (Optional)",
+        "grade": "Grade Level",
+        "phone_number": "Phone (Optional)",
+        "submit": "Create Student",
+        "email": "Email (Optional)",
+        "classrooms": "Classrooms",
+        "select_classrooms": "Select classrooms...",
+        "avatar": "Profile Photo",
+        "upload_photo": "Upload Photo",
+        "or_choose": "or choose avatar",
+        "cancel": "Cancel",
+        "save": "Save",
+        "clear": "Clear",
+        "search_classroom": "Search classroom...",
+        "no_classroom_found": "No classroom found.",
+        "select_grade": "Select Grade",
+        "success": "Student created successfully",
+        "copy_invite": "Invite link copied to clipboard"
+      }
     },
-    "home": {
-        "hero_title": "Digitize Your Education Life",
-        "hero_subtitle": "Smart assistant designed for teachers and students. Lesson schedule, student tracking, and performance analytics in one platform.",
-        "get_started": "Discover Deniko",
-        "login": "Login",
-        "features": {
-            "title": "Powerful Tools for Education",
-            "scheduling_title": "Smart Scheduling",
-            "scheduling_desc": "Optimize your lesson schedule, prevent conflicts, and use your time efficiently.",
-            "students_title": "Student Portfolio",
-            "students_desc": "Create custom progress reports, notes, and homework tracking for each student.",
-            "progress_title": "Data-Driven Analysis",
-            "progress_desc": "Review success charts, identify gaps, and focus on goals."
-        },
-        "how_it_works": {
-            "title": "How Deniko Works?",
-            "step1_title": "Create Your Profile",
-            "step1_desc": "Create your digital identity by selecting your instructor or student role.",
-            "step2_title": "Organize Your Schedule",
-            "step2_desc": "Set lesson hours, availability, and work calendar.",
-            "step3_title": "Increase Efficiency",
-            "step3_desc": "Focus on the education process with automatic reminders and analytics."
-        },
-        "cta": {
-            "title": "Be Part of Modern Education",
-            "subtitle": "Leave traditional methods behind. Make your education process more organized and efficient with Deniko.",
-            "button": "Start Now"
-        }
+    "student": {
+      "upcoming_lessons": "Upcoming Lessons",
+      "completed_lessons": "Completed Lessons",
+      "pending_homework": "Pending Homework",
+      "no_upcoming_lessons": "No upcoming lessons.",
+      "next_lesson": "Next Lesson",
+      "assignments_todo": "Assignments To-Do",
+      "weekly_schedule": "Weekly Schedule"
     },
-    "email": {
-        "verification": {
-            "subject": "Verify Your Deniko Account",
-            "title": "Welcome to Deniko!",
-            "greeting": "Hello,",
-            "body": "We are very happy to have you join us. Please verify your email address to keep your account secure and access all features.",
-            "button": "Verify My Account",
-            "ignore": "If you did not request this email, please ignore it.",
-            "footer": "Deniko - Teacher and Student Management Platform.",
-            "website": "Web Site",
-            "support": "Support",
-            "footer_disclaimer": "This email was sent regarding an important action on your Deniko account (membership verification).",
-            "footer_address": "Güzeltepe Mah., 747. Cd., No:14 Çankaya/Ankara",
-            "footer_copyright": "© 2025 Deniko. All rights reserved.",
-            "footer_terms": "Terms of Service",
-            "footer_privacy": "Privacy Policy"
-        },
-        "password_reset": {
-            "subject": "Reset Your Password - Deniko",
-            "title": "Reset Your Password",
-            "greeting": "Hello,",
-            "body": "We received a request to reset your password. Click the button below to create a new password. This link is valid for 1 hour.",
-            "button": "Reset Password",
-            "ignore": "If you didn't request this, you can safely ignore this email.",
-            "footer_disclaimer": "This email contains important information about your Deniko account.",
-            "footer_address": "Güzeltepe Mah., 747. Cd., No:14 Çankaya/Ankara",
-            "footer_copyright": "© 2025 Deniko. All rights reserved.",
-            "footer_terms": "Terms of Service",
-            "footer_privacy": "Privacy Policy"
-        }
+    "teacher": {
+      "active_students": "Active Students",
+      "today_lessons_count": "Today's Lessons",
+      "pending_homework_count": "Pending Homework",
+      "upcoming_lessons": "Today's Schedule",
+      "no_lessons_today": "No lessons scheduled for today.",
+      "take_attendance": "Take Attendance",
+      "quick_actions": {
+        "title": "Quick Actions",
+        "add_student": "Add Student",
+        "add_lesson": "Add Lesson",
+        "create_homework": "Create Homework",
+        "receive_payment": "Receive Payment"
+      }
+    },
+    "common": {
+      "loading": "Loading...",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete_confirm": "Are you sure?",
+      "delete_desc": "This action cannot be undone."
     }
+  },
+  "common": {
+    "loading": "Loading...",
+    "back": "Back",
+    "back_to_home": "Back to Home"
+  },
+  "teacher": {
+    "invite_link_copied": "Invite link copied",
+    "invite_link_copy_failed": "Failed to copy invite link",
+    "copy_invite_link": "Copy Invite Link"
+  },
+  "components": {
+    "phone_input": {
+      "search_country": "Search country...",
+      "no_country_found": "No country found."
+    }
+  },
+  "student_detail": {
+    "tabs": {
+      "overview": "Overview",
+      "lessons": "Lessons",
+      "homework": "Homework",
+      "finance": "Finance",
+      "settings": "Settings",
+      "exams": "Exams",
+      "attendance": "Attendance"
+    },
+    "header": {
+      "total_lessons": "Total Lessons",
+      "balance": "Balance",
+      "invite_link": "Copy Invite Link",
+      "status": {
+        "active": "Active",
+        "shadow": "Pending Invite"
+      },
+      "verified": "Verified",
+      "pending": "Pending",
+      "no_level": "No Level",
+      "no_number": "No Number",
+      "copy_link": "Copy Link",
+      "link_copied": "Invite link copied"
+    },
+    "overview": {
+      "general_info": "General Information",
+      "student_no": "Student No",
+      "grade": "Grade",
+      "phone": "Phone",
+      "email": "Email",
+      "parent_info": "Parent Information",
+      "parent_name": "Parent Name",
+      "parent_phone": "Parent Phone",
+      "parent_email": "Parent Email",
+      "private_notes": "Private Notes",
+      "no_notes": "No notes added yet.",
+      "total_lessons": "Total Lessons"
+    },
+    "lessons": {
+      "title": "Lesson History",
+      "add_lesson": "Add Lesson for Student",
+      "no_lessons": "No lesson records found.",
+      "empty": "No upcoming lessons scheduled.",
+      "status": {
+        "scheduled": "Scheduled",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "missed": "Missed"
+      }
+    },
+    "finance": {
+      "title": "Financial Transactions",
+      "receive_payment": "Receive Payment",
+      "lesson_fee": "Lesson Fee",
+      "payment_received": "Payment Received",
+      "balance": "Balance",
+      "no_transactions": "No financial transactions found.",
+      "empty": "Payment history will be here..."
+    },
+    "homework": {
+      "title": "Homework Tracking",
+      "assign_homework": "Assign Homework",
+      "no_homework": "No homework found.",
+      "status": {
+        "pending": "Pending",
+        "completed": "Completed"
+      }
+    },
+    "exams": {
+      "title": "Exams",
+      "no_exams": "No exams recorded yet."
+    },
+    "attendance": {
+      "title": "Attendance",
+      "present": "Present",
+      "absent": "Absent",
+      "late": "Late",
+      "no_records": "No attendance records found."
+    },
+    "settings": {
+      "title": "Student Settings",
+      "description": "Manage student profile and preferences.",
+      "profile_photo": "Profile Photo",
+      "change_photo": "Change Photo",
+      "personal_info": "Personal Information",
+      "full_name": "Full Name",
+      "student_number": "Student Number",
+      "grade_level": "Grade Level",
+      "contact_info": "Contact Information",
+      "parent_information": "Parent Information",
+      "parent_full_name": "Parent Full Name",
+      "parent_phone_number": "Parent Phone Number",
+      "parent_email_address": "Parent Email Address",
+      "invite_link": "Invite Link",
+      "invite_link_desc": "Enable or disable the invite link for this student.",
+      "invite_link_active": "Invite Link Active",
+      "invite_link_inactive": "Invite Link Inactive",
+      "copy_link": "Copy Link",
+      "danger_zone": "Danger Zone",
+      "delete_student": "Delete Student",
+      "delete_student_desc": "This action cannot be undone. This will permanently delete the student and remove their data from our servers.",
+      "delete_button": "Delete Student",
+      "save_changes": "Save Changes",
+      "saving": "Saving...",
+      "success": "Settings updated successfully.",
+      "error_message": "An error occurred while updating settings.",
+      "invite_toggled": "Invite link status updated.",
+      "link_copied": "Link copied to clipboard.",
+      "custom_name": "Display Name",
+      "custom_name_desc": "Only you will see this name.",
+      "phone": "Phone Number",
+      "phone_desc": "Contact number for notifications.",
+      "phone_claimed_desc": "Since this student has verified their account, only they can change their phone number.",
+      "notes": "Private Notes",
+      "notes_desc": "Notes only visible to you.",
+      "archive": {
+        "title": "Archive Student",
+        "desc": "Remove this student from your active list. History is preserved.",
+        "button": "Archive Student",
+        "confirm_title": "Are you sure?",
+        "confirm_desc": "This action will move the student to your archive. You can restore them later.",
+        "success": "Student archived"
+      },
+      "delete": {
+        "title": "Delete Student",
+        "desc": "Permanently delete this student and all associated data.",
+        "button": "Delete Student",
+        "confirm_title": "Are you absolutely sure?",
+        "confirm_desc": "This action cannot be undone. This will permanently delete the student profile and remove your data from our servers.",
+        "success": "Student deleted"
+      }
+    }
+  },
+  "join": {
+    "title": "Accept Invitation",
+    "desc": "{teacher} wants to add you as a student.",
+    "success": "Successfully joined!",
+    "error_used": "This link is invalid or has been used.",
+    "accept_button": "Accept and Join",
+    "welcome_user": "Dear {name},"
+  },
+  "auth": {
+    "register": {
+      "title": "Join Deniko",
+      "subtitle": "Professional tutoring management platform",
+      "hero_title": "Join Us",
+      "hero_desc": "Take your place in this big family with thousands of students and teachers.",
+      "mobile_hint": "Create your account in under a minute",
+      "role_select": "Select Account Type",
+      "student": "Student",
+      "student_desc": "I want to learn and grow",
+      "teacher": "Teacher",
+      "teacher_desc": "I want to teach and manage",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "password": "Password",
+      "password_confirm": "Confirm Password",
+      "confirm_password": "Confirm Password",
+      "submit": "Register",
+      "submitting": "Registering...",
+      "have_account": "Already have an account?",
+      "login_link": "Login",
+      "success_title": "Registration Successful!",
+      "success_desc": "We sent a verification link to your email address. Please check your inbox.",
+      "errors": {
+        "user_exists": "This email address is already in use",
+        "generic": "An error occurred during registration.",
+        "invalid_data": "Invalid form data"
+      },
+      "validation": {
+        "first_name_min": "First name must be at least 2 characters",
+        "last_name_min": "Last name must be at least 2 characters",
+        "email_invalid": "Please enter a valid email address",
+        "phone_min": "Please enter a valid phone number",
+        "role_required": "Please select a role",
+        "password_min": "Password must be at least 8 characters",
+        "password_regex": "Password must contain at least one uppercase, one lowercase, one number and one special character",
+        "password_mismatch": "Passwords do not match"
+      }
+    },
+    "login": {
+      "title": "Welcome to Deniko",
+      "subtitle": "Professional tutoring management platform",
+      "hero_title": "A New Era in Education",
+      "hero_desc": "Welcome to the modern and effective education platform that brings teachers and students together.",
+      "card_title": "Login",
+      "card_desc": "Login with Google or your email address",
+      "mobile_hint": "Secure login for teachers and students",
+      "chip": "Designed for modern tutoring",
+      "google_login": "Continue with Google",
+      "or_email": "Or with Email",
+      "email": "Email",
+      "password": "Password",
+      "forgot_password_link": "Forgot Password?",
+      "submit": "Login",
+      "no_account": "Don't have an account?",
+      "register_link": "Register",
+      "back_to_home": "Back to Home",
+      "validation": {
+        "email_invalid": "Please enter a valid email address",
+        "password_required": "Password is required",
+        "invalid_credentials": "Invalid email or password."
+      }
+    },
+    "forgot_password": {
+      "title": "Forgot Password?",
+      "desc": "Enter your email address and we'll send you a link to reset your password.",
+      "mobile_hint": "We send a secure reset link to your email",
+      "chip": "No worries, it happens",
+      "email_label": "Email Address",
+      "submit": "Send Reset Link",
+      "submitting": "Sending...",
+      "back_to_login": "Back to Login",
+      "try_again": "Try with a different email",
+      "success": "If an account exists with this email, you will receive a password reset link shortly."
+    },
+    "reset_password": {
+      "title": "Reset Password",
+      "desc": "Enter your new password below.",
+      "new_password": "New Password",
+      "confirm_password": "Confirm Password",
+      "submit": "Reset Password",
+      "submitting": "Resetting...",
+      "success": "Your password has been reset successfully. You can now login.",
+      "success_title": "Password Reset Successful",
+      "success_desc": "Your password has been reset successfully. You can now login.",
+      "invalid_token": "Invalid or expired token.",
+      "expired_token": "This link has expired.",
+      "user_not_found": "User not found.",
+      "invalid_link_title": "Invalid Link",
+      "invalid_link_desc": "This password reset link is invalid or has expired. Please request a new one.",
+      "same_password": "New password cannot be the same as the old password."
+    },
+    "onboarding": {
+      "title": "Complete Your Profile",
+      "subtitle": "Please fill in the missing information to continue.",
+      "submit": "Save and Continue",
+      "submitting": "Saving..."
+    },
+    "verification": {
+      "unverified_title": "Email address not verified.",
+      "unverified_desc": "Please click the verification link sent to your email address to log in.",
+      "resend_button": "Resend Verification Code",
+      "sending": "Sending...",
+      "wait": "Please wait: {time}",
+      "success": "Verification link resent.",
+      "error": "An error occurred.",
+      "user_not_found": "User not found.",
+      "already_verified": "Email already verified."
+    },
+    "verify_page": {
+      "verifying": "Verifying...",
+      "success_title": "Email Verified!",
+      "error_title": "Verification Failed",
+      "verifying_desc": "Please wait, verifying your email address.",
+      "missing_token": "Verification token not found.",
+      "resend_button": "Resend Verification Code",
+      "back_to_login": "Login",
+      "messages": {
+        "invalid_token": "Invalid verification code.",
+        "expired_token": "Verification code expired.",
+        "user_not_found": "User not found.",
+        "success": "Email address successfully verified.",
+        "error": "An error occurred during verification."
+      }
+    },
+    "errors": {
+      "generic": "An error occurred."
+    }
+  },
+  "legal": {
+    "terms_title": "Terms of Service",
+    "privacy_title": "Privacy Policy",
+    "accept_terms": "I have read and accept the [Terms of Service] and [Privacy Policy].",
+    "validation_terms": "You must accept the terms to continue.",
+    "validation_error": "You must accept the terms to continue.",
+    "marketing_consent": "I want to be informed about campaigns and announcements via email."
+  },
+  "home": {
+    "hero_title": "Digitize Your Education Life",
+    "hero_subtitle": "Smart assistant designed for teachers and students. Lesson schedule, student tracking, and performance analytics in one platform.",
+    "get_started": "Discover Deniko",
+    "login": "Login",
+    "features": {
+      "title": "Powerful Tools for Education",
+      "scheduling_title": "Smart Scheduling",
+      "scheduling_desc": "Optimize your lesson schedule, prevent conflicts, and use your time efficiently.",
+      "students_title": "Student Portfolio",
+      "students_desc": "Create custom progress reports, notes, and homework tracking for each student.",
+      "progress_title": "Data-Driven Analysis",
+      "progress_desc": "Review success charts, identify gaps, and focus on goals.",
+      "communication_title": "Seamless Communication",
+      "communication_desc": "Stay connected with students and parents through integrated messaging and announcements.",
+      "badge": "ALL-IN-ONE PLATFORM",
+      "subtitle": "Plan lessons, track students and understand performance in one clean, modern workspace."
+    },
+    "stats": {
+      "schools_label": "Tutoring teams",
+      "schools_value": "120+",
+      "schools_suffix": "schools",
+      "schools_hint": "From solo tutors to boutique academies.",
+      "students_label": "Tracked students",
+      "students_value": "4.5K",
+      "students_suffix": "profiles",
+      "students_hint": "Live progress, notes and payments in one place."
+    },
+    "how_it_works": {
+      "title": "How Deniko Works?",
+      "step1_title": "Create Your Profile",
+      "step1_desc": "Create your digital identity by selecting your instructor or student role.",
+      "step2_title": "Organize Your Schedule",
+      "step2_desc": "Set lesson hours, availability, and work calendar.",
+      "step3_title": "Increase Efficiency",
+      "step3_desc": "Focus on the education process with automatic reminders and analytics."
+    },
+    "cta": {
+      "title": "Be Part of Modern Education",
+      "subtitle": "Leave traditional methods behind. Make your education process more organized and efficient with Deniko.",
+      "button": "Start Now"
+    },
+    "mock_dashboard": {
+      "attendance": "Attendance",
+      "active_students": "Active Students",
+      "classes_today": "Classes Today",
+      "schedule": "Schedule",
+      "math": "Mathematics",
+      "physics": "Physics",
+      "chemistry": "Chemistry",
+      "biology": "Biology",
+      "active": "Active",
+      "pending": "Pending",
+      "completed": "Completed",
+      "exam_results": "Exam Results",
+      "class_average": "Class Average",
+      "weekly": "Weekly",
+      "dashboard_title": "Dashboard",
+      "overview": "Overview",
+      "students": "Students",
+      "finance": "Finance",
+      "room": "Room",
+      "graphic_schedule": "Schedule",
+      "graphic_profile": "Student Profile",
+      "graphic_performance": "Performance",
+      "graphic_analysis": "Analysis"
+    }
+  },
+  "email": {
+    "verification": {
+      "subject": "Verify Your Deniko Account",
+      "title": "Welcome to Deniko!",
+      "greeting": "Hello,",
+      "body": "We are very happy to have you join us. Please verify your email address to keep your account secure and access all features.",
+      "button": "Verify My Account",
+      "ignore": "If you did not request this email, please ignore it.",
+      "footer": "Deniko - Teacher and Student Management Platform.",
+      "website": "Web Site",
+      "support": "Support",
+      "footer_disclaimer": "This email was sent regarding an important action on your Deniko account (membership verification).",
+      "footer_address": "Güzeltepe Mah., 747. Cd., No:14 Çankaya/Ankara",
+      "footer_copyright": "© 2025 Deniko. All rights reserved.",
+      "footer_terms": "Terms of Service",
+      "footer_privacy": "Privacy Policy"
+    },
+    "password_reset": {
+      "subject": "Reset Your Password - Deniko",
+      "title": "Reset Your Password",
+      "greeting": "Hello,",
+      "body": "We received a request to reset your password. Click the button below to create a new password. This link is valid for 1 hour.",
+      "button": "Reset Password",
+      "ignore": "If you didn't request this, you can safely ignore this email.",
+      "footer_disclaimer": "This email contains important information about your Deniko account.",
+      "footer_address": "Güzeltepe Mah., 747. Cd., No:14 Çankaya/Ankara",
+      "footer_copyright": "© 2025 Deniko. All rights reserved.",
+      "footer_terms": "Terms of Service",
+      "footer_privacy": "Privacy Policy"
+    }
+  }
 }

@@ -120,3 +120,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .perspective-1200 {
+    perspective: 1200px;
+  }
+
+  .tilt-soft {
+    transform-style: preserve-3d;
+    transform: rotateX(12deg) rotateY(-16deg) translateZ(0);
+  }
+
+  .tilt-soft:hover {
+    transform: rotateX(8deg) rotateY(-10deg) translateZ(6px);
+  }
+}

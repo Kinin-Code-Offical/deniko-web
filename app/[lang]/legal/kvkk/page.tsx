@@ -1,5 +1,6 @@
 import type { Locale } from "@/i18n-config"
 import { kvkkContent } from "@/lib/legal-content"
+import { LegalBackButton } from "@/components/ui/legal-back-button"
 
 export default async function KvkkPage({
     params,
@@ -11,6 +12,7 @@ export default async function KvkkPage({
 
     return (
         <div className="container mx-auto py-10 px-4 max-w-4xl">
+            <LegalBackButton label={lang === 'tr' ? 'Geri' : 'Back'} />
             <h1 className="text-3xl font-bold mb-8 text-slate-900">{content.title}</h1>
 
             <div className="prose prose-slate max-w-none text-slate-600">

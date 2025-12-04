@@ -92,7 +92,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
     }
     if (success) {
         return (
-            <div className="w-full max-w-md mx-auto text-center space-y-6">
+            <div className="w-full text-center space-y-6">
                 <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
                     <CheckCircle2 className="h-10 w-10 text-green-600" />
                 </div>
@@ -108,9 +108,9 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
     }
 
     return (
-        <div className="w-full space-y-6">
+        <div className="w-full space-y-5">
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 
                     {/* Role Selection */}
                     <FormField
@@ -152,7 +152,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                         )}
                     />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                             control={form.control}
                             name="firstName"
@@ -181,7 +181,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                         />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                             control={form.control}
                             name="email"
@@ -216,7 +216,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                         />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                             control={form.control}
                             name="password"
@@ -289,7 +289,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                         control={form.control}
                         name="terms"
                         render={({ field }) => (
-                            <FormItem className="flex flex-row items-center gap-3 space-y-0 rounded-xl border border-slate-200 p-3 shadow-sm transition-all duration-200 hover:bg-slate-50 hover:border-[#2062A3]/50">
+                            <FormItem className="flex flex-row items-center gap-3 space-y-0 rounded-lg border border-slate-200 p-3 transition-all duration-200 hover:bg-slate-50 hover:border-[#2062A3]/50">
                                 <FormControl>
                                     <Checkbox
                                         checked={field.value}
@@ -324,7 +324,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                         control={form.control}
                         name="marketingConsent"
                         render={({ field }) => (
-                            <FormItem className="flex flex-row items-center gap-3 space-y-0 rounded-xl border border-slate-200 p-3 shadow-sm transition-all duration-200 hover:bg-slate-50 hover:border-[#2062A3]/50">
+                            <FormItem className="flex flex-row items-center gap-3 space-y-0 rounded-lg border border-slate-200 p-3 transition-all duration-200 hover:bg-slate-50 hover:border-[#2062A3]/50">
                                 <FormControl>
                                     <Checkbox
                                         checked={field.value}

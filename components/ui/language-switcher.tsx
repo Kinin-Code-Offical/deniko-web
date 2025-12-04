@@ -2,6 +2,13 @@
 
 import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Check, ChevronDown, Globe } from "lucide-react"
 import { i18n } from "@/i18n-config"
 
 export function LanguageSwitcher() {
@@ -23,19 +30,40 @@ export function LanguageSwitcher() {
         router.push(redirectedPathName(locale))
     }
 
+    const localeLabels: Record<string, string> = {
+        en: "English",
+        tr: "Türkçe",
+    }
+
     return (
-        <div className="flex gap-2">
-            {i18n.locales.map((locale) => (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
                 <Button
-                    key={locale}
-                    variant={currentLocale === locale ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => handleLanguageChange(locale)}
-                    className={currentLocale === locale ? "bg-[#2062A3]" : ""}
+                    variant="outline"
+                    className="h-11 rounded-full border-slate-200/80 bg-white/80 px-4 text-sm font-semibold text-slate-700 gap-2 shadow-sm data-[state=open]:ring-2 data-[state=open]:ring-[#1d4f87]/20"
                 >
-                    {locale.toUpperCase()}
+                    <Globe className="h-4 w-4 text-[#1d4f87]" />
+                    <span>{localeLabels[currentLocale] ?? currentLocale.toUpperCase()}</span>
+                    <ChevronDown className="h-3.5 w-3.5 text-slate-500" />
                 </Button>
-            ))}
-        </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-44 rounded-2xl border-slate-100 shadow-lg shadow-slate-900/5">
+                {i18n.locales.map((locale) => (
+                    <DropdownMenuItem
+                        key={locale}
+                        onClick={() => handleLanguageChange(locale)}
+                        className="flex items-center gap-2 py-3 text-sm"
+                    >
+                        <Check
+                            className={`h-4 w-4 text-[#1d4f87] ${currentLocale === locale ? "opacity-100" : "opacity-0"}`}
+                        />
+                        <div className="flex flex-col leading-tight">
+                            <span className="text-slate-900 font-semibold">{localeLabels[locale]}</span>
+                            <span className="text-[11px] uppercase text-slate-400 tracking-[0.2em]">{locale}</span>
+                        </div>
+                    </DropdownMenuItem>
+                ))}
+            </DropdownMenuContent>
+        </DropdownMenu>
     )
 }
