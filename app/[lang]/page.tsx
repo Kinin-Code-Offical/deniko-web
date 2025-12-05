@@ -1,5 +1,6 @@
 import { getDictionary } from "@/lib/get-dictionary";
 import type { Locale } from "@/i18n-config";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/navbar";
@@ -37,6 +38,24 @@ import PerformanceCard from "@/components/landing/carousel/cards/PerformanceCard
 import AssignmentsCard from "@/components/landing/carousel/cards/AssignmentsCard";
 import MessagesCard from "@/components/landing/carousel/cards/MessagesCard";
 import type { CardItem } from "@/components/landing/carousel/types";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const isTr = lang === "tr";
+
+  return {
+    title: isTr
+      ? "Deniko | Özel Ders Yönetim Platformu"
+      : "Deniko | Private Tutoring Management Platform",
+    description: isTr
+      ? "Öğrenci takibi, ders programı ve ödeme takibini tek bir yerden yönetin. Deniko ile işinizi dijitalleştirin."
+      : "Manage student tracking, lesson scheduling, and payments in one place. Digitalize your business with Deniko.",
+  };
+}
 
 export default async function Home({
   params,

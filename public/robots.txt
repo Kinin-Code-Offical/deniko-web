@@ -9,3 +9,5 @@ Disallow: /reset-password/
 Disallow: /api/
 
 Sitemap: https://deniko.net/sitemap.xml
+
+Sitemap: https://deniko.net/sitemap.xml

@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s | Deniko",
   },
   description:
-    "Deniko ile özel ders süreçlerinizi profesyonelce yönetin. Öğrenci takibi, ders programlama ve finansal yönetim tek bir platformda.",
+    "Deniko ile özel ders süreçlerinizi profesyonelce yönetin. Öğrenci takibi, ders programlama, finansal yönetim ve veli bilgilendirme sistemleriyle eğitimde dijital dönüşümü yakalayın.",
   metadataBase: new URL("https://deniko.net"),
   alternates: {
     canonical: "/",
@@ -57,7 +57,11 @@ const jsonLd = {
   "@type": "Organization",
   name: "Deniko",
   url: "https://deniko.net",
-  logo: "https://deniko.net/logo.png",
+  logo: "https://deniko.net/web-app-manifest-512x512.png",
+  sameAs: [
+    "https://github.com/Kinin-Code-Offical",
+    "https://www.patreon.com/YamacGursel",
+  ],
 };
 
 export default function RootLayout({

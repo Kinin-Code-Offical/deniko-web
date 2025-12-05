@@ -15,6 +15,22 @@ import {
 import { DenikoLogo } from "@/components/ui/deniko-logo";
 import Link from "next/link";
 import { LogIn, UserPlus } from "lucide-react";
+import type { Metadata } from "next";
+import type { Locale } from "@/i18n-config";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const isTr = lang === "tr";
+
+  return {
+    title: isTr ? "Davet | Deniko" : "Invitation | Deniko",
+    description: isTr ? "Deniko'ya katılın." : "Join Deniko.",
+  };
+}
 
 export default async function JoinPage({
   params,

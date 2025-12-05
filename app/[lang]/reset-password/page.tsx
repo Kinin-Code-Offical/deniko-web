@@ -1,5 +1,6 @@
 import { getDictionary } from "@/lib/get-dictionary";
 import type { Locale } from "@/i18n-config";
+import type { Metadata } from "next";
 import { ResetPasswordForm } from "@/components/auth/reset-password-form";
 import { DenikoLogo } from "@/components/ui/deniko-logo";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
@@ -8,6 +9,22 @@ import { ArrowLeft, AlertCircle } from "lucide-react";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const isTr = lang === "tr";
+
+  return {
+    title: isTr ? "Şifre Sıfırlama | Deniko" : "Reset Password | Deniko",
+    description: isTr
+      ? "Yeni şifrenizi belirleyerek hesabınıza güvenle erişin."
+      : "Set your new password and access your account securely.",
+  };
+}
 
 export default async function ResetPasswordPage({
   params,

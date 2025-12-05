@@ -1,88 +1,111 @@
-import { auth } from "@/auth"
-import { db } from "@/lib/db"
-import { redirect } from "next/navigation"
-import { getDictionary } from "@/lib/get-dictionary"
-import type { Locale } from "@/i18n-config"
-import { AddStudentDialog } from "@/components/students/add-student-dialog"
-import { StudentTable } from "@/components/students/student-table"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { auth } from "@/auth";
+import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
+import { getDictionary } from "@/lib/get-dictionary";
+import type { Locale } from "@/i18n-config";
+import type { Metadata } from "next";
+import { AddStudentDialog } from "@/components/students/add-student-dialog";
+import { StudentTable } from "@/components/students/student-table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default async function StudentsPage({ params }: { params: Promise<{ lang: string }> }) {
-    const { lang } = await params
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const dictionary = await getDictionary(lang as Locale) as any
-    const session = await auth()
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const isTr = lang === "tr";
 
-    if (!session?.user?.id) {
-        redirect(`/${lang}/login`)
-    }
+  return {
+    title: isTr ? "Öğrenciler | Deniko" : "Students | Deniko",
+    description: isTr
+      ? "Öğrenci listesi ve yönetimi."
+      : "Student list and management.",
+  };
+}
 
-    const user = await db.user.findUnique({
-        where: { id: session.user.id },
+export default async function StudentsPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const dictionary = (await getDictionary(lang as Locale)) as any;
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    redirect(`/${lang}/login`);
+  }
+
+  const user = await db.user.findUnique({
+    where: { id: session.user.id },
+    include: {
+      teacherProfile: true,
+    },
+  });
+
+  if (!user || user.role !== "TEACHER" || !user.teacherProfile) {
+    redirect(`/${lang}/dashboard`);
+  }
+
+  const relations = await db.studentTeacherRelation.findMany({
+    where: { teacherId: user.teacherProfile.id },
+    include: {
+      student: {
         include: {
-            teacherProfile: true
-        }
-    })
-
-    if (!user || user.role !== "TEACHER" || !user.teacherProfile) {
-        redirect(`/${lang}/dashboard`)
-    }
-
-    const relations = await db.studentTeacherRelation.findMany({
-        where: { teacherId: user.teacherProfile.id },
-        include: {
-            student: {
-                include: {
-                    user: true,
-                    classrooms: true
-                }
-            }
+          user: true,
+          classrooms: true,
         },
-        orderBy: { createdAt: 'desc' }
-    })
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
 
-    const classrooms = await db.classroom.findMany({
-        where: { teacherId: user.teacherProfile.id },
-        select: { id: true, name: true }
-    })
+  const classrooms = await db.classroom.findMany({
+    where: { teacherId: user.teacherProfile.id },
+    select: { id: true, name: true },
+  });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const students = relations.map((rel: any) => ({
-        id: rel.student.id,
-        user: rel.student.user,
-        tempFirstName: rel.student.tempFirstName,
-        tempLastName: rel.student.tempLastName,
-        tempAvatar: rel.student.tempAvatar,
-        relation: { customName: rel.customName },
-        name: rel.customName || (rel.student.isClaimed && rel.student.user?.name
-            ? rel.student.user.name
-            : `${rel.student.tempFirstName || ''} ${rel.student.tempLastName || ''}`.trim()),
-        email: rel.student.isClaimed ? rel.student.user?.email : null,
-        status: rel.student.isClaimed ? "CLAIMED" : "SHADOW",
-        studentNo: rel.student.studentNo,
-        inviteToken: rel.student.inviteToken,
-        isClaimed: rel.student.isClaimed,
-        gradeLevel: rel.student.gradeLevel,
-        classrooms: rel.student.classrooms
-    }))
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const students = relations.map((rel: any) => ({
+    id: rel.student.id,
+    user: rel.student.user,
+    tempFirstName: rel.student.tempFirstName,
+    tempLastName: rel.student.tempLastName,
+    tempAvatar: rel.student.tempAvatar,
+    relation: { customName: rel.customName },
+    name:
+      rel.customName ||
+      (rel.student.isClaimed && rel.student.user?.name
+        ? rel.student.user.name
+        : `${rel.student.tempFirstName || ""} ${rel.student.tempLastName || ""}`.trim()),
+    email: rel.student.isClaimed ? rel.student.user?.email : null,
+    status: rel.student.isClaimed ? "CLAIMED" : "SHADOW",
+    studentNo: rel.student.studentNo,
+    inviteToken: rel.student.inviteToken,
+    isClaimed: rel.student.isClaimed,
+    gradeLevel: rel.student.gradeLevel,
+    classrooms: rel.student.classrooms,
+  }));
 
-    return (
-        <div className="space-y-6">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <h2 className="text-3xl font-bold tracking-tight">
-                    {dictionary.dashboard.students.title}
-                </h2>
-                <AddStudentDialog dictionary={dictionary} classrooms={classrooms} />
-            </div>
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-3xl font-bold tracking-tight">
+          {dictionary.dashboard.students.title}
+        </h2>
+        <AddStudentDialog dictionary={dictionary} classrooms={classrooms} />
+      </div>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>{dictionary.dashboard.students.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <StudentTable data={students} dictionary={dictionary} lang={lang} />
-                </CardContent>
-            </Card>
-        </div>
-    )
+      <Card>
+        <CardHeader>
+          <CardTitle>{dictionary.dashboard.students.title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <StudentTable data={students} dictionary={dictionary} lang={lang} />
+        </CardContent>
+      </Card>
+    </div>
+  );
 }

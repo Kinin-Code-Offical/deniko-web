@@ -1,5 +1,6 @@
 import { getDictionary } from "@/lib/get-dictionary";
 import type { Locale } from "@/i18n-config";
+import type { Metadata } from "next";
 import { LoginForm } from "@/components/auth/login-form";
 import { DenikoLogo } from "@/components/ui/deniko-logo";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
@@ -10,6 +11,22 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { logout } from "@/app/actions/auth";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const isTr = lang === "tr";
+
+  return {
+    title: isTr ? "Giriş Yap | Deniko" : "Login | Deniko",
+    description: isTr
+      ? "Deniko hesabınıza giriş yapın ve yönetim panelinize erişin."
+      : "Login to your Deniko account and access your dashboard.",
+  };
+}
 
 export default async function LoginPage({
   params,

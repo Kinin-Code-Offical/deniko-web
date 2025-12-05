@@ -1,11 +1,28 @@
 import { getDictionary } from "@/lib/get-dictionary";
 import type { Locale } from "@/i18n-config";
+import type { Metadata } from "next";
 import { ForgotPasswordForm } from "@/components/auth/forgot-password-form";
 import { DenikoLogo } from "@/components/ui/deniko-logo";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const isTr = lang === "tr";
+
+  return {
+    title: isTr ? "Şifremi Unuttum | Deniko" : "Forgot Password | Deniko",
+    description: isTr
+      ? "Şifrenizi mi unuttunuz? E-posta adresinizle şifrenizi sıfırlayın."
+      : "Forgot your password? Reset it with your email address.",
+  };
+}
 
 export default async function ForgotPasswordPage({
   params,
