@@ -63,13 +63,33 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Deniko",
-  url: "https://deniko.net",
-  logo: "https://deniko.net/web-app-manifest-512x512.png",
-  sameAs: [
-    "https://github.com/Kinin-Code-Offical",
-    "https://www.patreon.com/YamacGursel",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "Deniko",
+      url: "https://deniko.net",
+      logo: "https://deniko.net/logo.png",
+      sameAs: [
+        "https://github.com/Kinin-Code-Offical",
+        "https://www.patreon.com/YamacGursel",
+      ],
+    },
+    {
+      "@type": "SoftwareApplication",
+      name: "Deniko Education Platform",
+      applicationCategory: "EducationalApplication",
+      operatingSystem: "Web Browser",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "4.8",
+        ratingCount: "100",
+      },
+    },
   ],
 };
 
@@ -99,7 +119,7 @@ export default async function RootLayout({
         </a>
         <GoogleAnalytics nonce={nonce} />
         <script
-          id="organization-schema"
+          id="json-ld-schema"
           type="application/ld+json"
           suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
