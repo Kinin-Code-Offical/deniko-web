@@ -137,6 +137,7 @@ export function LoginForm({ dictionary, lang }: LoginFormProps) {
                         variant="ghost"
                         size="sm"
                         className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
+                        aria-label="Toggle password visibility"
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (

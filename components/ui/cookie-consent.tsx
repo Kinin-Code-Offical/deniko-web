@@ -46,10 +46,10 @@ export function CookieConsent() {
             <Cookie className="h-6 w-6 text-blue-600" />
           </div>
           <div className="space-y-1">
-            <h3 className="flex items-center gap-2 font-semibold text-slate-900 md:hidden">
+            <h2 className="flex items-center gap-2 font-semibold text-slate-900 md:hidden">
               <Cookie className="h-4 w-4 text-blue-600" />
               Çerez Tercihleri
-            </h3>
+            </h2>
             <p className="text-sm leading-relaxed text-slate-600">
               Deniko olarak deneyiminizi iyileştirmek, analitik veriler toplamak
               ve size özel içerikler sunmak için çerezler kullanıyoruz. Detaylı

@@ -3,7 +3,6 @@ import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { env } from "./env";
 
-// Global definition for Prisma to prevent multiple instances in development
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
@@ -11,57 +10,28 @@ const globalForPrisma = globalThis as unknown as {
 export const db =
   globalForPrisma.prisma ??
   (() => {
-    const connectionString = env.DATABASE_URL;
-    const sslModeMatch = /sslmode=([^&]+)/i.exec(connectionString);
-    const sslMode = sslModeMatch?.[1]?.toLowerCase()
-      .replace(/\s+/g, "") as
-      | "disable"
-      | "allow"
-      | "prefer"
-      | "require"
-      | "verify-ca"
-      | "verify-full"
-      | undefined;
+    const url = new URL(env.DATABASE_URL);
 
-    const hasCustomCertificates = Boolean(
-      env.DATABASE_SSL_CA || env.DATABASE_SSL_CERT || env.DATABASE_SSL_KEY,
-    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const dbConfig: any = {
+      user: url.username,
+      password: url.password,
+      database: url.pathname.slice(1),
+      max: 10,
+    };
 
-    const shouldUseSSL = Boolean(
-      hasCustomCertificates ||
-        env.DATABASE_SSL_SKIP_VERIFY ||
-        (sslMode && sslMode !== "disable" && sslMode !== "allow" && sslMode !== "prefer"),
-    );
-
-    const normalizeCertificate = (value?: string) => value?.replace(/\\n/g, "\n");
-
-    const sslConfiguration = shouldUseSSL
-      ? {
-          ca: normalizeCertificate(env.DATABASE_SSL_CA),
-          cert: normalizeCertificate(env.DATABASE_SSL_CERT),
-          key: normalizeCertificate(env.DATABASE_SSL_KEY),
-          // Match libpq semantics: `require` skips verification, `verify-*` enforces it.
-          rejectUnauthorized: false,
-        }
-      : undefined;
-
-    if (process.env.NODE_ENV === "development") {
-       console.log("[db.ts] SSL Config:", {
-         sslMode,
-         hasCustomCertificates,
-         rejectUnauthorized: sslConfiguration?.rejectUnauthorized,
-         caLength: sslConfiguration?.ca?.length,
-       });
+    if (env.INSTANCE_CONNECTION_NAME) {
+      dbConfig.host = `/cloudsql/${env.INSTANCE_CONNECTION_NAME}`;
+      console.log(`[DB] Connecting via Unix Socket: ${dbConfig.host}`);
+    } else {
+      dbConfig.host = "127.0.0.1";
+      dbConfig.port = 5432;
+      console.log("[DB] Connecting via Localhost (Auth Proxy)");
     }
 
-    // Remove sslmode from connection string to prevent conflicts with ssl config object
-    // and ensure pg uses the provided ssl configuration object.
-    const urlObj = new URL(connectionString);
-    urlObj.searchParams.delete("sslmode");
-    const cleanConnectionString = urlObj.toString();
-
-    const pool = new Pool({ connectionString: cleanConnectionString, ssl: sslConfiguration });
+    const pool = new Pool(dbConfig);
     const adapter = new PrismaPg(pool);
+
     return new PrismaClient({ adapter });
   })();
 

@@ -124,6 +124,11 @@ const CountrySelect = ({
   searchPlaceholder,
   noResultsMessage,
 }: CountrySelectProps) => {
+  const selectedOption = React.useMemo(
+    () => options.find((option) => option.value === value),
+    [options, value]
+  );
+
   const handleSelect = React.useCallback(
     (country: Country) => {
       onChange(country);
@@ -141,9 +146,12 @@ const CountrySelect = ({
             "flex items-center gap-1 rounded-s-lg rounded-e-none px-3"
           )}
           disabled={disabled}
+          aria-label={`Select country code. Current ${
+            selectedOption?.label || value
+          } (+${getCountryCallingCode(value)})`}
         >
           <FlagComponent country={value} countryName={value} />
-          <span className="text-muted-foreground/80 text-sm font-normal">
+          <span className="text-foreground text-sm font-medium">
             {value && `+${getCountryCallingCode(value)}`}
           </span>
           <ChevronsUpDown

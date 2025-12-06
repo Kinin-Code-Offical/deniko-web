@@ -293,6 +293,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                         variant="ghost"
                         size="sm"
                         className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
+                        aria-label="Toggle password visibility"
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (
@@ -327,6 +328,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                         variant="ghost"
                         size="sm"
                         className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
+                        aria-label="Toggle password visibility"
                         onClick={() =>
                           setShowConfirmPassword(!showConfirmPassword)
                         }

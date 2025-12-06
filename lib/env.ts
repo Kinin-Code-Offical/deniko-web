@@ -4,6 +4,7 @@ const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   NEXT_RUNTIME: z.enum(["edge", "nodejs"]).optional(),
   DATABASE_URL: z.string().url({ message: "DATABASE_URL must be a valid URL" }),
+  INSTANCE_CONNECTION_NAME: z.string().optional(),
   DIRECT_URL: z.string().url().optional(),
   DATABASE_SSL_CA: z.string().optional(),
   DATABASE_SSL_CERT: z.string().optional(),

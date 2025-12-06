@@ -83,6 +83,7 @@ export default function proxy(request: NextRequest) {
     const { pathname, search } = nextUrl
     const requestId = crypto.randomUUID()
     const clientIp = getClientIp(request)
+    const protoHeader = headers.get("x-forwarded-proto")
 
     // Generate Nonce for CSP
     const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
@@ -109,16 +110,6 @@ export default function proxy(request: NextRequest) {
     const requestHeaders = new Headers(headers)
     requestHeaders.set('x-nonce', nonce)
     requestHeaders.set('Content-Security-Policy', cspHeader)
-
-    // Force HTTPS in production
-    if (isProd) {
-        const proto = headers.get("x-forwarded-proto")
-        if (proto && proto === "http") {
-            const httpsUrl = new URL(url)
-            httpsUrl.protocol = "https:"
-            return NextResponse.redirect(httpsUrl, 301)
-        }
-    }
 
     if (isRateLimited(clientIp)) {
         const limitedResponse = attachSecurityHeaders(
@@ -167,6 +158,10 @@ export default function proxy(request: NextRequest) {
             url
         )
 
+        if (isProd && protoHeader === "http") {
+            newUrl.protocol = "https:"
+        }
+
         // Preserve query parameters
         newUrl.search = search
 
@@ -188,6 +183,16 @@ export default function proxy(request: NextRequest) {
         )
 
         if (localeInPath) {
+            if (isProd && protoHeader === "http") {
+                const httpsUrl = new URL(url)
+                httpsUrl.protocol = "https:"
+                const secureResponse = attachSecurityHeaders(
+                    NextResponse.redirect(httpsUrl, 301)
+                )
+                secureResponse.headers.set('x-request-id', requestId)
+                secureResponse.headers.set('Content-Security-Policy', cspHeader)
+                return secureResponse
+            }
             // Pass request headers (with nonce) to next()
             const response = attachSecurityHeaders(NextResponse.next({
                 request: {
@@ -204,6 +209,15 @@ export default function proxy(request: NextRequest) {
 
             return response
         }
+    }
+
+    if (isProd && protoHeader === "http") {
+        const httpsUrl = new URL(url)
+        httpsUrl.protocol = "https:"
+        const secureFallback = attachSecurityHeaders(NextResponse.redirect(httpsUrl, 301))
+        secureFallback.headers.set('x-request-id', requestId)
+        secureFallback.headers.set('Content-Security-Policy', cspHeader)
+        return secureFallback
     }
 
     const fallbackResponse = attachSecurityHeaders(NextResponse.next({
