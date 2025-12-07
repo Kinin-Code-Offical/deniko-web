@@ -69,8 +69,8 @@ export default async function LegalPage({
   params: Promise<{ lang: Locale }>;
 }) {
   const { lang } = await params;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dictionary = (await getDictionary(lang)) as any;
+
+  const dictionary = await getDictionary(lang);
 
   const legalDocs = [
     {

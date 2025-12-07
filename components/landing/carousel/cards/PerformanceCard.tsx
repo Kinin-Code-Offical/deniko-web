@@ -14,9 +14,10 @@ const PerformanceChart = dynamic(() => import("./PerformanceChart"), {
   ),
 });
 
+import type { Dictionary } from "@/types/i18n";
+
 interface PerformanceCardProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
 }
 
 const COLORS = ["#10B981", "#E5E7EB"]; // Green and Gray

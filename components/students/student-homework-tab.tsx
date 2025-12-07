@@ -15,12 +15,22 @@ import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
 import { format } from "date-fns";
 import { tr, enUS } from "date-fns/locale";
+import type { Dictionary } from "@/types/i18n";
+import {
+  type Homework,
+  type HomeworkTracking,
+  type Lesson,
+} from "@prisma/client";
+
+type HomeworkWithTracking = HomeworkTracking & {
+  homework: Homework & {
+    lesson: Lesson;
+  };
+};
 
 interface StudentHomeworkTabProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  homeworks: any[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  homeworks: HomeworkWithTracking[];
+  dictionary: Dictionary;
   lang: string;
 }
 
@@ -34,23 +44,21 @@ export function StudentHomeworkTab({
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>
-          {dictionary.dashboard.student_detail.homework.title}
-        </CardTitle>
+        <CardTitle>{dictionary.student_detail.homework.title}</CardTitle>
         <Button size="sm">
           <Plus className="mr-2 h-4 w-4" />
-          {dictionary.dashboard.student_detail.homework.assign_homework}
+          {dictionary.student_detail.homework.assign_homework}
         </Button>
       </CardHeader>
       <CardContent>
         {homeworks.length === 0 ? (
           <div className="text-muted-foreground py-8 text-center">
-            {dictionary.dashboard.student_detail.homework.no_homework}
+            {dictionary.student_detail.homework.no_homework}
           </div>
         ) : (
           <Table>
             <TableCaption>
-              {dictionary.dashboard.student_detail.homework.title}
+              {dictionary.student_detail.homework.title}
             </TableCaption>
             <TableHeader>
               <TableRow>
@@ -83,20 +91,14 @@ export function StudentHomeworkTab({
                         variant="outline"
                         className="border-yellow-200 bg-yellow-50 text-yellow-700"
                       >
-                        {
-                          dictionary.dashboard.student_detail.homework.status
-                            .pending
-                        }
+                        {dictionary.student_detail.homework.status.pending}
                       </Badge>
                     ) : (
                       <Badge
                         variant="outline"
                         className="border-green-200 bg-green-50 text-green-700"
                       >
-                        {
-                          dictionary.dashboard.student_detail.homework.status
-                            .completed
-                        }
+                        {dictionary.student_detail.homework.status.completed}
                       </Badge>
                     )}
                   </TableCell>

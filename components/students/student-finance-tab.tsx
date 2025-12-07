@@ -15,12 +15,20 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import { format } from "date-fns";
 import { tr, enUS } from "date-fns/locale";
+import type { Dictionary } from "@/types/i18n";
+import { type Payment, type PaymentType, Prisma } from "@prisma/client";
+
+interface Transaction {
+  id: string;
+  date: Date;
+  type: PaymentType | "LESSON_FEE";
+  description: string;
+  amount: Prisma.Decimal;
+}
 
 interface StudentFinanceTabProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  transactions: any[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  transactions: Transaction[];
+  dictionary: Dictionary;
   lang: string;
 }
 
@@ -34,23 +42,21 @@ export function StudentFinanceTab({
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>
-          {dictionary.dashboard.student_detail.finance.title}
-        </CardTitle>
+        <CardTitle>{dictionary.student_detail.finance.title}</CardTitle>
         <Button size="sm">
           <Plus className="mr-2 h-4 w-4" />
-          {dictionary.dashboard.student_detail.finance.receive_payment}
+          {dictionary.student_detail.finance.receive_payment}
         </Button>
       </CardHeader>
       <CardContent>
         {transactions.length === 0 ? (
           <div className="text-muted-foreground py-8 text-center">
-            {dictionary.dashboard.student_detail.finance.no_transactions}
+            {dictionary.student_detail.finance.no_transactions}
           </div>
         ) : (
           <Table>
             <TableCaption>
-              {dictionary.dashboard.student_detail.finance.title}
+              {dictionary.student_detail.finance.title}
             </TableCaption>
             <TableHeader>
               <TableRow>
@@ -81,7 +87,7 @@ export function StudentFinanceTab({
                         className="flex w-fit items-center gap-1 border-orange-200 bg-orange-50 text-orange-700"
                       >
                         <ArrowUpRight className="h-3 w-3" />
-                        {dictionary.dashboard.student_detail.finance.lesson_fee}
+                        {dictionary.student_detail.finance.lesson_fee}
                       </Badge>
                     ) : (
                       <Badge
@@ -89,10 +95,7 @@ export function StudentFinanceTab({
                         className="flex w-fit items-center gap-1 border-green-200 bg-green-50 text-green-700"
                       >
                         <ArrowDownLeft className="h-3 w-3" />
-                        {
-                          dictionary.dashboard.student_detail.finance
-                            .payment_received
-                        }
+                        {dictionary.student_detail.finance.payment_received}
                       </Badge>
                     )}
                   </TableCell>

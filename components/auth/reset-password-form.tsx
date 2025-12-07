@@ -31,9 +31,10 @@ import Link from "next/link";
 // Password strength regex: at least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
+import type { Dictionary } from '@/types/i18n';
+
 interface ResetPasswordFormProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
   lang: Locale;
   token: string;
 }
@@ -230,3 +231,4 @@ export function ResetPasswordForm({
     </div>
   );
 }
+

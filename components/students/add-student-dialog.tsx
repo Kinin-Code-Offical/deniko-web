@@ -71,12 +71,13 @@ const formSchema = z.object({
   classroomIds: z.array(z.string()).optional(),
 });
 
+import type { Dictionary } from "@/types/i18n";
+
 export function AddStudentDialog({
   dictionary,
   classrooms = [],
 }: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
   classrooms?: { id: string; name: string }[];
 }) {
   const [open, setOpen] = useState(false);

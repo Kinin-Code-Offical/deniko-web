@@ -45,8 +45,8 @@ export default async function FinancePage({
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dictionary = (await getDictionary(lang as Locale)) as any;
+
+  const dictionary = await getDictionary(lang as Locale);
   const session = await auth();
 
   if (!session?.user?.id) {

@@ -18,6 +18,7 @@ const envSchema = z.object({
   EMAIL_PASS: z.string().min(1, { message: "EMAIL_PASS is required" }),
   GCS_BUCKET_NAME: z.string().min(1, { message: "GCS_BUCKET_NAME is required" }),
   GCS_PROJECT_ID: z.string().min(1, { message: "GCS_PROJECT_ID is required" }),
+  NEXT_PUBLIC_NOINDEX: z.enum(["true", "false"]).default("false").transform((v) => v === "true"),
   GCS_CLIENT_EMAIL: z.string().email({ message: "GCS_CLIENT_EMAIL must be a valid email" }),
   GCS_PRIVATE_KEY: z.string().min(1, { message: "GCS_PRIVATE_KEY is required" }),
   AUTH_SECRET: z.string().min(1, { message: "AUTH_SECRET is required" }),

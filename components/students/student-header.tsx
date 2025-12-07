@@ -12,12 +12,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { InviteButton } from "./invite-button";
 import Link from "next/link";
+import type { Dictionary } from "@/types/i18n";
+import { type StudentTeacherRelation, type StudentProfile, type User } from "@prisma/client";
+
+type RelationWithStudent = StudentTeacherRelation & {
+  student: StudentProfile & { user: User | null };
+};
 
 interface StudentHeaderProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  relation: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  relation: RelationWithStudent;
+  dictionary: Dictionary;
   lang: string;
 }
 

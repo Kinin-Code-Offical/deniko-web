@@ -1,9 +1,9 @@
 import React from "react";
 import { GraduationCap, TrendingUp } from "lucide-react";
+import type { Dictionary } from "@/types/i18n";
 
 interface ProfileCardProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ dictionary }) => {

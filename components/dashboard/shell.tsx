@@ -17,6 +17,7 @@ import { Menu, type LucideIcon } from "lucide-react";
 import { teacherNav, studentNav } from "@/config/dashboard";
 import { DenikoLogo } from "@/components/ui/deniko-logo";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import type { Dictionary } from "@/types/i18n";
 
 interface DashboardShellProps {
   children: React.ReactNode;
@@ -26,8 +27,7 @@ interface DashboardShellProps {
     image?: string | null;
     role?: "TEACHER" | "STUDENT" | "ADMIN" | null;
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
   lang: string;
 }
 
@@ -65,7 +65,11 @@ export function DashboardShell({
         )}
       >
         <Icon className="h-4 w-4" />
-        {dictionary.dashboard.nav[item.title]}
+        {
+          dictionary.dashboard.nav[
+            item.title as keyof typeof dictionary.dashboard.nav
+          ]
+        }
       </Link>
     );
   };

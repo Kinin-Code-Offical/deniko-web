@@ -38,10 +38,11 @@ interface StudentData {
   classrooms: { name: string }[];
 }
 
+import type { Dictionary } from "@/types/i18n";
+
 interface StudentTableProps {
   data: StudentData[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
   lang: string;
 }
 
@@ -61,8 +62,7 @@ const StudentRow = memo(function StudentRow({
   lang,
 }: {
   student: StudentData;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
   lang: string;
 }) {
   return (
@@ -160,8 +160,7 @@ const StudentRows = memo(function StudentRows({
   lang,
 }: {
   data: StudentData[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
   lang: string;
 }) {
   if (data.length === 0) {

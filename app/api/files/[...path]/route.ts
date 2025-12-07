@@ -53,8 +53,8 @@ export async function GET(
             },
         })
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return new NextResponse(webStream as any, {
+        
+        return new NextResponse(webStream, {
             headers: {
                 "Content-Type": contentType,
                 "Cache-Control": "public, max-age=31536000, immutable",

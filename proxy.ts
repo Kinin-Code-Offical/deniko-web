@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { i18n } from './i18n-config'
+import { i18n, type Locale } from "@/i18n-config";
 import { match as matchLocale } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
 import logger from '@/lib/logger'
@@ -38,8 +38,8 @@ const syncLocaleCookie = (response: NextResponse, locale: string) => {
 }
 
 const getClientIp = (request: NextRequest) =>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ((request as any).ip as string | undefined) ?? request.headers.get('x-forwarded-for') ?? 'unknown'
+    
+    (request as unknown as { ip?: string }).ip ?? request.headers.get('x-forwarded-for') ?? 'unknown'
 
 const isRateLimited = (ip: string) => {
     const now = Date.now()
@@ -63,8 +63,8 @@ const isRateLimited = (ip: string) => {
 function getLocale(request: NextRequest): string | undefined {
     // 1. Check cookie
     const cookieLocale = request.cookies.get("NEXT_LOCALE")?.value
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (cookieLocale && i18n.locales.includes(cookieLocale as any)) {
+    
+    if (cookieLocale && i18n.locales.includes(cookieLocale as Locale)) {
         return cookieLocale
     }
 

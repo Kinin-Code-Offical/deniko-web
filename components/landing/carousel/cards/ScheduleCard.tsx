@@ -1,9 +1,9 @@
 import React from "react";
 import { Calendar, MapPin } from "lucide-react";
+import type { Dictionary } from "@/types/i18n";
 
 interface ScheduleCardProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
 }
 
 const ScheduleCard: React.FC<ScheduleCardProps> = ({ dictionary }) => {

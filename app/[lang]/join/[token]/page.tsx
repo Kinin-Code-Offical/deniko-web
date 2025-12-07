@@ -132,8 +132,9 @@ export default async function JoinPage({
 
   // 2. User IS Logged In
   // Fetch current user's profile for comparison
-  const userProfile = await db.studentProfile.findUnique({
-    where: { userId: session.user.id },
+  const userProfile = await db.user.findUnique({
+    where: { id: session.user.id },
+    include: { studentProfile: true },
   });
 
   return (

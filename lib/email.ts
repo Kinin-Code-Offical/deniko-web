@@ -45,8 +45,10 @@ export async function sendPasswordResetEmail(email: string, token: string, lang:
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getVerificationEmailTemplate(url: string, lang: Locale, content: any) {
+
+import type { Dictionary } from "@/types/i18n";
+
+function getVerificationEmailTemplate(url: string, lang: Locale, content: Dictionary['email']['verification']) {
   return `
 <!DOCTYPE html>
 <html lang="${lang}">

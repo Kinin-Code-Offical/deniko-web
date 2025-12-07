@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Pool } from "pg";
+import { Pool, type PoolConfig } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { env } from "./env";
 
@@ -12,8 +12,8 @@ export const db =
   (() => {
     const url = new URL(env.DATABASE_URL);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const dbConfig: any = {
+    
+    const dbConfig: PoolConfig = {
       user: url.username,
       password: url.password,
       database: url.pathname.slice(1),

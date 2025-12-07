@@ -14,11 +14,11 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { CheckCircle2, XCircle, Loader2, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
+import type { Dictionary } from "@/types/i18n";
 
 interface VerifyClientProps {
   lang: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
 }
 
 export function VerifyClient({ lang, dictionary }: VerifyClientProps) {

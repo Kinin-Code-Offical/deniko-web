@@ -19,9 +19,10 @@ import { Loader2, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 
+import type { Dictionary } from '@/types/i18n';
+
 interface ForgotPasswordFormProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
   lang: string;
 }
 
@@ -149,3 +150,4 @@ export function ForgotPasswordForm({
     </div>
   );
 }
+

@@ -24,10 +24,10 @@ import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import type { Dictionary } from "@/types/i18n";
 
 interface OnboardingClientPageProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
   lang: string;
 }
 

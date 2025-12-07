@@ -5,7 +5,7 @@ import Credentials from "next-auth/providers/credentials"
 import { db } from "@/lib/db"
 import * as bcrypt from "bcryptjs"
 import { z } from "zod"
-import { Role } from "@prisma/client"
+import { Role } from "@prisma/client";
 import { env } from "@/lib/env"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -90,8 +90,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
         async session({ session, token }) {
             // Strict validation: If token is invalid/null, invalidate session
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            if (!token || !token.sub) return null as any
+            
+            if (!token || !token.sub) return session
 
             if (token.sub && session.user) {
                 session.user.id = token.sub

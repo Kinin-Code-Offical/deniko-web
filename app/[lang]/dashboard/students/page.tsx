@@ -48,8 +48,8 @@ export default async function StudentsPage({
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dictionary = (await getDictionary(lang as Locale)) as any;
+
+  const dictionary = await getDictionary(lang as Locale);
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -85,8 +85,7 @@ export default async function StudentsPage({
     select: { id: true, name: true },
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const students = relations.map((rel: any) => ({
+  const students = relations.map((rel) => ({
     id: rel.student.id,
     user: rel.student.user,
     tempFirstName: rel.student.tempFirstName,

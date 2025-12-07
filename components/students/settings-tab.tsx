@@ -102,12 +102,19 @@ const createSettingsSchema = (lang: string) =>
     parentEmail: z.string().email().optional().or(z.literal("")),
   });
 
+import type { Dictionary } from "@/types/i18n";
+import {
+  type StudentTeacherRelation,
+  type StudentProfile,
+  type User,
+} from "@prisma/client";
+
 interface StudentSettingsTabProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  relation: any;
+  relation: StudentTeacherRelation & {
+    student: StudentProfile & { user: User | null };
+  };
   studentId: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
   lang: string;
 }
 
@@ -229,7 +236,7 @@ export function StudentSettingsTab({
         <CardHeader>
           <CardTitle>{dictionary.student_detail.settings.title}</CardTitle>
           <CardDescription>
-            {dictionary.student_detail.settings.desc}
+            {dictionary.student_detail.settings.description}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -337,7 +344,7 @@ export function StudentSettingsTab({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        {dictionary.student_detail.settings.student_no ||
+                        {dictionary.student_detail.settings.student_number ||
                           "Öğrenci Numarası"}
                       </FormLabel>
                       <FormControl>
@@ -354,7 +361,7 @@ export function StudentSettingsTab({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        {dictionary.student_detail.settings.grade ||
+                        {dictionary.student_detail.settings.grade_level ||
                           "Sınıf Seviyesi"}
                       </FormLabel>
                       <FormControl>

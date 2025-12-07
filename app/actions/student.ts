@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
 import { randomBytes } from "crypto"
@@ -190,9 +190,9 @@ export async function claimStudentProfile(token: string, preferences: MergePrefe
             }
 
             // Prepare data for the final profile (Target Profile)
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const dataToUpdate: any = {
-                userId: session.user.id,
+            
+            const dataToUpdate: Prisma.StudentProfileUpdateInput = {
+                user: { connect: { id: session.user.id } },
                 isClaimed: true,
                 inviteToken: null,
                 tempFirstName: null,
@@ -306,7 +306,7 @@ export async function getInviteDetails(token: string) {
         const teacherName = teacherUser
             ? (teacherUser.firstName && teacherUser.lastName
                 ? `${teacherUser.firstName} ${teacherUser.lastName}`
-                : teacherUser.name)
+                : (teacherUser.name || "Bir Öğretmen"))
             : "Bir Öğretmen"
 
         return {
@@ -538,7 +538,6 @@ export async function deleteStudent(studentId: string) {
     }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const _updateStudentRelationSchema = z.object({
     customName: z.string().optional(),
     privateNotes: z.string().optional(),
@@ -818,8 +817,8 @@ export async function updateStudentSettings(studentId: string, formData: FormDat
             // Update Profile
             // If claimed, we might restrict some fields, but user asked to edit them.
             // We will update what we can on the profile.
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const profileUpdateData: any = {
+            
+            const profileUpdateData: Prisma.StudentProfileUpdateInput = {
                 studentNo: studentNo,
                 gradeLevel: gradeLevel,
                 parentName: parentName,

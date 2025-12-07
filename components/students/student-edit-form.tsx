@@ -22,12 +22,24 @@ import {
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import type { Dictionary } from "@/types/i18n";
+import {
+  type StudentProfile,
+  type StudentTeacherRelation,
+  type User,
+  type RelationStatus,
+} from "@prisma/client";
+
+type StudentWithRelations = StudentProfile & {
+  teacherRelations: (StudentTeacherRelation & {
+    customAvatar?: string | null;
+  })[];
+  user: User | null;
+};
 
 interface StudentEditFormProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  student: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  student: StudentWithRelations;
+  dictionary: Dictionary;
 }
 
 export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
@@ -40,11 +52,9 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
     tempLastName,
     studentNo,
     gradeLevel,
-    phoneNumber,
     parentName,
     parentPhone,
     parentEmail,
-    avatarUrl,
     id,
   } = student;
   const router = useRouter();
@@ -73,11 +83,11 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
     surname: initialLastName,
     studentNo: studentNo || "",
     grade: gradeLevel || "",
-    phoneNumber: phoneNumber || user?.phoneNumber || "",
+    phoneNumber: student.tempPhone || user?.phoneNumber || "",
     parentName: parentName || "",
     parentPhone: parentPhone || "",
     parentEmail: parentEmail || "",
-    avatarUrl: relation?.customAvatar || avatarUrl || user?.image || "",
+    avatarUrl: relation?.customAvatar || user?.image || "",
   });
 
   const handleUpdate = () => {
@@ -154,9 +164,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>
-            {dictionary.dashboard.student_detail.profile.title}
-          </CardTitle>
+          <CardTitle>{dictionary.student_detail.profile.title}</CardTitle>
           <CardDescription>
             Update student&apos;s personal information and contact details.
           </CardDescription>
@@ -236,7 +244,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
           <Separator className="my-4" />
 
           <h3 className="text-lg font-medium">
-            {dictionary.dashboard.student_detail.profile.contact_parent}
+            {dictionary.student_detail.profile.contact_parent}
           </h3>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="space-y-2">
@@ -286,7 +294,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
         <CardFooter className="flex justify-end">
           <Button onClick={handleUpdate} disabled={isPending}>
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {dictionary.dashboard.student_detail.profile.save}
+            {dictionary.student_detail.profile.save}
           </Button>
         </CardFooter>
       </Card>
@@ -308,7 +316,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
             disabled={isPending}
           >
             <Archive className="mr-2 h-4 w-4" />
-            {dictionary.dashboard.student_detail.profile.archive_student}
+            {dictionary.student_detail.profile.archive_student}
           </Button>
           <Button
             variant="destructive"
@@ -317,7 +325,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
             disabled={isPending}
           >
             <Trash2 className="mr-2 h-4 w-4" />
-            {dictionary.dashboard.student_detail.profile.delete_student}
+            {dictionary.student_detail.profile.delete_student}
           </Button>
         </CardContent>
       </Card>

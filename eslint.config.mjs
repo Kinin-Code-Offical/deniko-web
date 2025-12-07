@@ -7,7 +7,6 @@ const eslintConfig = defineConfig([
   ...nextTs,
   // Override default ignores of eslint-config-next.
   globalIgnores([
-
     // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
@@ -15,7 +14,38 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
   ]),
 
-  
+  // Custom rule to enforce i18n
+  {
+    files: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-syntax": [
+        "warn",
+        {
+          selector: "JSXText[value=/\\w/]",
+          message:
+            "Avoid hardcoded text in JSX. Use i18n dictionaries instead.",
+        },
+        {
+          selector: "JSXAttribute[name.name='placeholder'] > Literal",
+          message:
+            "Avoid hardcoded placeholder text. Use i18n dictionaries instead.",
+        },
+        {
+          selector: "JSXAttribute[name.name='alt'] > Literal",
+          message: "Avoid hardcoded alt text. Use i18n dictionaries instead.",
+        },
+        {
+          selector: "JSXAttribute[name.name='title'] > Literal",
+          message: "Avoid hardcoded title text. Use i18n dictionaries instead.",
+        },
+        {
+          selector: "JSXAttribute[name.name='aria-label'] > Literal",
+          message:
+            "Avoid hardcoded aria-label text. Use i18n dictionaries instead.",
+        },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;

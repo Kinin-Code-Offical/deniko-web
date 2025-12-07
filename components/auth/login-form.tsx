@@ -21,9 +21,10 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { ResendAlert } from "@/components/auth/resend-alert";
 
+import type { Dictionary } from '@/types/i18n';
+
 interface LoginFormProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
   lang: string;
 }
 
@@ -175,3 +176,4 @@ export function LoginForm({ dictionary, lang }: LoginFormProps) {
     </div>
   );
 }
+

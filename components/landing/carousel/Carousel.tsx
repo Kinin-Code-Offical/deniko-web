@@ -3,11 +3,11 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import type { CardItem } from "./types";
 import { Hand, RotateCw, Info } from "lucide-react";
+import type { Dictionary } from "@/types/i18n";
 
 interface CarouselProps {
   items: CardItem[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
 }
 
 const Carousel: React.FC<CarouselProps> = ({ items, dictionary }) => {
@@ -362,8 +362,8 @@ const Carousel: React.FC<CarouselProps> = ({ items, dictionary }) => {
     }, 100); // 100ms debounce
 
     handleResize(); // Initial call
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const debouncedResize = handleResize as any;
+
+    const debouncedResize = handleResize;
     window.addEventListener("resize", debouncedResize);
     return () => window.removeEventListener("resize", debouncedResize);
   }, []);

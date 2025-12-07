@@ -1,4 +1,12 @@
 {
+  "newsletter": {
+    "title": "Subscribe to our newsletter",
+    "description": "Get the latest updates and news.",
+    "placeholder": "Enter your email",
+    "button": "Subscribe",
+    "success": "Thank you for subscribing!",
+    "error": "Something went wrong."
+  },
   "legal": {
     "title": "Legal Center",
     "description": "Find detailed information about Deniko's terms of use, privacy policies, and legal obligations here.",
@@ -202,6 +210,13 @@
       "exams": "Exams",
       "attendance": "Attendance"
     },
+    "profile": {
+      "title": "Edit Profile",
+      "contact_parent": "Contact Parent",
+      "save": "Save Changes",
+      "archive_student": "Archive Student",
+      "delete_student": "Delete Student"
+    },
     "header": {
       "total_lessons": "Total Lessons",
       "balance": "Balance",
@@ -228,6 +243,7 @@
       "parent_phone": "Parent Phone",
       "parent_email": "Parent Email",
       "private_notes": "Private Notes",
+      "private_notes_placeholder": "Add private notes about this student...",
       "no_notes": "No notes added yet.",
       "total_lessons": "Total Lessons"
     },
@@ -297,6 +313,7 @@
       "change_photo": "Change Photo",
       "personal_info": "Personal Information",
       "full_name": "Full Name",
+      "email": "Email",
       "student_number": "Student Number",
       "grade_level": "Grade Level",
       "contact_info": "Contact Information",
@@ -491,6 +508,7 @@
   },
 
   "home": {
+    "home": "Home",
     "hero_title": "Digitize Your Education Life",
     "hero_subtitle": "Smart assistant designed for teachers and students. Lesson schedule, student tracking, and performance analytics in one platform.",
     "get_started": "Discover Deniko",
@@ -626,6 +644,9 @@
       "body": "We received a request to reset your password. Click the button below to create a new password. This link is valid for 1 hour.",
       "button": "Reset Password",
       "ignore": "If you didn't request this, you can safely ignore this email.",
+      "footer": "Deniko - Teacher and Student Management Platform.",
+      "website": "Web Site",
+      "support": "Support",
       "footer_disclaimer": "This email contains important information about your Deniko account.",
       "footer_address": "Güzeltepe Mah., 747. Cd., No:14 Çankaya/Ankara",
       "footer_copyright": "© 2025 Deniko. All rights reserved.",

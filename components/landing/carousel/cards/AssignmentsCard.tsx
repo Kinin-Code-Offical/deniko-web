@@ -1,9 +1,9 @@
 import React from "react";
 import { BookOpen, CheckCircle2, Clock } from "lucide-react";
+import type { Dictionary } from "@/types/i18n";
 
 interface AssignmentsCardProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
 }
 
 const AssignmentsCard: React.FC<AssignmentsCardProps> = ({ dictionary }) => {

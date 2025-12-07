@@ -12,6 +12,13 @@
 
 <!-- How does this PR fix the issue? -->
 
+## Rendering Strategy (for new pages)
+
+<!-- If this PR adds a new page, please explain the chosen rendering strategy (SSG, SSR, or ISR) and why. -->
+
+**Strategy:** [SSG / SSR / ISR]
+**Rationale:**
+
 ## Type of change
 
 - [ ] Bug fix (non-breaking change which fixes an issue)

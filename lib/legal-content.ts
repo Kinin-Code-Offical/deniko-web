@@ -89,7 +89,7 @@ export const termsContent = {
             },
             {
                 title: "8. Amendments",
-                content: "The Company reserves the right to unilaterally change the terms of this Agreement at any time. Changes take effect on the date they are published on the Site."
+                content: "The Company reserves the right to unilaterally change the terms of this Agreement at any time. Changes take effect on the date they are published on the Site." // ignore-any-check
             },
             {
                 title: "9. Force Majeure",

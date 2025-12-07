@@ -1,9 +1,9 @@
 import React from "react";
 import { Bell, MessageCircle, AlertCircle } from "lucide-react";
+import type { Dictionary } from "@/types/i18n";
 
 interface MessagesCardProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
 }
 
 const MessagesCard: React.FC<MessagesCardProps> = ({ dictionary }) => {

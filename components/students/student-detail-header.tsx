@@ -4,12 +4,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { InviteButton } from "./invite-button";
+import type { Dictionary } from "@/types/i18n";
+import { type StudentProfile, type User } from "@prisma/client";
+
+type StudentWithUser = StudentProfile & {
+  user: User | null;
+};
 
 interface StudentDetailHeaderProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  student: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  student: StudentWithUser;
+  dictionary: Dictionary;
   totalLessons: number;
   balance: number;
   lang: string;
@@ -53,8 +57,8 @@ export function StudentDetailHeader({
           <div className="text-muted-foreground flex items-center gap-2">
             <Badge variant={isClaimed ? "default" : "secondary"}>
               {isClaimed
-                ? dictionary.dashboard.student_detail.header.status.active
-                : dictionary.dashboard.student_detail.header.status.shadow}
+                ? dictionary.student_detail.header.status.active
+                : dictionary.student_detail.header.status.shadow}
             </Badge>
             {gradeLevel && <span>• {gradeLevel}</span>}
           </div>
@@ -74,14 +78,14 @@ export function StudentDetailHeader({
           <CardContent className="flex items-center gap-4 p-4">
             <div className="text-center">
               <div className="text-muted-foreground text-xs">
-                {dictionary.dashboard.student_detail.header.total_lessons}
+                {dictionary.student_detail.header.total_lessons}
               </div>
               <div className="text-xl font-bold">{totalLessons}</div>
             </div>
             <div className="bg-border h-8 w-px" />
             <div className="text-center">
               <div className="text-muted-foreground text-xs">
-                {dictionary.dashboard.student_detail.header.balance}
+                {dictionary.student_detail.header.balance}
               </div>
               <div
                 className={`text-xl font-bold ${balance < 0 ? "text-destructive" : "text-primary"}`}

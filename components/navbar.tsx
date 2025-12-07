@@ -15,11 +15,11 @@ import {
 } from "@/components/ui/sheet";
 import { ArrowRight, BookOpen, LogIn, Menu } from "lucide-react";
 import { useEffect, useState } from "react";
+import type { Dictionary } from "@/types/i18n";
 
 interface NavbarProps {
   lang: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
 }
 
 export function Navbar({ lang, dictionary }: NavbarProps) {
@@ -96,7 +96,7 @@ export function Navbar({ lang, dictionary }: NavbarProps) {
                 <Button
                   size="lg"
                   aria-label={lang === "tr" ? "Menüyü aç" : "Open menu"}
-                  className="h-11 gap-2 rounded-full bg-[#1d4f87] px-5 text-white shadow-md shadow-blue-900/20 transition-all hover:bg-[#163b65] focus-visible:ring-[#99bdfc]/50"
+                  className="h-11 gap-2 rounded-full bg-[#1d4f87] px-5 text-white shadow-md shadow-blue-900/20 transition-all hover:bg-[#163b65] focus-visible:ring-2 focus-visible:ring-[#1d4f87] focus-visible:ring-offset-2 focus-visible:outline-none dark:focus-visible:ring-blue-400"
                 >
                   <Menu className="h-5 w-5" strokeWidth={2.4} />
                   <span className="text-sm font-semibold tracking-wide">

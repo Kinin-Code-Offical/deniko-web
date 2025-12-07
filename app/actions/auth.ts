@@ -4,7 +4,7 @@ import { signIn, signOut } from "@/auth"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@prisma/client";
 import { z } from "zod"
 import * as bcrypt from "bcryptjs"
 import { randomBytes } from "crypto"
@@ -28,7 +28,6 @@ export async function googleSignIn() {
     await signIn("google", { redirectTo: "/onboarding" })
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const _loginSchemaBase = z.object({
     email: z.string().email(),
     password: z.string().min(1),
@@ -74,8 +73,8 @@ export async function login(formData: z.infer<typeof _loginSchemaBase>, lang: st
                     return { success: false, message: dict.auth.login.validation.invalid_credentials }
                 default:
                     // Check if the error message contains "Email not verified"
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const cause = error.cause as any
+                    
+                    const cause = error.cause as { err?: { message?: string } } | undefined;
                     if (cause?.err?.message === "Email not verified") {
                         logger.info({ msg: "Login blocked: Email not verified", email })
                         return { success: false, error: "NOT_VERIFIED", email: email, message: dict.auth.verification.unverified_desc }
@@ -143,7 +142,6 @@ export async function resendVerificationCode(email: string, lang: string = "tr")
     }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const _registerSchemaBase = z.object({
     firstName: z.string().min(2),
     lastName: z.string().min(2),

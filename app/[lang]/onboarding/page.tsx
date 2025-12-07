@@ -41,6 +41,8 @@ export async function generateMetadata({
   };
 }
 
+import type { Locale } from "@/i18n-config";
+
 export default async function OnboardingPage({
   params,
   searchParams,
@@ -50,8 +52,8 @@ export default async function OnboardingPage({
 }) {
   const { lang } = await params;
   const { token } = await searchParams;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dictionary = await getDictionary(lang as any);
+
+  const dictionary = await getDictionary(lang as Locale);
 
   let session = null;
 

@@ -38,9 +38,10 @@ const PhoneInput = dynamic(
   }
 );
 
+import type { Dictionary } from '@/types/i18n';
+
 interface RegisterFormProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
   lang: string;
 }
 
@@ -442,3 +443,4 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
     </div>
   );
 }
+

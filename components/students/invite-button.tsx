@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Check, Copy } from 'lucide-react';
-import useCopyToClipboard from '@/lib/hooks/useCopyToClipboard';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Check, Copy } from "lucide-react";
+import useCopyToClipboard from "@/lib/hooks/useCopyToClipboard";
+import { toast } from "sonner";
+import type { Dictionary } from "@/types/i18n";
 
 type InviteButtonProps = {
   token: string | null;
   lang: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dictionary: any;
+  dictionary: Dictionary;
 };
 
 export function InviteButton({ token, lang, dictionary }: InviteButtonProps) {
@@ -28,7 +28,7 @@ export function InviteButton({ token, lang, dictionary }: InviteButtonProps) {
       })
       .catch((error) => {
         toast.error(dictionary.teacher.invite_link_copy_failed);
-        console.error('Failed to copy invite link: ', error);
+        console.error("Failed to copy invite link: ", error);
       });
   };
 

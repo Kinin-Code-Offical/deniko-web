@@ -1,4 +1,12 @@
 {
+  "newsletter": {
+    "title": "Bültenimize abone olun",
+    "description": "En son güncellemeleri ve haberleri alın.",
+    "placeholder": "E-posta adresinizi girin",
+    "button": "Abone Ol",
+    "success": "Abone olduğunuz için teşekkürler!",
+    "error": "Bir şeyler ters gitti."
+  },
   "legal": {
     "title": "Yasal Merkez",
     "description": "Deniko'nun kullanım şartları, gizlilik politikaları ve yasal yükümlülükleri hakkında detaylı bilgilere buradan ulaşabilirsiniz.",
@@ -177,7 +185,8 @@
   "common": {
     "loading": "Yükleniyor...",
     "back": "Geri",
-    "back_to_home": "Ana Sayfaya Dön"
+    "back_to_home": "Ana Sayfaya Dön",
+    "all_rights_reserved": "Tüm hakları saklıdır."
   },
   "teacher": {
     "invite_link_copied": "Davet linki kopyalandı",
@@ -199,6 +208,13 @@
       "settings": "Ayarlar",
       "exams": "Sınavlar",
       "attendance": "Devamsızlık"
+    },
+    "profile": {
+      "title": "Profili Düzenle",
+      "contact_parent": "Veli ile İletişime Geç",
+      "save": "Değişiklikleri Kaydet",
+      "archive_student": "Öğrenciyi Arşivle",
+      "delete_student": "Öğrenciyi Sil"
     },
     "header": {
       "total_lessons": "Toplam Ders",
