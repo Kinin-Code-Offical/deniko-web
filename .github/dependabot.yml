@@ -1,0 +1,36 @@
+version: 2
+updates:
+  # 1. GitHub Actions (Workflow'larını güncel tutar)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Istanbul"
+    # PR'ları otomatik olarak birine atamak istersen:
+    # assignees:
+    #   - "kullanici_adin"
+
+  # 2. NPM (Javascript/TypeScript projeleri için)
+  - package-ecosystem: "npm"
+    directory: "/" # package.json dosyasının olduğu yer
+    schedule:
+      interval: "weekly"
+      day: "wednesday" # Çarşamba günleri tarasın
+    open-pull-requests-limit: 10 # Aynı anda en fazla 10 PR açsın
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"] # Major güncellemeleri yoksay (Opsiyonel)
+
+  # 3. PIP (Python projeleri için)
+  - package-ecosystem: "pip"
+    directory: "/" # requirements.txt dosyasının olduğu yer
+    schedule:
+      interval: "weekly"
+
+  # 4. Docker (Dockerfile varsa)
+  # - package-ecosystem: "docker"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"
