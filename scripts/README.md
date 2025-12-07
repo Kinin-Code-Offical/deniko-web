@@ -1,0 +1,26 @@
+# 📜 Utility Scripts
+
+This directory contains standalone scripts for maintenance, testing, and automation tasks.
+
+## 📂 Files
+
+- **`check-links.ts`**: Crawls the site (or a list of URLs) to check for broken links (404s).
+- **`check-user.js`**: A utility to verify user data or roles directly in the database (bypassing the UI).
+- **`dev-exit-test.js`**: Used to test graceful shutdown procedures or specific dev-mode behaviors.
+- **`analyze_issues.py`**: A Python script for analyzing project issues or logs (if applicable).
+
+## 🚀 Running Scripts
+
+Most scripts can be run using `ts-node` (for TypeScript) or `node` (for JavaScript).
+
+```bash
+# Run a TypeScript script
+npx tsx scripts/check-links.ts
+
+# Run a JavaScript script
+node scripts/check-user.js
+```
+
+## ⚠️ Caution
+
+These scripts often interact directly with the database or file system. **Use with caution**, especially in production environments.

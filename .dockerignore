@@ -3,6 +3,9 @@ Dockerfile
 node_modules
 npm-debug.log
 README.md
+**/README.md
+**/*.md
+!TECH_STACK.md
 .next
 .gemini
 yarn-debug.log
@@ -12,3 +15,8 @@ yarn-error.log
 .github
 .git
 .env*
+docs/
+dev-notes/
+debug-tests/
+patches/
+

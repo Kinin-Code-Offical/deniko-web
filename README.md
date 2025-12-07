@@ -4,14 +4,48 @@ Deniko is a comprehensive SaaS platform designed to digitize and streamline the 
 
 ## 🚀 Tech Stack
 
-- **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+- **Framework:** [Next.js 16](https://nextjs.org/) (App Router)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
 - **Database:** [PostgreSQL](https://www.postgresql.org/)
-- **ORM:** [Prisma](https://www.prisma.io/)
+- **ORM:** [Prisma 7](https://www.prisma.io/)
 - **Authentication:** [Auth.js v5](https://authjs.dev/) (NextAuth)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **UI Components:** [Shadcn UI](https://ui.shadcn.com/)
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **UI Components:** [Shadcn UI](https://ui.shadcn.com/) & [Radix UI](https://www.radix-ui.com/)
+- **State & Animation:** [Framer Motion](https://www.framer.com/motion/)
 - **Containerization:** [Docker](https://www.docker.com/)
 - **Deployment:** Google Cloud Run
+
+> For a detailed list of dependencies and versions, see [TECH_STACK.md](./TECH_STACK.md).
+
+## ✨ Key Features
+
+- **Multi-Language Support (i18n):** Full support for Turkish (TR) and English (EN).
+- **Role-Based Access Control:** Secure access for Admins, Tutors, and Students.
+- **Dashboard:** Comprehensive analytics and management tools.
+- **Scheduling:** Easy lesson planning and calendar integration.
+- **Performance Tracking:** Monitor student progress with visual charts.
+- **Legal Compliance:** Dedicated pages for Terms, Privacy, Cookies, and KVKK.
+- **SEO Optimized:** Built-in metadata, sitemap, and structured data (JSON-LD).
+
+## 📂 Project Structure
+
+```
+deniko/
+├── app/                # Next.js App Router pages and layouts
+│   ├── [lang]/         # Localized routes (e.g., /en, /tr)
+│   ├── api/            # API routes
+│   └── ...
+├── components/         # Reusable React components
+│   ├── auth/           # Authentication components
+│   ├── dashboard/      # Dashboard widgets and views
+│   ├── ui/             # Shadcn UI primitive components
+│   └── ...
+├── lib/                # Utility functions, database connection, etc.
+├── prisma/             # Database schema and migrations
+├── public/             # Static assets (images, robots.txt, etc.)
+├── dictionaries/       # Localization JSON files
+└── ...
+```
 
 ## 🛠️ Setup Guide
 

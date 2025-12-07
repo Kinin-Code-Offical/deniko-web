@@ -7,8 +7,10 @@ You are a Senior Backend Engineer specializing in **Node.js**, **TypeScript**, a
 ## 🛠 Tech Stack
 
 - **Runtime:** Node.js (Latest LTS)
+- **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript (Strict Mode)
 - **Database:** PostgreSQL (Google Cloud SQL)
+- **ORM:** Prisma 7
 - **Infrastructure:** Google Cloud Run (Serverless)
 - **Secret Management:** Google Secret Manager & Dotenv
 
