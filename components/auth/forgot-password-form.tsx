@@ -19,7 +19,7 @@ import { Loader2, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 
-import type { Dictionary } from '@/types/i18n';
+import type { Dictionary } from "@/types/i18n";
 
 interface ForgotPasswordFormProps {
   dictionary: Dictionary;
@@ -111,7 +111,7 @@ export function ForgotPasswordForm({
                 <FormLabel>{d.email_label}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="ornek@email.com"
+                    placeholder={dictionary.auth.placeholders.email}
                     autoComplete="email"
                     {...field}
                     className="h-11"
@@ -150,4 +150,3 @@ export function ForgotPasswordForm({
     </div>
   );
 }
-

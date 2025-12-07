@@ -84,7 +84,7 @@ export function DashboardShell({
             className="flex items-center gap-2 text-xl font-bold text-[#2062A3] dark:text-blue-400"
           >
             <DenikoLogo className="h-6 w-6" />
-            <span>Deniko</span>
+            <span>{dictionary.common.app_name}</span>
           </Link>
         </div>
         <div className="flex-1 overflow-y-auto px-3 py-4">
@@ -115,14 +115,16 @@ export function DashboardShell({
                 side="left"
                 className="w-64 p-0 dark:border-slate-800 dark:bg-slate-900"
               >
-                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                <SheetTitle className="sr-only">
+                  {dictionary.dashboard.nav.menu_title}
+                </SheetTitle>
                 <SheetDescription className="sr-only">
-                  Dashboard navigation menu
+                  {dictionary.dashboard.nav.menu_desc}
                 </SheetDescription>
                 <div className="flex h-16 items-center border-b px-6 dark:border-slate-800">
                   <div className="flex items-center gap-2 text-xl font-bold text-[#2062A3] dark:text-blue-400">
                     <DenikoLogo className="h-6 w-6" />
-                    <span>Deniko</span>
+                    <span>{dictionary.common.app_name}</span>
                   </div>
                 </div>
                 <div className="flex-1 overflow-y-auto px-3 py-4">
@@ -138,7 +140,7 @@ export function DashboardShell({
             {/* Mobile Logo */}
             <div className="flex items-center gap-2 text-xl font-bold text-[#2062A3] md:hidden">
               <DenikoLogo className="h-6 w-6" />
-              <span>Deniko</span>
+              <span>{dictionary.common.app_name}</span>
             </div>
           </div>
 

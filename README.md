@@ -26,6 +26,7 @@ Deniko is a comprehensive SaaS platform designed to digitize and streamline the 
 - **Performance Tracking:** Monitor student progress with visual charts.
 - **Legal Compliance:** Dedicated pages for Terms, Privacy, Cookies, and KVKK.
 - **SEO Optimized:** Built-in metadata, sitemap, and structured data (JSON-LD).
+- **Code Quality:** Strict TypeScript type-checking, ESLint configuration, and automated scripts for i18n verification.
 
 ## 📂 Project Structure
 

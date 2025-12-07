@@ -5,6 +5,8 @@ This directory contains standalone scripts for maintenance, testing, and automat
 ## 📂 Files
 
 - **`check-links.ts`**: Crawls the site (or a list of URLs) to check for broken links (404s).
+- **`check-hardcoded.ts`**: Scans the codebase for hardcoded text strings to ensure full i18n compliance.
+- **`check-any.ts`**: Checks for usage of the `any` type in TypeScript files to maintain type safety.
 - **`check-user.js`**: A utility to verify user data or roles directly in the database (bypassing the UI).
 - **`dev-exit-test.js`**: Used to test graceful shutdown procedures or specific dev-mode behaviors.
 - **`analyze_issues.py`**: A Python script for analyzing project issues or logs (if applicable).

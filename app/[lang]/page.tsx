@@ -73,15 +73,10 @@ export async function generateMetadata({
   params: Promise<{ lang: Locale }>;
 }): Promise<Metadata> {
   const { lang } = await params;
+  const dictionary = await getDictionary(lang);
   const isTr = lang === "tr";
 
-  const title = isTr
-    ? "Özel Ders Yönetim Platformu"
-    : "Private Tutoring Management Platform";
-
-  const description = isTr
-    ? "Öğrenci takibi, ders programı ve ödeme takibini tek bir yerden yönetin. Deniko ile işinizi dijitalleştirin."
-    : "Manage student tracking, lesson scheduling, and payments in one place. Digitalize your business with Deniko.";
+  const { title, description } = dictionary.metadata.home;
 
   const baseUrl = "https://deniko.net";
   const pathname = "";
@@ -98,7 +93,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
-      title: `${title} | Deniko`,
+      title: `${title} | ${dictionary.common.app_name}`,
       description,
       url: `https://deniko.net/${lang}`,
       locale: isTr ? "tr_TR" : "en_US",
@@ -163,7 +158,7 @@ export default async function Home({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Deniko",
+    name: dictionary.common.app_name,
     url: "https://deniko.net",
     logo: "https://deniko.net/logo.png",
     description: dictionary.home.hero_subtitle,
@@ -297,11 +292,17 @@ export default async function Home({
                                   {dictionary.home.mock_dashboard.attendance}
                                 </span>
                                 <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
-                                  +4.5%
+                                  {
+                                    dictionary.home.mock_dashboard
+                                      .attendance_change
+                                  }
                                 </span>
                               </div>
                               <div className="mb-1 text-base font-bold text-slate-900 sm:text-lg dark:text-white">
-                                94%
+                                {
+                                  dictionary.home.mock_dashboard
+                                    .attendance_value
+                                }
                               </div>
                               <div className="h-1 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
                                 <div className="h-full w-[94%] rounded-full bg-emerald-500"></div>
@@ -320,7 +321,10 @@ export default async function Home({
                                 </span>
                               </div>
                               <div className="mb-1 text-base font-bold text-slate-900 sm:text-lg dark:text-white">
-                                48
+                                {
+                                  dictionary.home.mock_dashboard
+                                    .active_students_value
+                                }
                               </div>
                               <div className="flex -space-x-2">
                                 {[1, 2, 3].map((i) => (
@@ -341,7 +345,10 @@ export default async function Home({
                                 </span>
                               </div>
                               <div className="mb-1 text-base font-bold text-slate-900 sm:text-lg dark:text-white">
-                                12
+                                {
+                                  dictionary.home.mock_dashboard
+                                    .classes_today_value
+                                }
                               </div>
                               <div className="h-1 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
                                 <div className="h-full w-[60%] rounded-full bg-orange-500"></div>
@@ -358,7 +365,8 @@ export default async function Home({
                                 </div>
                                 <div className="text-sm font-bold text-slate-900 dark:text-white">
                                   {dictionary.home.mock_dashboard.class_average}
-                                  : 84%
+                                  :{" "}
+                                  {dictionary.home.mock_dashboard.average_score}
                                 </div>
                               </div>
                               <div className="flex gap-2">
@@ -428,8 +436,15 @@ export default async function Home({
                                       {item.subject}
                                     </div>
                                     <div className="text-[10px] text-slate-500 dark:text-slate-400">
-                                      12-A •{" "}
-                                      {dictionary.home.mock_dashboard.room} 301
+                                      {
+                                        dictionary.home.mock_dashboard
+                                          .class_name
+                                      }{" "}
+                                      • {dictionary.home.mock_dashboard.room}{" "}
+                                      {
+                                        dictionary.home.mock_dashboard
+                                          .room_number
+                                      }
                                     </div>
                                   </div>
                                 </div>
@@ -578,9 +593,7 @@ export default async function Home({
                 {dictionary.home.how_it_works.title}
               </h2>
               <p className="mx-auto max-w-2xl text-lg text-slate-600 dark:text-slate-400">
-                {lang === "tr"
-                  ? "Karmaşık süreçleri basitleştirin. Sadece 3 adımda dijital dönüşümünüzü tamamlayın."
-                  : "Simplify complex processes. Complete your digital transformation in just 3 steps."}
+                {dictionary.home.how_it_works.subtitle}
               </p>
             </div>
 
@@ -594,7 +607,7 @@ export default async function Home({
                   <div className="absolute top-0 left-0 h-1 w-full origin-left scale-x-0 transform bg-linear-to-r from-blue-400 to-blue-600 transition-transform duration-500 group-hover:scale-x-100"></div>
                   <div className="relative z-10 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-blue-50 transition-transform duration-300 group-hover:scale-110 dark:bg-blue-900/30">
                     <div className="absolute -top-3 -right-3 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-blue-600 text-sm font-bold text-white shadow-md dark:border-slate-800">
-                      1
+                      {dictionary.home.how_it_works.step_1}
                     </div>
                     <UserPlus className="h-9 w-9 text-blue-600 dark:text-blue-400" />
                   </div>
@@ -613,7 +626,7 @@ export default async function Home({
                   <div className="absolute top-0 left-0 h-1 w-full origin-left scale-x-0 transform bg-linear-to-r from-indigo-400 to-indigo-600 transition-transform duration-500 group-hover:scale-x-100"></div>
                   <div className="relative z-10 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-indigo-50 transition-transform duration-300 group-hover:scale-110 dark:bg-indigo-900/30">
                     <div className="absolute -top-3 -right-3 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-indigo-600 text-sm font-bold text-white shadow-md dark:border-slate-800">
-                      2
+                      {dictionary.home.how_it_works.step_2}
                     </div>
                     <Settings className="h-9 w-9 text-indigo-600 dark:text-indigo-400" />
                   </div>
@@ -632,7 +645,7 @@ export default async function Home({
                   <div className="absolute top-0 left-0 h-1 w-full origin-left scale-x-0 transform bg-linear-to-r from-emerald-400 to-emerald-600 transition-transform duration-500 group-hover:scale-x-100"></div>
                   <div className="relative z-10 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-emerald-50 transition-transform duration-300 group-hover:scale-110 dark:bg-emerald-900/30">
                     <div className="absolute -top-3 -right-3 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-emerald-600 text-sm font-bold text-white shadow-md dark:border-slate-800">
-                      3
+                      {dictionary.home.how_it_works.step_3}
                     </div>
                     <BookOpen className="h-9 w-9 text-emerald-600 dark:text-emerald-400" />
                   </div>
@@ -771,7 +784,7 @@ export default async function Home({
               <div className="flex items-center gap-2">
                 <DenikoLogo className="h-8 w-8 text-slate-400 dark:text-slate-500" />
                 <span className="text-2xl font-bold text-slate-600 dark:text-slate-400">
-                  Deniko
+                  {dictionary.common.app_name}
                 </span>
               </div>
               <p className="max-w-md text-base leading-relaxed text-slate-500 dark:text-slate-400">
@@ -783,7 +796,7 @@ export default async function Home({
                   href="https://github.com/Kinin-Code-Offical"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="My GitHub Profile"
+                  aria-label={dictionary.home.footer.github}
                   className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 transition-colors hover:border-blue-200 hover:text-[#2062A3] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500 dark:hover:border-blue-800 dark:hover:text-blue-400"
                 >
                   <svg
@@ -803,7 +816,7 @@ export default async function Home({
                   href="https://www.patreon.com/YamacGursel"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="My Patreon Profile"
+                  aria-label={dictionary.home.footer.patreon}
                   className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 transition-colors hover:border-blue-200 hover:text-[#2062A3] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500 dark:hover:border-blue-800 dark:hover:text-blue-400"
                 >
                   <svg
@@ -832,7 +845,7 @@ export default async function Home({
             {/* Platform Links */}
             <div className="md:col-span-3 md:col-start-7">
               <h2 className="mb-6 text-base font-bold text-slate-900 dark:text-white">
-                {lang === "tr" ? "Platform" : "Platform"}
+                {dictionary.home.footer.platform}
               </h2>
               <ul className="space-y-4 text-sm text-slate-600 dark:text-slate-400">
                 <li>
@@ -868,7 +881,7 @@ export default async function Home({
             {/* Legal Links */}
             <div className="md:col-span-3">
               <h2 className="mb-6 text-base font-bold text-slate-900 dark:text-white">
-                {lang === "tr" ? "Yasal" : "Legal"}
+                {dictionary.home.footer.legal}
               </h2>
               <ul className="space-y-4 text-sm text-slate-600 dark:text-slate-400">
                 <li>
@@ -877,9 +890,7 @@ export default async function Home({
                     className="flex items-center gap-2 transition-colors hover:text-[#2062A3] dark:hover:text-blue-400"
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-blue-200 dark:bg-blue-800"></span>
-                    {lang === "tr"
-                      ? "Kullanıcı Sözleşmesi"
-                      : "Terms of Service"}
+                    {dictionary.legal.nav.terms}
                   </Link>
                 </li>
                 <li>
@@ -888,7 +899,7 @@ export default async function Home({
                     className="flex items-center gap-2 transition-colors hover:text-[#2062A3] dark:hover:text-blue-400"
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-blue-200 dark:bg-blue-800"></span>
-                    {lang === "tr" ? "Gizlilik Politikası" : "Privacy Policy"}
+                    {dictionary.legal.nav.privacy}
                   </Link>
                 </li>
                 <li>
@@ -897,7 +908,7 @@ export default async function Home({
                     className="flex items-center gap-2 transition-colors hover:text-[#2062A3] dark:hover:text-blue-400"
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-blue-200 dark:bg-blue-800"></span>
-                    {lang === "tr" ? "Çerez Politikası" : "Cookie Policy"}
+                    {dictionary.legal.nav.cookies}
                   </Link>
                 </li>
                 <li>
@@ -906,26 +917,20 @@ export default async function Home({
                     className="flex items-center gap-2 transition-colors hover:text-[#2062A3] dark:hover:text-blue-400"
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-blue-200 dark:bg-blue-800"></span>
-                    {lang === "tr"
-                      ? "KVKK Aydınlatma Metni"
-                      : "KVKK Clarification Text"}
+                    {dictionary.legal.nav.kvkk}
                   </Link>
                 </li>
               </ul>
             </div>
           </div>
-
           <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-200 pt-8 md:flex-row dark:border-slate-800">
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              {lang === "tr"
-                ? "© 2025 Deniko. Tüm hakları saklıdır."
-                : "© 2025 Deniko. All rights reserved."}
+              {dictionary.common.copyright}{" "}
+              {dictionary.legal.footer.rights_reserved}
             </p>
             <div className="flex items-center gap-6">
               <span className="text-xs text-slate-600 dark:text-slate-400">
-                {lang === "tr"
-                  ? "Patent hakları Deniko'ya aittir."
-                  : "Patent rights belong to Deniko."}
+                {dictionary.home.footer.patent}
               </span>
             </div>
           </div>

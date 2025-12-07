@@ -11,15 +11,13 @@ export async function generateMetadata({
   params: Promise<{ lang: Locale }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const isTr = lang === "tr";
+  const dictionary = await getDictionary(lang);
   const baseUrl = "https://deniko.net";
   const pathname = "/dashboard/schedule";
 
   return {
-    title: isTr ? "Ders Programı | Deniko" : "Schedule | Deniko",
-    description: isTr
-      ? "Ders programı ve takvim yönetimi."
-      : "Schedule and calendar management.",
+    title: dictionary.metadata.schedule.title,
+    description: dictionary.metadata.schedule.description,
     metadataBase: new URL(baseUrl),
     alternates: {
       canonical: `/${lang}${pathname}`,
@@ -65,7 +63,7 @@ export default async function SchedulePage({
           <CardTitle>{dictionary.dashboard.nav.schedule}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p>Schedule content coming soon...</p>
+          <p>{dictionary.metadata.schedule.coming_soon}</p>
         </CardContent>
       </Card>
     </div>

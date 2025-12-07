@@ -1,6 +1,4 @@
-import { describe, it, expect, vi, beforeAll } from 'vitest';
-import * as path from 'path';
-import * as fs from 'fs';
+import { describe, it, expect, vi } from 'vitest';
 
 // Mock CSS imports to prevent syntax errors in Node environment
 vi.mock('*.css', () => ({ default: {} }));
@@ -26,7 +24,7 @@ describe('Metadata i18n Compliance', () => {
   it('app/layout.tsx should not have hardcoded title/description', async () => {
     // Dynamic import of the layout file
     const layoutModule = await import('../../app/layout');
-    const metadata = layoutModule.metadata;
+    const { metadata } = layoutModule;
 
     expect(metadata).toBeDefined();
 
@@ -42,14 +40,14 @@ describe('Metadata i18n Compliance', () => {
     // Ideally, we would check if it matches a mocked dictionary value, 
     // but since we can't easily mock a static object's dependencies if they aren't function calls,
     // we rely on checking for known hardcoded strings or checking if it equals a translation key.
-    
+
     // In a real i18n setup, the title might be "home.title" (if using a key) 
     // or the result of a function call. 
     // If it's a static string in a file that doesn't import a dictionary, it's hardcoded.
-    
+
     // For this test, we will fail if we detect the known hardcoded string from the current codebase.
     // This forces the developer to change it to something else (dynamic).
-    
+
     const hardcodedTitle = "Deniko | Özel Ders Yönetim Platformu";
     const hardcodedDesc = "Deniko ile özel derslerinizi kolayca yönetin. Öğrenci takibi, ders programı ve veli bilgilendirme özellikleriyle eğitiminizi dijitalleştirin.";
 

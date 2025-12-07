@@ -18,6 +18,11 @@ interface ImageCropperProps {
   file: File | null;
   onCrop: (croppedFile: File) => void;
   saveLabel?: string;
+  zoomLabel?: string;
+  resetLabel?: string;
+  title?: string;
+  description?: string;
+  cropPreviewAlt?: string;
 }
 
 export function ImageCropper({
@@ -26,6 +31,11 @@ export function ImageCropper({
   file,
   onCrop,
   saveLabel = "Crop & Save",
+  zoomLabel = "Zoom",
+  resetLabel = "Reset",
+  title = "Edit Photo",
+  description = "Drag to reposition and use the slider to zoom.",
+  cropPreviewAlt = "Crop preview",
 }: ImageCropperProps) {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
@@ -134,11 +144,8 @@ export function ImageCropper({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Edit Photo</DialogTitle>
-          <DialogDescription>
-            Drag to reposition and use the slider to zoom before saving your
-            photo.
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col items-center gap-4 py-4">
@@ -155,7 +162,7 @@ export function ImageCropper({
               <img
                 ref={imageRef}
                 src={imageSrc}
-                alt="Crop preview"
+                alt={cropPreviewAlt}
                 className="pointer-events-none absolute max-w-none origin-center select-none"
                 style={{
                   transform: `translate(-50%, -50%) translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
@@ -170,7 +177,7 @@ export function ImageCropper({
 
           <div className="w-full space-y-2 px-4">
             <div className="text-muted-foreground flex justify-between text-xs">
-              <span>Zoom</span>
+              <span>{zoomLabel}</span>
               <span>{Math.round(zoom * 100)}%</span>
             </div>
             <input
@@ -181,7 +188,7 @@ export function ImageCropper({
               value={zoom}
               onChange={(e) => setZoom(parseFloat(e.target.value))}
               className="bg-secondary accent-primary h-2 w-full cursor-pointer appearance-none rounded-lg"
-              aria-label="Zoom"
+              aria-label={zoomLabel}
             />
           </div>
         </div>
@@ -195,7 +202,7 @@ export function ImageCropper({
             }}
           >
             <RotateCcw className="mr-2 h-4 w-4" />
-            Reset
+            {resetLabel}
           </Button>
           <Button onClick={handleCrop} disabled={isCropping}>
             {isCropping && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

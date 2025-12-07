@@ -1,4 +1,55 @@
 export interface Dictionary {
+  metadata: {
+    home: {
+      title: string;
+      description: string;
+    };
+    login: {
+      title: string;
+      description: string;
+    };
+    register: {
+      title: string;
+      description: string;
+    };
+    forgot_password: {
+      title: string;
+      description: string;
+    };
+    reset_password: {
+      title: string;
+      description: string;
+    };
+    dashboard: {
+      student_title: string;
+      teacher_title: string;
+      description: string;
+      welcome_title: string;
+      contact_support: string;
+    };
+    finance: {
+      title: string;
+      description: string;
+      coming_soon: string;
+    };
+    schedule: {
+      title: string;
+      description: string;
+      coming_soon: string;
+    };
+  };
+  navbar: {
+    menu_open: string;
+    menu: string;
+    theme: string;
+    language: string;
+    legal: string;
+    terms: string;
+    privacy: string;
+    mobile_menu_title: string;
+    mobile_menu_desc: string;
+    toggle_theme: string;
+  };
   newsletter: {
     title: string;
     description: string;
@@ -8,6 +59,12 @@ export interface Dictionary {
     error: string;
   };
   legal: {
+    cookie_consent: {
+      title: string;
+      description: string;
+      accept: string;
+      decline: string;
+    };
     title: string;
     description: string;
     read_more: string;
@@ -50,6 +107,8 @@ export interface Dictionary {
     privacy: string;
     cookies: string;
     kvkk: string;
+    legal_suffix: string;
+    legal_center: string;
   };
   theme: {
     light: string;
@@ -68,6 +127,8 @@ export interface Dictionary {
       homework: string;
       exams: string;
       logout: string;
+      menu_title: string;
+      menu_desc: string;
     };
     join: {
       title: string;
@@ -82,6 +143,12 @@ export interface Dictionary {
       reject: string;
       success: string;
       error: string;
+      welcome_title: string;
+      invite_desc: string;
+      login_desc: string;
+      login_button: string;
+      register_button: string;
+      already_used: string;
     };
     header: {
       search_placeholder: string;
@@ -131,6 +198,7 @@ export interface Dictionary {
         phone_number: string;
         submit: string;
         email: string;
+        email_placeholder: string;
         classrooms: string;
         select_classrooms: string;
         avatar: string;
@@ -146,6 +214,7 @@ export interface Dictionary {
         copy_invite: string;
         grades: {
           graduated: string;
+          suffix: string;
         };
       };
     };
@@ -157,6 +226,8 @@ export interface Dictionary {
       next_lesson: string;
       assignments_todo: string;
       weekly_schedule: string;
+      no_pending_homework: string;
+      due_date: string;
     };
     teacher: {
       active_students: string;
@@ -181,16 +252,44 @@ export interface Dictionary {
       delete_desc: string;
       continue: string;
     };
+    welcome_title: string;
+    contact_support: string;
   };
   common: {
-    loading: string;
+    all_rights_reserved: string;
+    copyright: string;
+    copyright_long: string;
+    error_occurred: string;
     back: string;
     back_to_home: string;
-    all_rights_reserved: string;
+    toggle_password_visibility: string;
     cancel?: string;
     continue?: string;
     save?: string;
     saved?: string;
+    password_placeholder: string;
+    zoom: string;
+    crop_preview: string;
+    crop_save: string;
+    more_options: string;
+    skip_to_content: string;
+    close: string;
+    reset: string;
+    google: string;
+    student_initials: string;
+    app_name: string;
+    loading: string;
+    avatar: string;
+    theme: {
+      light: string;
+      dark: string;
+      system: string;
+      toggle_theme: string;
+      loading: string;
+    };
+  };
+  repro?: {
+    title: string;
   };
   teacher: {
     invite_link_copied: string;
@@ -201,6 +300,7 @@ export interface Dictionary {
     phone_input: {
       search_country: string;
       no_country_found: string;
+      country_selector_label: string;
     };
   };
   student_detail: {
@@ -215,6 +315,7 @@ export interface Dictionary {
     };
     profile: {
       title: string;
+      desc: string;
       contact_parent: string;
       save: string;
       archive_student: string;
@@ -330,6 +431,7 @@ export interface Dictionary {
       invite_link_inactive: string;
       copy_link: string;
       danger_zone: string;
+      danger_zone_desc: string;
       delete_student: string;
       delete_student_desc: string;
       delete_button: string;
@@ -347,9 +449,13 @@ export interface Dictionary {
       notes: string;
       notes_desc: string;
       claimed_profile: string;
+      claimed_profile_desc: string;
       real_first_name: string;
       real_last_name: string;
       photo_claimed_desc: string;
+      name_placeholder: string;
+      student_no_placeholder: string;
+      grade_placeholder: string;
       invite_link_status: string;
       archive: {
         title: string;
@@ -378,6 +484,10 @@ export interface Dictionary {
     welcome_user: string;
   };
   auth: {
+    placeholders: {
+      email: string;
+      password: string;
+    };
     register: {
       title: string;
       subtitle: string;
@@ -416,6 +526,7 @@ export interface Dictionary {
         password_min: string;
         password_regex: string;
         password_mismatch: string;
+        password_required: string;
       };
     };
     login: {
@@ -549,12 +660,16 @@ export interface Dictionary {
     };
     how_it_works: {
       title: string;
+      subtitle: string;
       step1_title: string;
       step1_desc: string;
       step2_title: string;
       step2_desc: string;
       step3_title: string;
       step3_desc: string;
+      step_1: string;
+      step_2: string;
+      step_3: string;
     };
     cta: {
       title: string;
@@ -563,8 +678,12 @@ export interface Dictionary {
     };
     mock_dashboard: {
       attendance: string;
+      attendance_value: string;
+      attendance_change: string;
       active_students: string;
+      active_students_value: string;
       classes_today: string;
+      classes_today_value: string;
       schedule: string;
       math: string;
       physics: string;
@@ -581,6 +700,9 @@ export interface Dictionary {
       students: string;
       finance: string;
       room: string;
+      class_name: string;
+      room_number: string;
+      average_score: string;
       graphic_schedule: string;
       graphic_profile: string;
       graphic_performance: string;
@@ -611,6 +733,7 @@ export interface Dictionary {
         "10_min": string;
         "2_hours": string;
       };
+      vs_last_month: string;
       chart: {
         completed: string;
         remaining: string;
@@ -620,6 +743,16 @@ export interface Dictionary {
         swipe: string;
         hold: string;
       };
+    };
+    footer: {
+      built_by: string;
+      source_code: string;
+      github: string;
+      patreon: string;
+      brand: string;
+      platform: string;
+      legal: string;
+      patent: string;
     };
   };
   email: {

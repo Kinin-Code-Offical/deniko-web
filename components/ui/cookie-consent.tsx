@@ -4,9 +4,17 @@ import * as React from "react";
 import { Cookie } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import type { Dictionary } from "@/types/i18n";
 
-export function CookieConsent() {
+export function CookieConsent({ dictionary }: { dictionary?: Dictionary }) {
   const [isVisible, setIsVisible] = React.useState(false);
+  const t = dictionary?.legal.cookie_consent || {
+    title: "Cookie Policy",
+    description:
+      'We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking "Accept", you consent to our use of cookies.',
+    accept: "Accept",
+    decline: "Decline",
+  };
 
   React.useEffect(() => {
     // Check if cookie_consent cookie exists
@@ -48,19 +56,16 @@ export function CookieConsent() {
           <div className="space-y-1">
             <h2 className="flex items-center gap-2 font-semibold text-slate-900 md:hidden">
               <Cookie className="h-4 w-4 text-blue-600" />
-              Çerez Tercihleri
+              {t.title}
             </h2>
             <p className="text-sm leading-relaxed text-slate-600">
-              Deniko olarak deneyiminizi iyileştirmek, analitik veriler toplamak
-              ve size özel içerikler sunmak için çerezler kullanıyoruz. Detaylı
-              bilgi için{" "}
+              {t.description}{" "}
               <Link
-                href="/tr/legal/cookies"
+                href="/legal/cookies"
                 className="font-medium text-blue-600 hover:underline"
               >
-                Çerez Politikası
+                {t.title}
               </Link>
-              &apos;nı inceleyebilirsiniz.
             </p>
           </div>
         </div>
@@ -70,13 +75,13 @@ export function CookieConsent() {
             onClick={declineCookies}
             className="flex-1 border-slate-300 text-slate-700 hover:bg-slate-50 md:flex-none"
           >
-            Reddet
+            {t.decline}
           </Button>
           <Button
             onClick={acceptCookies}
             className="flex-1 bg-blue-600 text-white shadow-sm hover:bg-blue-700 md:flex-none"
           >
-            Kabul Et
+            {t.accept}
           </Button>
         </div>
       </div>

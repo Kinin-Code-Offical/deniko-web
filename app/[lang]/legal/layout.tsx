@@ -64,7 +64,10 @@ export default async function LegalLayout({
       <div className="mb-8 hidden items-center gap-3 border-b px-8 pt-8 pb-4 print:flex">
         <DenikoLogo className="h-8 w-8 text-black" />
         <span className="text-2xl font-bold tracking-tight text-black">
-          Deniko <span className="font-normal text-slate-600">Legal</span>
+          {dictionary.common.app_name}{" "}
+          <span className="font-normal text-slate-600">
+            {dictionary.legal.legal_suffix}
+          </span>
         </span>
       </div>
 
@@ -80,7 +83,10 @@ export default async function LegalLayout({
                 <DenikoLogo className="h-6 w-6 text-blue-600 dark:text-blue-400" />
               </div>
               <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
-                Deniko <span className="font-normal text-slate-400">Legal</span>
+                {dictionary.common.app_name}{" "}
+                <span className="font-normal text-slate-400">
+                  {dictionary.legal.legal_suffix}
+                </span>
               </span>
             </Link>
 
@@ -146,11 +152,11 @@ export default async function LegalLayout({
             <div className="flex items-center gap-2">
               <DenikoLogo className="h-6 w-6 text-slate-400" />
               <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">
-                Deniko Legal Center
+                {dictionary.legal.legal_center}
               </span>
             </div>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              &copy; {new Date().getFullYear()} Deniko.{" "}
+              {dictionary.common.copyright}{" "}
               {dictionary.legal.footer.rights_reserved}
             </p>
           </div>

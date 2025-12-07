@@ -18,7 +18,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({ dictionary }) => {
             {t.schedule}
           </div>
           <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-            12 {t.math}
+            {12} {t.math}
           </h2>
         </div>
         <div className="rounded-xl bg-orange-100 p-2 dark:bg-orange-900/20">
@@ -32,7 +32,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({ dictionary }) => {
         <div className="flex gap-4 rounded-2xl border-2 border-slate-100 bg-white p-3 shadow-sm transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-800">
           <div className="flex min-w-[50px] flex-col items-center justify-center">
             <span className="text-sm font-semibold text-slate-800 dark:text-slate-100">
-              09:00
+              {"09:00"}
             </span>
           </div>
           <div className="flex-1 border-l-2 border-blue-500 pl-4">
@@ -41,7 +41,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({ dictionary }) => {
             </h3>
             <div className="mt-1 flex items-center text-xs text-slate-700 dark:text-slate-200">
               <MapPin className="mr-1 h-3 w-3" />
-              {t.room} 301
+              {t.room} {301}
             </div>
           </div>
         </div>
@@ -50,7 +50,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({ dictionary }) => {
         <div className="flex gap-4 rounded-2xl border border-transparent bg-gray-50 p-3 dark:bg-slate-800/50">
           <div className="flex min-w-[50px] flex-col items-center justify-center">
             <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-              11:30
+              {"11:30"}
             </span>
           </div>
           <div className="flex-1 border-l-2 border-gray-300 pl-4 dark:border-slate-600">
@@ -59,7 +59,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({ dictionary }) => {
             </h4>
             <div className="mt-1 flex items-center text-xs text-slate-700 dark:text-slate-200">
               <MapPin className="mr-1 h-3 w-3" />
-              {t.room} 205
+              {t.room} {205}
             </div>
           </div>
         </div>
@@ -68,7 +68,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({ dictionary }) => {
         <div className="flex gap-4 rounded-2xl border border-transparent bg-gray-50 p-3 dark:bg-slate-800/50">
           <div className="flex min-w-[50px] flex-col items-center justify-center">
             <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-              13:00
+              {"13:00"}
             </span>
           </div>
           <div className="flex-1 border-l-2 border-gray-300 pl-4 dark:border-slate-600">
@@ -77,7 +77,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({ dictionary }) => {
             </h4>
             <div className="mt-1 flex items-center text-xs text-slate-700 dark:text-slate-200">
               <MapPin className="mr-1 h-3 w-3" />
-              {t.lab} 2
+              {t.lab} {2}
             </div>
           </div>
         </div>

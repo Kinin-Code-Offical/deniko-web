@@ -35,7 +35,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ dictionary }) => {
             {t.attendance}
           </p>
           <div className="text-4xl font-bold text-gray-900 dark:text-white">
-            94%
+            {94}%
           </div>
         </div>
         <div className="mb-1 rounded-full bg-blue-50 p-3 dark:bg-blue-900/10">
@@ -50,7 +50,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ dictionary }) => {
             {t.students}
           </span>
           <span className="text-lg font-bold text-gray-800 dark:text-white">
-            48
+            {48}
           </span>
         </div>
         <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 p-3 dark:border-slate-700 dark:bg-slate-800">
@@ -58,7 +58,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ dictionary }) => {
             {t.classes_today}
           </span>
           <span className="text-lg font-bold text-gray-800 dark:text-white">
-            12
+            {12}
           </span>
         </div>
         <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 p-3 dark:border-slate-700 dark:bg-slate-800">
@@ -66,7 +66,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ dictionary }) => {
             {t.completed}
           </span>
           <span className="text-lg font-bold text-gray-800 dark:text-white">
-            68
+            {68}
           </span>
         </div>
       </div>

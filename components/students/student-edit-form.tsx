@@ -27,7 +27,6 @@ import {
   type StudentProfile,
   type StudentTeacherRelation,
   type User,
-  type RelationStatus,
 } from "@prisma/client";
 
 type StudentWithRelations = StudentProfile & {
@@ -155,9 +154,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
             {dictionary.student_detail.settings.claimed_profile}
           </AlertTitle>
           <AlertDescription>
-            This student has claimed their profile. You can only edit their
-            display name and avatar for your view. Contact details are managed
-            by the student.
+            {dictionary.student_detail.settings.claimed_profile_desc}
           </AlertDescription>
         </Alert>
       )}
@@ -166,7 +163,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
         <CardHeader>
           <CardTitle>{dictionary.student_detail.profile.title}</CardTitle>
           <CardDescription>
-            Update student&apos;s personal information and contact details.
+            {dictionary.student_detail.profile.desc}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -305,7 +302,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
             {dictionary.student_detail.settings.danger_zone}
           </CardTitle>
           <CardDescription>
-            Irreversible actions for this student account.
+            {dictionary.student_detail.settings.danger_zone_desc}
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4 sm:flex-row">

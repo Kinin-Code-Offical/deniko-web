@@ -38,7 +38,7 @@ const PhoneInput = dynamic(
   }
 );
 
-import type { Dictionary } from '@/types/i18n';
+import type { Dictionary } from "@/types/i18n";
 
 interface RegisterFormProps {
   dictionary: Dictionary;
@@ -105,7 +105,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
           toast.error(result.message);
         }
       } catch {
-        toast.error("An error occurred");
+        toast.error(dictionary.common.error_occurred);
       }
     });
   }
@@ -236,7 +236,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                   <FormLabel>{d.email}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="ornek@email.com"
+                      placeholder={dictionary.auth.placeholders.email}
                       type="email"
                       autoComplete="username"
                       {...field}
@@ -265,6 +265,9 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                       noResultsMessage={
                         dictionary.components.phone_input.no_country_found
                       }
+                      countrySelectorLabel={
+                        dictionary.components.phone_input.country_selector_label
+                      }
                     />
                   </FormControl>
                   <FormMessage />
@@ -283,7 +286,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                   <FormControl>
                     <div className="relative">
                       <Input
-                        placeholder="******"
+                        placeholder={dictionary.auth.placeholders.password}
                         type={showPassword ? "text" : "password"}
                         autoComplete="new-password"
                         {...field}
@@ -294,7 +297,9 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                         variant="ghost"
                         size="sm"
                         className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
-                        aria-label="Toggle password visibility"
+                        aria-label={
+                          dictionary.common.toggle_password_visibility
+                        }
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (
@@ -318,7 +323,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                   <FormControl>
                     <div className="relative">
                       <Input
-                        placeholder="******"
+                        placeholder={dictionary.auth.placeholders.password}
                         type={showConfirmPassword ? "text" : "password"}
                         autoComplete="new-password"
                         {...field}
@@ -329,7 +334,9 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                         variant="ghost"
                         size="sm"
                         className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
-                        aria-label="Toggle password visibility"
+                        aria-label={
+                          dictionary.common.toggle_password_visibility
+                        }
                         onClick={() =>
                           setShowConfirmPassword(!showConfirmPassword)
                         }
@@ -407,8 +414,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
                 </FormControl>
                 <div className="flex-1 leading-none">
                   <FormLabel className="block cursor-pointer text-sm font-medium text-slate-600 dark:text-slate-400">
-                    {dictionary.legal.marketing_consent ||
-                      "Kampanya ve duyurulardan e-posta ile haberdar olmak istiyorum."}
+                    {dictionary.legal.marketing_consent}
                   </FormLabel>
                 </div>
               </FormItem>
@@ -443,4 +449,3 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
     </div>
   );
 }
-

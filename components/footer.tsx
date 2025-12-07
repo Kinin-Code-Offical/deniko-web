@@ -16,13 +16,13 @@ export function Footer({ lang, dictionary }: FooterProps) {
               href={`/${lang}`}
               className="text-sm font-medium text-slate-600 hover:text-[#2062A3] hover:underline dark:text-slate-400 dark:hover:text-blue-400"
             >
-              {dictionary.home?.home || "Home"}
+              {dictionary.home.home}
             </Link>
             <Link
               href={`/${lang}/dashboard`}
               className="text-sm font-medium text-slate-600 hover:text-[#2062A3] hover:underline dark:text-slate-400 dark:hover:text-blue-400"
             >
-              Dashboard
+              {dictionary.dashboard.nav.dashboard}
             </Link>
           </div>
           <div className="flex gap-6">
@@ -30,13 +30,13 @@ export function Footer({ lang, dictionary }: FooterProps) {
               href={`/${lang}/legal/terms`}
               className="text-sm font-medium text-slate-600 hover:text-[#2062A3] hover:underline dark:text-slate-400 dark:hover:text-blue-400"
             >
-              {dictionary.legal?.nav?.terms || "Terms"}
+              {dictionary.legal.nav.terms}
             </Link>
             <Link
               href={`/${lang}/legal/privacy`}
               className="text-sm font-medium text-slate-600 hover:text-[#2062A3] hover:underline dark:text-slate-400 dark:hover:text-blue-400"
             >
-              {dictionary.legal?.nav?.privacy || "Privacy"}
+              {dictionary.legal.nav.privacy}
             </Link>
           </div>
         </div>

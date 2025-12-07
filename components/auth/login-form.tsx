@@ -21,7 +21,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { ResendAlert } from "@/components/auth/resend-alert";
 
-import type { Dictionary } from '@/types/i18n';
+import type { Dictionary } from "@/types/i18n";
 
 interface LoginFormProps {
   dictionary: Dictionary;
@@ -77,7 +77,10 @@ export function LoginForm({ dictionary, lang }: LoginFormProps) {
       )}
 
       <div className="space-y-6">
-        <GoogleLoginButton text={d.google_login} />
+        <GoogleLoginButton
+          text={d.google_login}
+          googleLabel={dictionary.common.google}
+        />
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
@@ -100,7 +103,7 @@ export function LoginForm({ dictionary, lang }: LoginFormProps) {
                   <FormLabel>{d.email}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="ornek@email.com"
+                      placeholder={dictionary.auth.placeholders.email}
                       autoComplete="username"
                       {...field}
                       className="h-11"
@@ -127,7 +130,7 @@ export function LoginForm({ dictionary, lang }: LoginFormProps) {
                   <FormControl>
                     <div className="relative">
                       <Input
-                        placeholder="******"
+                        placeholder={dictionary.auth.placeholders.password}
                         type={showPassword ? "text" : "password"}
                         autoComplete="current-password"
                         {...field}
@@ -138,7 +141,9 @@ export function LoginForm({ dictionary, lang }: LoginFormProps) {
                         variant="ghost"
                         size="sm"
                         className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
-                        aria-label="Toggle password visibility"
+                        aria-label={
+                          dictionary.common.toggle_password_visibility
+                        }
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (
@@ -176,4 +181,3 @@ export function LoginForm({ dictionary, lang }: LoginFormProps) {
     </div>
   );
 }
-

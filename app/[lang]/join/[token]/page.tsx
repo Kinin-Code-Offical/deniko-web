@@ -73,7 +73,7 @@ export default async function JoinPage({
     return (
       <div className="flex h-dvh items-center justify-center">
         <p className="text-muted-foreground">
-          This invite has already been used.
+          {dict.dashboard.join.already_used}
         </p>
       </div>
     );
@@ -89,19 +89,18 @@ export default async function JoinPage({
               <DenikoLogo className="h-10 w-10 text-white" />
             </div>
             <CardTitle className="text-2xl font-bold text-[#2062A3] dark:text-blue-400">
-              Deniko&apos;ya Hoş Geldiniz
+              {dict.dashboard.join.welcome_title}
             </CardTitle>
             <CardDescription className="text-base dark:text-slate-400">
               <span className="text-foreground font-semibold dark:text-white">
                 {inviteDetails.teacherName}
               </span>{" "}
-              sizi öğrencisi olarak eklemek istiyor.
+              {dict.dashboard.join.invite_desc.replace("{name}", "")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 text-center">
             <p className="text-muted-foreground dark:text-slate-400">
-              Daveti kabul etmek ve derslerinizi takip etmek için lütfen giriş
-              yapın veya yeni bir hesap oluşturun.
+              {dict.dashboard.join.login_desc}
             </p>
           </CardContent>
           <CardFooter className="flex flex-col gap-3">
@@ -111,7 +110,7 @@ export default async function JoinPage({
             >
               <Link href={`/${lang}/login?callbackUrl=/${lang}/join/${token}`}>
                 <LogIn className="mr-2 h-4 w-4" />
-                Giriş Yap
+                {dict.dashboard.join.login_button}
               </Link>
             </Button>
             <Button
@@ -121,7 +120,7 @@ export default async function JoinPage({
             >
               <Link href={`/${lang}/register?invite=${token}`}>
                 <UserPlus className="mr-2 h-4 w-4" />
-                Kayıt Ol
+                {dict.dashboard.join.register_button}
               </Link>
             </Button>
           </CardFooter>

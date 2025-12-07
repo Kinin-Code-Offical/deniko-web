@@ -18,6 +18,7 @@ interface ThemeToggleProps {
     dark: string;
     system: string;
     toggle_theme?: string;
+    loading?: string;
   };
 }
 
@@ -29,6 +30,7 @@ export function ThemeToggle({ labels }: ThemeToggleProps) {
     dark: "Dark",
     system: "System",
     toggle_theme: "Toggle theme",
+    loading: "Loading...",
   };
 
   React.useEffect(() => {
@@ -42,7 +44,7 @@ export function ThemeToggle({ labels }: ThemeToggleProps) {
         size="icon"
         className="h-10 w-10 rounded-full border-slate-200 bg-white/50 text-slate-600 shadow-sm"
       >
-        <span className="sr-only">Loading...</span>
+        <span className="sr-only">{t.loading}</span>
       </Button>
     );
   }

@@ -11,15 +11,13 @@ export async function generateMetadata({
   params: Promise<{ lang: Locale }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const isTr = lang === "tr";
+  const dictionary = await getDictionary(lang);
   const baseUrl = "https://deniko.net";
   const pathname = "/dashboard/finance";
 
   return {
-    title: isTr ? "Finans | Deniko" : "Finance | Deniko",
-    description: isTr
-      ? "Finansal durum ve ödeme takibi."
-      : "Financial status and payment tracking.",
+    title: dictionary.metadata.finance.title,
+    description: dictionary.metadata.finance.description,
     metadataBase: new URL(baseUrl),
     alternates: {
       canonical: `/${lang}${pathname}`,
@@ -65,7 +63,7 @@ export default async function FinancePage({
           <CardTitle>{dictionary.dashboard.nav.finance}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p>Finance content coming soon...</p>
+          <p>{dictionary.metadata.finance.coming_soon}</p>
         </CardContent>
       </Card>
     </div>

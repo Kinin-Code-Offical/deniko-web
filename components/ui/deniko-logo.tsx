@@ -3,16 +3,21 @@ import { cn } from "@/lib/utils";
 
 interface DenikoLogoProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
+  "aria-label"?: string;
 }
 
-export function DenikoLogo({ className, ...props }: DenikoLogoProps) {
+export function DenikoLogo({
+  className,
+  "aria-label": ariaLabel,
+  ...props
+}: DenikoLogoProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 1024 1024"
       className={cn("h-10 w-10", className)}
       role="img"
-      aria-label="Deniko Logo"
+      aria-label={ariaLabel || "Deniko"}
       {...props}
     >
       <path

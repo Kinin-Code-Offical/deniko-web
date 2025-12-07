@@ -1,7 +1,5 @@
 import { describe, it, expect } from 'vitest';
 import { scanFile } from '../../scripts/check-hardcoded';
-import * as path from 'path';
-import * as fs from 'fs';
 
 describe('check-hardcoded script', () => {
   it('should detect hardcoded JSX text', () => {
@@ -12,7 +10,7 @@ describe('check-hardcoded script', () => {
     `;
     // Create a temp file or just pass code if scanFile supports it (I modified scanFile to support sourceCode)
     const issues = scanFile('test.tsx', code);
-    
+
     expect(issues).toHaveLength(1);
     expect(issues[0].type).toBe('JsxText');
     expect(issues[0].text).toBe('Hello World');
@@ -25,7 +23,7 @@ describe('check-hardcoded script', () => {
       }
     `;
     const issues = scanFile('test.tsx', code);
-    
+
     expect(issues).toHaveLength(1);
     expect(issues[0].type).toBe('StringLiteral');
     expect(issues[0].text).toBe('Enter name');

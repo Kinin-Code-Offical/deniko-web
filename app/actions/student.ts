@@ -190,7 +190,7 @@ export async function claimStudentProfile(token: string, preferences: MergePrefe
             }
 
             // Prepare data for the final profile (Target Profile)
-            
+
             const dataToUpdate: Prisma.StudentProfileUpdateInput = {
                 user: { connect: { id: session.user.id } },
                 isClaimed: true,
@@ -538,20 +538,20 @@ export async function deleteStudent(studentId: string) {
     }
 }
 
-const _updateStudentRelationSchema = z.object({
-    customName: z.string().optional(),
-    privateNotes: z.string().optional(),
-    phoneNumber: z.string().optional(),
-})
+interface UpdateStudentRelationData {
+    customName?: string;
+    privateNotes?: string;
+    phoneNumber?: string;
+}
 
 /**
  * Updates the relation details between a teacher and a student.
  * 
  * @param studentId - The student ID.
- * @param data - The update data (custom name, notes, etc.).
+ * @param data - The data to update.
  * @returns An object indicating success or failure.
  */
-export async function updateStudentRelation(studentId: string, data: z.infer<typeof _updateStudentRelationSchema>) {
+export async function updateStudentRelation(studentId: string, data: UpdateStudentRelationData) {
     const session = await auth()
     if (!session?.user?.id) return { success: false, error: "Unauthorized" }
 
@@ -817,7 +817,7 @@ export async function updateStudentSettings(studentId: string, formData: FormDat
             // Update Profile
             // If claimed, we might restrict some fields, but user asked to edit them.
             // We will update what we can on the profile.
-            
+
             const profileUpdateData: Prisma.StudentProfileUpdateInput = {
                 studentNo: studentNo,
                 gradeLevel: gradeLevel,

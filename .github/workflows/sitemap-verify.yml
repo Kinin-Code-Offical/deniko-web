@@ -36,5 +36,5 @@ jobs:
           # But for sitemap verification, a full build is safest.
           NEXT_TELEMETRY_DISABLED: 1
           # Add any required env vars for build here, or use secrets
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          DATABASE_URL: "${{ secrets.DATABASE_URL }}"
+          AUTH_SECRET: "${{ secrets.AUTH_SECRET }}"

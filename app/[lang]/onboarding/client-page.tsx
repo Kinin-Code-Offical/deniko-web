@@ -53,36 +53,24 @@ export function OnboardingClientPage({
 
   const handleSubmit = () => {
     if (!phoneNumber) {
-      toast.error(
-        dictionary.auth.register.validation?.phone_min ||
-          "Phone number is required"
-      );
+      toast.error(dictionary.auth.register.validation.phone_min);
       return;
     }
     if (!password || !confirmPassword) {
-      toast.error(
-        dictionary.auth.register.validation?.password_min ||
-          "Password is required"
-      );
+      toast.error(dictionary.auth.register.validation.password_required);
       return;
     }
     if (password !== confirmPassword) {
-      toast.error(
-        dictionary.auth.register.validation?.password_mismatch ||
-          "Passwords do not match"
-      );
+      toast.error(dictionary.auth.register.validation.password_mismatch);
       return;
     }
     if (password.length < 8) {
-      toast.error(
-        dictionary.auth.register.validation?.password_min ||
-          "Password must be at least 8 characters"
-      );
+      toast.error(dictionary.auth.register.validation.password_min);
       return;
     }
 
     if (!termsAccepted) {
-      toast.error("Please accept the terms and conditions");
+      toast.error(dictionary.legal.validation_terms);
       return;
     }
 
@@ -101,10 +89,10 @@ export function OnboardingClientPage({
           router.push(`/${lang}/dashboard`);
           router.refresh();
         } else {
-          toast.error(result.error || "Something went wrong");
+          toast.error(result.error || dictionary.common.error_occurred);
         }
       } catch {
-        toast.error("Something went wrong");
+        toast.error(dictionary.common.error_occurred);
       }
     });
   };
@@ -143,7 +131,7 @@ export function OnboardingClientPage({
 
         {/* Bottom: Copyright */}
         <div className="relative z-10 text-sm text-blue-200">
-          © 2025 Deniko. All rights reserved.
+          {dictionary.common.copyright} {dictionary.common.all_rights_reserved}
         </div>
       </div>
 
@@ -297,7 +285,7 @@ export function OnboardingClientPage({
                 <div className="relative">
                   <Input
                     id="password"
-                    placeholder="******"
+                    placeholder={dictionary.common.password_placeholder}
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -307,9 +295,7 @@ export function OnboardingClientPage({
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-300"
-                    aria-label={
-                      showPassword ? "Hide password" : "Show password"
-                    }
+                    aria-label={dictionary.common.toggle_password_visibility}
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -329,7 +315,7 @@ export function OnboardingClientPage({
                 <div className="relative">
                   <Input
                     id="confirm-password"
-                    placeholder="******"
+                    placeholder={dictionary.common.password_placeholder}
                     type={showConfirmPassword ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -339,9 +325,7 @@ export function OnboardingClientPage({
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-300"
-                    aria-label={
-                      showConfirmPassword ? "Hide password" : "Show password"
-                    }
+                    aria-label={dictionary.common.toggle_password_visibility}
                   >
                     {showConfirmPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -411,8 +395,7 @@ export function OnboardingClientPage({
                   htmlFor="marketingConsent"
                   className="block cursor-pointer text-sm font-medium text-slate-600 dark:text-slate-300"
                 >
-                  {dictionary.legal.marketing_consent ||
-                    "Kampanya ve duyurulardan e-posta ile haberdar olmak istiyorum."}
+                  {dictionary.legal.marketing_consent}
                 </label>
               </div>
             </div>

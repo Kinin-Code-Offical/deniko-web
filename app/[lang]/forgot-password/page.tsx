@@ -14,15 +14,13 @@ export async function generateMetadata({
   params: Promise<{ lang: Locale }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const isTr = lang === "tr";
+  const dictionary = await getDictionary(lang);
   const baseUrl = "https://deniko.net";
   const pathname = "/forgot-password";
 
   return {
-    title: isTr ? "Şifremi Unuttum | Deniko" : "Forgot Password | Deniko",
-    description: isTr
-      ? "Şifrenizi mi unuttunuz? E-posta adresinizle şifrenizi sıfırlayın."
-      : "Forgot your password? Reset it with your email address.",
+    title: dictionary.metadata.forgot_password.title,
+    description: dictionary.metadata.forgot_password.description,
     metadataBase: new URL(baseUrl),
     alternates: {
       canonical: `/${lang}${pathname}`,
@@ -79,7 +77,9 @@ export default async function ForgotPasswordPage({
             <div className="rounded-lg bg-white/20 p-2 backdrop-blur-sm">
               <DenikoLogo className="h-8 w-8 text-white" />
             </div>
-            <span className="text-2xl font-bold tracking-tight">Deniko</span>
+            <span className="text-2xl font-bold tracking-tight">
+              {dictionary.common.app_name}
+            </span>
           </div>
         </div>
 
@@ -95,7 +95,7 @@ export default async function ForgotPasswordPage({
 
         {/* Footer */}
         <div className="relative z-10 text-sm text-blue-200">
-          © 2025 Deniko. All rights reserved.
+          {dictionary.common.copyright} {dictionary.common.all_rights_reserved}
         </div>
       </div>
 
@@ -120,7 +120,7 @@ export default async function ForgotPasswordPage({
                   <DenikoLogo className="h-5 w-5 text-white" />
                 </div>
                 <span className="font-semibold tracking-tight text-[#2062A3] dark:text-blue-400">
-                  Deniko
+                  {dictionary.common.app_name}
                 </span>
               </Link>
             </div>

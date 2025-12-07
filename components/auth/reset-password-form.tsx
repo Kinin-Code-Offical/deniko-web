@@ -31,7 +31,7 @@ import Link from "next/link";
 // Password strength regex: at least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
-import type { Dictionary } from '@/types/i18n';
+import type { Dictionary } from "@/types/i18n";
 
 interface ResetPasswordFormProps {
   dictionary: Dictionary;
@@ -151,7 +151,7 @@ export function ResetPasswordForm({
                     <Lock className="absolute top-2.5 left-3 h-5 w-5 text-slate-400 dark:text-slate-500" />
                     <Input
                       type={showPassword ? "text" : "password"}
-                      placeholder="••••••••"
+                      placeholder={dictionary.auth.placeholders.password}
                       autoComplete="new-password"
                       className="pr-10 pl-10 dark:border-slate-800 dark:bg-slate-950"
                       {...field}
@@ -187,7 +187,7 @@ export function ResetPasswordForm({
                     <Lock className="absolute top-2.5 left-3 h-5 w-5 text-slate-400 dark:text-slate-500" />
                     <Input
                       type={showConfirmPassword ? "text" : "password"}
-                      placeholder="••••••••"
+                      placeholder={dictionary.auth.placeholders.password}
                       autoComplete="new-password"
                       className="pr-10 pl-10 dark:border-slate-800 dark:bg-slate-950"
                       {...field}
@@ -231,4 +231,3 @@ export function ResetPasswordForm({
     </div>
   );
 }
-

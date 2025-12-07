@@ -1,4 +1,55 @@
 {
+  "metadata": {
+    "home": {
+      "title": "Özel Ders Yönetim Platformu",
+      "description": "Öğrenci takibi, ders programı ve ödeme takibini tek bir yerden yönetin. Deniko ile işinizi dijitalleştirin."
+    },
+    "login": {
+      "title": "Giriş Yap | Deniko",
+      "description": "Deniko hesabınıza giriş yapın ve yönetim panelinize erişin."
+    },
+    "register": {
+      "title": "Kayıt Ol - Deniko",
+      "description": "Deniko'ya ücretsiz kayıt olun. Öğretmenler ve öğrenciler için kolay ders yönetimi ve takibi."
+    },
+    "forgot_password": {
+      "title": "Şifremi Unuttum | Deniko",
+      "description": "Şifrenizi mi unuttunuz? E-posta adresinizle şifrenizi sıfırlayın."
+    },
+    "reset_password": {
+      "title": "Şifre Sıfırlama | Deniko",
+      "description": "Yeni şifrenizi belirleyerek hesabınıza güvenle erişin."
+    },
+    "dashboard": {
+      "student_title": "Öğrenci Paneli - {name}",
+      "teacher_title": "Öğretmen Paneli - {name}",
+      "description": "Deniko yönetim paneli ile tüm süreçlerinizi kontrol edin.",
+      "welcome_title": "Deniko'ya Hoş Geldiniz",
+      "contact_support": "Bu ekranı görüyorsanız lütfen destek ile iletişime geçin."
+    },
+    "finance": {
+      "title": "Finans | Deniko",
+      "description": "Finansal durum ve ödeme takibi.",
+      "coming_soon": "Finans içeriği yakında..."
+    },
+    "schedule": {
+      "title": "Ders Programı | Deniko",
+      "description": "Ders programı ve takvim yönetimi.",
+      "coming_soon": "Ders programı içeriği yakında..."
+    }
+  },
+  "navbar": {
+    "menu_open": "Menüyü aç",
+    "menu": "Menü",
+    "theme": "Tema",
+    "language": "Dil",
+    "legal": "Yasal",
+    "terms": "Kullanıcı Sözleşmesi",
+    "privacy": "Gizlilik Politikası",
+    "mobile_menu_title": "Mobil Menü",
+    "mobile_menu_desc": "Mobil navigasyon menüsü",
+    "toggle_theme": "Temayı değiştir"
+  },
   "newsletter": {
     "title": "Bültenimize abone olun",
     "description": "En son güncellemeleri ve haberleri alın.",
@@ -8,6 +59,12 @@
     "error": "Bir şeyler ters gitti."
   },
   "legal": {
+    "cookie_consent": {
+      "title": "Çerez Politikası",
+      "description": "Tarama deneyiminizi geliştirmek, kişiselleştirilmiş reklamlar veya içerik sunmak ve trafiğimizi analiz etmek için çerezleri kullanıyoruz. \"Kabul Et\"e tıklayarak çerez kullanımımıza izin vermiş olursunuz.",
+      "accept": "Kabul Et",
+      "decline": "Reddet"
+    },
     "title": "Yasal Merkez",
     "description": "Deniko'nun kullanım şartları, gizlilik politikaları ve yasal yükümlülükleri hakkında detaylı bilgilere buradan ulaşabilirsiniz.",
     "read_more": "İncele",
@@ -49,7 +106,9 @@
     "terms": "Kullanım Koşulları",
     "privacy": "Gizlilik Politikası",
     "cookies": "Çerez Politikası",
-    "kvkk": "KVKK"
+    "kvkk": "KVKK",
+    "legal_suffix": "Yasal",
+    "legal_center": "Deniko Yasal Merkez"
   },
   "theme": {
     "light": "Aydınlık",
@@ -67,7 +126,9 @@
       "lessons": "Dersler",
       "homework": "Ödevler",
       "exams": "Sınavlar",
-      "logout": "Çıkış Yap"
+      "logout": "Çıkış Yap",
+      "menu_title": "Navigasyon Menüsü",
+      "menu_desc": "Panel navigasyon menüsü"
     },
     "join": {
       "title": "Davet Detayları",
@@ -78,10 +139,16 @@
       "conflict_grade": "Sınıf / Okul No",
       "conflict_parent": "Veli Bilgileri",
       "conflict_classroom": "Sınıflar",
-      "accept_merge": "Kabul Et ve Birleştir",
+      "accept_merge": "Kabul Et & Birleştir",
       "reject": "Reddet",
       "success": "Profil başarıyla birleştirildi!",
-      "error": "Profil birleştirilemedi."
+      "error": "Profil birleştirilemedi.",
+      "welcome_title": "Deniko'ya Hoş Geldiniz",
+      "invite_desc": "{name} sizi öğrencisi olarak eklemek istiyor.",
+      "login_desc": "Daveti kabul etmek ve derslerinizi takip etmek için lütfen giriş yapın veya yeni bir hesap oluşturun.",
+      "login_button": "Giriş Yap",
+      "register_button": "Kayıt Ol",
+      "already_used": "Bu davet zaten kullanılmış."
     },
     "header": {
       "search_placeholder": "Arama yap...",
@@ -130,7 +197,8 @@
         "grade": "Sınıf Seviyesi",
         "phone_number": "Telefon (İsteğe bağlı)",
         "submit": "Öğrenci Oluştur",
-        "email": "E-posta (İsteğe bağlı)",
+        "email": "E-posta (İsteğe Bağlı)",
+        "email_placeholder": "ornek@email.com",
         "classrooms": "Sınıflar",
         "select_classrooms": "Sınıf seçiniz...",
         "avatar": "Profil Fotoğrafı",
@@ -145,7 +213,8 @@
         "success": "Öğrenci başarıyla oluşturuldu",
         "copy_invite": "Davet linki kopyalandı",
         "grades": {
-          "graduated": "Mezun"
+          "graduated": "Mezun",
+          "suffix": ". Sınıf"
         }
       }
     },
@@ -153,10 +222,12 @@
       "upcoming_lessons": "Yaklaşan Dersler",
       "completed_lessons": "Tamamlanan Dersler",
       "pending_homework": "Bekleyen Ödevler",
-      "no_upcoming_lessons": "Planlanmış ders bulunmuyor.",
-      "next_lesson": "Sıradaki Ders",
+      "no_upcoming_lessons": "Yaklaşan ders bulunmuyor.",
+      "next_lesson": "Sonraki Ders",
       "assignments_todo": "Yapılacak Ödevler",
-      "weekly_schedule": "Haftalık Ders Programım"
+      "weekly_schedule": "Haftalık Program",
+      "no_pending_homework": "Bekleyen ödev yok.",
+      "due_date": "Son Tarih:"
     },
     "teacher": {
       "active_students": "Aktif Öğrenciler",
@@ -180,13 +251,44 @@
       "delete_confirm": "Emin misiniz?",
       "delete_desc": "Bu işlem geri alınamaz.",
       "continue": "Devam Et"
-    }
+    },
+    "welcome_title": "Deniko'ya Hoşgeldiniz",
+    "contact_support": "Bu ekranı görüyorsanız lütfen destek ile iletişime geçin."
   },
   "common": {
-    "loading": "Yükleniyor...",
-    "back": "Geri",
     "back_to_home": "Ana Sayfaya Dön",
-    "all_rights_reserved": "Tüm hakları saklıdır."
+    "all_rights_reserved": "Tüm hakları saklıdır.",
+    "copyright": "© 2025 Deniko.",
+    "copyright_long": "© 2025 Deniko Eğitim Teknolojileri",
+    "error_occurred": "Bir hata oluştu",
+    "back": "Geri",
+    "password_placeholder": "******",
+    "toggle_password_visibility": "Şifre görünürlüğünü değiştir",
+    "github_profile": "GitHub Profilim",
+    "patreon_profile": "Patreon Profilim",
+    "brand_name": "Deniko",
+    "zoom": "Yakınlaştır",
+    "crop_preview": "Kırpma Önizlemesi",
+    "crop_save": "Kırp ve Kaydet",
+    "more_options": "Diğer seçenekler",
+    "skip_to_content": "Ana içeriğe atla",
+    "close": "Kapat",
+    "reset": "Sıfırla",
+    "google": "Google",
+    "student_initials": "ÖĞ",
+    "app_name": "Deniko",
+    "loading": "Yükleniyor...",
+    "avatar": "Avatar",
+    "theme": {
+      "light": "Aydınlık",
+      "dark": "Karanlık",
+      "system": "Sistem",
+      "toggle_theme": "Temayı değiştir",
+      "loading": "Yükleniyor..."
+    }
+  },
+  "repro": {
+    "title": "Repro Sayfası"
   },
   "teacher": {
     "invite_link_copied": "Davet linki kopyalandı",
@@ -196,7 +298,8 @@
   "components": {
     "phone_input": {
       "search_country": "Ülke ara...",
-      "no_country_found": "Ülke bulunamadı."
+      "no_country_found": "Ülke bulunamadı.",
+      "country_selector_label": "Ülke seçici"
     }
   },
   "student_detail": {
@@ -211,6 +314,7 @@
     },
     "profile": {
       "title": "Profili Düzenle",
+      "desc": "Öğrencinin kişisel bilgilerini ve iletişim detaylarını güncelleyin.",
       "contact_parent": "Veli ile İletişime Geç",
       "save": "Değişiklikleri Kaydet",
       "archive_student": "Öğrenciyi Arşivle",
@@ -324,6 +428,7 @@
       "invite_link_inactive": "Davet Bağlantısı Pasif",
       "copy_link": "Bağlantıyı Kopyala",
       "danger_zone": "Tehlikeli Bölge",
+      "danger_zone_desc": "Bu öğrenci hesabı için geri alınamaz işlemler.",
       "delete_student": "Öğrenciyi Sil",
       "delete_student_desc": "Bu işlem geri alınamaz. Öğrenci ve tüm verileri kalıcı olarak silinecektir.",
       "delete_button": "Öğrenciyi Sil",
@@ -341,9 +446,13 @@
       "notes": "Özel Notlar",
       "notes_desc": "Sadece sizin görebileceğiniz notlar.",
       "claimed_profile": "Onaylanmış Profil",
+      "claimed_profile_desc": "Bu öğrenci profilini sahiplendi. Sadece kendi görünümünüz için görünen adını ve avatarını düzenleyebilirsiniz. İletişim bilgileri öğrenci tarafından yönetilir.",
       "real_first_name": "Gerçek Ad",
       "real_last_name": "Gerçek Soyad",
       "photo_claimed_desc": "Onaylı hesaplarda fotoğraf değiştirilemez.",
+      "name_placeholder": "Örn: Ahmet Yılmaz",
+      "student_no_placeholder": "123",
+      "grade_placeholder": "12. Sınıf",
       "invite_link_status": "Davet Bağlantısı Durumu",
       "archive": {
         "title": "Öğrenciyi Arşivle",
@@ -372,6 +481,10 @@
     "welcome_user": "Sayın {name},"
   },
   "auth": {
+    "placeholders": {
+      "email": "ornek@email.com",
+      "password": "******"
+    },
     "register": {
       "title": "Deniko'ya Katıl",
       "subtitle": "Profesyonel özel ders yönetim platformu",
@@ -409,7 +522,8 @@
         "role_required": "Lütfen bir rol seçiniz",
         "password_min": "Şifre en az 8 karakter olmalıdır",
         "password_regex": "Şifre en az bir büyük harf, bir küçük harf, bir rakam ve bir özel karakter içermelidir",
-        "password_mismatch": "Şifreler eşleşmiyor"
+        "password_mismatch": "Şifreler eşleşmiyor",
+        "password_required": "Şifre gereklidir"
       }
     },
     "login": {
@@ -505,6 +619,7 @@
   },
 
   "home": {
+    "home": "Ana Sayfa",
     "hero_title": "Eğitim Hayatınızı Dijitalleştirin",
     "hero_subtitle": "Öğretmenler ve öğrenciler için tasarlanmış akıllı asistan. Ders programı, öğrenci takibi ve performans analizleri tek bir platformda.",
     "get_started": "Deniko'yu Keşfet",
@@ -543,12 +658,16 @@
     },
     "how_it_works": {
       "title": "Deniko Nasıl Çalışır?",
+      "subtitle": "Karmaşık süreçleri basitleştirin. Sadece 3 adımda dijital dönüşümünüzü tamamlayın.",
       "step1_title": "Profilinizi Oluşturun",
       "step1_desc": "Eğitmen veya öğrenci rolünüzü seçerek dijital kimliğinizi oluşturun.",
       "step2_title": "Programınızı Düzenleyin",
       "step2_desc": "Ders saatlerini, müsaitlik durumunu ve çalışma takviminizi ayarlayın.",
       "step3_title": "Verimliliği Artırın",
-      "step3_desc": "Otomatik hatırlatmalar ve analizlerle eğitim sürecine odaklanın."
+      "step3_desc": "Otomatik hatırlatmalar ve analizlerle eğitim sürecine odaklanın.",
+      "step_1": "1",
+      "step_2": "2",
+      "step_3": "3"
     },
     "cta": {
       "title": "Modern Eğitimin Bir Parçası Olun",
@@ -557,8 +676,12 @@
     },
     "mock_dashboard": {
       "attendance": "Katılım",
+      "attendance_value": "%94",
+      "attendance_change": "+%4.5",
       "active_students": "Aktif Öğrenci",
+      "active_students_value": "48",
       "classes_today": "Bugünkü Dersler",
+      "classes_today_value": "12",
       "schedule": "Ders Programı",
       "math": "Matematik",
       "physics": "Fizik",
@@ -575,6 +698,9 @@
       "students": "Öğrenciler",
       "finance": "Finans",
       "room": "Derslik",
+      "class_name": "12-A",
+      "room_number": "301",
+      "average_score": "%84",
       "graphic_schedule": "Ders Programı",
       "graphic_profile": "Öğrenci Profili",
       "graphic_performance": "Performans",
@@ -605,6 +731,7 @@
         "10_min": "10 dk önce",
         "2_hours": "2 saat önce"
       },
+      "vs_last_month": "geçen aya göre",
       "chart": {
         "completed": "Tamamlanan",
         "remaining": "Kalan"
@@ -614,6 +741,16 @@
         "swipe": "Kaydırarak geç",
         "hold": "Çevirmek için basılı tut"
       }
+    },
+    "footer": {
+      "built_by": "Geliştirici:",
+      "source_code": ". Kaynak koduna şuradan ulaşabilirsiniz:",
+      "github": "GitHub",
+      "patreon": "Patreon",
+      "brand": "Deniko",
+      "platform": "Platform",
+      "legal": "Yasal",
+      "patent": "Patent hakları Deniko'ya aittir."
     }
   },
   "email": {

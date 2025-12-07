@@ -18,15 +18,13 @@ export async function generateMetadata({
   params: Promise<{ lang: Locale }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const isTr = lang === "tr";
+  const dictionary = await getDictionary(lang);
   const baseUrl = "https://deniko.net";
   const pathname = "/login";
 
   return {
-    title: isTr ? "Giriş Yap | Deniko" : "Login | Deniko",
-    description: isTr
-      ? "Deniko hesabınıza giriş yapın ve yönetim panelinize erişin."
-      : "Login to your Deniko account and access your dashboard.",
+    title: dictionary.metadata.login.title,
+    description: dictionary.metadata.login.description,
     metadataBase: new URL(baseUrl),
     alternates: {
       canonical: `/${lang}${pathname}`,
@@ -94,30 +92,31 @@ export default async function LoginPage({
             className="inline-flex w-fit items-center text-white/80 transition-colors hover:text-white"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            {dictionary.common?.back_to_home || "Ana Sayfaya Dön"}
+            {dictionary.common.back_to_home}
           </Link>
           <div className="flex items-center gap-2 text-white">
             <div className="rounded-lg bg-white/20 p-2 backdrop-blur-sm">
               <DenikoLogo className="h-8 w-8 text-white" />
             </div>
-            <span className="text-2xl font-bold tracking-tight">Deniko</span>
+            <span className="text-2xl font-bold tracking-tight">
+              {dictionary.common.app_name}
+            </span>
           </div>
         </div>
 
         {/* Hero Text */}
         <div className="relative z-10 max-w-md">
           <h2 className="mb-4 text-3xl font-bold text-white">
-            {dictionary.auth.login.hero_title || "Eğitimde Yeni Bir Dönem"}
+            {dictionary.auth.login.hero_title}
           </h2>
           <p className="text-lg leading-relaxed text-blue-100">
-            {dictionary.auth.login.hero_desc ||
-              "Öğretmen ve öğrencileri bir araya getiren, modern ve etkili eğitim platformuna hoş geldiniz."}
+            {dictionary.auth.login.hero_desc}
           </p>
         </div>
 
         {/* Footer */}
         <div className="relative z-10 text-sm text-blue-200">
-          © 2025 Deniko. All rights reserved.
+          {dictionary.common.copyright} {dictionary.common.all_rights_reserved}
         </div>
       </div>
 
@@ -130,9 +129,7 @@ export default async function LoginPage({
               <Link
                 href="/"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-50"
-                aria-label={
-                  dictionary.common?.back_to_home || "Ana Sayfaya Dön"
-                }
+                aria-label={dictionary.common.back_to_home}
               >
                 <ArrowLeft className="h-4 w-4" />
               </Link>
@@ -141,7 +138,7 @@ export default async function LoginPage({
                   <DenikoLogo className="h-5 w-5 text-white" />
                 </div>
                 <span className="font-semibold tracking-tight text-[#2062A3] dark:text-blue-400">
-                  Deniko
+                  {dictionary.common.app_name}
                 </span>
               </Link>
             </div>
@@ -167,13 +164,13 @@ export default async function LoginPage({
             <div className="space-y-2 text-center md:text-left">
               <p className="mb-1 inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-[#2062A3] dark:bg-blue-900/30 dark:text-blue-300">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                {dictionary.auth.login.chip || "Deniko ile devam edin"}
+                {dictionary.auth.login.chip}
               </p>
               <h1 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl dark:text-white">
-                {dictionary.auth.login.title || "Hoş Geldiniz"}
+                {dictionary.auth.login.title}
               </h1>
               <p className="text-sm text-slate-500 md:text-base dark:text-slate-400">
-                {dictionary.auth.login.subtitle || "Hesabınıza giriş yapın"}
+                {dictionary.auth.login.subtitle}
               </p>
             </div>
             <div className="rounded-2xl border border-slate-100 bg-white/80 p-4 shadow-sm backdrop-blur-sm sm:p-6 dark:border-slate-800 dark:bg-slate-900">

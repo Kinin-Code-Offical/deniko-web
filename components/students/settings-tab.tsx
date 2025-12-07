@@ -246,8 +246,13 @@ export function StudentSettingsTab({
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
                   <Avatar className="h-20 w-20">
-                    <AvatarImage src={currentAvatar} alt="Current avatar" />
-                    <AvatarFallback>ST</AvatarFallback>
+                    <AvatarImage
+                      src={currentAvatar}
+                      alt={dictionary.common.avatar || "Avatar"}
+                    />
+                    <AvatarFallback>
+                      {dictionary.common.student_initials || "ST"}
+                    </AvatarFallback>
                   </Avatar>
                   <div>
                     <Label htmlFor="avatar-upload" className="cursor-pointer">
@@ -304,7 +309,7 @@ export function StudentSettingsTab({
                               ? avatar
                               : `/api/files/${avatar}`
                           }
-                          alt="Avatar"
+                          alt={dictionary.common.avatar || "Avatar"}
                           className="h-10 w-10 rounded-full"
                         />
                         {selectedAvatar === avatar && (
@@ -331,7 +336,13 @@ export function StudentSettingsTab({
                           "Görünen İsim (Takma Ad)"}
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="Örn: Ahmet Yılmaz" {...field} />
+                        <Input
+                          placeholder={
+                            dictionary.student_detail.settings
+                              .name_placeholder || "..."
+                          }
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -348,7 +359,13 @@ export function StudentSettingsTab({
                           "Öğrenci Numarası"}
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="123" {...field} />
+                        <Input
+                          placeholder={
+                            dictionary.student_detail.settings
+                              .student_no_placeholder || "..."
+                          }
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -365,7 +382,13 @@ export function StudentSettingsTab({
                           "Sınıf Seviyesi"}
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="12. Sınıf" {...field} />
+                        <Input
+                          placeholder={
+                            dictionary.student_detail.settings
+                              .grade_placeholder || "..."
+                          }
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -669,6 +692,8 @@ export function StudentSettingsTab({
           setSelectedAvatar(null);
         }}
         saveLabel={dictionary.student_detail.settings.save_changes || "Kaydet"}
+        zoomLabel={dictionary.common.zoom}
+        cropPreviewAlt={dictionary.common.crop_preview}
       />
     </div>
   );

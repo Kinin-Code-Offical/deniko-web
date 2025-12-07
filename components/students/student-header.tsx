@@ -13,7 +13,11 @@ import {
 import { InviteButton } from "./invite-button";
 import Link from "next/link";
 import type { Dictionary } from "@/types/i18n";
-import { type StudentTeacherRelation, type StudentProfile, type User } from "@prisma/client";
+import {
+  type StudentTeacherRelation,
+  type StudentProfile,
+  type User,
+} from "@prisma/client";
 
 type RelationWithStudent = StudentTeacherRelation & {
   student: StudentProfile & { user: User | null };
@@ -66,7 +70,7 @@ export function StudentHeader({
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div className="flex items-center gap-4">
         <Avatar className="border-background h-16 w-16 border-2 shadow-sm">
-          <AvatarImage src={avatarSrc} alt="" />
+          <AvatarImage src={avatarSrc} alt={displayName} />
           <AvatarFallback className="text-lg">
             {displayName.substring(0, 2).toUpperCase()}
           </AvatarFallback>
@@ -115,7 +119,11 @@ export function StudentHeader({
         )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" aria-label="More options">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={dictionary.common.more_options}
+            >
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>

@@ -16,15 +16,13 @@ export async function generateMetadata({
   params: Promise<{ lang: Locale }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const isTr = lang === "tr";
+  const dictionary = await getDictionary(lang);
   const baseUrl = "https://deniko.net";
   const pathname = "/reset-password";
 
   return {
-    title: isTr ? "Şifre Sıfırlama | Deniko" : "Reset Password | Deniko",
-    description: isTr
-      ? "Yeni şifrenizi belirleyerek hesabınıza güvenle erişin."
-      : "Set your new password and access your account securely.",
+    title: dictionary.metadata.reset_password.title,
+    description: dictionary.metadata.reset_password.description,
     metadataBase: new URL(baseUrl),
     alternates: {
       canonical: `/${lang}${pathname}`,
@@ -131,7 +129,9 @@ export default async function ResetPasswordPage({
             <div className="rounded-xl bg-white/10 p-2 backdrop-blur-sm">
               <DenikoLogo className="h-8 w-8 text-white" />
             </div>
-            <span className="text-2xl font-bold text-white">Deniko</span>
+            <span className="text-2xl font-bold text-white">
+              {dictionary.common.app_name}
+            </span>
           </div>
         </div>
 
@@ -147,7 +147,7 @@ export default async function ResetPasswordPage({
 
         {/* Footer */}
         <div className="relative z-10 text-sm text-blue-200">
-          © 2025 Deniko Education Technologies
+          {dictionary.common.copyright_long}
         </div>
       </div>
 
@@ -168,7 +168,7 @@ export default async function ResetPasswordPage({
                 <DenikoLogo className="h-6 w-6 text-white" />
               </div>
               <span className="text-xl font-bold text-[#2062A3] dark:text-blue-400">
-                Deniko
+                {dictionary.common.app_name}
               </span>
             </Link>
           </div>

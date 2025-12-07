@@ -18,15 +18,13 @@ export async function generateMetadata({
   params: Promise<{ lang: Locale }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const isTr = lang === "tr";
+  const dictionary = await getDictionary(lang);
   const baseUrl = "https://deniko.net";
   const pathname = "/register";
 
   return {
-    title: isTr ? "Kayıt Ol - Deniko" : "Register - Deniko",
-    description: isTr
-      ? "Deniko'ya ücretsiz kayıt olun. Öğretmenler ve öğrenciler için kolay ders yönetimi ve takibi."
-      : "Sign up for Deniko for free. Easy lesson management and tracking for teachers and students.",
+    title: dictionary.metadata.register.title,
+    description: dictionary.metadata.register.description,
     metadataBase: new URL(baseUrl),
     alternates: {
       canonical: `/${lang}${pathname}`,
@@ -94,30 +92,31 @@ export default async function RegisterPage({
             className="inline-flex w-fit items-center text-white/80 transition-colors hover:text-white"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            {dictionary.common?.back_to_home || "Ana Sayfaya Dön"}
+            {dictionary.common.back_to_home}
           </Link>
           <div className="flex items-center gap-2 text-white">
             <div className="rounded-lg bg-white/20 p-2 backdrop-blur-sm">
               <DenikoLogo className="h-8 w-8 text-white" />
             </div>
-            <span className="text-2xl font-bold tracking-tight">Deniko</span>
+            <span className="text-2xl font-bold tracking-tight">
+              {dictionary.common.app_name}
+            </span>
           </div>
         </div>
 
         {/* Hero Text */}
         <div className="relative z-10 max-w-md">
           <h2 className="mb-4 text-3xl font-bold text-white">
-            {dictionary.auth.register.hero_title || "Aramıza Katılın"}
+            {dictionary.auth.register.hero_title}
           </h2>
           <p className="text-lg leading-relaxed text-blue-100">
-            {dictionary.auth.register.hero_desc ||
-              "Binlerce öğrenci ve öğretmenin yer aldığı bu büyük ailede yerinizi alın."}
+            {dictionary.auth.register.hero_desc}
           </p>
         </div>
 
         {/* Footer */}
         <div className="relative z-10 text-sm text-blue-200">
-          © 2025 Deniko. All rights reserved.
+          {dictionary.common.copyright} {dictionary.common.all_rights_reserved}
         </div>
       </div>
 
@@ -130,9 +129,7 @@ export default async function RegisterPage({
               <Link
                 href="/"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-50"
-                aria-label={
-                  dictionary.common?.back_to_home || "Ana Sayfaya Dön"
-                }
+                aria-label={dictionary.common.back_to_home}
               >
                 <ArrowLeft className="h-4 w-4" />
               </Link>
@@ -141,7 +138,7 @@ export default async function RegisterPage({
                   <DenikoLogo className="h-5 w-5 text-white" />
                 </div>
                 <span className="font-semibold tracking-tight text-[#2062A3] dark:text-blue-400">
-                  Deniko
+                  {dictionary.common.app_name}
                 </span>
               </Link>
             </div>
@@ -166,11 +163,10 @@ export default async function RegisterPage({
           <div className="w-full max-w-md space-y-4">
             <div className="space-y-1 text-center md:text-left">
               <h1 className="text-xl font-bold tracking-tight text-slate-900 md:text-2xl dark:text-white">
-                {dictionary.auth.register.title || "Hesap Oluşturun"}
+                {dictionary.auth.register.title}
               </h1>
               <p className="text-xs text-slate-500 md:text-sm dark:text-slate-400">
-                {dictionary.auth.register.subtitle ||
-                  "Ücretsiz hesabınızı hemen oluşturun"}
+                {dictionary.auth.register.subtitle}
               </p>
             </div>
             <div className="rounded-xl border border-slate-100 bg-white/80 p-3 shadow-sm backdrop-blur-sm sm:p-4 dark:border-slate-800 dark:bg-slate-900">

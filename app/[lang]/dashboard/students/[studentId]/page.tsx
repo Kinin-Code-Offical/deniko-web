@@ -311,13 +311,11 @@ export default async function StudentPage({ params }: StudentPageProps) {
         <TabsContent value="homework" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>
-                {dictionary.student_detail.tabs.homework || "Homework"}
-              </CardTitle>
+              <CardTitle>{dictionary.student_detail.tabs.homework}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground text-sm">
-                No homework assigned yet.
+                {dictionary.student_detail.homework.no_homework}
               </p>
             </CardContent>
           </Card>

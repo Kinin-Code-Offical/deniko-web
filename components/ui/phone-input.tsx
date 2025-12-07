@@ -34,6 +34,7 @@ type PhoneInputProps = Omit<
     onChange?: (value: Value) => void;
     searchPlaceholder?: string;
     noResultsMessage?: string;
+    countrySelectorLabel?: string;
   };
 
 const PhoneInput = React.forwardRef<
@@ -46,6 +47,7 @@ const PhoneInput = React.forwardRef<
       onChange,
       searchPlaceholder = "Search country...",
       noResultsMessage = "No country found.",
+      countrySelectorLabel = "Country selector",
       ...props
     },
     ref
@@ -61,6 +63,7 @@ const PhoneInput = React.forwardRef<
             {...props}
             searchPlaceholder={searchPlaceholder}
             noResultsMessage={noResultsMessage}
+            countrySelectorLabel={countrySelectorLabel}
           />
         )}
         inputComponent={InputComponent}
@@ -114,6 +117,7 @@ type CountrySelectProps = {
   options: CountrySelectOption[];
   searchPlaceholder?: string;
   noResultsMessage?: string;
+  countrySelectorLabel?: string;
 };
 
 const CountrySelect = ({
@@ -123,6 +127,7 @@ const CountrySelect = ({
   options,
   searchPlaceholder,
   noResultsMessage,
+  countrySelectorLabel,
 }: CountrySelectProps) => {
   const selectedOption = React.useMemo(
     () => options.find((option) => option.value === value),
@@ -162,7 +167,10 @@ const CountrySelect = ({
           />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0" aria-label="Country selector">
+      <PopoverContent
+        className="w-[300px] p-0"
+        aria-label={countrySelectorLabel}
+      >
         <Command>
           <CommandList>
             <CommandInput placeholder={searchPlaceholder} />

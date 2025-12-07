@@ -94,7 +94,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ dictionary }) => {
           {/* Centered Percentage */}
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-3xl font-bold text-green-600 dark:text-green-400">
-              68%
+              {68}%
             </span>
             <span className="text-xs font-medium text-slate-700 dark:text-slate-200">
               {t.success}
@@ -112,7 +112,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ dictionary }) => {
               {t.completed}
             </span>
           </div>
-          <span className="font-bold text-gray-900 dark:text-white">68</span>
+          <span className="font-bold text-gray-900 dark:text-white">{68}</span>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -121,7 +121,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ dictionary }) => {
               {t.pending}
             </span>
           </div>
-          <span className="font-bold text-gray-900 dark:text-white">12</span>
+          <span className="font-bold text-gray-900 dark:text-white">{12}</span>
         </div>
       </div>
     </div>

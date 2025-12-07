@@ -199,7 +199,7 @@ export function AddStudentDialog({
                           ? avatar
                           : `/api/files/${avatar}`
                       }
-                      alt="Avatar"
+                      alt={dictionary.dashboard.students.add_dialog.avatar}
                       className="h-10 w-10 rounded-full"
                     />
                     {selectedAvatar === avatar && (
@@ -319,11 +319,41 @@ export function AddStudentDialog({
                               .graduated
                           }
                         </SelectItem>
-                        <SelectItem value="12">12. Sınıf</SelectItem>
-                        <SelectItem value="11">11. Sınıf</SelectItem>
-                        <SelectItem value="10">10. Sınıf</SelectItem>
-                        <SelectItem value="9">9. Sınıf</SelectItem>
-                        <SelectItem value="8">8. Sınıf</SelectItem>
+                        <SelectItem value="12">
+                          {12}
+                          {
+                            dictionary.dashboard.students.add_dialog.grades
+                              .suffix
+                          }
+                        </SelectItem>
+                        <SelectItem value="11">
+                          {11}
+                          {
+                            dictionary.dashboard.students.add_dialog.grades
+                              .suffix
+                          }
+                        </SelectItem>
+                        <SelectItem value="10">
+                          {10}
+                          {
+                            dictionary.dashboard.students.add_dialog.grades
+                              .suffix
+                          }
+                        </SelectItem>
+                        <SelectItem value="9">
+                          {9}
+                          {
+                            dictionary.dashboard.students.add_dialog.grades
+                              .suffix
+                          }
+                        </SelectItem>
+                        <SelectItem value="8">
+                          {8}
+                          {
+                            dictionary.dashboard.students.add_dialog.grades
+                              .suffix
+                          }
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -367,7 +397,10 @@ export function AddStudentDialog({
                     <Input
                       {...field}
                       type="email"
-                      placeholder="ornek@email.com"
+                      placeholder={
+                        dictionary.dashboard.students.add_dialog
+                          .email_placeholder
+                      }
                     />
                   </FormControl>
                   <FormMessage />
@@ -494,6 +527,9 @@ export function AddStudentDialog({
           setSelectedFile(croppedFile);
           setSelectedAvatar(null);
         }}
+        saveLabel={dictionary.common.crop_save}
+        zoomLabel={dictionary.common.zoom}
+        cropPreviewAlt={dictionary.common.crop_preview}
       />
     </Dialog>
   );

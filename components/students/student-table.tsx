@@ -82,7 +82,7 @@ const StudentRow = memo(function StudentRow({
                       : `/api/files/${student.tempAvatar}`
                     : undefined
               }
-              alt=""
+              alt={getDisplayName(student)}
             />
             <AvatarFallback>
               {getDisplayName(student).substring(0, 2).toUpperCase()}

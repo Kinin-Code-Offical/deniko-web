@@ -16,7 +16,7 @@ import { Plus, ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import { format } from "date-fns";
 import { tr, enUS } from "date-fns/locale";
 import type { Dictionary } from "@/types/i18n";
-import { type Payment, type PaymentType, Prisma } from "@prisma/client";
+import { type PaymentType, Prisma } from "@prisma/client";
 
 interface Transaction {
   id: string;

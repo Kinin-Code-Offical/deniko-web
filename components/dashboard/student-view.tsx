@@ -15,7 +15,7 @@ import {
 
 type LessonWithDetails = Lesson & {
   teacher: (TeacherProfile & { user: User }) | null;
-  classroom: any;
+  classroom: unknown;
 };
 
 type HomeworkWithDetails = HomeworkTracking & {
@@ -147,7 +147,7 @@ export function StudentView({
             <div className="space-y-8">
               {pendingHomeworks.length === 0 ? (
                 <p className="text-muted-foreground text-sm">
-                  No pending homework.
+                  {dictionary.dashboard.student.no_pending_homework}
                 </p>
               ) : (
                 pendingHomeworks.map((item) => (
@@ -158,7 +158,7 @@ export function StudentView({
                         {item.homework.title}
                       </p>
                       <p className="text-muted-foreground text-sm">
-                        Due:{" "}
+                        {dictionary.dashboard.student.due_date}{" "}
                         {format(new Date(item.homework.dueDate), "PPP", {
                           locale: dateLocale,
                         })}

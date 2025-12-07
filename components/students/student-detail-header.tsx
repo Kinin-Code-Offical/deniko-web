@@ -49,7 +49,7 @@ export function StudentDetailHeader({
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div className="flex items-center gap-4">
         <Avatar className="h-16 w-16">
-          <AvatarImage src={user?.image || ""} alt="" />
+          <AvatarImage src={user?.image || ""} alt={displayName} />
           <AvatarFallback className="text-lg">{initials}</AvatarFallback>
         </Avatar>
         <div>

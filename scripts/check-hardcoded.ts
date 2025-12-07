@@ -22,7 +22,7 @@ export function scanFile(filePath: string, sourceCode?: string): Issue[] {
 
   const issues: Issue[] = [];
 
-  function isI18nCall(node: ts.Node): boolean {
+  const isI18nCall = (node: ts.Node): boolean => {
     if (ts.isCallExpression(node)) {
       const { expression } = node;
       if (ts.isIdentifier(expression)) {
@@ -33,9 +33,9 @@ export function scanFile(filePath: string, sourceCode?: string): Issue[] {
       }
     }
     return false;
-  }
+  };
 
-  function isValidAttribute(node: ts.Node): boolean {
+  const isValidAttribute = (node: ts.Node): boolean => {
     if (ts.isJsxAttribute(node)) {
       const name = node.name.getText();
       // Attributes that usually contain user-visible text
@@ -43,9 +43,9 @@ export function scanFile(filePath: string, sourceCode?: string): Issue[] {
       return !textAttributes.includes(name);
     }
     return false;
-  }
+  };
 
-  function visit(node: ts.Node) {
+  const visit = (node: ts.Node) => {
     if (ts.isStringLiteral(node)) {
       const { text, parent } = node;
 

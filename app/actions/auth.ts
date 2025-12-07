@@ -28,10 +28,10 @@ export async function googleSignIn() {
     await signIn("google", { redirectTo: "/onboarding" })
 }
 
-const _loginSchemaBase = z.object({
-    email: z.string().email(),
-    password: z.string().min(1),
-})
+interface LoginFormData {
+    email: string;
+    password: string;
+}
 
 /**
  * Authenticates a user with email and password.
@@ -40,7 +40,7 @@ const _loginSchemaBase = z.object({
  * @param lang - The current language locale.
  * @returns An object indicating success or failure with a message.
  */
-export async function login(formData: z.infer<typeof _loginSchemaBase>, lang: string = "tr") {
+export async function login(formData: LoginFormData, lang: string = "tr") {
     const dict = await getDictionary(lang as Locale)
 
     const loginSchema = z.object({
@@ -73,7 +73,7 @@ export async function login(formData: z.infer<typeof _loginSchemaBase>, lang: st
                     return { success: false, message: dict.auth.login.validation.invalid_credentials }
                 default:
                     // Check if the error message contains "Email not verified"
-                    
+
                     const cause = error.cause as { err?: { message?: string } } | undefined;
                     if (cause?.err?.message === "Email not verified") {
                         logger.info({ msg: "Login blocked: Email not verified", email })
@@ -142,24 +142,17 @@ export async function resendVerificationCode(email: string, lang: string = "tr")
     }
 }
 
-const _registerSchemaBase = z.object({
-    firstName: z.string().min(2),
-    lastName: z.string().min(2),
-    email: z.string().email(),
-    phoneNumber: z.string().regex(/^\+\d{10,15}$/),
-    role: z.enum(["TEACHER", "STUDENT"]),
-    password: z.string()
-        .min(8)
-        .regex(/[A-Z]/)
-        .regex(/[a-z]/)
-        .regex(/[0-9]/)
-        .regex(/[^A-Za-z0-9]/),
-    confirmPassword: z.string(),
-    terms: z.boolean(),
-    marketingConsent: z.boolean().optional(),
-}).refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-})
+interface RegisterFormData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    role: "TEACHER" | "STUDENT";
+    password: string;
+    confirmPassword: string;
+    terms: boolean;
+    marketingConsent?: boolean;
+}
 
 /**
  * Registers a new user.
@@ -168,7 +161,7 @@ const _registerSchemaBase = z.object({
  * @param lang - The current language locale.
  * @returns An object indicating success or failure.
  */
-export async function registerUser(formData: z.infer<typeof _registerSchemaBase>, lang: string = "tr") {
+export async function registerUser(formData: RegisterFormData, lang: string = "tr") {
     const dict = await getDictionary(lang as Locale)
     const d = dict.auth.register.validation
 

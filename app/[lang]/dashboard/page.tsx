@@ -36,22 +36,20 @@ export async function generateMetadata({
   params: Promise<{ lang: Locale }>;
 }): Promise<Metadata> {
   const { lang } = await params;
+  const dictionary = await getDictionary(lang);
   const session = await auth();
-  const isTr = lang === "tr";
   const role = session?.user?.role;
+  const userName =
+    session?.user?.name || (role === "STUDENT" ? "Student" : "Teacher");
 
-  const title =
+  const titleTemplate =
     role === "STUDENT"
-      ? isTr
-        ? `Öğrenci Paneli - ${session?.user?.name || "Öğrenci"}`
-        : `Student Dashboard - ${session?.user?.name || "Student"}`
-      : isTr
-        ? `Öğretmen Paneli - ${session?.user?.name || "Öğretmen"}`
-        : `Teacher Dashboard - ${session?.user?.name || "Teacher"}`;
+      ? dictionary.metadata.dashboard.student_title
+      : dictionary.metadata.dashboard.teacher_title;
 
-  const description = isTr
-    ? "Deniko yönetim paneli ile tüm süreçlerinizi kontrol edin."
-    : "Control all your processes with Deniko management dashboard.";
+  const title = titleTemplate.replace("{name}", userName);
+
+  const { description } = dictionary.metadata.dashboard;
 
   const baseUrl = "https://deniko.net";
   const pathname = "/dashboard";
@@ -303,9 +301,11 @@ export default async function DashboardPage({
   // Fallback for other roles or no role
   return (
     <div className="flex h-[50vh] flex-col items-center justify-center">
-      <h1 className="text-2xl font-bold">Welcome to Deniko</h1>
+      <h1 className="text-2xl font-bold">
+        {dictionary.dashboard.welcome_title}
+      </h1>
       <p className="text-muted-foreground">
-        Please contact support if you see this screen.
+        {dictionary.dashboard.contact_support}
       </p>
     </div>
   );

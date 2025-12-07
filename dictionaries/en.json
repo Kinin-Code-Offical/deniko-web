@@ -1,4 +1,55 @@
 {
+  "metadata": {
+    "home": {
+      "title": "Private Tutoring Management Platform",
+      "description": "Manage student tracking, lesson scheduling, and payments in one place. Digitalize your business with Deniko."
+    },
+    "login": {
+      "title": "Login | Deniko",
+      "description": "Login to your Deniko account and access your dashboard."
+    },
+    "register": {
+      "title": "Register - Deniko",
+      "description": "Sign up for Deniko for free. Easy lesson management and tracking for teachers and students."
+    },
+    "forgot_password": {
+      "title": "Forgot Password | Deniko",
+      "description": "Forgot your password? Reset it with your email address."
+    },
+    "reset_password": {
+      "title": "Reset Password | Deniko",
+      "description": "Set your new password and access your account securely."
+    },
+    "dashboard": {
+      "student_title": "Student Dashboard - {name}",
+      "teacher_title": "Teacher Dashboard - {name}",
+      "description": "Control all your processes with Deniko management dashboard.",
+      "welcome_title": "Welcome to Deniko",
+      "contact_support": "Please contact support if you see this screen."
+    },
+    "finance": {
+      "title": "Finance | Deniko",
+      "description": "Financial status and payment tracking.",
+      "coming_soon": "Finance content coming soon..."
+    },
+    "schedule": {
+      "title": "Schedule | Deniko",
+      "description": "Schedule and calendar management.",
+      "coming_soon": "Schedule content coming soon..."
+    }
+  },
+  "navbar": {
+    "menu_open": "Open menu",
+    "menu": "Menu",
+    "theme": "Theme",
+    "language": "Language",
+    "legal": "Legal",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "mobile_menu_title": "Mobile Menu",
+    "mobile_menu_desc": "Mobile navigation menu",
+    "toggle_theme": "Toggle theme"
+  },
   "newsletter": {
     "title": "Subscribe to our newsletter",
     "description": "Get the latest updates and news.",
@@ -8,6 +59,12 @@
     "error": "Something went wrong."
   },
   "legal": {
+    "cookie_consent": {
+      "title": "Cookie Policy",
+      "description": "We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking \"Accept\", you consent to our use of cookies.",
+      "accept": "Accept",
+      "decline": "Decline"
+    },
     "title": "Legal Center",
     "description": "Find detailed information about Deniko's terms of use, privacy policies, and legal obligations here.",
     "read_more": "Read More",
@@ -49,7 +106,9 @@
     "terms": "Terms of Service",
     "privacy": "Privacy Policy",
     "cookies": "Cookie Policy",
-    "kvkk": "KVKK"
+    "kvkk": "KVKK",
+    "legal_suffix": "Legal",
+    "legal_center": "Deniko Legal Center"
   },
   "theme": {
     "light": "Light",
@@ -67,7 +126,9 @@
       "lessons": "Lessons",
       "homework": "Homework",
       "exams": "Exams",
-      "logout": "Log out"
+      "logout": "Log out",
+      "menu_title": "Navigation Menu",
+      "menu_desc": "Dashboard navigation menu"
     },
 
     "join": {
@@ -82,7 +143,13 @@
       "accept_merge": "Accept & Merge",
       "reject": "Reject",
       "success": "Profile merged successfully!",
-      "error": "Failed to merge profile."
+      "error": "Failed to merge profile.",
+      "welcome_title": "Welcome to Deniko",
+      "invite_desc": "{name} wants to add you as a student.",
+      "login_desc": "Please login or create a new account to accept the invitation and track your lessons.",
+      "login_button": "Login",
+      "register_button": "Register",
+      "already_used": "This invite has already been used."
     },
     "header": {
       "search_placeholder": "Search...",
@@ -132,6 +199,7 @@
         "phone_number": "Phone (Optional)",
         "submit": "Create Student",
         "email": "Email (Optional)",
+        "email_placeholder": "example@email.com",
         "classrooms": "Classrooms",
         "select_classrooms": "Select classrooms...",
         "avatar": "Profile Photo",
@@ -146,7 +214,8 @@
         "success": "Student created successfully",
         "copy_invite": "Invite link copied to clipboard",
         "grades": {
-          "graduated": "Graduated"
+          "graduated": "Graduated",
+          "suffix": "th Grade"
         }
       }
     },
@@ -156,8 +225,10 @@
       "pending_homework": "Pending Homework",
       "no_upcoming_lessons": "No upcoming lessons.",
       "next_lesson": "Next Lesson",
-      "assignments_todo": "Assignments To-Do",
-      "weekly_schedule": "Weekly Schedule"
+      "assignments_todo": "Assignments To Do",
+      "weekly_schedule": "Weekly Schedule",
+      "no_pending_homework": "No pending homework.",
+      "due_date": "Due:"
     },
     "teacher": {
       "active_students": "Active Students",
@@ -181,13 +252,44 @@
       "delete_confirm": "Are you sure?",
       "delete_desc": "This action cannot be undone.",
       "continue": "Continue"
-    }
+    },
+    "welcome_title": "Welcome to Deniko",
+    "contact_support": "Please contact support if you see this screen."
   },
   "common": {
-    "loading": "Loading...",
-    "back": "Back",
     "back_to_home": "Back to Home",
-    "all_rights_reserved": "All rights reserved."
+    "all_rights_reserved": "All rights reserved.",
+    "copyright": "© 2025 Deniko.",
+    "copyright_long": "© 2025 Deniko Education Technologies",
+    "error_occurred": "An error occurred",
+    "back": "Back",
+    "password_placeholder": "******",
+    "toggle_password_visibility": "Toggle password visibility",
+    "github_profile": "My GitHub Profile",
+    "patreon_profile": "My Patreon Profile",
+    "brand_name": "Deniko",
+    "zoom": "Zoom",
+    "crop_preview": "Crop Preview",
+    "crop_save": "Crop & Save",
+    "more_options": "More options",
+    "skip_to_content": "Skip to main content",
+    "close": "Close",
+    "reset": "Reset",
+    "google": "Google",
+    "student_initials": "ST",
+    "app_name": "Deniko",
+    "loading": "Loading...",
+    "avatar": "Avatar",
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "toggle_theme": "Toggle theme",
+      "loading": "Loading..."
+    }
+  },
+  "repro": {
+    "title": "Repro Page"
   },
   "teacher": {
     "invite_link_copied": "Invite link copied",
@@ -197,7 +299,8 @@
   "components": {
     "phone_input": {
       "search_country": "Search country...",
-      "no_country_found": "No country found."
+      "no_country_found": "No country found.",
+      "country_selector_label": "Country selector"
     }
   },
   "student_detail": {
@@ -212,6 +315,7 @@
     },
     "profile": {
       "title": "Edit Profile",
+      "desc": "Update student's personal information and contact details.",
       "contact_parent": "Contact Parent",
       "save": "Save Changes",
       "archive_student": "Archive Student",
@@ -327,6 +431,7 @@
       "invite_link_inactive": "Invite Link Inactive",
       "copy_link": "Copy Link",
       "danger_zone": "Danger Zone",
+      "danger_zone_desc": "Irreversible actions for this student account.",
       "delete_student": "Delete Student",
       "delete_student_desc": "This action cannot be undone. This will permanently delete the student and remove their data from our servers.",
       "delete_button": "Delete Student",
@@ -344,9 +449,13 @@
       "notes": "Private Notes",
       "notes_desc": "Notes only visible to you.",
       "claimed_profile": "Claimed Profile",
+      "claimed_profile_desc": "This student has claimed their profile. You can only edit their display name and avatar for your view. Contact details are managed by the student.",
       "real_first_name": "Real First Name",
       "real_last_name": "Real Last Name",
-      "photo_claimed_desc": "Photo cannot be changed for claimed accounts.",
+      "photo_claimed_desc": "This student has claimed their account. Only they can change their photo.",
+      "name_placeholder": "Ex: John Doe",
+      "student_no_placeholder": "123",
+      "grade_placeholder": "12th Grade",
       "invite_link_status": "Invite Link Status",
       "archive": {
         "title": "Archive Student",
@@ -375,6 +484,10 @@
     "welcome_user": "Dear {name},"
   },
   "auth": {
+    "placeholders": {
+      "email": "example@email.com",
+      "password": "******"
+    },
     "register": {
       "title": "Join Deniko",
       "subtitle": "Professional tutoring management platform",
@@ -412,7 +525,8 @@
         "role_required": "Please select a role",
         "password_min": "Password must be at least 8 characters",
         "password_regex": "Password must contain at least one uppercase, one lowercase, one number and one special character",
-        "password_mismatch": "Passwords do not match"
+        "password_mismatch": "Passwords do not match",
+        "password_required": "Password is required"
       }
     },
     "login": {
@@ -547,12 +661,16 @@
     },
     "how_it_works": {
       "title": "How Deniko Works?",
+      "subtitle": "Simplify complex processes. Complete your digital transformation in just 3 steps.",
       "step1_title": "Create Your Profile",
       "step1_desc": "Create your digital identity by selecting your instructor or student role.",
       "step2_title": "Organize Your Schedule",
       "step2_desc": "Set lesson hours, availability, and work calendar.",
       "step3_title": "Increase Efficiency",
-      "step3_desc": "Focus on the education process with automatic reminders and analytics."
+      "step3_desc": "Focus on the education process with automatic reminders and analytics.",
+      "step_1": "1",
+      "step_2": "2",
+      "step_3": "3"
     },
     "cta": {
       "title": "Be Part of Modern Education",
@@ -561,8 +679,12 @@
     },
     "mock_dashboard": {
       "attendance": "Attendance",
+      "attendance_value": "94%",
+      "attendance_change": "+4.5%",
       "active_students": "Active Students",
+      "active_students_value": "48",
       "classes_today": "Classes Today",
+      "classes_today_value": "12",
       "schedule": "Schedule",
       "math": "Mathematics",
       "physics": "Physics",
@@ -579,6 +701,9 @@
       "students": "Students",
       "finance": "Finance",
       "room": "Room",
+      "class_name": "12-A",
+      "room_number": "301",
+      "average_score": "84%",
       "graphic_schedule": "Schedule",
       "graphic_profile": "Student Profile",
       "graphic_performance": "Performance",
@@ -609,6 +734,7 @@
         "10_min": "10 min ago",
         "2_hours": "2 hours ago"
       },
+      "vs_last_month": "vs last month",
       "chart": {
         "completed": "Completed",
         "remaining": "Remaining"
@@ -618,6 +744,16 @@
         "swipe": "Swipe to navigate",
         "hold": "Hold to flip"
       }
+    },
+    "footer": {
+      "built_by": "Built by",
+      "source_code": ". The source code is available on",
+      "github": "GitHub",
+      "patreon": "Patreon",
+      "brand": "Deniko",
+      "platform": "Platform",
+      "legal": "Legal",
+      "patent": "Patent rights belong to Deniko."
     }
   },
   "email": {

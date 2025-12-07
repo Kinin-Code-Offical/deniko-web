@@ -49,13 +49,13 @@ export function Navbar({ lang, dictionary }: NavbarProps) {
         >
           <DenikoLogo className="-mr-2.5 h-12 w-12 text-[#2062A3] md:h-14 md:w-14 dark:text-blue-400" />
           <span className="text-[26px] font-bold tracking-tight text-[#2062A3] md:text-[32px] dark:text-blue-400">
-            eniko
+            {dictionary.common.app_name.substring(1)}
           </span>
         </Link>
 
         {/* Desktop Navigation */}
         <div className="ml-auto hidden items-center gap-3 md:flex">
-          {isClient && <ThemeToggle labels={dictionary.theme} />}
+          {isClient && <ThemeToggle labels={dictionary.common.theme} />}
           <LanguageSwitcher currentLocale={lang} />
 
           <div className="flex items-center gap-2">
@@ -95,12 +95,12 @@ export function Navbar({ lang, dictionary }: NavbarProps) {
               <SheetTrigger asChild>
                 <Button
                   size="lg"
-                  aria-label={lang === "tr" ? "Menüyü aç" : "Open menu"}
+                  aria-label={dictionary.navbar.menu_open}
                   className="h-11 gap-2 rounded-full bg-[#1d4f87] px-5 text-white shadow-md shadow-blue-900/20 transition-all hover:bg-[#163b65] focus-visible:ring-2 focus-visible:ring-[#1d4f87] focus-visible:ring-offset-2 focus-visible:outline-none dark:focus-visible:ring-blue-400"
                 >
                   <Menu className="h-5 w-5" strokeWidth={2.4} />
                   <span className="text-sm font-semibold tracking-wide">
-                    {lang === "tr" ? "Menü" : "Menu"}
+                    {dictionary.navbar.menu}
                   </span>
                 </Button>
               </SheetTrigger>
@@ -108,9 +108,11 @@ export function Navbar({ lang, dictionary }: NavbarProps) {
                 side="right"
                 className="flex w-[250px] flex-col overflow-y-auto border-l bg-white sm:w-[300px] dark:border-slate-800 dark:bg-slate-950"
               >
-                <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+                <SheetTitle className="sr-only">
+                  {dictionary.navbar.mobile_menu_title}
+                </SheetTitle>
                 <SheetDescription className="sr-only">
-                  Mobile navigation menu
+                  {dictionary.navbar.mobile_menu_desc}
                 </SheetDescription>
                 <div className="flex flex-col gap-6 py-6">
                   <div className="flex items-center gap-2">
@@ -118,7 +120,7 @@ export function Navbar({ lang, dictionary }: NavbarProps) {
                       <DenikoLogo className="h-6 w-6 text-white" />
                     </div>
                     <span className="text-xl font-bold text-[#2062A3] dark:text-blue-400">
-                      Deniko
+                      {dictionary.common.app_name}
                     </span>
                   </div>
 
@@ -151,13 +153,15 @@ export function Navbar({ lang, dictionary }: NavbarProps) {
                   <div className="space-y-4 border-t pt-6 dark:border-slate-800">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground text-sm font-medium dark:text-slate-400">
-                        {lang === "tr" ? "Tema" : "Theme"}
+                        {dictionary.navbar.theme}
                       </span>
-                      {isClient && <ThemeToggle labels={dictionary.theme} />}
+                      {isClient && (
+                        <ThemeToggle labels={dictionary.common.theme} />
+                      )}
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground text-sm font-medium dark:text-slate-400">
-                        {lang === "tr" ? "Dil" : "Language"}
+                        {dictionary.navbar.language}
                       </span>
                       <LanguageSwitcher
                         currentLocale={lang}
@@ -169,7 +173,7 @@ export function Navbar({ lang, dictionary }: NavbarProps) {
                   {/* Legal Links */}
                   <div className="border-t pt-6 pb-2 dark:border-slate-800">
                     <h4 className="mb-3 px-2 text-xs font-semibold tracking-wider text-slate-900 uppercase dark:text-white">
-                      {lang === "tr" ? "Yasal" : "Legal"}
+                      {dictionary.navbar.legal}
                     </h4>
                     <div className="flex flex-col gap-1">
                       <Link
@@ -184,32 +188,28 @@ export function Navbar({ lang, dictionary }: NavbarProps) {
                         className="flex items-center justify-between rounded-md px-2 py-2 text-sm text-slate-600 transition-colors hover:bg-blue-50 hover:text-[#2062A3] dark:text-slate-400 dark:hover:bg-blue-900/20 dark:hover:text-blue-400"
                         onClick={() => setOpen(false)}
                       >
-                        {lang === "tr"
-                          ? "Kullanıcı Sözleşmesi"
-                          : "Terms of Service"}
+                        {dictionary.navbar.terms}
                       </Link>
                       <Link
                         href={`/${lang}/legal/privacy`}
                         className="flex items-center justify-between rounded-md px-2 py-2 text-sm text-slate-600 transition-colors hover:bg-blue-50 hover:text-[#2062A3] dark:text-slate-400 dark:hover:bg-blue-900/20 dark:hover:text-blue-400"
                         onClick={() => setOpen(false)}
                       >
-                        {lang === "tr"
-                          ? "Gizlilik Politikası"
-                          : "Privacy Policy"}
+                        {dictionary.navbar.privacy}
                       </Link>
                       <Link
                         href={`/${lang}/legal/cookies`}
                         className="flex items-center justify-between rounded-md px-2 py-2 text-sm text-slate-600 transition-colors hover:bg-blue-50 hover:text-[#2062A3] dark:text-slate-400 dark:hover:bg-blue-900/20 dark:hover:text-blue-400"
                         onClick={() => setOpen(false)}
                       >
-                        {lang === "tr" ? "Çerez Politikası" : "Cookie Policy"}
+                        {dictionary.legal.nav.cookies}
                       </Link>
                       <Link
                         href={`/${lang}/legal/kvkk`}
                         className="flex items-center justify-between rounded-md px-2 py-2 text-sm text-slate-600 transition-colors hover:bg-blue-50 hover:text-[#2062A3] dark:text-slate-400 dark:hover:bg-blue-900/20 dark:hover:text-blue-400"
                         onClick={() => setOpen(false)}
                       >
-                        KVKK
+                        {dictionary.legal.nav.kvkk}
                       </Link>
                     </div>
                   </div>

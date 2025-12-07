@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { getDictionary } from "@/lib/get-dictionary";
+import type { Locale } from "@/i18n-config";
 import { Providers } from "@/components/providers";
 import { CookieConsent } from "@/components/ui/cookie-consent";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -110,15 +112,15 @@ const jsonLd = {
   ],
 };
 
-export default async function RootLayout({
-  children,
-  params,
-}: Readonly<{
+type Props = {
   children: React.ReactNode;
   params: Promise<{ lang: string }>;
-}>) {
+};
+
+export default async function RootLayout({ children, params }: Props) {
   const { lang } = (await params) || {};
   const nonce = (await headers()).get("x-nonce") || undefined;
+  const dictionary = await getDictionary((lang as Locale) || "tr");
 
   return (
     <html lang={lang || "tr"} suppressHydrationWarning>
@@ -132,7 +134,7 @@ export default async function RootLayout({
           href="#main-content"
           className="focus:bg-background focus:text-foreground sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4"
         >
-          Ana içeriğe atla
+          {dictionary.common.skip_to_content}
         </a>
         <GoogleAnalytics nonce={nonce} />
         <script
@@ -143,7 +145,7 @@ export default async function RootLayout({
           nonce={nonce}
         />
         <Providers nonce={nonce}>{children}</Providers>
-        <CookieConsent />
+        <CookieConsent dictionary={dictionary} />
         <Toaster />
       </body>
     </html>
