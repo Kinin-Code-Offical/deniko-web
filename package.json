@@ -67,7 +67,7 @@
     "prisma": "^7.1.0",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
-    "react-hook-form": "^7.67.0",
+    "react-hook-form": "^7.68.0",
     "react-phone-number-input": "^3.4.14",
     "recharts": "^3.5.1",
     "schema-dts": "^1.1.5",
