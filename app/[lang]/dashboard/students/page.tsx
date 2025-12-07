@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { Prisma } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { getDictionary } from "@/lib/get-dictionary";
 import type { Locale } from "@/i18n-config";
@@ -86,13 +85,8 @@ export default async function StudentsPage({
     select: { id: true, name: true },
   });
 
-  const students = relations.map(
-    (
-      rel: Prisma.StudentTeacherRelationGetPayload<{
-        include: { student: { include: { user: true; classrooms: true } } };
-      }>
-    ) => ({
-      id: rel.student.id,
+  const students = relations.map((rel: any) => ({
+    id: rel.student.id,
       user: rel.student.user,
       tempFirstName: rel.student.tempFirstName,
       tempLastName: rel.student.tempLastName,
