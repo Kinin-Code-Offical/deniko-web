@@ -16,7 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import type { Dictionary } from "@/types/i18n";
-import { type StudentProfile, type User } from "@prisma/client";
+import type { StudentProfile, User } from "@prisma/client";
 
 interface InviteDetails {
   id: string;
