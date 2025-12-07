@@ -30,3 +30,12 @@ export function formatPhoneNumber(value: string | null | undefined) {
     return value
   }
 }
+
+export function isDicebearUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return parsed.hostname === "api.dicebear.com" || parsed.hostname.endsWith(".dicebear.com");
+  } catch {
+    return false;
+  }
+}

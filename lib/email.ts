@@ -48,10 +48,22 @@ export async function sendPasswordResetEmail(email: string, token: string, lang:
 
 import type { Dictionary } from "@/types/i18n";
 
+function escapeHtml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function getVerificationEmailTemplate(url: string, lang: Locale, content: Dictionary['email']['verification']) {
+  const safeUrl = escapeHtml(url);
+  const safeLang = escapeHtml(lang);
+  
   return `
 <!DOCTYPE html>
-<html lang="${lang}">
+<html lang="${safeLang}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -110,7 +122,7 @@ function getVerificationEmailTemplate(url: string, lang: Locale, content: Dictio
           ${content.body}
         </p>
         <div class="button-container">
-          <a href="${url}" class="button" style="color: #ffffff;">${content.button}</a>
+          <a href="${safeUrl}" class="button" style="color: #ffffff;">${content.button}</a>
         </div>
         <p class="text" style="font-size: 14px; color: #94a3b8; margin-bottom: 0;">
           ${content.ignore}
@@ -139,9 +151,9 @@ function getVerificationEmailTemplate(url: string, lang: Locale, content: Dictio
                 ${content.footer_copyright}
               </p>
               <p style="margin: 0; font-size: 12px; line-height: 1.5;">
-                <a href="${env.NEXTAUTH_URL}/${lang}/legal/terms" style="color: #2062A3; text-decoration: none;">${content.footer_terms}</a>
+                <a href="${env.NEXTAUTH_URL}/${safeLang}/legal/terms" style="color: #2062A3; text-decoration: none;">${content.footer_terms}</a>
                 <span style="color: #d1d5db; margin: 0 8px;">|</span>
-                <a href="${env.NEXTAUTH_URL}/${lang}/legal/privacy" style="color: #2062A3; text-decoration: none;">${content.footer_privacy}</a>
+                <a href="${env.NEXTAUTH_URL}/${safeLang}/legal/privacy" style="color: #2062A3; text-decoration: none;">${content.footer_privacy}</a>
               </p>
             </td>
           </tr>

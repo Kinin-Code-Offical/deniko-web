@@ -1,5 +1,6 @@
 "use client";
 
+import { isDicebearUrl } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -58,7 +59,7 @@ export function StudentHeader({
       ? user.image
       : tempAvatar
         ? tempAvatar.startsWith("http")
-          ? tempAvatar.includes("dicebear.com")
+          ? isDicebearUrl(tempAvatar)
             ? `/api/files/defaults/${new URL(tempAvatar).searchParams.get(
                 "seed"
               )}.svg`

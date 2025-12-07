@@ -157,7 +157,7 @@ export function ImageCropper({
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
           >
-            {imageSrc && (
+            {imageSrc && imageSrc.startsWith("blob:") && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 ref={imageRef}

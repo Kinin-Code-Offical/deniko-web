@@ -1,5 +1,6 @@
 "use client";
 
+import { isDicebearUrl } from "@/lib/utils";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -224,7 +225,7 @@ export function StudentSettingsTab({
         ? student.user.image
         : student.tempAvatar
           ? student.tempAvatar.startsWith("http")
-            ? student.tempAvatar.includes("dicebear.com")
+            ? isDicebearUrl(student.tempAvatar)
               ? `/api/files/defaults/${new URL(student.tempAvatar).searchParams.get("seed")}.svg`
               : student.tempAvatar
             : `/api/files/${student.tempAvatar}`

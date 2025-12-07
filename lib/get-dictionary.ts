@@ -8,6 +8,7 @@ const dictionaries = {
 }
 
 export const getDictionary = async (locale: Locale): Promise<Dictionary> => {
-  const dict = await (dictionaries[locale]?.() ?? dictionaries.tr())
+  const getDict = dictionaries[locale] ?? dictionaries.tr
+  const dict = await getDict()
   return dict as unknown as Dictionary
 }

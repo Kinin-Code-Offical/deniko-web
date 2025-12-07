@@ -85,6 +85,7 @@ export default async function StudentsPage({
     select: { id: true, name: true },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const students = relations.map((rel: any) => ({
     id: rel.student.id,
     user: rel.student.user,

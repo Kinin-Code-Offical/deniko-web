@@ -1,5 +1,6 @@
 "use client";
 
+import { isDicebearUrl } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -76,7 +77,7 @@ const StudentRow = memo(function StudentRow({
                   ? student.user.image
                   : student.tempAvatar
                     ? student.tempAvatar.startsWith("http")
-                      ? student.tempAvatar.includes("dicebear.com")
+                      ? isDicebearUrl(student.tempAvatar)
                         ? `/api/files/defaults/${new URL(student.tempAvatar).searchParams.get("seed")}.svg`
                         : student.tempAvatar
                       : `/api/files/${student.tempAvatar}`
