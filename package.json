@@ -22,7 +22,7 @@
     "test:cli": "tsx scripts/check-any.ts && tsx scripts/check-hardcoded.ts && tsx scripts/check-console.ts && tsx scripts/check-env.ts",
     "test:all": "npm run lint && npm run typecheck && npm run test:unit && npm run test:integration && npm run test:cli",
     "pnpm:test:all": "pnpm lint && pnpm typecheck && pnpm test:unit && pnpm test:integration && pnpm test:cli",
-    "postinstall": "patch-package"
+    "postinstall": "prisma generate && patch-package"
   },
   "overrides": {
     "nodemailer": "^7.0.11",

@@ -7,16 +7,23 @@ FROM node:lts-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
+# Install pnpm
+RUN npm install -g pnpm
+
 # Paket dosyalarını kopyala
-COPY package.json package-lock.json* ./
+COPY package.json pnpm-lock.yaml* ./
 # Bağımlılıkları kur
-RUN npm ci --legacy-peer-deps
+RUN pnpm install --frozen-lockfile
 
 # --------------------------------------------------------
 # 2. AŞAMA: Projeyi Derle (Builder)
 # --------------------------------------------------------
 FROM node:lts-alpine AS builder
 WORKDIR /app
+
+# Install pnpm
+RUN npm install -g pnpm
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
@@ -34,10 +41,10 @@ ENV GCS_PROJECT_ID="dummy-project"
 ENV GCS_CLIENT_EMAIL="dummy@example.com"
 ENV GCS_PRIVATE_KEY="dummy_private_key"
 # Prisma istemcisini oluştur
-RUN npx prisma generate
+RUN pnpm exec prisma generate
 
 # Next.js projesini build et
-RUN npm run build
+RUN pnpm run build
 
 # --------------------------------------------------------
 # 3. AŞAMA: Çalıştır (Runner - Production)

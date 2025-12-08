@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate Prisma Client
+        run: pnpm exec prisma generate
+
       - name: Run Sitemap Unit Tests
         run: pnpm exec vitest run __tests__/sitemap.test.ts
 
