@@ -56,8 +56,8 @@ Follow these steps to set up the project locally for development.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Kinin-Code-Offical/deniko-web.git
-cd deniko-web
+git clone https://github.com/Kinin-Code-Offical/deniko.git
+cd deniko
 ```
 
 ### 2. Install Dependencies

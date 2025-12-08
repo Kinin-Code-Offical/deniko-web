@@ -1,7 +1,7 @@
 module.exports = {
   ci: {
     collect: {
-      startServerCommand: "pnpm start -- -H 127.0.0.1",
+      startServerCommand: "pnpm exec next start -H 127.0.0.1",
       startServerReadyTimeout: 60000,
       url: ["http://127.0.0.1:3000/tr", "http://127.0.0.1:3000/en"],
       numberOfRuns: 3,

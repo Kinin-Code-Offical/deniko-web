@@ -1,4 +1,4 @@
-# Copilot Instructions for deniko-web
+# Copilot Instructions for deniko
 
 ## 0. Yanıt Biçimi
 
@@ -12,7 +12,7 @@
 
 ## Proje Özeti
 
-deniko-web; Next.js 16 (App Router) + TypeScript, Prisma + PostgreSQL, Auth.js v5, Tailwind CSS v4, Shadcn UI + Radix, Framer Motion, Docker ve Google Cloud Run üzerine kurulu bir yapıdır. Kod üretirken bu teknolojilere uygun desenleri kullan.
+deniko; Next.js 16 (App Router) + TypeScript, Prisma + PostgreSQL, Auth.js v5, Tailwind CSS v4, Shadcn UI + Radix, Framer Motion, Docker ve Google Cloud Run üzerine kurulu bir yapıdır. Kod üretirken bu teknolojilere uygun desenleri kullan.
 
 **Test beklentisi:**  
 Önerilen teknoloji ve pattern’ler proje yapısı ve stack’iyle çelişmemeli.
