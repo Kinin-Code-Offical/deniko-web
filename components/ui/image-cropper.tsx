@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -43,6 +43,14 @@ export function ImageCropper({
 
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+
+  // Validate image source to prevent XSS (CodeQL fix)
+  const safeImageSrc = useMemo(() => {
+    if (imageSrc && imageSrc.startsWith("blob:")) {
+      return imageSrc;
+    }
+    return null;
+  }, [imageSrc]);
 
   useEffect(() => {
     if (file) {
@@ -154,11 +162,11 @@ export function ImageCropper({
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
           >
-            {imageSrc && imageSrc.startsWith("blob:") && (
+            {safeImageSrc && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 ref={imageRef}
-                src={imageSrc}
+                src={safeImageSrc}
                 alt={labels.crop_preview}
                 className="pointer-events-none absolute max-w-none origin-center select-none"
                 style={{
