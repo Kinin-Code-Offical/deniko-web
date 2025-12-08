@@ -47,6 +47,20 @@ COPY . .
 # Prisma istemcisini oluştur
 RUN pnpm exec prisma generate
 
+# Build sırasında geçici dummy çevresel değişkenler
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+ENV DIRECT_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+ENV NEXTAUTH_URL="http://localhost:3000"
+ENV AUTH_SECRET="dummy_secret_for_build"
+ENV AUTH_GOOGLE_ID="dummy_google_id"
+ENV AUTH_GOOGLE_SECRET="dummy_google_secret"
+ENV EMAIL_USER="dummy@example.com"
+ENV EMAIL_PASS="dummy_password"
+ENV GCS_BUCKET_NAME="dummy-bucket"
+ENV GCS_PROJECT_ID="dummy-project"
+ENV GCS_CLIENT_EMAIL="dummy@example.com"
+ENV GCS_PRIVATE_KEY="dummy_private_key"
+
 # Next.js projesini build et
 RUN pnpm run build
 
