@@ -14,18 +14,36 @@ const envSchema = z.object({
     .default("false")
     .transform((value) => value === "true"),
   NEXTAUTH_URL: z.string().url({ message: "NEXTAUTH_URL must be a valid URL" }),
-  EMAIL_USER: z.string().email({ message: "EMAIL_USER must be a valid email" }),
-  EMAIL_PASS: z.string().min(1, { message: "EMAIL_PASS is required" }),
+
+  // Storage
   GCS_BUCKET_NAME: z.string().min(1, { message: "GCS_BUCKET_NAME is required" }),
   GCS_PROJECT_ID: z.string().min(1, { message: "GCS_PROJECT_ID is required" }),
-  NEXT_PUBLIC_NOINDEX: z.enum(["true", "false"]).default("false").transform((v) => v === "true"),
   GCS_CLIENT_EMAIL: z.string().email({ message: "GCS_CLIENT_EMAIL must be a valid email" }),
   GCS_PRIVATE_KEY: z.string().min(1, { message: "GCS_PRIVATE_KEY is required" }),
+
+  // Auth
   AUTH_SECRET: z.string().min(1, { message: "AUTH_SECRET is required" }),
   AUTH_GOOGLE_ID: z.string().min(1, { message: "AUTH_GOOGLE_ID is required" }),
   AUTH_GOOGLE_SECRET: z.string().min(1, { message: "AUTH_GOOGLE_SECRET is required" }),
+
+  // Public
+  NEXT_PUBLIC_NOINDEX: z.enum(["true", "false"]).default("false").transform((v) => v === "true"),
   NEXT_PUBLIC_SITE_URL: z.string().url().optional().default("https://deniko.net"),
   NEXT_PUBLIC_GA_ID: z.string().optional(),
+
+  // Email - No-Reply (System Notifications)
+  SMTP_NOREPLY_HOST: z.string().min(1, { message: "SMTP_NOREPLY_HOST is required" }),
+  SMTP_NOREPLY_PORT: z.string().default("465"),
+  SMTP_NOREPLY_USER: z.string().email({ message: "SMTP_NOREPLY_USER must be a valid email" }),
+  SMTP_NOREPLY_PASSWORD: z.string().min(1, { message: "SMTP_NOREPLY_PASSWORD is required" }),
+  SMTP_NOREPLY_FROM: z.string().email({ message: "SMTP_NOREPLY_FROM must be a valid email" }),
+
+  // Email - Support (Tickets & Inquiries)
+  SMTP_SUPPORT_HOST: z.string().min(1, { message: "SMTP_SUPPORT_HOST is required" }),
+  SMTP_SUPPORT_PORT: z.string().default("465"),
+  SMTP_SUPPORT_USER: z.string().email({ message: "SMTP_SUPPORT_USER must be a valid email" }),
+  SMTP_SUPPORT_PASSWORD: z.string().min(1, { message: "SMTP_SUPPORT_PASSWORD is required" }),
+  SMTP_SUPPORT_FROM: z.string().email({ message: "SMTP_SUPPORT_FROM must be a valid email" }),
 });
 
 export const env = envSchema.parse(process.env);

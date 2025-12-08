@@ -44,7 +44,7 @@ export function ThemeToggle({ labels }: ThemeToggleProps) {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"

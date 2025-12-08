@@ -8,8 +8,6 @@ vi.mock('server-only', () => {
 // Mock environment variables for testing
 process.env.DATABASE_URL = 'postgresql://user:password@localhost:5432/testdb';
 process.env.NEXTAUTH_URL = 'http://localhost:3000';
-process.env.EMAIL_USER = 'test@example.com';
-process.env.EMAIL_PASS = 'password';
 process.env.GCS_BUCKET_NAME = 'test-bucket';
 process.env.GCS_PROJECT_ID = 'test-project';
 process.env.GCS_CLIENT_EMAIL = 'test@example.com';
@@ -18,3 +16,17 @@ process.env.AUTH_SECRET = 'secret';
 process.env.AUTH_GOOGLE_ID = 'google-id';
 process.env.AUTH_GOOGLE_SECRET = 'google-secret';
 process.env.NEXT_PUBLIC_SITE_URL = 'http://localhost:3000';
+
+// No-Reply
+process.env.SMTP_NOREPLY_HOST = 'smtp.example.com';
+process.env.SMTP_NOREPLY_PORT = '465';
+process.env.SMTP_NOREPLY_USER = 'noreply@example.com';
+process.env.SMTP_NOREPLY_PASSWORD = 'noreply-password';
+process.env.SMTP_NOREPLY_FROM = 'noreply@example.com';
+
+// Support
+process.env.SMTP_SUPPORT_HOST = 'smtp.example.com';
+process.env.SMTP_SUPPORT_PORT = '465';
+process.env.SMTP_SUPPORT_USER = 'support@example.com';
+process.env.SMTP_SUPPORT_PASSWORD = 'support-password';
+process.env.SMTP_SUPPORT_FROM = 'support@example.com';

@@ -36,3 +36,10 @@ The JSON structure should be nested by feature or page to keep it organized.
 
 1. Add the key and value to **both** `en.json` and `tr.json`.
 2. Ensure the structure matches exactly in both files to avoid runtime errors.
+
+## TODO
+
+- Document how to add new locales (folder naming, middleware updates, dictionary imports).
+- Add a CI/lint script that ensures `en.json` and `tr.json` stay in sync.
+- Move large static copy (FAQs, landing copy) into dictionaries instead of hardcoding them in components.
+

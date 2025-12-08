@@ -166,6 +166,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
               </Label>
               <Input
                 id="firstName"
+                name="firstName"
                 autoComplete="given-name"
                 value={formData.name}
                 onChange={(e) =>
@@ -179,6 +180,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
               </Label>
               <Input
                 id="lastName"
+                name="lastName"
                 autoComplete="family-name"
                 value={formData.surname}
                 onChange={(e) =>
@@ -192,6 +194,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
               </Label>
               <Input
                 id="studentNo"
+                name="studentNo"
                 autoComplete="off"
                 value={formData.studentNo}
                 onChange={(e) =>
@@ -206,6 +209,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
               </Label>
               <Input
                 id="grade"
+                name="grade"
                 autoComplete="off"
                 value={formData.grade}
                 onChange={(e) =>
@@ -220,6 +224,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
               </Label>
               <Input
                 id="phone"
+                name="phone"
                 autoComplete="tel"
                 value={formData.phoneNumber}
                 onChange={(e) =>
@@ -242,6 +247,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
               </Label>
               <Input
                 id="parentName"
+                name="parentName"
                 autoComplete="name"
                 value={formData.parentName}
                 onChange={(e) =>
@@ -256,6 +262,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
               </Label>
               <Input
                 id="parentPhone"
+                name="parentPhone"
                 autoComplete="tel"
                 value={formData.parentPhone}
                 onChange={(e) =>
@@ -270,6 +277,7 @@ export function StudentEditForm({ student, dictionary }: StudentEditFormProps) {
               </Label>
               <Input
                 id="parentEmail"
+                name="parentEmail"
                 autoComplete="email"
                 value={formData.parentEmail}
                 onChange={(e) =>

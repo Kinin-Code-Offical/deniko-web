@@ -19,4 +19,4 @@ jobs:
           # Check all markdown and html files
           args: --verbose --no-progress './**/*.md' './**/*.html' --exclude-mail
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"

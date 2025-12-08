@@ -898,5 +898,105 @@
     "file_not_found_or_error": "Dosya bulunamadı veya Hata",
     "unknown_error": "Bilinmeyen hata",
     "phone_start_zero": "Telefon numarası 0 ile başlamamalıdır."
+  },
+  "support": {
+    "nav": {
+      "faq": "SSS",
+      "support": "Destek"
+    },
+    "hero": {
+      "title": "Nasıl yardımcı olabiliriz?",
+      "subtitle": "Bilgi bankamızda arama yapın veya destek ekibimizle iletişime geçin.",
+      "search_placeholder": "Cevaplarda ara..."
+    },
+    "faq": {
+      "title": "Sıkça Sorulan Sorular",
+      "categories": {
+        "general": "Genel",
+        "billing": "Fatura",
+        "teachers": "Öğretmenler",
+        "students": "Öğrenciler"
+      },
+      "items": {
+        "general": [
+          {
+            "question": "Deniko nedir?",
+            "answer": "Deniko, özel ders yönetimi için kapsamlı bir platformdur."
+          },
+          {
+            "question": "Ücretsiz mi?",
+            "answer": "Evet, temel kullanım için ücretsiz bir plan sunuyoruz."
+          }
+        ],
+        "billing": [
+          {
+            "question": "Planımı nasıl yükseltirim?",
+            "answer": "Fatura ayarlarından planınızı yükseltebilirsiniz."
+          }
+        ],
+        "teachers": [
+          {
+            "question": "Öğrenci nasıl eklerim?",
+            "answer": "Öğrenciler sekmesine gidin ve 'Öğrenci Ekle' butonuna tıklayın."
+          }
+        ],
+        "students": [
+          {
+            "question": "Bir sınıfa nasıl katılırım?",
+            "answer": "Öğretmeniniz tarafından sağlanan davet bağlantısını kullanın."
+          }
+        ]
+      }
+    },
+    "cta": {
+      "title": "Hala yardıma mı ihtiyacınız var?",
+      "subtitle": "Destek ekibimiz bir tık uzağınızda.",
+      "button_contact": "Destek ile İletişime Geç",
+      "button_chat": "Canlı Sohbet"
+    },
+    "contact": {
+      "title": "Destek ile İletişime Geçin",
+      "subtitle": "Bir bilet oluşturun, size geri dönelim.",
+      "info": {
+        "email": "support@deniko.com",
+        "email_label": "Bize E-posta Gönderin",
+        "office": "123 Education St, Tech City, TC 12345",
+        "chat_label": "Canlı Sohbet",
+        "chat_desc": "09:00 - 17:00 (EST) arası müsait",
+        "phone_label": "Telefon Desteği",
+        "phone_desc": "+1 (555) 123-4567"
+      },
+      "form": {
+        "name": "İsim",
+        "name_placeholder": "Ad Soyad",
+        "email": "E-posta",
+        "email_placeholder": "ornek@email.com",
+        "subject": "Konu",
+        "subject_placeholder": "Nasıl yardımcı olabiliriz?",
+        "type_label": "Konu Başlığı",
+        "type_placeholder": "Bir konu seçin",
+        "message": "Mesaj",
+        "message_placeholder": "Lütfen sorununuzu açıklayın...",
+        "submit": "Bilet Gönder",
+        "submitting": "Gönderiliyor...",
+        "success_title": "Bilet Gönderildi",
+        "success_description": "Talebinizi aldık. Bilet ID: {ticketId}",
+        "error_title": "Gönderim Başarısız",
+        "error_description": "Lütfen daha sonra tekrar deneyin.",
+        "types": {
+          "general": "Genel Soru",
+          "bug": "Hata Bildirimi",
+          "billing": "Fatura Sorunu",
+          "feature": "Özellik İsteği"
+        },
+        "validation": {
+          "name_required": "İsim gereklidir",
+          "email_invalid": "Geçersiz e-posta adresi",
+          "subject_min": "Konu en az 5 karakter olmalıdır",
+          "type_required": "Lütfen bir konu seçin",
+          "message_min": "Mesaj en az 10 karakter olmalıdır"
+        }
+      }
+    }
   }
 }

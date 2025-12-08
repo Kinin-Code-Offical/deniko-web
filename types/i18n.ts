@@ -899,4 +899,80 @@ export interface Dictionary {
     unknown_error: string;
     phone_start_zero: string;
   };
+  support: {
+    nav: {
+      faq: string;
+      support: string;
+    };
+    hero: {
+      title: string;
+      subtitle: string;
+      search_placeholder: string;
+    };
+    faq: {
+      title: string;
+      categories: {
+        general: string;
+        billing: string;
+        teachers: string;
+        students: string;
+      };
+      items: {
+        general: { question: string; answer: string }[];
+        billing: { question: string; answer: string }[];
+        teachers: { question: string; answer: string }[];
+        students: { question: string; answer: string }[];
+      };
+    };
+    cta: {
+      title: string;
+      subtitle: string;
+      button_contact: string;
+      button_chat: string;
+    };
+    contact: {
+      title: string;
+      subtitle: string;
+      info: {
+        email: string;
+        email_label: string;
+        office: string;
+        chat_label: string;
+        chat_desc: string;
+        phone_label: string;
+        phone_desc: string;
+      };
+      form: {
+        name: string;
+        name_placeholder: string;
+        email: string;
+        email_placeholder: string;
+        subject: string;
+        subject_placeholder: string;
+        type_label: string;
+        type_placeholder: string;
+        message: string;
+        message_placeholder: string;
+        submit: string;
+        submitting: string;
+        success_title: string;
+        success_description: string;
+        error_title: string;
+        error_description: string;
+        types: {
+          general: string;
+          bug: string;
+          billing: string;
+          feature: string;
+        };
+        validation: {
+          name_required: string;
+          email_invalid: string;
+          subject_min: string;
+          type_required: string;
+          message_min: string;
+        };
+      };
+    };
+  };
 }

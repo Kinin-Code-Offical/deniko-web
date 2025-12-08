@@ -24,3 +24,9 @@ This directory contains the main application logic, routing, and page definition
 - **Server Components:** By default, all components in `app/` are React Server Components (RSC). Use `"use client"` directive for interactive components.
 - **Localization:** We use a path-based strategy (`/[lang]/...`). The `lang` parameter is passed to all pages and layouts to fetch the correct dictionary.
 - **Metadata:** SEO metadata is generated dynamically in `page.tsx` or `layout.tsx` files using `generateMetadata`.
+
+## TODO
+
+- Generate metadata, JSON-LD, and canonical URLs from the locale dictionaries so `/[lang]` routes emit localized SEO texts.
+- Expand the sitemap (or implement `generateSitemaps`) to cover new public routes automatically.
+- Extract heavy middleware logic (rate limiting, CSP, locale sync) into composable helpers to simplify future changes.

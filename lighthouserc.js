@@ -1,12 +1,12 @@
 module.exports = {
   ci: {
     collect: {
-      startServerCommand: "pnpm run start:ci",
-      startServerReadyTimeout: 60000,
+      // Server is started manually in CI workflow to ensure readiness
       url: ["http://127.0.0.1:3000/tr", "http://127.0.0.1:3000/en"],
       numberOfRuns: 3,
       settings: {
-        chromeFlags: "--no-sandbox --disable-gpu --disable-dev-shm-usage",
+        chromeFlags:
+          "--no-sandbox --disable-gpu --disable-dev-shm-usage --ignore-certificate-errors",
       },
     },
     upload: {

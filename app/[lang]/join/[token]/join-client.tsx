@@ -119,6 +119,7 @@ export default function JoinClient({
         <div className="flex items-center space-x-2">
           <Checkbox
             id="useTeacherGrade"
+            name="useTeacherGrade"
             checked={preferences.useTeacherGrade}
             onCheckedChange={(checked) =>
               setPreferences((prev) => ({
@@ -159,6 +160,7 @@ export default function JoinClient({
         <div className="flex items-center space-x-2">
           <Checkbox
             id="useTeacherParentInfo"
+            name="useTeacherParentInfo"
             checked={preferences.useTeacherParentInfo}
             onCheckedChange={(checked) =>
               setPreferences((prev) => ({

@@ -52,6 +52,75 @@ const mockDictionary = {
     mobile_menu_desc: "Mobile Menu Desc",
     toggle_theme: "Toggle Theme",
   },
+  support: {
+    nav: {
+      faq: "FAQ",
+      support: "Support",
+    },
+    hero: {
+      title: "Support Center",
+      subtitle: "Help",
+      search_placeholder: "Search",
+    },
+    faq: {
+      title: "FAQ",
+      categories: {
+        general: "General",
+        billing: "Billing",
+        teachers: "Teachers",
+        students: "Students",
+      },
+      items: {
+        general: [],
+        billing: [],
+        teachers: [],
+        students: [],
+      },
+    },
+    cta: {
+      title: "CTA",
+      subtitle: "Subtitle",
+      button_contact: "Contact",
+      button_chat: "Chat",
+    },
+    contact: {
+      title: "Contact Support",
+      subtitle: "Get in touch",
+      info: {
+        email: "email@example.com",
+        office: "Office",
+      },
+      form: {
+        name: "Name",
+        email: "Email",
+        subject: "Subject",
+        subject_placeholder: "Subject",
+        type_label: "Type",
+        type_placeholder: "Select type",
+        message: "Message",
+        message_placeholder: "Message",
+        submit: "Submit",
+        submitting: "Submitting",
+        success_title: "Success",
+        success_description: "Success description",
+        error_title: "Error",
+        error_description: "Error description",
+        types: {
+          general: "General",
+          bug: "Bug",
+          billing: "Billing",
+          feature: "Feature",
+        },
+        validation: {
+          name_required: "Name required",
+          email_invalid: "Email invalid",
+          subject_min: "Subject min",
+          type_required: "Type required",
+          message_min: "Message min",
+        },
+      },
+    },
+  },
 } as unknown as Dictionary;
 
 describe("Navigation Components", () => {

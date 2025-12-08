@@ -56,12 +56,20 @@ jobs:
           AUTH_SECRET: "dummy_secret_for_build"
           AUTH_GOOGLE_ID: "dummy_google_id"
           AUTH_GOOGLE_SECRET: "dummy_google_secret"
-          EMAIL_USER: "dummy@example.com"
-          EMAIL_PASS: "dummy_password"
           GCS_BUCKET_NAME: "dummy-bucket"
           GCS_PROJECT_ID: "dummy-project"
           GCS_CLIENT_EMAIL: "dummy@example.com"
           GCS_PRIVATE_KEY: "dummy_private_key"
+          SMTP_NOREPLY_HOST: "smtp.example.com"
+          SMTP_NOREPLY_PORT: "465"
+          SMTP_NOREPLY_USER: "no-replay@deniko.net"
+          SMTP_NOREPLY_PASSWORD: "dummy_password"
+          SMTP_NOREPLY_FROM: "no-replay@deniko.net"
+          SMTP_SUPPORT_HOST: "smtp.example.com"
+          SMTP_SUPPORT_PORT: "465"
+          SMTP_SUPPORT_USER: "no-replay@deniko.net"
+          SMTP_SUPPORT_PASSWORD: "dummy_password"
+          SMTP_SUPPORT_FROM: "support@deniko.net"
 
       - name: Push Database Schema
         run: pnpm exec prisma db push
@@ -78,12 +86,46 @@ jobs:
           AUTH_SECRET: "dummy_secret_for_build"
           AUTH_GOOGLE_ID: "dummy_google_id"
           AUTH_GOOGLE_SECRET: "dummy_google_secret"
-          EMAIL_USER: "dummy@example.com"
-          EMAIL_PASS: "dummy_password"
           GCS_BUCKET_NAME: "dummy-bucket"
           GCS_PROJECT_ID: "dummy-project"
           GCS_CLIENT_EMAIL: "dummy@example.com"
           GCS_PRIVATE_KEY: "dummy_private_key"
+          SMTP_NOREPLY_HOST: "smtp.example.com"
+          SMTP_NOREPLY_PORT: "465"
+          SMTP_NOREPLY_USER: "no-replay@deniko.net"
+          SMTP_NOREPLY_PASSWORD: "dummy_password"
+          SMTP_NOREPLY_FROM: "no-replay@deniko.net"
+          SMTP_SUPPORT_HOST: "smtp.example.com"
+          SMTP_SUPPORT_PORT: "465"
+          SMTP_SUPPORT_USER: "no-replay@deniko.net"
+          SMTP_SUPPORT_PASSWORD: "dummy_password"
+          SMTP_SUPPORT_FROM: "support@deniko.net"
+
+      - name: Start Server
+        run: |
+          pnpm run start:ci &
+          npx wait-on http://127.0.0.1:3000/tr -t 60000
+        env:
+          DATABASE_URL: "postgresql://user:password@localhost:5432/testdb"
+          DIRECT_URL: "postgresql://user:password@localhost:5432/testdb"
+          NEXTAUTH_URL: "http://127.0.0.1:3000"
+          AUTH_SECRET: "dummy_secret_for_build"
+          AUTH_GOOGLE_ID: "dummy_google_id"
+          AUTH_GOOGLE_SECRET: "dummy_google_secret"
+          GCS_BUCKET_NAME: "dummy-bucket"
+          GCS_PROJECT_ID: "dummy-project"
+          GCS_CLIENT_EMAIL: "dummy@example.com"
+          GCS_PRIVATE_KEY: "dummy_private_key"
+          SMTP_NOREPLY_HOST: "smtp.example.com"
+          SMTP_NOREPLY_PORT: "465"
+          SMTP_NOREPLY_USER: "no-replay@deniko.net"
+          SMTP_NOREPLY_PASSWORD: "dummy_password"
+          SMTP_NOREPLY_FROM: "no-replay@deniko.net"
+          SMTP_SUPPORT_HOST: "smtp.example.com"
+          SMTP_SUPPORT_PORT: "465"
+          SMTP_SUPPORT_USER: "no-replay@deniko.net"
+          SMTP_SUPPORT_PASSWORD: "dummy_password"
+          SMTP_SUPPORT_FROM: "support@deniko.net"
 
       - name: Run Lighthouse CI
         uses: treosh/lighthouse-ci-action@v11
@@ -92,15 +134,4 @@ jobs:
           uploadArtifacts: true
           temporaryPublicStorage: true
         env:
-          DATABASE_URL: "postgresql://user:password@localhost:5432/testdb"
-          DIRECT_URL: "postgresql://user:password@localhost:5432/testdb"
-          NEXTAUTH_URL: "http://127.0.0.1:3000"
-          AUTH_SECRET: "dummy_secret_for_build"
-          AUTH_GOOGLE_ID: "dummy_google_id"
-          AUTH_GOOGLE_SECRET: "dummy_google_secret"
-          EMAIL_USER: "dummy@example.com"
-          EMAIL_PASS: "dummy_password"
-          GCS_BUCKET_NAME: "dummy-bucket"
-          GCS_PROJECT_ID: "dummy-project"
-          GCS_CLIENT_EMAIL: "dummy@example.com"
-          GCS_PRIVATE_KEY: "dummy_private_key"
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

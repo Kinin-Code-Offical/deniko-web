@@ -4,14 +4,29 @@ import type { Locale } from "@/i18n-config"
 import logger from "@/lib/logger"
 import { env } from "@/lib/env"
 
-const transporter = nodemailer.createTransport({
+// System / No-Reply Transporter
+const noReplyTransporter = nodemailer.createTransport({
   pool: true,
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
+  host: env.SMTP_NOREPLY_HOST,
+  port: parseInt(env.SMTP_NOREPLY_PORT),
+  secure: parseInt(env.SMTP_NOREPLY_PORT) === 465,
   auth: {
-    user: env.EMAIL_USER,
-    pass: env.EMAIL_PASS,
+    user: env.SMTP_NOREPLY_USER,
+    pass: env.SMTP_NOREPLY_PASSWORD,
+  },
+  maxConnections: 5,
+  maxMessages: 100,
+})
+
+// Support Transporter
+const supportTransporter = nodemailer.createTransport({
+  pool: true,
+  host: env.SMTP_SUPPORT_HOST,
+  port: parseInt(env.SMTP_SUPPORT_PORT),
+  secure: parseInt(env.SMTP_SUPPORT_PORT) === 465,
+  auth: {
+    user: env.SMTP_SUPPORT_USER,
+    pass: env.SMTP_SUPPORT_PASSWORD,
   },
   maxConnections: 5,
   maxMessages: 100,
@@ -33,8 +48,8 @@ export async function sendPasswordResetEmail(email: string, token: string, lang:
 
     const html = getVerificationEmailTemplate(resetLink, lang as Locale, content)
 
-    await transporter.sendMail({
-      from: `"Deniko" <${env.EMAIL_USER}>`,
+    await noReplyTransporter.sendMail({
+      from: `"Deniko" <${env.SMTP_NOREPLY_FROM}>`,
       to: email,
       subject: content.subject,
       html,
@@ -42,6 +57,50 @@ export async function sendPasswordResetEmail(email: string, token: string, lang:
   } catch (error) {
     logger.error({ context: "sendPasswordResetEmail", error }, "Failed to send password reset email")
     throw error // Re-throw to be handled by the caller
+  }
+}
+
+/**
+ * Sends a support ticket email to the support team.
+ */
+export async function sendSupportTicketEmail(data: {
+  ticketId: string;
+  type: string;
+  name: string;
+  email: string;
+  message: string;
+}) {
+  try {
+    await supportTransporter.sendMail({
+      from: `"Deniko Support" <${env.SMTP_SUPPORT_FROM}>`,
+      to: env.SMTP_SUPPORT_USER, // Send to support team inbox
+      replyTo: data.email,
+      subject: `[${data.ticketId}] ${data.type}: ${data.name}`,
+      text: `
+New Support Ticket
+
+Ticket ID: ${data.ticketId}
+Type: ${data.type}
+From: ${data.name} (${data.email})
+
+Message:
+${data.message}
+      `,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2>New Support Ticket</h2>
+          <p><strong>Ticket ID:</strong> ${data.ticketId}</p>
+          <p><strong>Type:</strong> ${data.type}</p>
+          <p><strong>From:</strong> ${data.name} (<a href="mailto:${data.email}">${data.email}</a>)</p>
+          <hr />
+          <h3>Message:</h3>
+          <p style="white-space: pre-wrap;">${data.message}</p>
+        </div>
+      `,
+    })
+  } catch (error) {
+    logger.error({ context: "sendSupportTicketEmail", error }, "Failed to send support ticket email")
+    throw error
   }
 }
 
@@ -60,7 +119,7 @@ function escapeHtml(unsafe: string): string {
 function getVerificationEmailTemplate(url: string, lang: Locale, content: Dictionary['email']['verification']) {
   const safeUrl = escapeHtml(url);
   const safeLang = escapeHtml(lang);
-  
+
   return `
 <!DOCTYPE html>
 <html lang="${safeLang}">
@@ -183,8 +242,8 @@ export async function sendVerificationEmail(email: string, token: string, lang: 
   const html = getVerificationEmailTemplate(confirmLink, lang, content);
 
   try {
-    await transporter.sendMail({
-      from: `"Deniko" <${env.EMAIL_USER}>`,
+    await noReplyTransporter.sendMail({
+      from: `"Deniko" <${env.SMTP_NOREPLY_FROM}>`,
       to: email,
       subject: content.subject,
       html: html,

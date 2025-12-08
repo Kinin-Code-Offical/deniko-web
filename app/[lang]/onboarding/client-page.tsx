@@ -169,9 +169,9 @@ export function OnboardingClientPage({
           <div className="space-y-6">
             {/* Role Selection */}
             <div className="space-y-3">
-              <Label className="dark:text-slate-200">
+              <span className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-slate-200">
                 {dictionary.auth.register.role_select}
-              </Label>
+              </span>
               <div className="grid grid-cols-2 gap-4">
                 {/* Student Card */}
                 <div
@@ -270,6 +270,7 @@ export function OnboardingClientPage({
               </Label>
               <PhoneInput
                 id="phone"
+                name="phone"
                 value={phoneNumber}
                 onChange={setPhoneNumber}
                 labels={dictionary.common.phone_input}
@@ -285,6 +286,7 @@ export function OnboardingClientPage({
                 <div className="relative">
                   <Input
                     id="password"
+                    name="password"
                     placeholder={dictionary.common.password_placeholder}
                     type={showPassword ? "text" : "password"}
                     value={password}
@@ -315,6 +317,7 @@ export function OnboardingClientPage({
                 <div className="relative">
                   <Input
                     id="confirm-password"
+                    name="confirmPassword"
                     placeholder={dictionary.common.password_placeholder}
                     type={showConfirmPassword ? "text" : "password"}
                     value={confirmPassword}
@@ -341,6 +344,7 @@ export function OnboardingClientPage({
             <div className="flex flex-row items-center gap-3 space-y-0 rounded-xl border border-slate-200 p-3 shadow-sm transition-all duration-200 hover:border-[#2062A3]/50 hover:bg-slate-50 dark:border-slate-700 dark:hover:border-blue-500/50 dark:hover:bg-slate-900">
               <Checkbox
                 id="terms"
+                name="terms"
                 checked={termsAccepted}
                 onCheckedChange={(checked) =>
                   setTermsAccepted(checked as boolean)
@@ -382,6 +386,7 @@ export function OnboardingClientPage({
             <div className="flex flex-row items-center gap-3 space-y-0 rounded-xl border border-slate-200 p-3 shadow-sm transition-all duration-200 hover:border-[#2062A3]/50 hover:bg-slate-50 dark:border-slate-700 dark:hover:border-blue-500/50 dark:hover:bg-slate-900">
               <Checkbox
                 id="marketingConsent"
+                name="marketingConsent"
                 checked={marketingConsent}
                 onCheckedChange={(checked) =>
                   setMarketingConsent(checked as boolean)

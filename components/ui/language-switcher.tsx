@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Check, ChevronDown, Globe } from "lucide-react";
+import { Check, ChevronDown, Globe, Loader2 } from "lucide-react";
 import { i18n } from "@/i18n-config";
 import { useTimeout } from "@/lib/hooks/use-timeout";
 
@@ -59,27 +59,26 @@ export function LanguageSwitcher({
     tr: "Türkçe",
   };
 
-  if (!mounted) {
-    return (
-      <div className="h-11 w-32 animate-pulse rounded-full border border-slate-200/80 bg-white/70"></div>
-    );
-  }
-
+  // Always render the button structure to prevent layout shift
+  // If not mounted, we just render a non-interactive version or default state
+  // but we keep the same dimensions and styling.
   const activeLocale =
     currentLocale ?? (pathname?.split("/")[1] || i18n.defaultLocale);
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          disabled={isPending}
-          className={`h-11 gap-2 rounded-full border-slate-200/80 bg-white/80 px-4 text-sm font-semibold text-slate-700 shadow-sm data-[state=open]:ring-2 data-[state=open]:ring-[#1d4f87]/20 dark:border-slate-800 dark:bg-slate-950/50 dark:text-blue-400 dark:hover:bg-slate-900 ${
-            isPending ? "opacity-50" : ""
-          }`}
+          disabled={!mounted || isPending}
+          className={`h-11 min-w-[140px] gap-2 rounded-full border-slate-200/80 bg-transparent px-4 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-100 data-[state=open]:ring-2 data-[state=open]:ring-[#1d4f87]/20 dark:border-slate-800 dark:bg-slate-950/50 dark:text-blue-400 dark:hover:bg-slate-900`}
         >
-          <Globe className="h-4 w-4 text-[#1d4f87] dark:text-blue-400" />
-          <span>
+          {isPending || !mounted ? (
+            <Loader2 className="h-4 w-4 animate-spin text-[#1d4f87] dark:text-blue-400" />
+          ) : (
+            <Globe className="h-4 w-4 text-[#1d4f87] dark:text-blue-400" />
+          )}
+          <span className="flex-1 text-left">
             {localeLabels[activeLocale] ?? activeLocale.toUpperCase()}
           </span>
           <ChevronDown className="h-3.5 w-3.5 text-slate-500 dark:text-blue-400/70" />

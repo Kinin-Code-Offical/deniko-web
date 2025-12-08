@@ -43,13 +43,17 @@ export function NewsletterSignup({ dictionary }: NewsletterSignupProps) {
             onSubmit={handleSubmit}
             className="flex flex-col gap-3 sm:flex-row"
           >
+            <label htmlFor="newsletter-email" className="sr-only">
+              {dictionary.newsletter.placeholder}
+            </label>
             <Input
+              id="newsletter-email"
+              name="email"
               type="email"
               placeholder={dictionary.newsletter.placeholder}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="flex-1"
-              aria-label={dictionary.newsletter.placeholder}
               required
             />
             <Button type="submit">{dictionary.newsletter.button}</Button>

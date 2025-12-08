@@ -30,3 +30,9 @@ This directory houses all the reusable React components used across the applicat
 1. **Prefer Server Components:** Keep components as Server Components unless they need interactivity (state, effects, event listeners).
 2. **"Use Client":** If a component needs interactivity, add `"use client"` at the top.
 3. **Composition:** Build complex UIs by composing smaller `ui/` primitives.
+
+## TODO
+
+- Move feature-specific components (like support or marketing sections) into their own sub-folders so shared primitives remain lightweight.
+- Document which exported components are safe to import in Server Components to prevent accidental client bundling.
+- Set up visual regression stories (Storybook/Chromatic) for critical primitives to detect styling regressions early.

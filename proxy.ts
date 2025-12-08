@@ -100,15 +100,13 @@ export default function proxy(request: NextRequest) {
 
     // Generate Nonce for CSP
     const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
-    // ignore-env-check
-    const isDev = process.env.NODE_ENV === 'development'
 
     // Construct CSP Header
     // Note: 'strict-dynamic' allows scripts loaded by trusted scripts (like Next.js) to run.
     // We keep 'unsafe-inline' for backward compatibility (ignored by browsers supporting nonce).
     const cspHeader = `
         default-src 'self';
-        script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https: http: 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""};
+        script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https: http: 'unsafe-inline' 'unsafe-eval';
         style-src 'self' 'unsafe-inline';
         img-src 'self' blob: data: https://*.googleusercontent.com https://storage.googleapis.com https://api.dicebear.com https://www.google-analytics.com;
         connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com;

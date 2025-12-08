@@ -48,6 +48,9 @@ export function scanFile(filePath: string, sourceCode?: string): Issue[] {
   // Ignore technical strings and common false positives
   const ignoredValues = new Set<string>([
     'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS',
+    'feature', 'general', 'bug', 'billing',
+    'Ticket created successfully', 'Failed to submit ticket. Please try again later.',
+    'support@deniko.com', '+1 (555) 123-4567',
     'application/json', 'multipart/form-data', 'application/x-www-form-urlencoded',
     'utf-8', 'viewport', 'width=device-width, initial-scale=1',
     'icon', 'shortcut icon', 'apple-touch-icon', 'manifest',
@@ -92,12 +95,17 @@ export function scanFile(filePath: string, sourceCode?: string): Issue[] {
     'ACTIVE', 'PASSIVE', 'ARCHIVED', 'DELETED', 'PENDING', 'COMPLETED', 'CANCELLED', 'MISSED', 'SCHEDULED', 'SUBMITTED',
     'CLAIMED', 'SHADOW', 'NOT_VERIFIED',
     '(', ')', ':', '/', '-', '•', '%', '=true', 'Türkçe',
-    'google', 'credentials', 'resend_cooldown', 'CredentialsSignin', 'Email not verified',
+    'google', 'credentials', 'resend_cooldown', 'CredentialsSignin', 'Email not verified', 'customer support',
     // Error codes and field names
     'session_not_found', 'accept_terms', 'phone_required', 'password_required', 'passwords_mismatch',
     'password_min_length', 'password_complexity', 'onboarding_error',
     'name_min_length', 'surname_min_length', 'invalid_email', 'unauthorized', 'teacher_profile_not_found',
     'surname', 'studentNo', 'grade', 'tempPhone', 'tempEmail', 'classroomIds', 'invalid_fields',
+    'general', 'bug', 'billing',
+    'smtp.gmail.com', 'support@deniko.net', 'developer@deniko.net',
+    '<br>', 'Ticket submitted successfully', 'Failed to send email. Please try again later.',
+    ' | Deniko', ' required', ' invalid', ' min 5 chars', ' min 10 chars', '{ticketId}',
+    'subject', 'message',
     'avatar', 'selectedAvatar', 'students', 'failed_to_upload_avatar', 'student_created',
     'failed_to_create_student', 'invalid_token', 'profile_already_claimed', 'invite_expired',
     'failed_to_claim_profile', 'failed_to_update_student', 'student_archived', 'failed_to_archive_student',
@@ -155,7 +163,7 @@ export function scanFile(filePath: string, sourceCode?: string): Issue[] {
     '{name}',
     '{title}',
     'File not found or Error',
-  
+
     // --- HTML / ARIA / metadata teknik anahtarlar
     '@context', '@type', '@id',
     'itemScope', 'itemProp', 'itemType', 'itemRef', 'itemID',
@@ -163,38 +171,38 @@ export function scanFile(filePath: string, sourceCode?: string): Issue[] {
     'lang', 'dir',
     'role', 'aria-label', 'aria-labelledby', 'aria-describedby', 'aria-hidden',
     'navigation', 'main', 'banner', 'contentinfo', 'status', 'alert', 'tooltip', 'progressbar', 'separator', 'presentation',
-  
+
     // --- Next.js / web standart dosya ve route isimleri
     'favicon.ico', 'robots.txt', 'sitemap.xml',
     'page', 'layout', 'slug', 'params', 'middleware',
     '_next',
-  
+
     // --- environment / deployment isimleri
     'development', 'production', 'test', 'staging', 'preview',
-  
+
     // --- tarih / format stringleri
     'YYYY', 'YY', 'MM', 'DD', 'HH', 'mm', 'ss',
     'YYYY-MM-DD', 'YYYY-MM-DD HH:mm:ss',
-  
+
     // --- JSON / HTTP / header key'leri
     'Content-Type', 'Accept', 'Authorization', 'User-Agent', 'Accept-Language', 'Accept-Encoding',
     'Set-Cookie', 'Cookie',
-  
+
     // --- generic enum / state değerleri (DB / domain için, UI metni değil)
     'PUBLISHED', 'DRAFT', 'INACTIVE', 'IN_PROGRESS',
     'MALE', 'FEMALE', 'OTHER',
     'PRIMARY', 'SECONDARY',
-  
+
     // --- locale / region varyantları
     'en-US', 'tr-TR',
-  
+
     // --- teknik flag / anahtar kelimeler
     'idempotent', 'readonly', 'nullable',
     'GET_LIST', 'GET_ONE', 'CREATE', 'UPDATE', 'DELETE_MANY',
-  
+
     // --- className gibi teknik stringlerde sık geçen ama kullanıcıya direkt görünmeyen parçalar
     'container', 'content', 'wrapper', 'inner', 'icon-wrapper',
-  
+
     // --- form / autocomplete teknik değerleri
     'username', 'new-password', 'current-password', 'one-time-code'
   ]);
@@ -213,7 +221,7 @@ export function scanFile(filePath: string, sourceCode?: string): Issue[] {
 
       // Ignore paths
       if (text.startsWith('/') || text.startsWith('./') || text.startsWith('../') || text.startsWith('@/') || text.startsWith('defaults/')) return;
-      
+
       // Ignore URLs
       if (text.startsWith('http://') || text.startsWith('https://') || text.startsWith('mailto:') || text.startsWith('tel:')) return;
 
@@ -271,51 +279,51 @@ export function scanFile(filePath: string, sourceCode?: string): Issue[] {
 
       // Ignore Tailwind classes (heuristic: contains - or :)
       if ((text.includes('-') || text.includes(':')) && !text.includes(' ')) {
-          // Check if it looks like a tailwind class
-          const parts = text.split(':');
-          const lastPart = parts[parts.length - 1];
-          if (
-              lastPart.startsWith('text-') || lastPart.startsWith('bg-') || lastPart.startsWith('border-') ||
-              lastPart.startsWith('p-') || lastPart.startsWith('m-') || lastPart.startsWith('w-') || lastPart.startsWith('h-') ||
-              lastPart.startsWith('flex-') || lastPart.startsWith('grid-') || lastPart.startsWith('gap-') ||
-              lastPart.startsWith('items-') || lastPart.startsWith('justify-') || lastPart.startsWith('self-') ||
-              lastPart.startsWith('content-') || lastPart.startsWith('place-') || lastPart.startsWith('order-') ||
-              lastPart.startsWith('col-') || lastPart.startsWith('row-') || lastPart.startsWith('auto-') ||
-              lastPart.startsWith('min-') || lastPart.startsWith('max-') || lastPart.startsWith('font-') ||
-              lastPart.startsWith('leading-') || lastPart.startsWith('tracking-') || lastPart.startsWith('align-') ||
-              lastPart.startsWith('whitespace-') || lastPart.startsWith('break-') || lastPart.startsWith('overflow-') ||
-              lastPart.startsWith('overscroll-') || lastPart.startsWith('inset-') || lastPart.startsWith('top-') ||
-              lastPart.startsWith('right-') || lastPart.startsWith('bottom-') || lastPart.startsWith('left-') ||
-              lastPart.startsWith('z-') || lastPart.startsWith('visible') || lastPart.startsWith('invisible') ||
-              lastPart.startsWith('collapse') || lastPart.startsWith('static') || lastPart.startsWith('fixed') ||
-              lastPart.startsWith('absolute') || lastPart.startsWith('relative') || lastPart.startsWith('sticky') ||
-              lastPart.startsWith('float-') || lastPart.startsWith('clear-') || lastPart.startsWith('object-') ||
-              lastPart.startsWith('table-') || lastPart.startsWith('list-') || lastPart.startsWith('appearance-') ||
-              lastPart.startsWith('cursor-') || lastPart.startsWith('pointer-') || lastPart.startsWith('resize-') ||
-              lastPart.startsWith('select-') || lastPart.startsWith('sr-') || lastPart.startsWith('not-sr-') ||
-              lastPart.startsWith('fill-') || lastPart.startsWith('stroke-') || lastPart.startsWith('shadow-') ||
-              lastPart.startsWith('opacity-') || lastPart.startsWith('mix-') || lastPart.startsWith('bg-blend-') ||
-              lastPart.startsWith('filter-') || lastPart.startsWith('blur-') || lastPart.startsWith('brightness-') ||
-              lastPart.startsWith('contrast-') || lastPart.startsWith('drop-shadow-') || lastPart.startsWith('grayscale-') ||
-              lastPart.startsWith('hue-rotate-') || lastPart.startsWith('invert-') || lastPart.startsWith('saturate-') ||
-              lastPart.startsWith('sepia-') || lastPart.startsWith('backdrop-') || lastPart.startsWith('transition-') ||
-              lastPart.startsWith('ease-') || lastPart.startsWith('duration-') || lastPart.startsWith('delay-') ||
-              lastPart.startsWith('animate-') || lastPart.startsWith('transform-') || lastPart.startsWith('origin-') ||
-              lastPart.startsWith('scale-') || lastPart.startsWith('rotate-') || lastPart.startsWith('translate-') ||
-              lastPart.startsWith('skew-') || lastPart.startsWith('outline-') || lastPart.startsWith('ring-') ||
-              lastPart.startsWith('offset-') || lastPart.startsWith('decoration-') || lastPart.startsWith('accent-') ||
-              lastPart.startsWith('caret-') || lastPart.startsWith('scroll-') || lastPart.startsWith('snap-') ||
-              lastPart.startsWith('touch-') || lastPart.startsWith('will-change-') || lastPart.startsWith('content-') ||
-              lastPart.startsWith('group-') || lastPart.startsWith('peer-') || lastPart.startsWith('hover:') ||
-              lastPart.startsWith('focus:') || lastPart.startsWith('active:') || lastPart.startsWith('disabled:') ||
-              lastPart.startsWith('visited:') || lastPart.startsWith('checked:') || lastPart.startsWith('first:') ||
-              lastPart.startsWith('last:') || lastPart.startsWith('odd:') || lastPart.startsWith('even:') ||
-              lastPart.startsWith('dark:') || lastPart.startsWith('light:') || lastPart.startsWith('print:') ||
-              lastPart.startsWith('screen:') || lastPart.startsWith('sm:') || lastPart.startsWith('md:') ||
-              lastPart.startsWith('lg:') || lastPart.startsWith('xl:') || lastPart.startsWith('2xl:')
-          ) {
-              return;
-          }
+        // Check if it looks like a tailwind class
+        const parts = text.split(':');
+        const lastPart = parts[parts.length - 1];
+        if (
+          lastPart.startsWith('text-') || lastPart.startsWith('bg-') || lastPart.startsWith('border-') ||
+          lastPart.startsWith('p-') || lastPart.startsWith('m-') || lastPart.startsWith('w-') || lastPart.startsWith('h-') ||
+          lastPart.startsWith('flex-') || lastPart.startsWith('grid-') || lastPart.startsWith('gap-') ||
+          lastPart.startsWith('items-') || lastPart.startsWith('justify-') || lastPart.startsWith('self-') ||
+          lastPart.startsWith('content-') || lastPart.startsWith('place-') || lastPart.startsWith('order-') ||
+          lastPart.startsWith('col-') || lastPart.startsWith('row-') || lastPart.startsWith('auto-') ||
+          lastPart.startsWith('min-') || lastPart.startsWith('max-') || lastPart.startsWith('font-') ||
+          lastPart.startsWith('leading-') || lastPart.startsWith('tracking-') || lastPart.startsWith('align-') ||
+          lastPart.startsWith('whitespace-') || lastPart.startsWith('break-') || lastPart.startsWith('overflow-') ||
+          lastPart.startsWith('overscroll-') || lastPart.startsWith('inset-') || lastPart.startsWith('top-') ||
+          lastPart.startsWith('right-') || lastPart.startsWith('bottom-') || lastPart.startsWith('left-') ||
+          lastPart.startsWith('z-') || lastPart.startsWith('visible') || lastPart.startsWith('invisible') ||
+          lastPart.startsWith('collapse') || lastPart.startsWith('static') || lastPart.startsWith('fixed') ||
+          lastPart.startsWith('absolute') || lastPart.startsWith('relative') || lastPart.startsWith('sticky') ||
+          lastPart.startsWith('float-') || lastPart.startsWith('clear-') || lastPart.startsWith('object-') ||
+          lastPart.startsWith('table-') || lastPart.startsWith('list-') || lastPart.startsWith('appearance-') ||
+          lastPart.startsWith('cursor-') || lastPart.startsWith('pointer-') || lastPart.startsWith('resize-') ||
+          lastPart.startsWith('select-') || lastPart.startsWith('sr-') || lastPart.startsWith('not-sr-') ||
+          lastPart.startsWith('fill-') || lastPart.startsWith('stroke-') || lastPart.startsWith('shadow-') ||
+          lastPart.startsWith('opacity-') || lastPart.startsWith('mix-') || lastPart.startsWith('bg-blend-') ||
+          lastPart.startsWith('filter-') || lastPart.startsWith('blur-') || lastPart.startsWith('brightness-') ||
+          lastPart.startsWith('contrast-') || lastPart.startsWith('drop-shadow-') || lastPart.startsWith('grayscale-') ||
+          lastPart.startsWith('hue-rotate-') || lastPart.startsWith('invert-') || lastPart.startsWith('saturate-') ||
+          lastPart.startsWith('sepia-') || lastPart.startsWith('backdrop-') || lastPart.startsWith('transition-') ||
+          lastPart.startsWith('ease-') || lastPart.startsWith('duration-') || lastPart.startsWith('delay-') ||
+          lastPart.startsWith('animate-') || lastPart.startsWith('transform-') || lastPart.startsWith('origin-') ||
+          lastPart.startsWith('scale-') || lastPart.startsWith('rotate-') || lastPart.startsWith('translate-') ||
+          lastPart.startsWith('skew-') || lastPart.startsWith('outline-') || lastPart.startsWith('ring-') ||
+          lastPart.startsWith('offset-') || lastPart.startsWith('decoration-') || lastPart.startsWith('accent-') ||
+          lastPart.startsWith('caret-') || lastPart.startsWith('scroll-') || lastPart.startsWith('snap-') ||
+          lastPart.startsWith('touch-') || lastPart.startsWith('will-change-') || lastPart.startsWith('content-') ||
+          lastPart.startsWith('group-') || lastPart.startsWith('peer-') || lastPart.startsWith('hover:') ||
+          lastPart.startsWith('focus:') || lastPart.startsWith('active:') || lastPart.startsWith('disabled:') ||
+          lastPart.startsWith('visited:') || lastPart.startsWith('checked:') || lastPart.startsWith('first:') ||
+          lastPart.startsWith('last:') || lastPart.startsWith('odd:') || lastPart.startsWith('even:') ||
+          lastPart.startsWith('dark:') || lastPart.startsWith('light:') || lastPart.startsWith('print:') ||
+          lastPart.startsWith('screen:') || lastPart.startsWith('sm:') || lastPart.startsWith('md:') ||
+          lastPart.startsWith('lg:') || lastPart.startsWith('xl:') || lastPart.startsWith('2xl:')
+        ) {
+          return;
+        }
       }
 
       // Ignore time strings (HH:MM)
@@ -382,7 +390,7 @@ export function scanFile(filePath: string, sourceCode?: string): Issue[] {
       const trimmedText = text.trim();
       if (trimmedText.length > 0) {
         if (ignoredValues.has(trimmedText)) return;
-        
+
         const { line, character } = sourceFile.getLineAndCharacterOfPosition(node.getStart());
         issues.push({
           file: filePath,

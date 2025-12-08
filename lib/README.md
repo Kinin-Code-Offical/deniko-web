@@ -16,3 +16,9 @@ This directory contains utility functions, shared logic, and configuration files
 - **Statelessness:** Functions here should generally be pure and stateless.
 - **Type Safety:** All utilities should be strictly typed with TypeScript.
 - **Server-Only:** Files that access the database or secret keys (like `db.ts`) should be kept out of the client-side bundle. Next.js usually handles this, but be mindful of imports.
+
+## TODO
+
+- Split large helpers (like the middleware logic in `proxy.ts`) into modular files inside `lib/security`, `lib/locale`, etc., to improve testability.
+- Add unit tests for critical utilities (dictionary loading, environment parsing, email helpers).
+- Document which utilities are safe for client imports versus server-only usage to avoid accidental bundling of secrets.

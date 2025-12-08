@@ -170,6 +170,22 @@ export function Navbar({ lang, dictionary }: NavbarProps) {
                     </div>
                   </div>
 
+                  {/* Help Section */}
+                  <div className="border-t pt-6 dark:border-slate-800">
+                    <h4 className="mb-3 px-2 text-xs font-semibold tracking-wider text-slate-900 uppercase dark:text-white">
+                      {dictionary.support.hero.title}
+                    </h4>
+                    <div className="flex flex-col gap-1">
+                      <Link
+                        href={`/${lang}/support`}
+                        className="flex items-center justify-between rounded-md px-2 py-2 text-sm text-slate-600 transition-colors hover:bg-blue-50 hover:text-[#2062A3] dark:text-slate-400 dark:hover:bg-blue-900/20 dark:hover:text-blue-400"
+                        onClick={() => setOpen(false)}
+                      >
+                        {dictionary.support.contact.title}
+                      </Link>
+                    </div>
+                  </div>
+
                   {/* Legal Links */}
                   <div className="border-t pt-6 pb-2 dark:border-slate-800">
                     <h4 className="mb-3 px-2 text-xs font-semibold tracking-wider text-slate-900 uppercase dark:text-white">

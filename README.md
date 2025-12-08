@@ -153,3 +153,9 @@ The project follows the Next.js App Router structure:
   - **Teachers:** Manage students, schedule lessons, track payments.
   - **Students:** View schedule, track progress, view assigned tasks.
 - **Internationalization (i18n):** Full support for English and Turkish languages.
+
+## TODO
+
+- Localize the metadata, JSON-LD, and canonical URLs so each route under `/[lang]` outputs the correct language-specific SEO text.
+- Automate `app/sitemap.ts` (or replace it with `generateSitemaps`) to avoid manually tracking every public page.
+- Remove or refactor the dependency that forces `'unsafe-eval'` so the CSP configured in `proxy.ts` can remain strict in production.

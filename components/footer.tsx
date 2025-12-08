@@ -27,6 +27,18 @@ export function Footer({ lang, dictionary }: FooterProps) {
           </div>
           <div className="flex gap-6">
             <Link
+              href={`/${lang}/faq`}
+              className="text-sm font-medium text-slate-600 hover:text-[#2062A3] hover:underline dark:text-slate-400 dark:hover:text-blue-400"
+            >
+              {dictionary.support.nav.faq}
+            </Link>
+            <Link
+              href={`/${lang}/support`}
+              className="text-sm font-medium text-slate-600 hover:text-[#2062A3] hover:underline dark:text-slate-400 dark:hover:text-blue-400"
+            >
+              {dictionary.support.nav.support}
+            </Link>
+            <Link
               href={`/${lang}/legal/terms`}
               className="text-sm font-medium text-slate-600 hover:text-[#2062A3] hover:underline dark:text-slate-400 dark:hover:text-blue-400"
             >
