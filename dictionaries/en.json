@@ -913,6 +913,8 @@
     },
     "faq": {
       "title": "Frequently Asked Questions",
+      "no_results": "No results found",
+      "no_results_desc": "Try adjusting your search terms",
       "categories": {
         "general": "General",
         "billing": "Billing",
@@ -936,6 +938,18 @@
           {
             "question": "Can I use Deniko on mobile?",
             "answer": "Yes, Deniko is fully responsive and works great on all mobile devices, tablets, and desktops without needing a separate app."
+          },
+          {
+            "question": "Who can use Deniko?",
+            "answer": "Deniko is designed for private tutors, education coaches, study centers, and students taking private lessons."
+          },
+          {
+            "question": "Is an internet connection required?",
+            "answer": "Yes, Deniko is a cloud-based platform, so you need an internet connection to access your data and receive updates."
+          },
+          {
+            "question": "Can I use it on multiple devices?",
+            "answer": "Absolutely! You can access your account from your computer, tablet, or phone simultaneously. All your data is synced instantly."
           }
         ],
         "billing": [
@@ -954,6 +968,14 @@
           {
             "question": "Do you offer refunds?",
             "answer": "We offer a 14-day money-back guarantee for all new subscriptions if you are not satisfied with our service."
+          },
+          {
+            "question": "Can I get an invoice?",
+            "answer": "Yes, an e-invoice is automatically generated and sent to your email address after every payment transaction."
+          },
+          {
+            "question": "How do I track student payments?",
+            "answer": "You can record payments received from students, view pending payments, and create reminders through the finance module."
           }
         ],
         "teachers": [
@@ -972,6 +994,18 @@
           {
             "question": "Is there a limit on the number of students?",
             "answer": "The free plan has a limit on active students, but our premium plans offer unlimited student management."
+          },
+          {
+            "question": "How do I create my schedule?",
+            "answer": "You can easily set your lesson hours, recurring lessons, and availability using the calendar module."
+          },
+          {
+            "question": "Can I communicate with parents?",
+            "answer": "Yes, you can add parent information to student profiles and send information messages or reports to parents through the system."
+          },
+          {
+            "question": "How is homework tracking done?",
+            "answer": "You can assign homework to students, set due dates, and track completion status."
           }
         ],
         "students": [
@@ -990,6 +1024,14 @@
           {
             "question": "How do I submit homework?",
             "answer": "Navigate to the specific lesson or assignment in your dashboard and use the upload button to submit your work."
+          },
+          {
+            "question": "How do I access lesson notes?",
+            "answer": "You can access lesson notes shared by your teacher from the relevant lesson's detail page or the resource library."
+          },
+          {
+            "question": "How do I change my notification settings?",
+            "answer": "You can customize your email and in-app notification preferences from the settings menu."
           }
         ]
       }

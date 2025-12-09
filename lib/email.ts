@@ -213,6 +213,8 @@ function getVerificationEmailTemplate(url: string, lang: Locale, content: Dictio
                 <a href="${env.NEXTAUTH_URL}/${safeLang}/legal/terms" style="color: #2062A3; text-decoration: none;">${content.footer_terms}</a>
                 <span style="color: #d1d5db; margin: 0 8px;">|</span>
                 <a href="${env.NEXTAUTH_URL}/${safeLang}/legal/privacy" style="color: #2062A3; text-decoration: none;">${content.footer_privacy}</a>
+                <span style="color: #d1d5db; margin: 0 8px;">|</span>
+                <a href="${env.NEXTAUTH_URL}/${safeLang}/support" style="color: #2062A3; text-decoration: none;">${content.support}</a>
               </p>
             </td>
           </tr>

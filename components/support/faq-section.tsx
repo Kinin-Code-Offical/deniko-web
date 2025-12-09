@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { m, AnimatePresence } from "framer-motion";
 import {
   Accordion,
   AccordionContent,
@@ -50,12 +49,12 @@ export function FAQSection({ dictionary }: FAQSectionProps) {
         item.question.toLowerCase().includes(query) ||
         item.answer.toLowerCase().includes(query)
     );
-  }, [searchQuery, activeCategory, faq.items]);
+  }, [searchQuery, faq, activeCategory]);
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[280px_minmax(0,1fr)]">
+    <div className="grid w-full gap-10 lg:grid-cols-[280px_minmax(0,_60vw)]">
       {/* Left Column: Categories & Search */}
-      <div className="space-y-6">
+      <div className="space-y-6 self-start lg:sticky lg:top-24">
         <div className="relative">
           <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-500 dark:text-slate-400" />
           <Input
@@ -101,52 +100,37 @@ export function FAQSection({ dictionary }: FAQSectionProps) {
       </div>
 
       {/* Right Column: FAQ Content */}
-      <div className="space-y-6">
-        <div className="dnk-scrollbar min-h-[400px] pr-2">
+      <div className="mx-auto w-[90vw] max-w-full space-y-6 lg:mx-0 lg:w-full">
+        <div className="dnk-scrollbar h-[75vh] min-h-[500px] w-full overflow-y-auto pr-2">
           <Accordion type="single" collapsible className="w-full space-y-4">
-            <AnimatePresence mode="popLayout">
-              {filteredItems.length > 0 ? (
-                filteredItems.map((item, index) => (
-                  <m.div
-                    key={`${activeCategory}-${index}`}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <AccordionItem
-                      value={`item-${index}`}
-                      className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:border-blue-200 hover:shadow-md dark:border-slate-800 dark:bg-slate-900/60 dark:hover:border-blue-800 dark:hover:bg-slate-900"
-                    >
-                      <AccordionTrigger className="px-6 py-5 text-left text-base font-medium text-slate-900 transition-colors hover:text-blue-600 hover:no-underline dark:text-slate-200 dark:hover:text-blue-400">
-                        {item.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="px-6 pb-6 text-base leading-relaxed text-slate-600 dark:text-slate-400">
-                        {item.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  </m.div>
-                ))
-              ) : (
-                <m.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex h-64 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 text-center dark:border-slate-800 dark:bg-slate-900/30"
+            {filteredItems.length > 0 ? (
+              filteredItems.map((item, index) => (
+                <AccordionItem
+                  key={`${activeCategory}-${index}`}
+                  value={`item-${index}`}
+                  className="group w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:border-blue-200 hover:shadow-md dark:border-slate-800 dark:bg-slate-900/60 dark:hover:border-blue-800 dark:hover:bg-slate-900"
                 >
-                  <div className="mb-4 rounded-full bg-slate-100 p-4 dark:bg-slate-800">
-                    <Search className="h-8 w-8 text-slate-400" />
-                  </div>
-                  <h3 className="text-lg font-medium text-slate-900 dark:text-white">
-                    No results found
-                  </h3>
-                  <p className="text-slate-500 dark:text-slate-400">
-                    Try adjusting your search terms
-                  </p>
-                </m.div>
-              )}
-            </AnimatePresence>
+                  <AccordionTrigger className="w-full px-6 py-5 text-left text-base font-medium text-slate-900 transition-colors hover:text-blue-600 hover:no-underline dark:text-slate-200 dark:hover:text-blue-400">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-6 text-base leading-relaxed text-slate-600 dark:text-slate-400">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))
+            ) : (
+              <div className="flex h-full flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 text-center dark:border-slate-800 dark:bg-slate-900/30">
+                <div className="mb-4 rounded-full bg-slate-100 p-4 dark:bg-slate-800">
+                  <Search className="h-8 w-8 text-slate-400" />
+                </div>
+                <h3 className="text-lg font-medium text-slate-900 dark:text-white">
+                  {dictionary.support.faq.no_results}
+                </h3>
+                <p className="text-slate-500 dark:text-slate-400">
+                  {dictionary.support.faq.no_results_desc}
+                </p>
+              </div>
+            )}
           </Accordion>
         </div>
       </div>

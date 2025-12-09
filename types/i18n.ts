@@ -804,6 +804,7 @@ export interface Dictionary {
       github: string;
       patreon: string;
       brand: string;
+      support: string;
       platform: string;
       legal: string;
       patent: string;
@@ -911,6 +912,8 @@ export interface Dictionary {
     };
     faq: {
       title: string;
+      no_results: string;
+      no_results_desc: string;
       categories: {
         general: string;
         billing: string;

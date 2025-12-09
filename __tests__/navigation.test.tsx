@@ -16,13 +16,30 @@ vi.mock("next/navigation", () => ({
 
 // Mock dictionary
 const mockDictionary = {
+  metadata: {
+    home: {
+      description: "Description",
+    },
+  },
   common: {
     app_name: "Deniko",
+    copyright: "Copyright",
   },
   home: {
     login: "Login",
     get_started: "Get Started",
     home: "Home",
+    footer: {
+      brand: "Deniko",
+      built_by: "Built by",
+      source_code: "Source code",
+      github: "GitHub",
+      patreon: "Patreon",
+      support: "Support",
+      platform: "Platform",
+      legal: "Legal",
+      patent: "Patent",
+    },
   },
   theme: {
     light: "Light",
@@ -38,6 +55,9 @@ const mockDictionary = {
     nav: {
       terms: "Terms of Service",
       privacy: "Privacy Policy",
+    },
+    footer: {
+      rights_reserved: "Rights Reserved",
     },
   },
   navbar: {
@@ -139,13 +159,18 @@ describe("Navigation Components", () => {
     it("contains critical links (Home, Dashboard, Terms, Privacy)", () => {
       render(<Footer lang="en" dictionary={mockDictionary} />);
 
-      // Home
-      const homeLink = screen.getByRole("link", { name: /Home/i });
-      expect(homeLink).toHaveAttribute("href", "/en");
+      // Home (Brand link)
+      const homeLinks = screen.getAllByRole("link", { name: /Deniko/i });
+      expect(homeLinks.length).toBeGreaterThan(0);
+      expect(homeLinks[0]).toHaveAttribute("href", "/en");
 
-      // Dashboard
-      const dashboardLink = screen.getByRole("link", { name: /Dashboard/i });
-      expect(dashboardLink).toHaveAttribute("href", "/en/dashboard");
+      // Dashboard is not in footer, so this test expectation might be wrong too.
+      // Let's check the footer component again. It does NOT have dashboard link.
+      // It has Login, Register, Legal.
+
+      // Login
+      const loginLink = screen.getByRole("link", { name: /Login/i });
+      expect(loginLink).toHaveAttribute("href", "/en/login");
 
       // Terms
       const termsLink = screen.getByRole("link", { name: /Terms of Service/i });

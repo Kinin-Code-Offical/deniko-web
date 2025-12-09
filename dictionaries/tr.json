@@ -912,6 +912,8 @@
     },
     "faq": {
       "title": "Sıkça Sorulan Sorular",
+      "no_results": "Sonuç bulunamadı",
+      "no_results_desc": "Arama terimlerinizi değiştirmeyi deneyin",
       "categories": {
         "general": "Genel",
         "billing": "Fatura",
@@ -935,6 +937,18 @@
           {
             "question": "Deniko'yu mobilde kullanabilir miyim?",
             "answer": "Evet, Deniko tamamen mobil uyumludur ve ayrı bir uygulamaya ihtiyaç duymadan tüm mobil cihazlarda, tabletlerde ve masaüstü bilgisayarlarda harika çalışır."
+          },
+          {
+            "question": "Deniko'yu kimler kullanabilir?",
+            "answer": "Deniko, özel ders veren öğretmenler, eğitim koçları, etüt merkezleri ve özel ders alan öğrenciler için tasarlanmıştır."
+          },
+          {
+            "question": "İnternet bağlantısı gerekli mi?",
+            "answer": "Evet, Deniko bulut tabanlı bir platformdur, bu nedenle verilerinize erişmek ve güncellemeleri almak için internet bağlantısına ihtiyacınız vardır."
+          },
+          {
+            "question": "Birden fazla cihazda kullanabilir miyim?",
+            "answer": "Kesinlikle! Hesabınıza bilgisayar, tablet veya telefonunuzdan aynı anda erişebilirsiniz. Tüm verileriniz anlık olarak senkronize edilir."
           }
         ],
         "billing": [
@@ -953,6 +967,14 @@
           {
             "question": "İade yapıyor musunuz?",
             "answer": "Hizmetimizden memnun kalmazsanız, tüm yeni abonelikler için 14 günlük para iade garantisi sunuyoruz."
+          },
+          {
+            "question": "Fatura alabilir miyim?",
+            "answer": "Evet, her ödeme işleminden sonra sistem tarafından otomatik olarak e-fatura oluşturulur ve e-posta adresinize gönderilir."
+          },
+          {
+            "question": "Öğrenci ödemelerini nasıl takip ederim?",
+            "answer": "Finans modülü üzerinden öğrencilerden aldığınız ödemeleri kaydedebilir, bekleyen ödemeleri görebilir ve hatırlatmalar oluşturabilirsiniz."
           }
         ],
         "teachers": [
@@ -971,6 +993,18 @@
           {
             "question": "Öğrenci sayısında bir sınır var mı?",
             "answer": "Ücretsiz planda aktif öğrenci sayısı sınırı vardır, ancak premium planlarımız sınırsız öğrenci yönetimi sunar."
+          },
+          {
+            "question": "Ders programımı nasıl oluştururum?",
+            "answer": "Takvim modülünü kullanarak ders saatlerinizi, tekrarlayan dersleri ve müsaitlik durumunuzu kolayca ayarlayabilirsiniz."
+          },
+          {
+            "question": "Velilerle iletişim kurabilir miyim?",
+            "answer": "Evet, öğrenci profillerine veli bilgilerini ekleyebilir ve sistem üzerinden velilere bilgilendirme mesajları veya raporlar gönderebilirsiniz."
+          },
+          {
+            "question": "Ödev takibi nasıl yapılır?",
+            "answer": "Öğrencilere ödev atayabilir, teslim tarihlerini belirleyebilir ve tamamlanma durumlarını takip edebilirsiniz."
           }
         ],
         "students": [
@@ -989,6 +1023,14 @@
           {
             "question": "Ödevimi nasıl gönderirim?",
             "answer": "Panelinizdeki ilgili derse veya ödeve gidin ve çalışmanızı göndermek için yükleme butonunu kullanın."
+          },
+          {
+            "question": "Ders notlarına nasıl ulaşırım?",
+            "answer": "Öğretmeninizin paylaştığı ders notlarına, ilgili dersin detay sayfasından veya kaynak kütüphanesinden ulaşabilirsiniz."
+          },
+          {
+            "question": "Bildirim ayarlarımı nasıl değiştiririm?",
+            "answer": "Ayarlar menüsünden e-posta ve uygulama içi bildirim tercihlerinizi özelleştirebilirsiniz."
           }
         ]
       }
