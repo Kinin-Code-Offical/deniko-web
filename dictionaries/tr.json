@@ -162,25 +162,50 @@
       "menu_desc": "Panel navigasyon menüsü"
     },
     "join": {
+      "error": "Geçersiz Davet",
+      "error_desc": "Davet bağlantısı geçersiz veya süresi dolmuş. Lütfen öğretmeninizden yeni bir bağlantı isteyin.",
+      "already_used": "Davet Zaten Kullanılmış",
+      "already_used_desc": "Bu davet zaten kullanılmış. Bunun bir hata olduğunu düşünüyorsanız, lütfen destek ekibiyle iletişime geçin.",
+      "welcome_title": "Davet Edildiniz!",
       "unknown_teacher": "Bir Öğretmen",
-      "title": "Davet Detayları",
-      "desc": "Öğretmeninizin girdiği bilgileri inceleyin.",
-      "teacher_data": "Hocanın Girdiği",
-      "your_data": "Sizdeki Bilgi",
-      "keep_teacher_data": "Hocanın girdiği bilgileri profilime kaydet",
-      "conflict_grade": "Sınıf / Okul No",
-      "conflict_parent": "Veli Bilgileri",
-      "conflict_classroom": "Sınıflar",
-      "accept_merge": "Kabul Et & Birleştir",
-      "reject": "Reddet",
-      "success": "Profil başarıyla birleştirildi!",
-      "error": "Profil birleştirilemedi.",
-      "welcome_title": "Deniko'ya Hoş Geldiniz",
-      "invite_desc": "{name} sizi öğrencisi olarak eklemek istiyor.",
-      "login_desc": "Daveti kabul etmek ve derslerinizi takip etmek için lütfen giriş yapın veya yeni bir hesap oluşturun.",
+      "unknown_student": "Öğrenci",
+      "invite_desc": "{teacher} sizi Deniko'daki sınıfına katılmaya davet etti.",
+      "login_desc": "Bu daveti kabul etmek için lütfen giriş yapın veya hesap oluşturun.",
       "login_button": "Giriş Yap",
-      "register_button": "Kayıt Ol",
-      "already_used": "Bu davet zaten kullanılmış."
+      "register_button": "Hesap Oluştur",
+      "title": "Sınıfa Katıl",
+      "desc": "{teacher} ile eğitim yolculuğunuza başlamaya hazır mısınız?",
+      "confirm_checkbox": "Bu sınıfa katılmak istediğimi onaylıyorum.",
+      "confirm_button": "Onayla ve Katıl",
+      "email_not_verified": "Sınıfa katılmak için lütfen e-posta adresinizi doğrulayın.",
+      "teacher_cannot_join": "Öğretmenler öğrenci olarak sınıflara katılamaz.",
+      "teacher_cannot_join_desc": "Öğretmen hesabınızla giriş yaptınız. Sınıfa katılmak için lütfen öğrenci hesabınızla giriş yapın.",
+      "conflict": {
+        "title": "Bilgileri Doğrula",
+        "desc": "Sınıf kaydınız ile mevcut profiliniz arasında farklılıklar var. Hangi bilgilerin profilinizde kalacağını seçin.",
+        "your_profile": "SENİN PROFİLİN",
+        "teacher_record": "ÖĞRETMEN KAYDI",
+        "selected_source": "Seçilen Kaynak",
+        "yours": "Benim",
+        "teachers": "Öğretmenin",
+        "save_join": "Seçimleri Kaydet ve Katıl",
+        "cancel": "Vazgeç",
+        "labels": {
+          "name": "Ad Soyad",
+          "phone": "Telefon",
+          "bio": "Hakkında",
+          "student_no": "Öğrenci No",
+          "grade": "Sınıf",
+          "parent": "Veli Bilgisi"
+        }
+      },
+      "success_title": "Aramıza Hoşgeldin!",
+      "success_desc": "Sınıfa başarıyla katıldınız.",
+      "go_dashboard": "Panele Git",
+      "error_generic": "Bir hata oluştu. Lütfen tekrar deneyin.",
+      "already_student": "Zaten bu sınıfta öğrencisiniz.",
+      "guest_error": "Katılmak için giriş yapmalısınız.",
+      "reject": "Reddet"
     },
     "header": {
       "search_placeholder": "Arama yap...",
@@ -196,16 +221,29 @@
       "columns": {
         "name": "Öğrenci Adı",
         "no": "Numara",
-        "class": "Sınıf",
+        "class": "Sınıflar",
+        "level": "Seviye",
+        "phone": "Telefon",
         "status": "Durum",
-        "actions": "İşlemler"
+        "actions": "İşlemler",
+        "invite": "Davet"
       },
       "actions": {
         "edit": "Düzenle",
         "archive": "Arşivle",
         "delete": "Sil",
         "copy_invite": "Davet Linki",
-        "view_details": "Detayları Gör"
+        "view_invite_link": "Davet Linkini Görüntüle",
+        "regenerate_link": "Link Yenile",
+        "share": "Paylaş",
+        "view_details": "Detayları Gör",
+        "lessons": "Dersler",
+        "settings": "Ayarlar",
+        "classes": "Sınıflar",
+        "assign_homework": "Ödev Ver",
+        "whatsapp": "WhatsApp",
+        "sms": "SMS",
+        "coming_soon": "Çok Yakında"
       },
       "status": {
         "shadow": "Davet Bekliyor",
@@ -358,7 +396,8 @@
       "finance": "Finans",
       "settings": "Ayarlar",
       "exams": "Sınavlar",
-      "attendance": "Devamsızlık"
+      "attendance": "Devamsızlık",
+      "classes": "Sınıflar"
     },
     "profile": {
       "title": "Profili Düzenle",

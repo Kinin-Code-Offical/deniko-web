@@ -122,7 +122,7 @@ export function ForgotPasswordForm({
             )}
           />
           <Button
-            className="h-11 w-full bg-[#2062A3] hover:bg-[#1a4f83]"
+            className="h-11 w-full bg-[#2062A3] hover:bg-[#1a4f83] dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700"
             type="submit"
             disabled={isPending}
           >
@@ -141,7 +141,7 @@ export function ForgotPasswordForm({
       <div className="text-center">
         <Link
           href={`/${lang}/login`}
-          className="text-muted-foreground flex items-center justify-center text-sm hover:text-[#2062A3]"
+          className="text-muted-foreground flex items-center justify-center text-sm hover:text-[#2062A3] dark:hover:text-blue-400"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           {d.back_to_login}

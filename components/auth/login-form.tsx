@@ -160,7 +160,7 @@ export function LoginForm({ dictionary, lang }: LoginFormProps) {
             />
             <Button
               type="submit"
-              className="h-11 w-full bg-[#2062A3] hover:bg-[#1a4f83] dark:bg-blue-600 dark:hover:bg-blue-700"
+              className="h-11 w-full bg-[#2062A3] hover:bg-[#1a4f83] dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700"
               disabled={isPending}
             >
               {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

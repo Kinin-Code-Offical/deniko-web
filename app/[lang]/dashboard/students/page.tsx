@@ -89,6 +89,7 @@ export default async function StudentsPage({
     tempFirstName: rel.student.tempFirstName,
     tempLastName: rel.student.tempLastName,
     tempAvatar: rel.student.tempAvatar,
+    tempPhone: rel.student.tempPhone,
     relation: { customName: rel.customName },
     name:
       rel.customName ||
@@ -102,6 +103,7 @@ export default async function StudentsPage({
     isClaimed: rel.student.isClaimed,
     gradeLevel: rel.student.gradeLevel,
     classrooms: rel.student.classrooms,
+    phoneNumber: rel.student.isClaimed ? rel.student.user?.phoneNumber : null,
   }));
 
   return (

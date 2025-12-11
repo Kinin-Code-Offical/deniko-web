@@ -52,7 +52,7 @@ export function FAQSection({ dictionary }: FAQSectionProps) {
   }, [searchQuery, faq, activeCategory]);
 
   return (
-    <div className="grid w-full gap-10 lg:grid-cols-[280px_minmax(0,_60vw)]">
+    <div className="grid w-full gap-10 lg:grid-cols-[280px_minmax(0,60vw)]">
       {/* Left Column: Categories & Search */}
       <div className="space-y-6 self-start lg:sticky lg:top-24">
         <div className="relative">

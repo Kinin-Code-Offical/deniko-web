@@ -13,6 +13,7 @@ import { StudentAttendanceTab } from "@/components/students/student-attendance-t
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -21,6 +22,7 @@ interface StudentPageProps {
     lang: string;
     studentId: string;
   }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export async function generateMetadata({
@@ -100,8 +102,12 @@ export async function generateMetadata({
   }
 }
 
-export default async function StudentPage({ params }: StudentPageProps) {
+export default async function StudentPage({
+  params,
+  searchParams,
+}: StudentPageProps) {
   const { lang, studentId } = await params;
+  const { tab } = await searchParams;
   const session = await auth();
   const dictionary = await getDictionary(lang as "en" | "tr");
 
@@ -132,6 +138,7 @@ export default async function StudentPage({ params }: StudentPageProps) {
         student: {
           include: {
             user: true,
+            classrooms: true,
             lessons: {
               orderBy: { startTime: "desc" },
               take: 5,
@@ -152,6 +159,8 @@ export default async function StudentPage({ params }: StudentPageProps) {
     notFound();
   }
 
+  const activeTab = typeof tab === "string" ? tab : "overview";
+
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -170,8 +179,8 @@ export default async function StudentPage({ params }: StudentPageProps) {
 
       <StudentHeader relation={relation} dictionary={dictionary} lang={lang} />
 
-      <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid h-auto w-full grid-cols-3 lg:grid-cols-6">
+      <Tabs defaultValue={activeTab} className="w-full">
+        <TabsList className="grid h-auto w-full grid-cols-3 lg:grid-cols-7">
           <TabsTrigger value="overview">
             {dictionary.student_detail.tabs.overview}
           </TabsTrigger>
@@ -186,6 +195,9 @@ export default async function StudentPage({ params }: StudentPageProps) {
           </TabsTrigger>
           <TabsTrigger value="attendance">
             {dictionary.student_detail.tabs.attendance}
+          </TabsTrigger>
+          <TabsTrigger value="classes">
+            {dictionary.student_detail.tabs.classes}
           </TabsTrigger>
           <TabsTrigger value="settings">
             {dictionary.student_detail.tabs.settings}
@@ -318,6 +330,29 @@ export default async function StudentPage({ params }: StudentPageProps) {
 
         <TabsContent value="attendance" className="mt-6">
           <StudentAttendanceTab dictionary={dictionary} lang={lang} />
+        </TabsContent>
+
+        <TabsContent value="classes" className="mt-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>{dictionary.student_detail.tabs.classes}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {relation.student.classrooms.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {relation.student.classrooms.map((c) => (
+                    <Badge key={c.id} variant="secondary">
+                      {c.name}
+                    </Badge>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-muted-foreground text-sm">
+                  {dictionary.common.empty_placeholder}
+                </p>
+              )}
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="settings" className="mt-6">

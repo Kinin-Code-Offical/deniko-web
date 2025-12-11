@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState } from "react";
 
 type CopiedValue = string | null;
 type CopyFn = (text: string) => Promise<boolean>;
@@ -9,7 +8,7 @@ function useCopyToClipboard(): [CopiedValue, CopyFn] {
 
   const copy: CopyFn = async (text) => {
     if (!navigator?.clipboard) {
-      console.warn('Clipboard not supported'); // ignore-console-check
+      console.warn("Clipboard not supported"); // ignore-console-check
       return false;
     }
 
@@ -18,7 +17,7 @@ function useCopyToClipboard(): [CopiedValue, CopyFn] {
       setCopiedText(text);
       return true;
     } catch (error) {
-      console.warn('Copy failed', error); // ignore-console-check
+      console.warn("Copy failed", error); // ignore-console-check
       setCopiedText(null);
       return false;
     }

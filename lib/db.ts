@@ -13,7 +13,6 @@ export const db =
   (() => {
     const url = new URL(env.DATABASE_URL);
 
-    
     const dbConfig: PoolConfig = {
       user: url.username,
       password: url.password,

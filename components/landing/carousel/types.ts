@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
 export interface CardItem {
   id: number;
@@ -7,8 +7,8 @@ export interface CardItem {
 }
 
 export enum CardPosition {
-  LEFT = 'left',
-  CENTER = 'center',
-  RIGHT = 'right',
-  HIDDEN = 'hidden'
+  LEFT = "left",
+  CENTER = "center",
+  RIGHT = "right",
+  HIDDEN = "hidden",
 }

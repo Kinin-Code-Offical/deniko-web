@@ -163,25 +163,50 @@
     },
 
     "join": {
+      "error": "Invalid Invitation",
+      "error_desc": "The invitation link is invalid or has expired. Please ask your teacher for a new link.",
+      "already_used": "Invitation Already Used",
+      "already_used_desc": "This invitation has already been used. If you believe this is an error, please contact support.",
+      "welcome_title": "You're Invited!",
       "unknown_teacher": "A Teacher",
-      "title": "Invitation Details",
-      "desc": "Review the details provided by your teacher.",
-      "teacher_data": "Teacher's Input",
-      "your_data": "Your Info",
-      "keep_teacher_data": "Save teacher's data to my profile",
-      "conflict_grade": "Grade / Student No",
-      "conflict_parent": "Parent Info",
-      "conflict_classroom": "Classrooms",
-      "accept_merge": "Accept & Merge",
-      "reject": "Reject",
-      "success": "Profile merged successfully!",
-      "error": "Failed to merge profile.",
-      "welcome_title": "Welcome to Deniko",
-      "invite_desc": "{name} wants to add you as a student.",
-      "login_desc": "Please login or create a new account to accept the invitation and track your lessons.",
-      "login_button": "Login",
-      "register_button": "Register",
-      "already_used": "This invite has already been used."
+      "unknown_student": "Student",
+      "invite_desc": "{teacher} has invited you to join their class on Deniko.",
+      "login_desc": "Please log in or create an account to accept this invitation.",
+      "login_button": "Log In",
+      "register_button": "Create Account",
+      "title": "Join Class",
+      "desc": "Are you ready to start your learning journey with {teacher}?",
+      "confirm_checkbox": "I confirm that I want to join this class.",
+      "confirm_button": "Confirm & Join",
+      "email_not_verified": "Please verify your email address to join the class.",
+      "teacher_cannot_join": "Teachers cannot join classes as students.",
+      "teacher_cannot_join_desc": "You are logged in as a teacher. Please log in with a student account to join the class.",
+      "conflict": {
+        "title": "Verify Information",
+        "desc": "There are discrepancies between your profile and the class record. Please choose which information to keep.",
+        "your_profile": "YOUR PROFILE",
+        "teacher_record": "TEACHER RECORD",
+        "selected_source": "Selected Source",
+        "yours": "Yours",
+        "teachers": "Teacher's",
+        "save_join": "Save & Join",
+        "cancel": "Cancel",
+        "labels": {
+          "name": "Name",
+          "phone": "Phone",
+          "bio": "Bio",
+          "student_no": "Student No",
+          "grade": "Grade",
+          "parent": "Parent Info"
+        }
+      },
+      "success_title": "Welcome Aboard!",
+      "success_desc": "You have successfully joined the class.",
+      "go_dashboard": "Go to Dashboard",
+      "error_generic": "Something went wrong. Please try again.",
+      "already_student": "You are already a student in this class.",
+      "guest_error": "You must be logged in to join.",
+      "reject": "Reject"
     },
     "header": {
       "search_placeholder": "Search...",
@@ -197,16 +222,29 @@
       "columns": {
         "name": "Student Name",
         "no": "Number",
-        "class": "Class",
+        "class": "Classes",
+        "level": "Level",
+        "phone": "Phone",
         "status": "Status",
-        "actions": "Actions"
+        "actions": "Actions",
+        "invite": "Invite"
       },
       "actions": {
         "edit": "Edit",
         "archive": "Archive",
         "delete": "Delete",
         "copy_invite": "Copy Invite Link",
-        "view_details": "View Details"
+        "view_invite_link": "View Invite Link",
+        "regenerate_link": "Regenerate Link",
+        "share": "Share",
+        "view_details": "View Details",
+        "lessons": "Lessons",
+        "settings": "Settings",
+        "classes": "Classes",
+        "assign_homework": "Assign Homework",
+        "whatsapp": "WhatsApp",
+        "sms": "SMS",
+        "coming_soon": "Coming Soon"
       },
       "status": {
         "shadow": "Pending Invite",
@@ -359,7 +397,8 @@
       "finance": "Finance",
       "settings": "Settings",
       "exams": "Exams",
-      "attendance": "Attendance"
+      "attendance": "Attendance",
+      "classes": "Classes"
     },
     "profile": {
       "title": "Edit Profile",

@@ -1,58 +1,71 @@
-import { describe, it, expect } from 'vitest'
-import { generateOrganizationSchema, generateWebSiteSchema, generateBreadcrumbSchema } from '../lib/json-ld'
-import type { Organization, WebSite, BreadcrumbList } from 'schema-dts';
+import { describe, it, expect } from "vitest";
+import {
+  generateOrganizationSchema,
+  generateWebSiteSchema,
+  generateBreadcrumbSchema,
+} from "../lib/json-ld";
+import type { Organization, WebSite, BreadcrumbList } from "schema-dts";
 
-describe('JSON-LD Helpers', () => {
-    it('should generate valid Organization schema', () => {
+describe("JSON-LD Helpers", () => {
+  it("should generate valid Organization schema", () => {
+    const schema = generateOrganizationSchema();
 
-        const schema = generateOrganizationSchema();
+    expect(schema["@context"]).toBe("https://schema.org");
 
-        expect(schema['@context']).toBe('https://schema.org')
+    // Narrowing for test
+    const org = schema as Extract<Organization, { "@type": "Organization" }>;
+    expect(org["@type"]).toBe("Organization");
+    expect(org.name).toBe("Deniko");
+    expect(org.url).toBeDefined();
 
-        // Narrowing for test
-        const org = schema as Extract<Organization, { '@type': 'Organization' }>;
-        expect(org['@type']).toBe('Organization')
-        expect(org.name).toBe('Deniko')
-        expect(org.url).toBeDefined()
+    // Verify it can be stringified without error
+    expect(() => JSON.stringify(schema)).not.toThrow();
+  });
 
-        // Verify it can be stringified without error
-        expect(() => JSON.stringify(schema)).not.toThrow()
-    })
+  it("should generate valid WebSite schema", () => {
+    const schema = generateWebSiteSchema();
 
-    it('should generate valid WebSite schema', () => {
+    expect(schema["@context"]).toBe("https://schema.org");
 
-        const schema = generateWebSiteSchema();
+    const website = schema as Extract<WebSite, { "@type": "WebSite" }>;
+    expect(website["@type"]).toBe("WebSite");
+    expect(website.potentialAction).toBeDefined();
+  });
 
-        expect(schema['@context']).toBe('https://schema.org')
+  it("should generate valid BreadcrumbList schema", () => {
+    const items = [
+      { name: "Home", item: "https://deniko.net" },
+      { name: "Products", item: "https://deniko.net/products" },
+    ];
 
-        const website = schema as Extract<WebSite, { '@type': 'WebSite' }>;
-        expect(website['@type']).toBe('WebSite')
-        expect(website.potentialAction).toBeDefined()
-    })
+    const schema = generateBreadcrumbSchema(items);
 
-    it('should generate valid BreadcrumbList schema', () => {
-        const items = [
-            { name: 'Home', item: 'https://deniko.net' },
-            { name: 'Products', item: 'https://deniko.net/products' },
-        ]
+    expect(schema["@context"]).toBe("https://schema.org");
 
-        const schema = generateBreadcrumbSchema(items);
+    const breadcrumb = schema as Extract<
+      BreadcrumbList,
+      { "@type": "BreadcrumbList" }
+    >;
+    expect(breadcrumb["@type"]).toBe("BreadcrumbList");
+    expect(breadcrumb.itemListElement).toHaveLength(2);
 
-        expect(schema['@context']).toBe('https://schema.org')
+    // Check first item
+    const firstItem = (
+      Array.isArray(breadcrumb.itemListElement)
+        ? breadcrumb.itemListElement[0]
+        : null
+    ) as unknown;
 
-        const breadcrumb = schema as Extract<BreadcrumbList, { '@type': 'BreadcrumbList' }>;
-        expect(breadcrumb['@type']).toBe('BreadcrumbList')
-        expect(breadcrumb.itemListElement).toHaveLength(2)
-
-        // Check first item
-        const firstItem = (Array.isArray(breadcrumb.itemListElement) ? breadcrumb.itemListElement[0] : null) as unknown;
-
-        expect(firstItem).toBeDefined()
-        if (firstItem) {
-            const item = firstItem as { '@type': string; position: number; name: string };
-            expect(item['@type']).toBe('ListItem')
-            expect(item.position).toBe(1)
-            expect(item.name).toBe('Home')
-        }
-    })
-})
+    expect(firstItem).toBeDefined();
+    if (firstItem) {
+      const item = firstItem as {
+        "@type": string;
+        position: number;
+        name: string;
+      };
+      expect(item["@type"]).toBe("ListItem");
+      expect(item.position).toBe(1);
+      expect(item.name).toBe("Home");
+    }
+  });
+});

@@ -1,8 +1,8 @@
-import nodemailer from "nodemailer"
-import { getDictionary } from "@/lib/get-dictionary"
-import type { Locale } from "@/i18n-config"
-import logger from "@/lib/logger"
-import { env } from "@/lib/env"
+import nodemailer from "nodemailer";
+import { getDictionary } from "@/lib/get-dictionary";
+import type { Locale } from "@/i18n-config";
+import logger from "@/lib/logger";
+import { env } from "@/lib/env";
 
 // System / No-Reply Transporter
 const noReplyTransporter = nodemailer.createTransport({
@@ -16,7 +16,7 @@ const noReplyTransporter = nodemailer.createTransport({
   },
   maxConnections: 5,
   maxMessages: 100,
-})
+});
 
 // Support Transporter
 const supportTransporter = nodemailer.createTransport({
@@ -30,33 +30,44 @@ const supportTransporter = nodemailer.createTransport({
   },
   maxConnections: 5,
   maxMessages: 100,
-})
+});
 
 /**
  * Sends a password reset email to the user.
- * 
+ *
  * @param email - The recipient's email address.
  * @param token - The password reset token.
  * @param lang - The language locale.
  */
-export async function sendPasswordResetEmail(email: string, token: string, lang: string = "tr") {
+export async function sendPasswordResetEmail(
+  email: string,
+  token: string,
+  lang: string = "tr"
+) {
   try {
-    const dictionary = await getDictionary(lang as Locale)
-    const resetLink = `${env.NEXTAUTH_URL}/${lang}/reset-password?token=${token}`
+    const dictionary = await getDictionary(lang as Locale);
+    const resetLink = `${env.NEXTAUTH_URL}/${lang}/reset-password?token=${token}`;
 
-    const content = dictionary.email.password_reset
+    const content = dictionary.email.password_reset;
 
-    const html = getVerificationEmailTemplate(resetLink, lang as Locale, content)
+    const html = getVerificationEmailTemplate(
+      resetLink,
+      lang as Locale,
+      content
+    );
 
     await noReplyTransporter.sendMail({
       from: `"Deniko" <${env.SMTP_NOREPLY_FROM}>`,
       to: email,
       subject: content.subject,
       html,
-    })
+    });
   } catch (error) {
-    logger.error({ context: "sendPasswordResetEmail", error }, "Failed to send password reset email")
-    throw error // Re-throw to be handled by the caller
+    logger.error(
+      { context: "sendPasswordResetEmail", error },
+      "Failed to send password reset email"
+    );
+    throw error; // Re-throw to be handled by the caller
   }
 }
 
@@ -97,13 +108,15 @@ ${data.message}
           <p style="white-space: pre-wrap;">${data.message}</p>
         </div>
       `,
-    })
+    });
   } catch (error) {
-    logger.error({ context: "sendSupportTicketEmail", error }, "Failed to send support ticket email")
-    throw error
+    logger.error(
+      { context: "sendSupportTicketEmail", error },
+      "Failed to send support ticket email"
+    );
+    throw error;
   }
 }
-
 
 import type { Dictionary } from "@/types/i18n";
 
@@ -116,7 +129,11 @@ function escapeHtml(unsafe: string): string {
     .replace(/'/g, "&#039;");
 }
 
-function getVerificationEmailTemplate(url: string, lang: Locale, content: Dictionary['email']['verification']) {
+function getVerificationEmailTemplate(
+  url: string,
+  lang: Locale,
+  content: Dictionary["email"]["verification"]
+) {
   const safeUrl = escapeHtml(url);
   const safeLang = escapeHtml(lang);
 
@@ -229,17 +246,21 @@ function getVerificationEmailTemplate(url: string, lang: Locale, content: Dictio
 
 /**
  * Sends a verification email to the user.
- * 
+ *
  * @param email - The recipient's email address.
  * @param token - The verification token.
  * @param lang - The language locale.
  * @returns An object indicating success or failure.
  */
-export async function sendVerificationEmail(email: string, token: string, lang: Locale = "tr") {
-  const confirmLink = `${env.NEXTAUTH_URL}/${lang}/verify?token=${token}`
+export async function sendVerificationEmail(
+  email: string,
+  token: string,
+  lang: Locale = "tr"
+) {
+  const confirmLink = `${env.NEXTAUTH_URL}/${lang}/verify?token=${token}`;
 
-  const dictionary = await getDictionary(lang)
-  const content = dictionary.email.verification
+  const dictionary = await getDictionary(lang);
+  const content = dictionary.email.verification;
 
   const html = getVerificationEmailTemplate(confirmLink, lang, content);
 
@@ -249,11 +270,13 @@ export async function sendVerificationEmail(email: string, token: string, lang: 
       to: email,
       subject: content.subject,
       html: html,
-    })
-    return { success: true }
+    });
+    return { success: true };
   } catch (error) {
-    logger.error({ context: "sendVerificationEmail", error }, "Email sending failed")
-    return { success: false, error: "Failed to send email" }
+    logger.error(
+      { context: "sendVerificationEmail", error },
+      "Email sending failed"
+    );
+    return { success: false, error: "Failed to send email" };
   }
 }
-

@@ -17,7 +17,20 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useState, useTransition, useMemo, memo, useCallback } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, Eye } from "lucide-react";
+import { Search, ChevronRight, MoreHorizontal } from "lucide-react";
+import { useRouter } from "next/navigation";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface StudentData {
   id: string;
@@ -26,6 +39,7 @@ interface StudentData {
   tempFirstName?: string | null;
   tempLastName?: string | null;
   tempAvatar?: string | null;
+  tempPhone?: string | null;
   relation?: { customName?: string | null } | null;
 
   // Fallback or pre-calculated
@@ -37,6 +51,7 @@ interface StudentData {
   isClaimed: boolean;
   gradeLevel: string | null;
   classrooms: { name: string }[];
+  phoneNumber?: string | null;
 }
 
 import type { Dictionary } from "@/types/i18n";
@@ -66,94 +81,220 @@ const StudentRow = memo(function StudentRow({
   dictionary: Dictionary;
   lang: string;
 }) {
+  const router = useRouter();
+
+  const handleRowClick = (e: React.MouseEvent) => {
+    // Prevent navigation if clicking on buttons or interactive elements
+    if ((e.target as HTMLElement).closest("button, a")) return;
+    router.push(`/${lang}/dashboard/students/${student.id}`);
+  };
+
   return (
-    <TableRow>
-      <TableCell>
-        <div className="flex items-center gap-3">
-          <Avatar className="h-9 w-9">
-            <AvatarImage
-              src={
-                student.isClaimed && student.user?.image
-                  ? student.user.image
-                  : student.tempAvatar
-                    ? student.tempAvatar.startsWith("http")
-                      ? isDicebearUrl(student.tempAvatar)
-                        ? `/api/files/defaults/${new URL(student.tempAvatar).searchParams.get("seed")}.svg`
-                        : student.tempAvatar
-                      : `/api/files/${student.tempAvatar}`
-                    : undefined
-              }
-              alt={getDisplayName(student)}
-            />
-            <AvatarFallback>
-              {getDisplayName(student).substring(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
-            <span className="font-medium">{getDisplayName(student)}</span>
-            {student.email && (
-              <span className="text-muted-foreground text-xs">
-                {student.email}
-              </span>
-            )}
-          </div>
-        </div>
-      </TableCell>
-      <TableCell className="hidden md:table-cell">
-        <div className="flex flex-wrap gap-1">
-          {student.classrooms && student.classrooms.length > 0 ? (
-            student.classrooms.map((c, i) => (
-              <Badge key={i} variant="outline" className="text-xs">
-                {c.name}
-              </Badge>
-            ))
-          ) : (
-            <span className="text-muted-foreground text-xs">
-              {dictionary.common.empty_placeholder}
+    <ContextMenu>
+      <ContextMenuTrigger asChild>
+        <TableRow
+          className="cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-900"
+          onClick={handleRowClick}
+        >
+          <TableCell>
+            <div className="flex items-center gap-3">
+              <Avatar className="h-9 w-9">
+                <AvatarImage
+                  src={
+                    student.isClaimed && student.user?.image
+                      ? student.user.image
+                      : student.tempAvatar
+                        ? student.tempAvatar.startsWith("http")
+                          ? isDicebearUrl(student.tempAvatar)
+                            ? `/api/files/defaults/${new URL(student.tempAvatar).searchParams.get("seed")}.svg`
+                            : student.tempAvatar
+                          : `/api/files/${student.tempAvatar}`
+                        : undefined
+                  }
+                  alt={getDisplayName(student)}
+                />
+                <AvatarFallback>
+                  {getDisplayName(student).substring(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <span className="font-medium dark:text-white">
+                  {getDisplayName(student)}
+                </span>
+                {student.email && (
+                  <span className="text-muted-foreground text-xs">
+                    {student.email}
+                  </span>
+                )}
+              </div>
+            </div>
+          </TableCell>
+          <TableCell className="hidden md:table-cell">
+            <span className="text-sm text-slate-600 dark:text-slate-400">
+              {student.phoneNumber || student.tempPhone || "-"}
             </span>
-          )}
-        </div>
-      </TableCell>
-      <TableCell>
-        {student.isClaimed ? (
-          <Badge variant="default" className="bg-green-600 hover:bg-green-700">
-            {dictionary.dashboard.students.status.verified}
-          </Badge>
-        ) : (
-          <Badge
-            variant="secondary"
-            className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
-          >
-            {dictionary.dashboard.students.status.pending}
-          </Badge>
-        )}
-      </TableCell>
-      <TableCell className="hidden md:table-cell">
-        {student.studentNo || "-"}
-      </TableCell>
-      <TableCell className="hidden md:table-cell">
-        {student.gradeLevel || "-"}
-      </TableCell>
-      <TableCell className="text-right">
-        <div className="flex justify-end gap-2">
-          {!student.isClaimed && student.inviteToken && (
-            <InviteButton
-              token={student.inviteToken}
-              lang={lang}
-              dictionary={dictionary}
-            />
-          )}
-          <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
-            <Link href={`/${lang}/dashboard/students/${student.id}`}>
-              <Eye className="h-4 w-4" />
-              <span className="sr-only">
-                {dictionary.dashboard.students.actions.view_details}
-              </span>
-            </Link>
-          </Button>
-        </div>
-      </TableCell>
-    </TableRow>
+          </TableCell>
+          <TableCell className="hidden md:table-cell">
+            {student.gradeLevel || "-"}
+          </TableCell>
+          <TableCell className="hidden md:table-cell">
+            <div className="flex flex-wrap gap-1">
+              {student.classrooms && student.classrooms.length > 0 ? (
+                student.classrooms.map((c, i) => (
+                  <Badge
+                    key={i}
+                    variant="outline"
+                    className="text-xs dark:border-slate-700 dark:text-slate-300"
+                  >
+                    {c.name}
+                  </Badge>
+                ))
+              ) : (
+                <span className="text-muted-foreground text-xs">
+                  {dictionary.common.empty_placeholder}
+                </span>
+              )}
+            </div>
+          </TableCell>
+          <TableCell className="text-right">
+            <div className="flex items-center justify-end gap-2">
+              {!student.isClaimed && student.inviteToken && (
+                <InviteButton
+                  token={student.inviteToken}
+                  lang={lang}
+                  dictionary={dictionary}
+                />
+              )}
+            </div>
+          </TableCell>
+          <TableCell>
+            {student.isClaimed ? (
+              <Badge
+                variant="default"
+                className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800"
+              >
+                {dictionary.dashboard.students.status.verified}
+              </Badge>
+            ) : (
+              <Badge
+                variant="secondary"
+                className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:hover:bg-yellow-900/50"
+              >
+                {dictionary.dashboard.students.status.pending}
+              </Badge>
+            )}
+          </TableCell>
+          <TableCell className="text-right">
+            <div className="flex justify-end">
+              {/* Desktop View Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hidden h-8 w-8 md:flex"
+                asChild
+              >
+                <Link href={`/${lang}/dashboard/students/${student.id}`}>
+                  <ChevronRight className="h-4 w-4 text-slate-400 dark:text-slate-500" />
+                  <span className="sr-only">
+                    {dictionary.dashboard.students.actions.view_details}
+                  </span>
+                </Link>
+              </Button>
+
+              {/* Mobile Dropdown */}
+              <div className="md:hidden">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem
+                      onClick={() =>
+                        router.push(`/${lang}/dashboard/students/${student.id}`)
+                      }
+                    >
+                      {dictionary.dashboard.students.actions.view_details}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() =>
+                        router.push(
+                          `/${lang}/dashboard/students/${student.id}?tab=lessons`
+                        )
+                      }
+                    >
+                      {dictionary.dashboard.students.actions.lessons}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() =>
+                        router.push(
+                          `/${lang}/dashboard/students/${student.id}?tab=homework`
+                        )
+                      }
+                    >
+                      {dictionary.dashboard.students.actions.assign_homework}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() =>
+                        router.push(
+                          `/${lang}/dashboard/students/${student.id}?tab=classes`
+                        )
+                      }
+                    >
+                      {dictionary.dashboard.students.actions.classes}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() =>
+                        router.push(
+                          `/${lang}/dashboard/students/${student.id}?tab=settings`
+                        )
+                      }
+                    >
+                      {dictionary.dashboard.students.actions.settings}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          </TableCell>
+        </TableRow>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem
+          onClick={() =>
+            router.push(`/${lang}/dashboard/students/${student.id}?tab=lessons`)
+          }
+        >
+          {dictionary.dashboard.students.actions.lessons}
+        </ContextMenuItem>
+        <ContextMenuItem
+          onClick={() =>
+            router.push(
+              `/${lang}/dashboard/students/${student.id}?tab=homework`
+            )
+          }
+        >
+          {dictionary.dashboard.students.actions.assign_homework}
+        </ContextMenuItem>
+        <ContextMenuItem
+          onClick={() =>
+            router.push(`/${lang}/dashboard/students/${student.id}?tab=classes`)
+          }
+        >
+          {dictionary.dashboard.students.actions.classes}
+        </ContextMenuItem>
+        <ContextMenuItem
+          onClick={() =>
+            router.push(
+              `/${lang}/dashboard/students/${student.id}?tab=settings`
+            )
+          }
+        >
+          {dictionary.dashboard.students.actions.settings}
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   );
 });
 
@@ -169,7 +310,7 @@ const StudentRows = memo(function StudentRows({
   if (data.length === 0) {
     return (
       <TableRow>
-        <TableCell colSpan={6} className="h-24 text-center">
+        <TableCell colSpan={7} className="h-24 text-center dark:text-slate-400">
           {dictionary.dashboard.students.no_results}
         </TableCell>
       </TableRow>
@@ -222,13 +363,13 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
             placeholder={dictionary.dashboard.students.search_placeholder}
             value={inputValue}
             onChange={handleSearch}
-            className="pl-8"
+            className="pl-8 dark:border-slate-800 dark:bg-slate-900"
             aria-label={dictionary.dashboard.students.search_placeholder}
           />
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-md border">
+      <div className="overflow-x-auto rounded-md border dark:border-slate-800">
         <Table
           className={
             isPending ? "opacity-50 transition-opacity" : "transition-opacity"
@@ -236,23 +377,26 @@ export function StudentTable({ data, dictionary, lang }: StudentTableProps) {
         >
           <TableCaption>{dictionary.dashboard.students.title}</TableCaption>
           <TableHeader>
-            <TableRow>
-              <TableHead>
+            <TableRow className="dark:border-slate-800">
+              <TableHead className="dark:text-slate-400">
                 {dictionary.dashboard.students.columns.name}
               </TableHead>
-              <TableHead className="hidden md:table-cell">
+              <TableHead className="hidden md:table-cell dark:text-slate-400">
+                {dictionary.dashboard.students.columns.phone}
+              </TableHead>
+              <TableHead className="hidden md:table-cell dark:text-slate-400">
+                {dictionary.dashboard.students.columns.level}
+              </TableHead>
+              <TableHead className="hidden md:table-cell dark:text-slate-400">
                 {dictionary.dashboard.students.columns.class}
               </TableHead>
-              <TableHead>
+              <TableHead className="text-right dark:text-slate-400">
+                {dictionary.dashboard.students.columns.invite}
+              </TableHead>
+              <TableHead className="dark:text-slate-400">
                 {dictionary.dashboard.students.columns.status}
               </TableHead>
-              <TableHead className="hidden md:table-cell">
-                {dictionary.dashboard.students.columns.no}
-              </TableHead>
-              <TableHead className="hidden md:table-cell">
-                {dictionary.dashboard.students.table.grade}
-              </TableHead>
-              <TableHead className="text-right">
+              <TableHead className="text-right dark:text-slate-400">
                 {dictionary.dashboard.students.columns.actions}
               </TableHead>
             </TableRow>

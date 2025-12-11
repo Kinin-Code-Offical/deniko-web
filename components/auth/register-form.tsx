@@ -413,7 +413,7 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
 
           <Button
             type="submit"
-            className="h-12 w-full bg-[#2062A3] text-lg transition-colors hover:bg-[#1a4f83] dark:bg-blue-600 dark:hover:bg-blue-700"
+            className="h-12 w-full bg-[#2062A3] text-lg transition-colors hover:bg-[#1a4f83] dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700"
             disabled={isPending}
           >
             {isPending ? (

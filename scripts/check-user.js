@@ -1,11 +1,11 @@
-import { Client } from 'pg';
-import { config as dotenvConfig } from 'dotenv';
+import { Client } from "pg";
+import { config as dotenvConfig } from "dotenv";
 
-dotenvConfig({ path: '.env' });
+dotenvConfig({ path: ".env" });
 
 async function checkUser() {
   const emails = ["draberyg@gmail.com", "ilg.yamacgursel@gmail.com"];
-  
+
   let connectionString = process.env.DATABASE_URL;
 
   if (!connectionString) {
@@ -15,11 +15,11 @@ async function checkUser() {
 
   // Remove sslmode from connection string
   try {
-      const urlObj = new URL(connectionString);
-      urlObj.searchParams.delete("sslmode");
-      connectionString = urlObj.toString();
+    const urlObj = new URL(connectionString);
+    urlObj.searchParams.delete("sslmode");
+    connectionString = urlObj.toString();
   } catch (e) {
-      console.error("Invalid URL", e);
+    console.error("Invalid URL", e);
   }
 
   const sslConfig = {
@@ -42,22 +42,24 @@ async function checkUser() {
     console.log("Total users in DB:", countRes.rows[0].count);
 
     for (const email of emails) {
-        const res = await client.query('SELECT id, email, "emailVerified", password, "isActive" FROM "User" WHERE email = $1', [email]);
-        
-        if (res.rows.length === 0) {
-          console.log("User not found:", email);
-        } else {
-          const user = res.rows[0];
-          console.log("User found:", {
-            id: user.id,
-            email: user.email,
-            emailVerified: user.emailVerified,
-            hasPassword: !!user.password,
-            isActive: user.isActive
-          });
-        }
-    }
+      const res = await client.query(
+        'SELECT id, email, "emailVerified", password, "isActive" FROM "User" WHERE email = $1',
+        [email]
+      );
 
+      if (res.rows.length === 0) {
+        console.log("User not found:", email);
+      } else {
+        const user = res.rows[0];
+        console.log("User found:", {
+          id: user.id,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          hasPassword: !!user.password,
+          isActive: user.isActive,
+        });
+      }
+    }
   } catch (err) {
     console.error("Database error:", err);
   } finally {

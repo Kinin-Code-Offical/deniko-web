@@ -162,25 +162,50 @@ export interface Dictionary {
       menu_desc: string;
     };
     join: {
-      unknown_teacher: string;
-      title: string;
-      desc: string;
-      teacher_data: string;
-      your_data: string;
-      keep_teacher_data: string;
-      conflict_grade: string;
-      conflict_parent: string;
-      conflict_classroom: string;
-      accept_merge: string;
-      reject: string;
-      success: string;
       error: string;
+      error_desc: string;
+      already_used: string;
+      already_used_desc: string;
       welcome_title: string;
+      unknown_teacher: string;
+      unknown_student: string;
       invite_desc: string;
       login_desc: string;
       login_button: string;
       register_button: string;
-      already_used: string;
+      title: string;
+      desc: string;
+      confirm_checkbox: string;
+      confirm_button: string;
+      email_not_verified: string;
+      teacher_cannot_join: string;
+      teacher_cannot_join_desc: string;
+      success_title: string;
+      success_desc: string;
+      go_dashboard: string;
+      error_generic: string;
+      already_student: string;
+      guest_error: string;
+      reject: string;
+      conflict: {
+        title: string;
+        desc: string;
+        your_profile: string;
+        teacher_record: string;
+        selected_source: string;
+        yours: string;
+        teachers: string;
+        save_join: string;
+        cancel: string;
+        labels: {
+          name: string;
+          phone: string;
+          bio: string;
+          student_no: string;
+          grade: string;
+          parent: string;
+        };
+      };
     };
     header: {
       search_placeholder: string;
@@ -197,15 +222,28 @@ export interface Dictionary {
         name: string;
         no: string;
         class: string;
+        level: string;
+        phone: string;
         status: string;
         actions: string;
+        invite: string;
       };
       actions: {
         edit: string;
         archive: string;
         delete: string;
         copy_invite: string;
+        view_invite_link: string;
+        regenerate_link: string;
+        share: string;
         view_details: string;
+        lessons: string;
+        settings: string;
+        classes: string;
+        assign_homework: string;
+        whatsapp: string;
+        sms: string;
+        coming_soon: string;
       };
       status: {
         shadow: string;
@@ -360,6 +398,7 @@ export interface Dictionary {
       settings: string;
       exams: string;
       attendance: string;
+      classes: string;
     };
     profile: {
       title: string;

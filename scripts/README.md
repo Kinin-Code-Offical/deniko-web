@@ -32,4 +32,3 @@ These scripts often interact directly with the database or file system. **Use wi
 - Expose the most common scripts as npm scripts (e.g., `pnpm run check:i18n`).
 - Document required environment variables/flags for each script.
 - Wire the lint/check scripts into CI so regressions are caught automatically.
-

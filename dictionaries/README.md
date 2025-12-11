@@ -42,4 +42,3 @@ The JSON structure should be nested by feature or page to keep it organized.
 - Document how to add new locales (folder naming, middleware updates, dictionary imports).
 - Add a CI/lint script that ensures `en.json` and `tr.json` stay in sync.
 - Move large static copy (FAQs, landing copy) into dictionaries instead of hardcoding them in components.
-

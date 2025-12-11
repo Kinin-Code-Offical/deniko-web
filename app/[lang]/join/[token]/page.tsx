@@ -8,13 +8,14 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { DenikoLogo } from "@/components/ui/deniko-logo";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import Link from "next/link";
-import { LogIn, UserPlus } from "lucide-react";
+import { AlertCircle, LogIn, UserPlus } from "lucide-react";
 import type { Metadata } from "next";
 import type { Locale } from "@/i18n-config";
 
@@ -61,20 +62,60 @@ export default async function JoinPage({
 
   const inviteDetails = await getInviteDetails(token);
 
+  // Error State: Invalid Token
   if (!inviteDetails) {
     return (
-      <div className="flex h-dvh items-center justify-center">
-        <p className="text-destructive">{dict.dashboard.join.error}</p>
+      <div className="flex min-h-dvh items-center justify-center bg-slate-50 p-4 transition-colors dark:bg-slate-950">
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+          <ThemeToggle labels={dict.theme} />
+          <LanguageSwitcher currentLocale={lang} />
+        </div>
+        <Card className="border-destructive/50 w-full max-w-md shadow-lg dark:bg-slate-900">
+          <CardHeader className="text-center">
+            <div className="bg-destructive/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+              <AlertCircle className="text-destructive h-6 w-6" />
+            </div>
+            <CardTitle className="text-destructive">
+              {dict.dashboard.join.error}
+            </CardTitle>
+            <CardDescription>{dict.dashboard.join.error_desc}</CardDescription>
+          </CardHeader>
+          <CardContent className="flex justify-center pb-6">
+            <Button asChild variant="outline">
+              <Link href={`/${lang}`}>{dict.common.back_to_home}</Link>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
+  // Error State: Already Claimed
   if (inviteDetails.isClaimed) {
     return (
-      <div className="flex h-dvh items-center justify-center">
-        <p className="text-muted-foreground">
-          {dict.dashboard.join.already_used}
-        </p>
+      <div className="flex min-h-dvh items-center justify-center bg-slate-50 p-4 transition-colors dark:bg-slate-950">
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+          <ThemeToggle labels={dict.theme} />
+          <LanguageSwitcher currentLocale={lang} />
+        </div>
+        <Card className="w-full max-w-md shadow-lg dark:border-slate-800 dark:bg-slate-900">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500/10">
+              <AlertCircle className="h-6 w-6 text-yellow-600 dark:text-yellow-500" />
+            </div>
+            <CardTitle className="text-yellow-600 dark:text-yellow-500">
+              {dict.dashboard.join.already_used}
+            </CardTitle>
+            <CardDescription>
+              {dict.dashboard.join.already_used_desc}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex justify-center pb-6">
+            <Button asChild variant="outline">
+              <Link href={`/${lang}/login`}>{dict.dashboard.nav.logout}</Link>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -83,6 +124,10 @@ export default async function JoinPage({
   if (!session?.user) {
     return (
       <div className="flex min-h-dvh items-center justify-center bg-slate-50 p-4 transition-colors dark:bg-slate-950">
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+          <ThemeToggle labels={dict.theme} />
+          <LanguageSwitcher currentLocale={lang} />
+        </div>
         <Card className="w-full max-w-md shadow-lg dark:border-slate-800 dark:bg-slate-900">
           <CardHeader className="space-y-2 text-center">
             <div className="mx-auto mb-4 w-fit rounded-xl bg-[#2062A3] p-3 shadow-md dark:bg-blue-600">
@@ -92,59 +137,88 @@ export default async function JoinPage({
               {dict.dashboard.join.welcome_title}
             </CardTitle>
             <CardDescription className="text-base dark:text-slate-400">
-              <span className="text-foreground font-semibold dark:text-white">
-                {inviteDetails.teacherName ||
-                  dict.dashboard.join.unknown_teacher}
-              </span>{" "}
-              {dict.dashboard.join.invite_desc.replace("{name}", "")}
+              {dict.dashboard.join.invite_desc.replace(
+                "{teacher}",
+                inviteDetails.teacherName || dict.dashboard.join.unknown_teacher
+              )}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 text-center">
-            <p className="text-muted-foreground dark:text-slate-400">
-              {dict.dashboard.join.login_desc}
-            </p>
+          <CardContent className="space-y-4">
+            <div className="rounded-lg bg-blue-50 p-4 text-sm text-blue-900 dark:bg-blue-950/30 dark:text-blue-200">
+              <p className="text-center font-medium">
+                {dict.dashboard.join.login_desc}
+              </p>
+            </div>
+            <div className="grid gap-3">
+              <Button asChild size="lg" className="w-full font-semibold">
+                <Link href={`/${lang}/login?callbackUrl=/join/${token}`}>
+                  <LogIn className="mr-2 h-4 w-4" />
+                  {dict.dashboard.join.login_button}
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="w-full font-semibold"
+              >
+                <Link href={`/${lang}/register?callbackUrl=/join/${token}`}>
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  {dict.dashboard.join.register_button}
+                </Link>
+              </Button>
+            </div>
           </CardContent>
-          <CardFooter className="flex flex-col gap-3">
-            <Button
-              className="h-11 w-full bg-[#2062A3] text-base hover:bg-[#1a4f83] dark:bg-blue-600 dark:hover:bg-blue-700"
-              asChild
-            >
-              <Link href={`/${lang}/login?callbackUrl=/${lang}/join/${token}`}>
-                <LogIn className="mr-2 h-4 w-4" />
-                {dict.dashboard.join.login_button}
-              </Link>
-            </Button>
-            <Button
-              variant="outline"
-              className="h-11 w-full text-base dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
-              asChild
-            >
-              <Link href={`/${lang}/register?invite=${token}`}>
-                <UserPlus className="mr-2 h-4 w-4" />
-                {dict.dashboard.join.register_button}
-              </Link>
-            </Button>
-          </CardFooter>
         </Card>
       </div>
     );
   }
 
-  // 2. User IS Logged In
-  // Fetch current user's profile for comparison
+  // 2. User IS Logged In -> Show Client Component
   const userProfile = await db.user.findUnique({
     where: { id: session.user.id },
     include: { studentProfile: true },
   });
 
+  // Error State: Teacher cannot join
+  if (userProfile?.role === "TEACHER") {
+    return (
+      <div className="flex min-h-dvh items-center justify-center bg-slate-50 p-4 transition-colors dark:bg-slate-950">
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+          <ThemeToggle labels={dict.theme} />
+          <LanguageSwitcher currentLocale={lang} />
+        </div>
+        <Card className="border-destructive/50 w-full max-w-md shadow-lg dark:bg-slate-900">
+          <CardHeader className="text-center">
+            <div className="bg-destructive/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+              <AlertCircle className="text-destructive h-6 w-6" />
+            </div>
+            <CardTitle className="text-destructive">
+              {dict.dashboard.join.teacher_cannot_join}
+            </CardTitle>
+            <CardDescription>
+              {dict.dashboard.join.teacher_cannot_join_desc}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex justify-center pb-6">
+            <Button asChild variant="outline">
+              <Link href={`/${lang}/dashboard`}>
+                {dict.dashboard.nav.dashboard}
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
-    <div className="container flex min-h-dvh items-center justify-center py-10">
-      <JoinClient
-        dict={dict}
-        inviteDetails={inviteDetails}
-        userProfile={userProfile}
-        token={token}
-      />
-    </div>
+    <JoinClient
+      dict={dict}
+      inviteDetails={inviteDetails}
+      userProfile={userProfile}
+      token={token}
+      lang={lang}
+    />
   );
 }

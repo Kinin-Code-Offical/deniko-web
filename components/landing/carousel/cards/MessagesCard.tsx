@@ -29,7 +29,7 @@ const MessagesCard: React.FC<MessagesCardProps> = ({ dictionary }) => {
       {/* Messages */}
       <div className="space-y-4">
         <div className="flex items-start gap-4">
-          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/20">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/20">
             <AlertCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
           </div>
           <div className="flex-1 rounded-2xl rounded-tl-none border border-gray-100 bg-gray-50 p-3 dark:border-slate-700 dark:bg-slate-800">
@@ -46,7 +46,7 @@ const MessagesCard: React.FC<MessagesCardProps> = ({ dictionary }) => {
         </div>
 
         <div className="flex items-start gap-4">
-          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/20">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/20">
             <MessageCircle className="h-5 w-5 text-orange-500 dark:text-orange-400" />
           </div>
           <div className="flex-1 rounded-2xl rounded-tl-none border border-gray-100 bg-gray-50 p-3 dark:border-slate-700 dark:bg-slate-800">

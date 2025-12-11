@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
     "pino-pretty",
     "bcryptjs",
     "@google-cloud/storage",
-    "nodemailer"
+    "nodemailer",
   ],
 
   images: {
@@ -44,10 +44,14 @@ const nextConfig: NextConfig = {
             value: "on",
           },
           // Only add HSTS in non-CI environments to prevent Lighthouse CI issues
-          ...(process.env.CI ? [] : [{
-            key: "Strict-Transport-Security",
-            value: "max-age=63072000; includeSubDomains; preload",
-          }]),
+          ...(process.env.CI
+            ? []
+            : [
+                {
+                  key: "Strict-Transport-Security",
+                  value: "max-age=63072000; includeSubDomains; preload",
+                },
+              ]),
           {
             key: "X-Frame-Options",
             value: "SAMEORIGIN",
@@ -61,19 +65,24 @@ const nextConfig: NextConfig = {
             value: "origin-when-cross-origin",
           },
           // Disable Content-Security-Policy in CI to prevent Lighthouse issues
-          ...(process.env.CI ? [] : [{
-            key: "Content-Security-Policy",
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: *.google-analytics.com *.googletagmanager.com lh3.googleusercontent.com storage.googleapis.com; font-src 'self' data:; connect-src 'self' *.google-analytics.com *.googletagmanager.com;",
-          }]),
+          ...(process.env.CI
+            ? []
+            : [
+                {
+                  key: "Content-Security-Policy",
+                  value:
+                    "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: *.google-analytics.com *.googletagmanager.com lh3.googleusercontent.com storage.googleapis.com; font-src 'self' data:; connect-src 'self' *.google-analytics.com *.googletagmanager.com;",
+                },
+              ]),
         ],
       },
       {
-        source: '/:all*(svg|jpg|png)',
+        source: "/:all*(svg|jpg|png)",
         locale: false,
         headers: [
           {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },

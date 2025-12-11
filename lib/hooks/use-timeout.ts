@@ -8,23 +8,23 @@ import { useEffect, useRef } from "react";
  * @param delay The delay in milliseconds (pass null to cancel/pause)
  */
 export function useTimeout(callback: () => void, delay: number | null) {
-    const savedCallback = useRef(callback);
+  const savedCallback = useRef(callback);
 
-    // Remember the latest callback.
-    useEffect(() => {
-        savedCallback.current = callback;
-    }, [callback]);
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
 
-    // Set up the timeout.
-    useEffect(() => {
-        if (delay === null) {
-            return;
-        }
+  // Set up the timeout.
+  useEffect(() => {
+    if (delay === null) {
+      return;
+    }
 
-        const id = setTimeout(() => {
-            savedCallback.current();
-        }, delay);
+    const id = setTimeout(() => {
+      savedCallback.current();
+    }, delay);
 
-        return () => clearTimeout(id);
-    }, [delay]);
+    return () => clearTimeout(id);
+  }, [delay]);
 }

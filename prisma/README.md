@@ -39,4 +39,3 @@ This project uses **Prisma 7**, which handles configuration differently than pre
 - Document the seeding strategy (scripts, required env vars) for onboarding developers.
 - Add guidance on handling large migrations and rolling back safely.
 - Automate schema drift checks in CI (e.g., `prisma migrate diff`).
-

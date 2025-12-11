@@ -218,7 +218,7 @@ export function ResetPasswordForm({
 
           <Button
             type="submit"
-            className="w-full bg-[#2062A3] hover:bg-[#1a4f83] dark:bg-blue-600 dark:hover:bg-blue-700"
+            className="w-full bg-[#2062A3] hover:bg-[#1a4f83] dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700"
             disabled={isLoading}
           >
             {isLoading ? (
