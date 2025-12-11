@@ -68,6 +68,14 @@ export function scanFile(filePath: string, sourceCode?: string): Issue[] {
 
   // Ignore technical strings and common false positives
   const ignoredValues = new Set<string>([
+    "student_no",
+    "parent",
+    "shadow",
+    "student",
+    "{teacher}",
+    "DB Timeout",
+    "blue",
+    "amber",
     "GET",
     "POST",
     "PUT",

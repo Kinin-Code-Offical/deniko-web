@@ -3,6 +3,7 @@ export interface Dictionary {
     home: {
       title: string;
       description: string;
+      keywords: string[];
     };
     login: {
       title: string;

@@ -2,7 +2,18 @@
   "metadata": {
     "home": {
       "title": "Özel Ders Yönetim Platformu",
-      "description": "Öğrenci takibi, ders programı ve ödeme takibini tek bir yerden yönetin. Deniko ile işinizi dijitalleştirin."
+      "description": "Öğrenci takibi, ders programı ve ödeme takibini tek bir yerden yönetin. Deniko ile işinizi dijitalleştirin.",
+      "keywords": [
+        "özel ders",
+        "öğrenci takibi",
+        "ders programı",
+        "eğitim yönetimi",
+        "öğretmen yazılımı",
+        "online ders"
+      ]
+    },
+    "twitter": {
+      "creator": "@deniko"
     },
     "login": {
       "title": "Giriş Yap | Deniko",

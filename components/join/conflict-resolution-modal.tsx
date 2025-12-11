@@ -18,7 +18,6 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/types/i18n";
 

@@ -47,6 +47,13 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: en.metadata.home.title,
+    description: en.metadata.home.description,
+    images: ["/logo.png"],
+    creator: en.metadata.twitter.creator,
+  },
   robots: {
     index: true,
     follow: true,
@@ -69,10 +76,10 @@ export const metadata: Metadata = {
       { url: "/favicon.svg", type: "image/svg+xml" },
     ],
     shortcut: "/favicon.ico",
-    apple: "/apple-icon.png",
+    apple: "/apple-touch-icon.png",
     other: {
       rel: "apple-touch-icon-precomposed",
-      url: "/apple-icon.png",
+      url: "/apple-touch-icon.png",
     },
   },
   manifest: "/site.webmanifest",

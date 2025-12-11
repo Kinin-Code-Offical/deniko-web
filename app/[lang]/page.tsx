@@ -77,7 +77,7 @@ export async function generateMetadata({
   const dictionary = await getDictionary(lang);
   const isTr = lang === "tr";
 
-  const { title, description } = dictionary.metadata.home;
+  const { title, description, keywords } = dictionary.metadata.home;
 
   const baseUrl = "https://deniko.net";
   const pathname = "";
@@ -85,6 +85,7 @@ export async function generateMetadata({
   return {
     title,
     description,
+    keywords,
     metadataBase: new URL(baseUrl),
     alternates: {
       canonical: `/${lang}${pathname}`,
@@ -99,6 +100,14 @@ export async function generateMetadata({
       url: `https://deniko.net/${lang}`,
       locale: isTr ? "tr_TR" : "en_US",
       type: "website",
+      images: [
+        {
+          url: "/logo.png",
+          width: 1200,
+          height: 630,
+          alt: dictionary.common.brand_name,
+        },
+      ],
     },
     icons: {
       icon: [

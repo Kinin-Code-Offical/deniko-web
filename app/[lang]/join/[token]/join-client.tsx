@@ -24,7 +24,6 @@ import {
   X,
   Loader2,
 } from "lucide-react";
-import { signOut } from "next-auth/react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import ConflictResolutionModal, {

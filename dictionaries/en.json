@@ -2,7 +2,18 @@
   "metadata": {
     "home": {
       "title": "Private Tutoring Management Platform",
-      "description": "Manage student tracking, lesson scheduling, and payments in one place. Digitalize your business with Deniko."
+      "description": "Manage student tracking, lesson scheduling, and payments in one place. Digitalize your business with Deniko.",
+      "keywords": [
+        "private tutoring",
+        "student tracking",
+        "lesson scheduling",
+        "education management",
+        "tutor software",
+        "online teaching"
+      ]
+    },
+    "twitter": {
+      "creator": "@deniko"
     },
     "login": {
       "title": "Login | Deniko",
