@@ -38,7 +38,7 @@ ENV SMTP_SUPPORT_PORT="465"
 ENV SMTP_SUPPORT_USER="no-replay@deniko.net"
 ENV SMTP_SUPPORT_PASSWORD="dummy_password"
 ENV SMTP_SUPPORT_FROM="support@deniko.net"
-ENV UPSTASH_REDIS_REST_URL="dummy.upstash.io"
+ENV UPSTASH_REDIS_REST_URL="http://dummy.upstash.io"
 ENV UPSTASH_REDIS_REST_TOKEN="dummy_token"
 
 # Bağımlılıkları kur
@@ -77,7 +77,7 @@ ENV SMTP_SUPPORT_PORT="465"
 ENV SMTP_SUPPORT_USER="no-replay@deniko.net"
 ENV SMTP_SUPPORT_PASSWORD="dummy_password"
 ENV SMTP_SUPPORT_FROM="support@deniko.net"
-ENV UPSTASH_REDIS_REST_URL="dummy.upstash.io"
+ENV UPSTASH_REDIS_REST_URL="http://dummy.upstash.io"
 ENV UPSTASH_REDIS_REST_TOKEN="dummy_token"
 
 # Prisma istemcisini oluştur
