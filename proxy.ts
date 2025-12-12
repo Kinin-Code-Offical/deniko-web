@@ -15,7 +15,7 @@ const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_REQUESTS = 120;
 const rateLimitBuckets = new Map<string, { count: number; resetAt: number }>();
 
-const attachSecurityHeaders = (response: NextResponse, pathname: string) => {
+const attachSecurityHeaders = (response: NextResponse, pathname: string, isSecure: boolean) => {
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("X-Frame-Options", "DENY");
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
@@ -25,7 +25,7 @@ const attachSecurityHeaders = (response: NextResponse, pathname: string) => {
   const canonicalUrl = `https://deniko.net${pathname}`;
   response.headers.set("Link", `<${canonicalUrl}>; rel="canonical"`);
 
-  if (isProd) {
+  if (isSecure) {
     response.headers.set(
       "Strict-Transport-Security",
       "max-age=63072000; includeSubDomains; preload"
@@ -35,12 +35,12 @@ const attachSecurityHeaders = (response: NextResponse, pathname: string) => {
   return response;
 };
 
-const syncLocaleCookie = (response: NextResponse, locale: string) => {
+const syncLocaleCookie = (response: NextResponse, locale: string, isSecure: boolean) => {
   response.cookies.set("NEXT_LOCALE", locale, {
     path: "/",
     maxAge: 31536000,
     sameSite: "lax",
-    secure: isProd,
+    secure: isSecure,
   });
 };
 
@@ -103,7 +103,10 @@ export default auth(function proxy(request: NextRequest) {
   const proto =
     headers.get("x-forwarded-proto") || nextUrl.protocol.replace(":", "");
 
-  if (host.startsWith("www.") || (isProd && proto === "http")) {
+  const isLocal = host.includes("localhost") || host.includes("127.0.0.1");
+  const shouldEnforceHttps = isProd && !isLocal;
+
+  if (host.startsWith("www.") || (shouldEnforceHttps && proto === "http")) {
     const newHost = host.replace("www.", "");
     const newUrl = `https://${newHost}${pathname}${search}`;
     return NextResponse.redirect(new URL(newUrl), 301);
@@ -126,7 +129,7 @@ export default auth(function proxy(request: NextRequest) {
         base-uri 'self';
         form-action 'self';
         frame-ancestors 'none';
-        ${isProd ? "upgrade-insecure-requests;" : ""}
+        ${shouldEnforceHttps ? "upgrade-insecure-requests;" : ""}
     `
     .replace(/\s{2,}/g, " ")
     .trim();
@@ -145,7 +148,8 @@ export default auth(function proxy(request: NextRequest) {
         },
         { status: 429 }
       ),
-      pathname
+      pathname,
+      shouldEnforceHttps
     );
 
     limitedResponse.headers.set("x-request-id", requestId);
@@ -184,7 +188,7 @@ export default auth(function proxy(request: NextRequest) {
       url
     );
 
-    if (isProd && proto === "http") {
+    if (shouldEnforceHttps && proto === "http") {
       newUrl.protocol = "https:";
     }
     // Preserve query parameters
@@ -192,14 +196,15 @@ export default auth(function proxy(request: NextRequest) {
 
     const response = attachSecurityHeaders(
       NextResponse.redirect(newUrl),
-      pathname
+      pathname,
+      shouldEnforceHttps
     );
 
     response.headers.set("x-request-id", requestId);
     response.headers.set("Content-Security-Policy", cspHeader);
 
     if (locale && cookies.get("NEXT_LOCALE")?.value !== locale) {
-      syncLocaleCookie(response, locale);
+      syncLocaleCookie(response, locale, shouldEnforceHttps);
     }
 
     return response;
@@ -211,12 +216,13 @@ export default auth(function proxy(request: NextRequest) {
     );
 
     if (localeInPath) {
-      if (isProd && proto === "http") {
+      if (shouldEnforceHttps && proto === "http") {
         const httpsUrl = new URL(url);
         httpsUrl.protocol = "https:";
         const secureResponse = attachSecurityHeaders(
           NextResponse.redirect(httpsUrl, 301),
-          pathname
+          pathname,
+          shouldEnforceHttps
         );
         secureResponse.headers.set("x-request-id", requestId);
         secureResponse.headers.set("Content-Security-Policy", cspHeader);
@@ -230,24 +236,26 @@ export default auth(function proxy(request: NextRequest) {
             headers: requestHeaders,
           },
         }),
-        pathname
+        pathname,
+        shouldEnforceHttps
       );
 
       response.headers.set("x-request-id", requestId);
       response.headers.set("Content-Security-Policy", cspHeader);
 
       if (cookies.get("NEXT_LOCALE")?.value !== localeInPath) {
-        syncLocaleCookie(response, localeInPath);
+        syncLocaleCookie(response, localeInPath, shouldEnforceHttps);
       }
 
       return response;
     }
-    if (isProd && proto === "http") {
+    if (shouldEnforceHttps && proto === "http") {
       const httpsUrl = new URL(url);
       httpsUrl.protocol = "https:";
       const secureFallback = attachSecurityHeaders(
         NextResponse.redirect(httpsUrl, 301),
-        pathname
+        pathname,
+        shouldEnforceHttps
       );
       secureFallback.headers.set("x-request-id", requestId);
       secureFallback.headers.set("Content-Security-Policy", cspHeader);
@@ -260,7 +268,8 @@ export default auth(function proxy(request: NextRequest) {
           headers: requestHeaders,
         },
       }),
-      pathname
+      pathname,
+      shouldEnforceHttps
     );
 
     fallbackResponse.headers.set("x-request-id", requestId);
