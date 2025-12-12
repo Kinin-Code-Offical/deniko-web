@@ -55,7 +55,7 @@ jobs:
           SMTP_SUPPORT_USER: "no-replay@deniko.net"
           SMTP_SUPPORT_PASSWORD: "dummy_password"
           SMTP_SUPPORT_FROM: "support@deniko.net"
-          UPSTASH_REDIS_REST_URL: "dummy.upstash.io"
+          UPSTASH_REDIS_REST_URL: "http://dummy.upstash.io"
           UPSTASH_REDIS_REST_TOKEN: "dummy_token"
 
       - name: Generate Prisma Client
@@ -81,7 +81,7 @@ jobs:
           SMTP_SUPPORT_USER: "no-replay@deniko.net"
           SMTP_SUPPORT_PASSWORD: "dummy_password"
           SMTP_SUPPORT_FROM: "support@deniko.net"
-          UPSTASH_REDIS_REST_URL: "dummy.upstash.io"
+          UPSTASH_REDIS_REST_URL: "http://dummy.upstash.io"
           UPSTASH_REDIS_REST_TOKEN: "dummy_token"
 
       - name: Run all tests
@@ -107,5 +107,5 @@ jobs:
           SMTP_SUPPORT_USER: "no-replay@deniko.net"
           SMTP_SUPPORT_PASSWORD: "dummy_password"
           SMTP_SUPPORT_FROM: "support@deniko.net"
-          UPSTASH_REDIS_REST_URL: "dummy.upstash.io"
+          UPSTASH_REDIS_REST_URL: "http://dummy.upstash.io"
           UPSTASH_REDIS_REST_TOKEN: "dummy_token"
