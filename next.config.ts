@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
   compress: true,
   productionBrowserSourceMaps: false,
   experimental: {
+    serverActions: {
+      bodySizeLimit: "5mb",
+    },
     optimizePackageImports: [
       "lucide-react",
       "date-fns",
