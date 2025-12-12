@@ -52,6 +52,43 @@ export interface Dictionary {
       notFound: string;
       role_teacher: string;
       role_student: string;
+      stats: {
+        lessons: string;
+        students: string;
+        rating: string;
+      };
+      actions: {
+        sendMessage: string;
+        requestLesson: string;
+      };
+      private: {
+        title: string;
+        description: string;
+      };
+      tabs: {
+        overview: string;
+        lessons: string;
+        reviews: string;
+      };
+      sections: {
+        about: string;
+        subjects: string;
+        levels: string;
+        languages: string;
+        availability: string;
+      };
+      availability: {
+        weekdays: string;
+        weekends: string;
+      };
+      lessons: {
+        placeholderTitle: string;
+        placeholderDescription: string;
+      };
+      reviews: {
+        placeholderTitle: string;
+        placeholderDescription: string;
+      };
     };
     settings: {
       username: {

@@ -2,16 +2,14 @@ import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { getDictionary } from "@/lib/get-dictionary";
 import type { Locale } from "@/i18n-config";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { MessageCircle, Mail, Phone, Settings } from "lucide-react";
-import Link from "next/link";
 import { auth } from "@/auth";
 import type { Metadata } from "next";
 import { generatePersonSchema } from "@/lib/json-ld";
 import { env } from "@/lib/env";
+import { UserProfileHero } from "@/components/users/user-profile-hero";
+import { UserProfileTabs } from "@/components/users/user-profile-tabs";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Lock } from "lucide-react";
 
 interface UserProfilePageProps {
   params: Promise<{
@@ -132,33 +130,10 @@ export default async function UserProfilePage({
 
   const viewerId = session?.user?.id;
   const isOwner = viewerId === user.id;
-
-  // Privacy Check: Profile Visibility
-  if (!user.isProfilePublic && !isOwner) {
-    return (
-      <div className="container mx-auto max-w-4xl py-10">
-        <Card>
-          <CardContent className="py-10 text-center">
-            <p className="text-muted-foreground text-lg">
-              {dictionary.seo.profile.private}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  const roleLabel =
-    user.role === "TEACHER"
-      ? dictionary.profile.public.role_teacher
-      : user.role === "STUDENT"
-        ? dictionary.profile.public.role_student
-        : "";
+  const isPrivate = !user.isProfilePublic && !isOwner;
 
   // Determine visibility of specific fields
   const showAvatar = isOwner || user.showAvatarOnProfile;
-  const showEmail = isOwner || user.showEmailOnProfile;
-  const showPhone = isOwner || user.showPhoneOnProfile;
   const allowMessages = isOwner || user.allowMessagesFromUsers;
 
   let imageUrl = user.image;
@@ -179,86 +154,72 @@ export default async function UserProfilePage({
         )
       : null;
 
+  // Prepare data for components
+  const bio = user.teacherProfile?.bio || null;
+  const subjects = user.teacherProfile?.branch
+    ? [user.teacherProfile.branch]
+    : [];
+  const levels = user.studentProfile?.gradeLevel
+    ? [user.studentProfile.gradeLevel]
+    : [];
+
+  // Mock stats for now (as requested to make it look full)
+  const stats = {
+    lessons: 0,
+    students: 0,
+    rating: "-",
+  };
+
   return (
-    <div className="container mx-auto max-w-4xl py-10">
+    <div className="mx-auto max-w-5xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
       {jsonLd && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       )}
-      <Card className="overflow-hidden">
-        <div className="h-32 bg-slate-100 sm:h-48 dark:bg-slate-800" />
-        <CardHeader className="relative pb-0">
-          <div className="absolute -top-16 left-6 sm:-top-20 sm:left-10">
-            <Avatar className="h-32 w-32 border-4 border-white shadow-lg sm:h-40 sm:w-40 dark:border-slate-950">
-              {showAvatar ? (
-                <AvatarImage src={imageUrl || ""} alt={user.name || ""} />
-              ) : null}
-              <AvatarFallback className="text-4xl">
-                {user.name?.charAt(0) || "U"}
-              </AvatarFallback>
-            </Avatar>
-          </div>
-          <div className="mt-16 flex flex-col gap-4 sm:mt-20 sm:flex-row sm:items-start sm:justify-between">
-            <div className="space-y-1">
-              <h1 className="text-2xl font-bold sm:text-3xl">{user.name}</h1>
-              <p className="text-muted-foreground text-sm sm:text-base">
-                @{user.username}
-              </p>
-              {roleLabel && (
-                <Badge variant="secondary" className="mt-2">
-                  {roleLabel}
-                </Badge>
-              )}
-            </div>
-            <div className="flex gap-2">
-              {!isOwner && (
-                <>
-                  {allowMessages ? (
-                    <Button asChild>
-                      <Link
-                        href={`/${lang}/dashboard/messages?to=${user.username}`}
-                      >
-                        <MessageCircle className="mr-2 h-4 w-4" />
-                        {dictionary.profile.public.messageButton}
-                      </Link>
-                    </Button>
-                  ) : (
-                    <Button variant="secondary" disabled>
-                      {dictionary.profile.settings.privacy.messagingDisabled}
-                    </Button>
-                  )}
-                </>
-              )}
-              {isOwner && (
-                <Button asChild variant="outline">
-                  <Link href={`/${lang}/dashboard/settings`}>
-                    <Settings className="mr-2 h-4 w-4" />
-                    {dictionary.dashboard.header.settings}
-                  </Link>
-                </Button>
-              )}
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="mt-6 space-y-6">
-          <div className="grid gap-4 sm:grid-cols-2">
-            {showEmail && user.email && (
-              <div className="flex items-center gap-2 text-sm">
-                <Mail className="text-muted-foreground h-4 w-4" />
-                <span>{user.email}</span>
-              </div>
-            )}
-            {showPhone && user.phoneNumber && (
-              <div className="flex items-center gap-2 text-sm">
-                <Phone className="text-muted-foreground h-4 w-4" />
-                <span>{user.phoneNumber}</span>
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+
+      <UserProfileHero
+        user={{
+          name: user.name,
+          username: user.username,
+          image: showAvatar ? imageUrl : null,
+          role: user.role,
+          country: user.preferredCountry,
+          timezone: user.preferredTimezone,
+        }}
+        stats={stats}
+        dictionary={dictionary}
+        lang={lang}
+        isOwner={isOwner}
+        canMessage={!isPrivate && allowMessages}
+        canBookLesson={!isPrivate && user.role === "TEACHER"}
+      />
+
+      {isPrivate ? (
+        <Alert
+          variant="default"
+          className="border-dashed border-yellow-500/50 bg-yellow-500/10"
+        >
+          <Lock className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+          <AlertTitle className="text-yellow-800 dark:text-yellow-300">
+            {dictionary.profile.public.private.title}
+          </AlertTitle>
+          <AlertDescription className="text-yellow-700/90 dark:text-yellow-400/90">
+            {dictionary.profile.public.private.description}
+          </AlertDescription>
+        </Alert>
+      ) : (
+        <UserProfileTabs
+          dictionary={dictionary}
+          bio={bio}
+          subjects={subjects}
+          levels={levels}
+          // Mock data for empty states
+          lessons={[]}
+          reviews={[]}
+        />
+      )}
     </div>
   );
 }

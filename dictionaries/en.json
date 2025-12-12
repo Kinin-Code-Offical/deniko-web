@@ -124,7 +124,44 @@
       "messageButton": "Message",
       "notFound": "User not found",
       "role_teacher": "Teacher",
-      "role_student": "Student"
+      "role_student": "Student",
+      "stats": {
+        "lessons": "Lessons",
+        "students": "Students",
+        "rating": "Rating"
+      },
+      "actions": {
+        "sendMessage": "Send Message",
+        "requestLesson": "Request Lesson"
+      },
+      "private": {
+        "title": "Private Profile",
+        "description": "This user's profile is private. Some information may be hidden."
+      },
+      "tabs": {
+        "overview": "Overview",
+        "lessons": "Lessons",
+        "reviews": "Reviews"
+      },
+      "sections": {
+        "about": "About",
+        "subjects": "Subjects",
+        "levels": "Levels",
+        "languages": "Languages",
+        "availability": "Availability"
+      },
+      "availability": {
+        "weekdays": "Weekdays",
+        "weekends": "Weekends"
+      },
+      "lessons": {
+        "placeholderTitle": "No lessons yet",
+        "placeholderDescription": "This user hasn't created any lessons yet."
+      },
+      "reviews": {
+        "placeholderTitle": "No reviews yet",
+        "placeholderDescription": "This user hasn't received any reviews yet."
+      }
     },
     "settings": {
       "username": {

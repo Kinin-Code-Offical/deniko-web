@@ -124,7 +124,44 @@
       "messageButton": "Mesaj Gönder",
       "notFound": "Kullanıcı bulunamadı",
       "role_teacher": "Öğretmen",
-      "role_student": "Öğrenci"
+      "role_student": "Öğrenci",
+      "stats": {
+        "lessons": "Dersler",
+        "students": "Öğrenciler",
+        "rating": "Puan"
+      },
+      "actions": {
+        "sendMessage": "Mesaj Gönder",
+        "requestLesson": "Ders Talep Et"
+      },
+      "private": {
+        "title": "Gizli Profil",
+        "description": "Bu kullanıcının profili gizlidir. Bazı bilgiler gizlenmiş olabilir."
+      },
+      "tabs": {
+        "overview": "Genel Bakış",
+        "lessons": "Dersler",
+        "reviews": "Değerlendirmeler"
+      },
+      "sections": {
+        "about": "Hakkında",
+        "subjects": "Konular",
+        "levels": "Seviyeler",
+        "languages": "Diller",
+        "availability": "Müsaitlik"
+      },
+      "availability": {
+        "weekdays": "Hafta İçi",
+        "weekends": "Hafta Sonu"
+      },
+      "lessons": {
+        "placeholderTitle": "Henüz ders yok",
+        "placeholderDescription": "Bu kullanıcı henüz ders oluşturmadı."
+      },
+      "reviews": {
+        "placeholderTitle": "Henüz değerlendirme yok",
+        "placeholderDescription": "Bu kullanıcı henüz değerlendirme almadı."
+      }
     },
     "settings": {
       "username": {
