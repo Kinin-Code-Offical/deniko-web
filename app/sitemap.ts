@@ -1,4 +1,8 @@
 import type { MetadataRoute } from "next";
+import { db } from "@/lib/db";
+import { logger } from "@/lib/logger";
+
+export const dynamic = "force-dynamic";
 
 const baseUrl = "https://deniko.net";
 const locales = ["tr", "en"];
@@ -18,7 +22,7 @@ const routes = [
   "/legal/kvkk",
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const sitemapEntries: MetadataRoute.Sitemap = [];
 
   // Add localized routes
@@ -32,6 +36,40 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
     });
   });
+
+  // Add public user profiles
+  try {
+    if (!process.env.DISABLE_DB_FOR_SITEMAP) { // ignore-env-check
+      const users = await db.user.findMany({
+        where: {
+          isProfilePublic: true,
+          username: { not: null },
+        },
+        select: {
+          username: true,
+          updatedAt: true,
+        },
+      });
+
+      users.forEach((user) => {
+        if (user.username) {
+          locales.forEach((locale) => {
+            sitemapEntries.push({
+              url: `${baseUrl}/${locale}/users/${user.username}`,
+              lastModified: user.updatedAt,
+              changeFrequency: "weekly",
+              priority: 0.5,
+            });
+          });
+        }
+      });
+    }
+  } catch (error) {
+    logger.warn({
+      event: "sitemap_db_error",
+      errorMessage: (error as Error).message,
+    });
+  }
 
   return sitemapEntries;
 }

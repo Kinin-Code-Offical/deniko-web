@@ -64,8 +64,24 @@ export default async function DashboardLayout({
     redirect(`/${lang}/onboarding`);
   }
 
+  // Sign avatar URL if needed
+  let imageUrl = user.image;
+  if (imageUrl && !imageUrl.startsWith("http")) {
+    const { getSignedUrl } = await import("@/lib/storage");
+    imageUrl = await getSignedUrl(imageUrl);
+  }
+
+  const userWithSignedUrl = {
+    ...user,
+    image: imageUrl,
+  };
+
   return (
-    <DashboardShell user={user} dictionary={dictionary} lang={lang}>
+    <DashboardShell
+      user={userWithSignedUrl}
+      dictionary={dictionary}
+      lang={lang}
+    >
       {children}
     </DashboardShell>
   );

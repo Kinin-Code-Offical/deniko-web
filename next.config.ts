@@ -31,6 +31,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { hostname: "lh3.googleusercontent.com" },
       { hostname: "storage.googleapis.com" },
+      { hostname: "api.dicebear.com" },
     ],
   },
 
@@ -47,11 +48,11 @@ const nextConfig: NextConfig = {
           ...(process.env.CI
             ? []
             : [
-                {
-                  key: "Strict-Transport-Security",
-                  value: "max-age=63072000; includeSubDomains; preload",
-                },
-              ]),
+              {
+                key: "Strict-Transport-Security",
+                value: "max-age=63072000; includeSubDomains; preload",
+              },
+            ]),
           {
             key: "X-Frame-Options",
             value: "SAMEORIGIN",
@@ -68,12 +69,12 @@ const nextConfig: NextConfig = {
           ...(process.env.CI
             ? []
             : [
-                {
-                  key: "Content-Security-Policy",
-                  value:
-                    "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: *.google-analytics.com *.googletagmanager.com lh3.googleusercontent.com storage.googleapis.com; font-src 'self' data:; connect-src 'self' *.google-analytics.com *.googletagmanager.com;",
-                },
-              ]),
+              {
+                key: "Content-Security-Policy",
+                value:
+                  "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: *.google-analytics.com *.googletagmanager.com lh3.googleusercontent.com storage.googleapis.com https://api.dicebear.com; font-src 'self' data:; connect-src 'self' *.google-analytics.com *.googletagmanager.com;",
+              },
+            ]),
         ],
       },
       {

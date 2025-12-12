@@ -280,3 +280,40 @@ export async function sendVerificationEmail(
     return { success: false, error: "Failed to send email" };
   }
 }
+
+/**
+ * Sends an email change verification email to the user.
+ *
+ * @param email - The new email address.
+ * @param token - The verification token.
+ * @param lang - The language locale.
+ */
+export async function sendEmailChangeVerificationEmail(
+  email: string,
+  token: string,
+  lang: Locale = "tr"
+) {
+  const confirmLink = `${env.NEXTAUTH_URL}/${lang}/verify-email-change/${token}`;
+
+  const dictionary = await getDictionary(lang);
+  const content = dictionary.email.email_change;
+
+  const html = getVerificationEmailTemplate(confirmLink, lang, content);
+
+  try {
+    await noReplyTransporter.sendMail({
+      from: `"Deniko" <${env.SMTP_NOREPLY_FROM}>`,
+      to: email,
+      subject: content.subject,
+      html: html,
+    });
+    return { success: true };
+  } catch (error) {
+    logger.error(
+      { context: "sendEmailChangeVerificationEmail", error },
+      "Email sending failed"
+    );
+    return { success: false, error: "Failed to send email" };
+  }
+}
+

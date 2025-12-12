@@ -21,6 +21,8 @@ export async function completeOnboarding(data: {
   confirmPassword?: string;
   terms?: boolean;
   marketingConsent?: boolean;
+  preferredTimezone?: string;
+  preferredCountry?: string;
 }) {
   const session = await auth();
 
@@ -86,6 +88,8 @@ export async function completeOnboarding(data: {
           isOnboardingCompleted: true,
           emailVerified: new Date(), // Verify email upon onboarding completion
           isMarketingConsent: data.marketingConsent || false,
+          preferredTimezone: data.preferredTimezone || "UTC",
+          preferredCountry: data.preferredCountry || "US",
         },
       });
 

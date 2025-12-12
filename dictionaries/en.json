@@ -2,7 +2,7 @@
   "metadata": {
     "home": {
       "title": "Private Tutoring Management Platform",
-      "description": "Manage student tracking, lesson scheduling, and payments in one place. Digitalize your business with Deniko.",
+      "description": "Manage student tracking, lesson scheduling, and student payments in one place. Digitalize your business with Deniko for free.",
       "keywords": [
         "private tutoring",
         "student tracking",
@@ -70,6 +70,260 @@
     "students": {
       "title": "Students | Deniko",
       "description": "Student list and management."
+    }
+  },
+  "verify_email_change": {
+    "success_title": "Email Verified!",
+    "success_description": "Your email address has been successfully updated.",
+    "login_button": "Go to Login",
+    "error_title": "Verification Failed",
+    "error_description": "Invalid or expired token.",
+    "back_button": "Back to Settings"
+  },
+  "server": {
+    "errors": {
+      "unauthorized": "Unauthorized",
+      "invalid_input": "Invalid input",
+      "failed_update_profile": "Failed to update profile",
+      "user_not_found_password": "User not found or no password set",
+      "incorrect_password": "Incorrect current password",
+      "failed_update_password": "Failed to update password",
+      "same_password": "New password cannot be the same as the current password",
+      "invalid_email": "Invalid email",
+      "email_in_use": "Email is already in use",
+      "user_not_found": "User not found",
+      "failed_request_email_change": "Failed to request email change",
+      "invalid_phone": "Invalid phone number",
+      "failed_update_phone": "Failed to update phone number",
+      "failed_deactivate": "Failed to deactivate account",
+      "failed_delete": "Failed to delete account",
+      "passwords_do_not_match": "Passwords do not match",
+      "username_min_length": "Username must be at least 3 characters",
+      "username_max_length": "Username must be at most 20 characters",
+      "username_pattern": "Username can only contain letters, numbers, dots, and underscores",
+      "username_taken": "Username is already taken",
+      "failed_update_username": "Failed to update username",
+      "invalid_token": "Invalid or expired token",
+      "token_expired": "Token expired",
+      "something_went_wrong": "Something went wrong",
+      "failed_update_notification_preferences": "Failed to update notification preferences",
+      "failed_update_region_timezone": "Failed to update region and timezone",
+      "failed_update_cookie_preferences": "Failed to update cookie preferences",
+      "no_image_provided": "No image provided",
+      "failed_update_avatar": "Failed to update avatar",
+      "no_file_provided": "No file provided",
+      "invalid_file_type": "Invalid file type. Please upload an image.",
+      "file_size_too_large": "File size too large. Max 5MB.",
+      "failed_upload_avatar": "Failed to upload avatar"
+    }
+  },
+  "profile": {
+    "public": {
+      "title": "{name} (@{username}) - Deniko",
+      "description": "Check out {name}'s profile on Deniko.",
+      "messageButton": "Message",
+      "notFound": "User not found",
+      "role_teacher": "Teacher",
+      "role_student": "Student"
+    },
+    "settings": {
+      "username": {
+        "title": "Username",
+        "description": "Your public profile URL: https://deniko.net/users/{username}",
+        "label": "Username",
+        "placeholder": "Enter username",
+        "button": "Save Changes",
+        "success": "Username updated successfully",
+        "error": "Failed to update username"
+      },
+      "basic": {
+        "title": "Basic Information",
+        "description": "Update your personal details.",
+        "firstName": "First Name",
+        "firstNamePlaceholder": "John",
+        "lastName": "Last Name",
+        "lastNamePlaceholder": "Doe",
+        "save": "Save Changes",
+        "success": "Profile updated successfully",
+        "saving": "Saving...",
+        "avatar": {
+          "label": "Avatar",
+          "upload": "Upload Photo",
+          "upload_hint": "JPG, GIF or PNG. Max 5MB.",
+          "presets": "Choose from presets",
+          "crop_title": "Crop Avatar",
+          "crop_desc": "Drag to position and use the slider to zoom.",
+          "cancel": "Cancel",
+          "save": "Save",
+          "error_file_type": "Please upload an image file",
+          "error_file_size": "File size must be less than 5MB",
+          "success_update": "Avatar updated successfully",
+          "error_upload": "Failed to upload avatar",
+          "error_generic": "An error occurred"
+        },
+        "phone": {
+          "label": "Phone Number",
+          "placeholder": "+1 234 567 890",
+          "countrySelectorLabel": "Country",
+          "noResultsMessage": "No results",
+          "searchPlaceholder": "Search"
+        },
+        "teacher": {
+          "branch": "Branch",
+          "branch_placeholder": "Mathematics",
+          "bio": "Bio",
+          "bio_placeholder": "Tell us about yourself..."
+        },
+        "student": {
+          "student_no": "Student Number",
+          "student_no_placeholder": "12345",
+          "grade_level": "Grade Level",
+          "grade_level_placeholder": "10th Grade",
+          "parent_name": "Parent Name",
+          "parent_name_placeholder": "Jane Doe",
+          "parent_phone": "Parent Phone",
+          "parent_email": "Parent Email",
+          "parent_email_placeholder": "parent@example.com"
+        }
+      },
+      "security": {
+        "password": {
+          "title": "Password",
+          "description": "Change your password.",
+          "currentPassword": "Current Password",
+          "newPassword": "New Password",
+          "confirmPassword": "Confirm Password",
+          "placeholder": "********",
+          "save": "Update Password",
+          "success": "Password updated successfully",
+          "security_strength": "Security Strength",
+          "saving": "Saving...",
+          "hide_password": "Hide password",
+          "show_password": "Show password",
+          "enter_password": "Enter Password",
+          "weak": "Weak",
+          "medium": "Medium",
+          "strong": "Strong",
+          "validation": {
+            "required": "This field is required",
+            "min_length": "Must be at least {length} characters",
+            "passwords_do_not_match": "Passwords do not match",
+            "uppercase": "At least one uppercase letter",
+            "lowercase": "At least one lowercase letter",
+            "number": "At least one number",
+            "special": "At least one special character"
+          }
+        },
+        "email": {
+          "title": "Email Address",
+          "description": "Change your email address.",
+          "currentEmail": "Current Email",
+          "newEmail": "New Email",
+          "sendVerification": "Send Verification Email",
+          "sending": "Sending...",
+          "success": "Verification email sent",
+          "placeholder": "example@mail.com"
+        }
+      },
+      "danger": {
+        "deactivate": {
+          "title": "Deactivate Account",
+          "description": "Temporarily disable your account. You can reactivate it anytime.",
+          "button": "Deactivate Account",
+          "confirmTitle": "Are you sure?",
+          "confirmDescription": "This will hide your profile and data from others. You can reactivate by logging in.",
+          "cancel": "Cancel",
+          "confirmButton": "Deactivate",
+          "success": "Account deactivated",
+          "processing": "Processing..."
+        },
+        "delete": {
+          "title": "Delete Account",
+          "description": "Permanently delete your account and all data.",
+          "button": "Delete Account",
+          "confirmTitle": "Are you absolutely sure?",
+          "confirmDescription": "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
+          "cancel": "Cancel",
+          "confirmButton": "Delete Account",
+          "success": "Account deleted",
+          "typeToConfirm": "Type {keyword} to confirm.",
+          "deleting": "Deleting..."
+        }
+      },
+      "privacy": {
+        "title": "Privacy Settings",
+        "description": "Manage who can see your profile and contact you.",
+        "isProfilePublic": {
+          "label": "Public Profile",
+          "description": "Allow others to see your profile."
+        },
+        "showEmail": {
+          "label": "Show Email"
+        },
+        "showCourses": {
+          "label": "Show Courses"
+        },
+        "showAchievements": {
+          "label": "Show Achievements"
+        },
+        "save": "Save Privacy Settings",
+        "success": "Privacy settings updated",
+        "saving": "Saving...",
+        "messagingDisabled": "Messaging is disabled for this user."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Manage how you receive notifications.",
+        "email": {
+          "label": "Email Notifications",
+          "description": "Receive emails about your account activity."
+        },
+        "inApp": {
+          "label": "In-App Notifications",
+          "description": "Receive notifications within the application."
+        },
+        "save": "Save Preferences",
+        "success": "Notification preferences updated",
+        "saving": "Saving..."
+      },
+      "region": {
+        "title": "Region & Timezone",
+        "description": "Set your preferred region and timezone.",
+        "country": {
+          "label": "Country",
+          "placeholder": "Select a country"
+        },
+        "timezone": {
+          "label": "Timezone",
+          "placeholder": "Select a timezone"
+        },
+        "save": "Save Preferences",
+        "success": "Region and timezone updated",
+        "saving": "Saving..."
+      },
+      "cookies": {
+        "title": "Cookies & Privacy",
+        "description": "Manage your cookie preferences and privacy settings.",
+        "necessary": {
+          "label": "Strictly Necessary Cookies",
+          "description": "These cookies are essential for the website to function and cannot be switched off."
+        },
+        "analytics": {
+          "label": "Analytics Cookies",
+          "description": "These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site."
+        },
+        "marketing": {
+          "label": "Marketing Cookies",
+          "description": "These cookies may be set through our site by our advertising partners."
+        },
+        "links": {
+          "privacy": "Privacy Policy",
+          "cookies": "Cookie Policy"
+        },
+        "save": "Save Preferences",
+        "success": "Cookie preferences updated",
+        "saving": "Saving..."
+      }
     }
   },
   "not_found": {
@@ -160,19 +414,164 @@
   },
   "dashboard": {
     "nav": {
-      "dashboard": "Dashboard",
+      "dashboard": "Overview",
       "students": "Students",
       "schedule": "Schedule",
+      "lessons": "Lessons",
       "finance": "Finance",
       "settings": "Settings",
-      "lessons": "Lessons",
+      "messages": "Messages",
+      "notifications": "Notifications",
+      "profile": "Profile",
+      "files": "Files",
+      "logout": "Log out",
+      "menu_title": "Menu",
+      "menu_desc": "Navigation menu",
       "homework": "Homework",
       "exams": "Exams",
-      "logout": "Log out",
-      "menu_title": "Navigation Menu",
-      "menu_desc": "Dashboard navigation menu"
+      "system_operational": "System Operational"
     },
-
+    "overview": {
+      "title": "Overview",
+      "welcome": "Welcome back, {name}!",
+      "stats": {
+        "total_students": "Total Students",
+        "upcoming_lessons": "Upcoming Lessons",
+        "unread_messages": "Unread Messages",
+        "total_income": "Total Income"
+      },
+      "recent_activity": "Recent Activity",
+      "upcoming_lessons": "Upcoming Lessons"
+    },
+    "messages": {
+      "title": "Messages",
+      "search_placeholder": "Search messages...",
+      "type_message": "Type a message...",
+      "send": "Send",
+      "no_conversation": "Select a conversation to start messaging",
+      "online": "Online",
+      "mock_msg_1": "Hi, how are you?",
+      "mock_msg_2": "I'm good, thanks! About our lesson...",
+      "mock_msg_3": "See you tomorrow!",
+      "mock_msg_4": "Can we reschedule?",
+      "mock_time_1": "10:00 AM",
+      "mock_time_2": "10:05 AM",
+      "mock_time_3": "10:30 AM",
+      "mock_time_4": "Yesterday",
+      "mock_user_initial": "A",
+      "mock_user_name": "Alice Smith",
+      "mock_user_name_2": "Bob Johnson"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "all": "All",
+      "unread": "Unread",
+      "system": "System",
+      "mark_all_read": "Mark all as read",
+      "no_unread": "No unread notifications",
+      "no_system": "No system notifications",
+      "mock_title_1": "System Update",
+      "mock_msg_1": "Deniko has been updated to version 2.0",
+      "mock_time_1": "2 hours ago",
+      "mock_title_2": "Lesson Reminder",
+      "mock_msg_2": "You have a lesson with Alice in 1 hour",
+      "mock_time_2": "3 hours ago",
+      "mock_title_3": "Payment Received",
+      "mock_msg_3": "Payment of $50 received from Bob",
+      "mock_time_3": "1 day ago"
+    },
+    "profile": {
+      "title": "Profile",
+      "personal_info": "Personal Information",
+      "personal_info_desc": "Update your personal details here.",
+      "contact_info": "Contact Information",
+      "contact_info_desc": "How can we reach you?",
+      "save_changes": "Save Changes",
+      "change_avatar": "Change Avatar",
+      "full_name": "Full Name",
+      "email": "Email",
+      "role": "Role",
+      "phone": "Phone Number",
+      "phone_placeholder": "+1 234 567 890",
+      "address": "Address",
+      "address_placeholder": "123 Main St"
+    },
+    "files": {
+      "title": "Files",
+      "upload": "Upload File",
+      "drag_drop": "Drag and drop files here",
+      "no_files": "No files uploaded yet",
+      "download": "Download",
+      "delete": "Delete"
+    },
+    "finance": {
+      "total_revenue": "Total Revenue",
+      "revenue_growth": "+20.1% from last month",
+      "outstanding": "Outstanding",
+      "pending_payments_count": "5 pending payments",
+      "active_subscriptions": "Recurring Lessons",
+      "subscriptions_growth": "+2 since last week",
+      "recent_transactions": "Recent Transactions",
+      "mock_revenue": "$1,234.56",
+      "mock_outstanding": "$345.00",
+      "mock_subscriptions": "+12"
+    },
+    "lessons": {
+      "title": "Lessons",
+      "schedule_lesson": "Schedule Lesson",
+      "at": "at",
+      "details": "Details"
+    },
+    "schedule": {
+      "title": "Schedule",
+      "new_lesson": "New Lesson",
+      "calendar": "Calendar",
+      "calendar_placeholder": "Interactive Calendar Component (Coming Soon)",
+      "upcoming": "Upcoming",
+      "math": "Mathematics",
+      "mock_lesson_1": "10:00 AM - Alice",
+      "physics": "Physics",
+      "mock_lesson_2": "02:00 PM - Bob"
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Manage your account settings and preferences.",
+      "nav": {
+        "profile": "Profile",
+        "security": "Account & Security",
+        "privacy": "Privacy",
+        "notifications": "Notifications",
+        "language": "Language & Region",
+        "cookies": "Cookies & Data"
+      },
+      "tabs": {
+        "profile": "Profile",
+        "security": "Security",
+        "privacy": "Privacy",
+        "account": "Account"
+      },
+      "logout": "Log out",
+      "account": "Account",
+      "account_desc": "Manage your account settings.",
+      "security": "Security",
+      "notifications": "Notifications",
+      "notifications_desc": "Configure how you receive notifications.",
+      "language": "Language",
+      "language_desc": "Select your preferred language.",
+      "theme": "Theme",
+      "two_fa_label": "Two-Factor Authentication",
+      "two_fa_desc": "Add an extra layer of security to your account.",
+      "delete_account_label": "Delete Account",
+      "delete_account_desc": "Permanently remove your account and all data.",
+      "delete_account_button": "Delete Account",
+      "email_notifications_label": "Email Notifications",
+      "email_notifications_desc": "Receive emails about your account activity.",
+      "marketing_emails_label": "Marketing Emails",
+      "marketing_emails_desc": "Receive emails about new features and offers.",
+      "language_placeholder": "Select Language",
+      "en": "English",
+      "tr": "Türkçe"
+    },
     "join": {
       "error": "Invalid Invitation",
       "error_desc": "The invitation link is invalid or has expired. Please ask your teacher for a new link.",
@@ -309,7 +708,11 @@
       "assignments_todo": "Assignments To Do",
       "weekly_schedule": "Weekly Schedule",
       "no_pending_homework": "No pending homework.",
-      "due_date": "Due:"
+      "due_date": "Due:",
+      "view_all": "View All",
+      "due": "Due:",
+      "start": "Start",
+      "all_caught_up": "All caught up!"
     },
     "teacher": {
       "active_students": "Active Students",
@@ -317,6 +720,13 @@
       "pending_homework_count": "Pending Homework",
       "upcoming_lessons": "Today's Schedule",
       "no_lessons_today": "No lessons scheduled for today.",
+      "check_schedule_desc": "Check your schedule for upcoming days.",
+      "review": "Review",
+      "view": "View",
+      "mock_task_1": "Review homework for Math 101",
+      "mock_task_1_sub": "Pending review for 3 students",
+      "mock_task_2": "New student request",
+      "mock_task_2_sub": "Ali Yilmaz wants to join Physics class",
       "take_attendance": "Take Attendance",
       "quick_actions": {
         "title": "Quick Actions",
@@ -587,6 +997,17 @@
     "accept_button": "Accept and Join",
     "welcome_user": "Dear {name},"
   },
+  "seo": {
+    "profile": {
+      "title": "{name} — Deniko Profile",
+      "description": {
+        "teacher": "Teacher profile of {name} on Deniko. View details and contact.",
+        "student": "Student profile of {name} on Deniko.",
+        "generic": "Profile of {name} on Deniko."
+      },
+      "private": "This profile is private."
+    }
+  },
   "auth": {
     "placeholders": {
       "email": "example@email.com",
@@ -655,7 +1076,8 @@
       "validation": {
         "email_invalid": "Please enter a valid email address",
         "password_required": "Password is required",
-        "invalid_credentials": "Invalid email or password."
+        "invalid_credentials": "Invalid email or password.",
+        "rate_limit": "Too many login attempts. Please try again later."
       }
     },
     "forgot_password": {
@@ -723,6 +1145,12 @@
     "errors": {
       "generic": "An error occurred."
     }
+  },
+
+  "validation": {
+    "passwords_do_not_match": "Passwords do not match",
+    "min_length": "Must be at least {length} characters",
+    "required": "Required"
   },
 
   "home": {
@@ -893,6 +1321,22 @@
       "footer_copyright": "© 2025 Deniko. All rights reserved.",
       "footer_terms": "Terms of Service",
       "footer_privacy": "Privacy Policy"
+    },
+    "email_change": {
+      "subject": "Verify Your New Email Address - Deniko",
+      "title": "Verify New Email Address",
+      "greeting": "Hello,",
+      "body": "We received a request to change your email address. Please click the button below to verify your new email address.",
+      "button": "Verify New Email",
+      "ignore": "If you did not request this change, please ignore this email.",
+      "footer": "Deniko - Teacher and Student Management Platform.",
+      "website": "Web Site",
+      "support": "Support",
+      "footer_disclaimer": "This email was sent regarding an email change request on your Deniko account.",
+      "footer_address": "Güzeltepe Mah., 747. Cd., No:14 Çankaya/Ankara",
+      "footer_copyright": "© 2025 Deniko. All rights reserved.",
+      "footer_terms": "Terms of Service",
+      "footer_privacy": "Privacy Policy"
     }
   },
   "errors": {
@@ -967,7 +1411,7 @@
       "no_results_desc": "Try adjusting your search terms",
       "categories": {
         "general": "General",
-        "billing": "Billing",
+        "billing": "Finance Features",
         "teachers": "Teachers",
         "students": "Students"
       },
@@ -979,7 +1423,7 @@
           },
           {
             "question": "Is it free?",
-            "answer": "Yes, we offer a free tier for basic usage which includes essential features for individual tutors. We also have premium plans for advanced needs."
+            "answer": "Yes, Deniko is completely free to use. There are no hidden fees or subscriptions."
           },
           {
             "question": "How secure is my data?",
@@ -1004,26 +1448,6 @@
         ],
         "billing": [
           {
-            "question": "How do I upgrade?",
-            "answer": "You can upgrade your plan from the billing settings in your dashboard at any time."
-          },
-          {
-            "question": "What payment methods do you accept?",
-            "answer": "We accept all major credit cards (Visa, Mastercard, Amex) and secure online payment methods."
-          },
-          {
-            "question": "Can I cancel anytime?",
-            "answer": "Yes, you can cancel your subscription at any time from your account settings. No questions asked."
-          },
-          {
-            "question": "Do you offer refunds?",
-            "answer": "We offer a 14-day money-back guarantee for all new subscriptions if you are not satisfied with our service."
-          },
-          {
-            "question": "Can I get an invoice?",
-            "answer": "Yes, an e-invoice is automatically generated and sent to your email address after every payment transaction."
-          },
-          {
             "question": "How do I track student payments?",
             "answer": "You can record payments received from students, view pending payments, and create reminders through the finance module."
           }
@@ -1043,7 +1467,7 @@
           },
           {
             "question": "Is there a limit on the number of students?",
-            "answer": "The free plan has a limit on active students, but our premium plans offer unlimited student management."
+            "answer": "No, there is no limit on the number of students you can add."
           },
           {
             "question": "How do I create my schedule?",
@@ -1102,7 +1526,7 @@
         "chat_label": "Live Chat",
         "chat_desc": "Available 9am - 5pm EST",
         "phone_label": "Phone Support",
-        "phone_desc": "+1 (555) 123-4567"
+        "phone_desc": "+90 (553) 000-0000"
       },
       "form": {
         "name": "Name",
@@ -1124,7 +1548,7 @@
         "types": {
           "general": "General Inquiry",
           "bug": "Bug Report",
-          "billing": "Billing Issue",
+          "billing": "Finance/Payment Tracking",
           "feature": "Feature Request"
         },
         "validation": {

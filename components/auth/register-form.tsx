@@ -73,6 +73,8 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
         message: dictionary.legal.validation_error,
       }),
       marketingConsent: z.boolean().optional(),
+      preferredTimezone: z.string().optional(),
+      preferredCountry: z.string().optional(),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: d.validation.password_mismatch,
@@ -91,13 +93,26 @@ export function RegisterForm({ dictionary, lang }: RegisterFormProps) {
       confirmPassword: "",
       terms: false,
       marketingConsent: false,
+      preferredTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      preferredCountry: navigator.language.split("-")[1] || "US",
     },
   });
 
   function onSubmit(values: z.infer<typeof registerSchema>) {
     startTransition(async () => {
       try {
-        const result = await registerUser(values, lang);
+        // Ensure browser values are set if not already
+        const payload = {
+          ...values,
+          preferredTimezone:
+            values.preferredTimezone ||
+            Intl.DateTimeFormat().resolvedOptions().timeZone,
+          preferredCountry:
+            values.preferredCountry ||
+            (navigator.language.split("-")[1] || "US").toUpperCase(),
+        };
+
+        const result = await registerUser(payload, lang);
         if (result.success) {
           setSuccess(true);
           toast.success(d.success_title);

@@ -2,6 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,12 +21,14 @@ interface UserNavProps {
     name?: string | null;
     email?: string | null;
     image?: string | null;
+    username?: string | null;
   };
 
   dictionary?: Dictionary;
+  lang?: string;
 }
 
-export function UserNav({ user, dictionary }: UserNavProps) {
+export function UserNav({ user, dictionary, lang }: UserNavProps) {
   const t = dictionary?.dashboard?.header;
 
   if (!t) return null;
@@ -49,14 +52,18 @@ export function UserNav({ user, dictionary }: UserNavProps) {
           <div className="flex flex-col space-y-1">
             <p className="text-sm leading-none font-medium">{user.name}</p>
             <p className="text-muted-foreground text-xs leading-none">
-              {user.email}
+              @{user.username}
             </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>{t.profile}</DropdownMenuItem>
-          <DropdownMenuItem>{t.settings}</DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href={`/${lang}/users/${user.username}`}>{t.profile}</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href={`/${lang}/dashboard/settings`}>{t.settings}</Link>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOutAction()}>

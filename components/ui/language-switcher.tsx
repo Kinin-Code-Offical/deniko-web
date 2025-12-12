@@ -72,6 +72,7 @@ export function LanguageSwitcher({
           variant="outline"
           disabled={!mounted || isPending}
           className={`h-11 min-w-[140px] gap-2 rounded-full border-slate-200/80 bg-transparent px-4 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-100 data-[state=open]:ring-2 data-[state=open]:ring-[#1d4f87]/20 dark:border-slate-800 dark:bg-slate-950/50 dark:text-blue-400 dark:hover:bg-slate-900`}
+          suppressHydrationWarning
         >
           {isPending || !mounted ? (
             <Loader2 className="h-4 w-4 animate-spin text-[#1d4f87] dark:text-blue-400" />

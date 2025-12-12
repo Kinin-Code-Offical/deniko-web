@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     title: en.metadata.home.title,
     description: en.metadata.home.description,
     images: ["/logo.png"],
-    creator: en.metadata.twitter.creator,
+    creator: "@deniko",
   },
   robots: {
     index: true,

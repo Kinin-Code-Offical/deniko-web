@@ -14,6 +14,8 @@ import { getDictionary } from "@/lib/get-dictionary";
 import type { Locale } from "@/i18n-config";
 import logger from "@/lib/logger";
 
+import { generateUniqueUsername } from "@/lib/username";
+
 /**
  * Logs out the current user and redirects to the login page.
  */
@@ -52,7 +54,7 @@ export async function login(formData: LoginFormData, lang: string = "tr") {
 
   if (!validatedFields.success) {
     logger.warn({
-      msg: "Login validation failed",
+      event: "login_validation_failed",
       errors: validatedFields.error.flatten(),
     });
     return { success: false, message: dict.auth.register.errors.invalid_data };
@@ -60,7 +62,7 @@ export async function login(formData: LoginFormData, lang: string = "tr") {
 
   const { email, password } = validatedFields.data;
 
-  logger.info({ msg: "Login attempt", email });
+  logger.info({ event: "login_attempt", email });
 
   try {
     await signIn("credentials", {
@@ -70,7 +72,7 @@ export async function login(formData: LoginFormData, lang: string = "tr") {
     });
   } catch (error) {
     if (error instanceof AuthError) {
-      logger.warn({ msg: "Login failed", email, error: error.type });
+      logger.warn({ event: "login_failed", email, errorType: error.type });
       switch (error.type) {
         case "CredentialsSignin":
           return {
@@ -78,13 +80,25 @@ export async function login(formData: LoginFormData, lang: string = "tr") {
             message: dict.auth.login.validation.invalid_credentials,
           };
         default:
-          // Check if the error message contains "Email not verified"
+          // Check if the error message contains "Email not verified" or rate limit codes
 
           const cause = error.cause as
-            | { err?: { message?: string } }
+            | { err?: { message?: string; code?: string }; code?: string }
             | undefined;
+
+          const code = cause?.err?.code || cause?.code;
+          if (
+            code === "TOO_MANY_LOGIN_ATTEMPTS_IP" ||
+            code === "TOO_MANY_LOGIN_ATTEMPTS_USER"
+          ) {
+            return {
+              success: false,
+              message: dict.auth.login.validation.rate_limit,
+            };
+          }
+
           if (cause?.err?.message === "Email not verified") {
-            logger.info({ msg: "Login blocked: Email not verified", email });
+            logger.info({ event: "login_blocked_unverified", email });
             return {
               success: false,
               error: "NOT_VERIFIED",
@@ -156,10 +170,10 @@ export async function resendVerificationCode(
 
     return { success: true, message: dict.auth.verification.success };
   } catch (error) {
-    logger.error(
-      { context: "resendVerificationCode", error },
-      "Resend Verification Error"
-    );
+    logger.error({
+      event: "resend_verification_code_error",
+      error: (error as Error).message,
+    });
     return { success: false, message: dict.auth.register.errors.generic };
   }
 }
@@ -174,6 +188,8 @@ interface RegisterFormData {
   confirmPassword: string;
   terms: boolean;
   marketingConsent?: boolean;
+  preferredTimezone?: string;
+  preferredCountry?: string;
 }
 
 /**
@@ -209,6 +225,8 @@ export async function registerUser(
         message: dict.legal.validation_terms,
       }),
       marketingConsent: z.boolean().optional(),
+      preferredTimezone: z.string().optional(),
+      preferredCountry: z.string().optional(),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: d.password_mismatch,
@@ -229,6 +247,8 @@ export async function registerUser(
     role,
     phoneNumber,
     marketingConsent,
+    preferredTimezone: browserTimezone,
+    preferredCountry: browserCountry,
   } = validatedFields.data;
 
   try {
@@ -244,11 +264,26 @@ export async function registerUser(
     // 2. Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 3. Create User & Profile
+    // 3. Generate Username
+    const username = await generateUniqueUsername(firstName, lastName);
+
+    // Determine preferences based on browser data or fallback to lang
+    let preferredCountry = browserCountry || "US";
+    let preferredTimezone = browserTimezone || "UTC";
+
+    if (!browserCountry && lang === "tr") {
+      preferredCountry = "TR";
+    }
+    if (!browserTimezone && lang === "tr") {
+      preferredTimezone = "Europe/Istanbul";
+    }
+
+    // 4. Create User & Profile
     await db.$transaction(async (tx: Prisma.TransactionClient) => {
       const user = await tx.user.create({
         data: {
           email,
+          username,
           password: hashedPassword,
           firstName,
           lastName,
@@ -258,6 +293,8 @@ export async function registerUser(
           emailVerified: null,
           isOnboardingCompleted: true,
           isMarketingConsent: marketingConsent || false,
+          preferredCountry,
+          preferredTimezone,
         },
       });
 
@@ -295,7 +332,7 @@ export async function registerUser(
 
     return { success: true, message: dict.auth.register.success_desc };
   } catch (error) {
-    logger.error({ context: "registerUser", error }, "Registration Error");
+    logger.error({ event: "register_user_error", error: (error as Error).message });
     return { success: false, message: dict.auth.register.errors.generic };
   }
 }
@@ -352,7 +389,7 @@ export async function verifyEmail(token: string, lang: string = "tr") {
 
     return { success: true, message: d.success };
   } catch (error) {
-    logger.error({ context: "verifyEmail", error }, "Verification Error");
+    logger.error({ event: "verify_email_error", error: (error as Error).message });
     return { success: false, message: d.error };
   }
 }
@@ -402,10 +439,10 @@ export async function resendVerificationEmailAction(
     await sendVerificationEmail(email, token, lang as Locale);
     return { success: true, message: d.success };
   } catch (error) {
-    logger.error(
-      { context: "resendVerificationEmailAction", error },
-      "Resend Error"
-    );
+    logger.error({
+      event: "resend_verification_email_error",
+      error: (error as Error).message,
+    });
     return { success: false, message: d.error };
   }
 }
@@ -465,9 +502,15 @@ export async function forgotPassword(email: string, lang: string = "tr") {
 
     await sendPasswordResetEmail(email, token, lang);
 
+    logger.info({
+      event: "password_reset_token_created",
+      userId: user.id,
+      email,
+    });
+
     return { success: true, message: dict.auth.forgot_password.success };
   } catch (error) {
-    logger.error({ context: "forgotPassword", error }, "Forgot Password Error");
+    logger.error({ event: "forgot_password_error", error: (error as Error).message });
     return { success: false, message: dict.auth.register.errors.generic };
   }
 }
@@ -561,9 +604,64 @@ export async function resetPassword(
       where: { id: existingToken.id },
     });
 
+    logger.info({
+      event: "password_reset_success",
+      userId: existingUser.id,
+    });
+
     return { success: true, message: dict.auth.reset_password.success };
   } catch (error) {
-    logger.error({ context: "resetPassword", error }, "Reset Password Error");
+    logger.error({ event: "reset_password_error", error: (error as Error).message });
     return { success: false, message: dict.auth.register.errors.generic };
   }
 }
+
+export async function verifyEmailChangeAction(token: string, lang: string) {
+  const dict = await getDictionary(lang as Locale);
+  try {
+    const emailChangeRequest = await db.emailChangeRequest.findUnique({
+      where: { token },
+    });
+
+    if (!emailChangeRequest) {
+      return { error: dict.server.errors.invalid_token };
+    }
+
+    if (emailChangeRequest.expires < new Date()) {
+      return { error: dict.server.errors.token_expired };
+    }
+
+    const existingUser = await db.user.findUnique({
+      where: { email: emailChangeRequest.newEmail },
+    });
+
+    if (existingUser) {
+      return { error: dict.server.errors.email_in_use };
+    }
+
+    await db.$transaction([
+      db.user.update({
+        where: { id: emailChangeRequest.userId },
+        data: { email: emailChangeRequest.newEmail },
+      }),
+      db.emailChangeRequest.delete({
+        where: { id: emailChangeRequest.id },
+      }),
+    ]);
+
+    logger.info({
+      event: "email_change_verified",
+      userId: emailChangeRequest.userId,
+      newEmail: emailChangeRequest.newEmail,
+    });
+
+    return { success: true };
+  } catch (error) {
+    logger.error({
+      event: "verify_email_change_error",
+      error: (error as Error).message,
+    });
+    return { error: dict.server.errors.something_went_wrong };
+  }
+}
+

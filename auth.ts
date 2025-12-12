@@ -7,6 +7,10 @@ import * as bcrypt from "bcryptjs";
 import { z } from "zod";
 import { Role } from "@prisma/client";
 import { env } from "@/lib/env";
+import { generateUniqueUsername } from "@/lib/username";
+import { assertLoginRateLimit } from "@/lib/rate-limit-login";
+import { getClientIp } from "@/lib/get-client-ip";
+import { logger } from "@/lib/logger";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(db),
@@ -18,12 +22,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientId: env.AUTH_GOOGLE_ID,
       clientSecret: env.AUTH_GOOGLE_SECRET,
       allowDangerousEmailAccountLinking: true,
-      profile(profile) {
+      async profile(profile) {
+        const username = await generateUniqueUsername(
+          profile.given_name || "",
+          profile.family_name || ""
+        );
         return {
           id: profile.sub,
           name: profile.name,
           firstName: profile.given_name,
           lastName: profile.family_name,
+          username,
           email: profile.email,
           image: profile.picture,
           // Email verification will happen after onboarding completion
@@ -37,25 +46,100 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
-        const parsedCredentials = z
-          .object({ email: z.string().email(), password: z.string().min(6) })
-          .safeParse(credentials);
+      async authorize(credentials, req) {
+        const ip = getClientIp(req as Request);
+        const email = (credentials?.email as string)?.toLowerCase() ?? null;
 
-        if (parsedCredentials.success) {
-          const { email, password } = parsedCredentials.data;
-          const user = await db.user.findUnique({ where: { email } });
+        try {
+          await assertLoginRateLimit({
+            ip,
+            email,
+          });
 
-          if (!user || !user.password) return null;
+          const parsedCredentials = z
+            .object({ email: z.string().email(), password: z.string().min(6) })
+            .safeParse(credentials);
 
-          const passwordsMatch = await bcrypt.compare(password, user.password);
+          if (parsedCredentials.success) {
+            const { email, password } = parsedCredentials.data;
+            const user = await db.user.findUnique({ where: { email } });
 
-          if (passwordsMatch) {
-            if (!user.emailVerified) throw new Error("Email not verified");
-            return user;
+            if (!user || !user.password) {
+              logger.warn({
+                event: "login_failed_user_not_found",
+                ip,
+                email,
+              });
+              return null;
+            }
+
+            // Check if user is active
+            if (user.isActive === false) {
+              logger.warn({
+                event: "login_blocked_inactive",
+                ip,
+                userId: user.id,
+                email: user.email,
+              });
+              throw new Error("ACCOUNT_INACTIVE");
+            }
+
+            const passwordsMatch = await bcrypt.compare(password, user.password);
+
+            if (passwordsMatch) {
+              if (!user.emailVerified) {
+                logger.warn({
+                  event: "login_blocked_unverified_email",
+                  ip,
+                  userId: user.id,
+                  email: user.email,
+                });
+                throw new Error("Email not verified");
+              }
+
+              logger.info({
+                event: "login_success",
+                ip,
+                userId: user.id,
+                email: user.email,
+                role: user.role,
+              });
+              return user;
+            } else {
+              logger.warn({
+                event: "login_failed_invalid_password",
+                ip,
+                userId: user.id,
+                email: user.email,
+              });
+            }
           }
+          return null;
+        } catch (err) {
+          const code = (err as { code?: string })?.code ?? "UNKNOWN";
+          const { message } = err as Error;
+
+          // Don't log expected errors as errors
+          if (code === "TOO_MANY_LOGIN_ATTEMPTS_IP" || code === "TOO_MANY_LOGIN_ATTEMPTS_USER") {
+            // Already logged in assertLoginRateLimit
+            throw err;
+          }
+
+          if (message === "ACCOUNT_INACTIVE" || message === "Email not verified") {
+            // Already logged above
+            throw err;
+          }
+
+          logger.error({
+            event: "login_authorize_error",
+            ip,
+            email,
+            errorCode: code,
+            errorMessage: message,
+          });
+
+          throw err;
         }
-        return null;
       },
     }),
   ],

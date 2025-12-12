@@ -36,6 +36,10 @@ const envSchema = z.object({
     .string()
     .min(1, { message: "AUTH_GOOGLE_SECRET is required" }),
 
+  // Rate Limiting (Upstash)
+  UPSTASH_REDIS_REST_URL: z.string().url({ message: "UPSTASH_REDIS_REST_URL is required" }),
+  UPSTASH_REDIS_REST_TOKEN: z.string().min(1, { message: "UPSTASH_REDIS_REST_TOKEN is required" }),
+
   // Public
   NEXT_PUBLIC_NOINDEX: z
     .enum(["true", "false"])

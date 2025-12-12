@@ -24,17 +24,39 @@ model User {
   name          String? // Google/Provider'dan gelen tam isim
   firstName     String? // Manuel girilen ad
   lastName      String? // Manuel girilen soyad
+  username      String?  @unique // Kullanıcı adı Public Name
   email         String?   @unique
   emailVerified DateTime?
   image         String?
   password      String?
   phoneNumber   String?
 
+  // Privacy flags
+  isProfilePublic        Boolean @default(true)   // If false: nobody else can view the profile
+  showEmailOnProfile     Boolean @default(false)  // Email visibility on profile
+  showPhoneOnProfile     Boolean @default(false)  // Phone visibility on profile
+  showAvatarOnProfile    Boolean @default(true)   // Avatar/photo visibility on profile
+  allowMessagesFromUsers Boolean @default(true)   // If false: other users cannot start messages from the profile
+  showCoursesOnProfile     Boolean @default(true)
+  showAchievementsOnProfile Boolean @default(true)
+
+  // -- Soft Delete --
+  isDeleted   Boolean   @default(false)
+  deletedAt   DateTime?
+
   // -- Roller ve Durumlar --
   role                  Role?
   isActive              Boolean @default(true)
   isOnboardingCompleted Boolean @default(false)
+  
+  // -- Settings Preferences --
+  notificationEmailEnabled  Boolean @default(true)
+  notificationInAppEnabled  Boolean @default(true)
+  preferredCountry          String?
+  preferredTimezone         String?
+  cookieAnalyticsEnabled    Boolean @default(false)
   isMarketingConsent    Boolean @default(false)
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -46,6 +68,7 @@ model User {
   // -- Auth.js (NextAuth) İlişkileri --
   accounts Account[]
   sessions Session[]
+  emailChangeRequests EmailChangeRequest[]
 
   // -- Diğer İlişkiler --
   devices          Device[]
@@ -101,6 +124,18 @@ model PasswordResetToken {
   expires DateTime
 
   @@unique([email, token])
+}
+
+/// E-posta değişikliği istekleri.
+model EmailChangeRequest {
+  id        String   @id @default(uuid())
+  userId    String
+  newEmail  String
+  token     String   @unique
+  expires   DateTime
+  usedAt    DateTime?
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 /// Kullanıcının giriş yaptığı cihazlar (Bildirim göndermek için).

@@ -4,11 +4,26 @@ import type {
   WithContext,
   BreadcrumbList,
   SearchAction,
+  Person,
 } from "schema-dts";
 
 // Extend SearchAction to include Google-specific 'query-input'
 interface GoogleSearchAction extends SearchAction {
   "query-input": string;
+}
+
+export function generatePersonSchema(
+  name: string,
+  url: string,
+  image?: string | null
+): WithContext<Person> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name,
+    url,
+    ...(image ? { image } : {}),
+  };
 }
 
 export function generateOrganizationSchema(): WithContext<Organization> {

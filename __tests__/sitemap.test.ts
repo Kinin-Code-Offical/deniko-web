@@ -1,9 +1,21 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import sitemap from "../app/sitemap";
 
+// Mock the database
+vi.mock("@/lib/db", () => ({
+  db: {
+    user: {
+      findMany: vi.fn().mockResolvedValue([
+        { username: "testuser1", isProfilePublic: true },
+        { username: "testuser2", isProfilePublic: true },
+      ]),
+    },
+  },
+}));
+
 describe("Sitemap Generation", () => {
-  it("should generate valid sitemap entries", () => {
-    const entries = sitemap();
+  it("should generate valid sitemap entries", async () => {
+    const entries = await sitemap();
 
     expect(Array.isArray(entries)).toBe(true);
     expect(entries.length).toBeGreaterThan(0);
@@ -19,8 +31,8 @@ describe("Sitemap Generation", () => {
     expect(firstEntry.url).toMatch(/^https:\/\/deniko\.net/);
   });
 
-  it("should include all locales", () => {
-    const entries = sitemap();
+  it("should include all locales", async () => {
+    const entries = await sitemap();
     const urls = entries.map((e) => e.url);
 
     // Check for presence of locales in URLs

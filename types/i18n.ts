@@ -1,4 +1,266 @@
 export interface Dictionary {
+  verify_email_change: {
+    success_title: string;
+    success_description: string;
+    login_button: string;
+    error_title: string;
+    error_description: string;
+    back_button: string;
+  };
+  server: {
+    errors: {
+      unauthorized: string;
+      invalid_input: string;
+      failed_update_profile: string;
+      user_not_found_password: string;
+      incorrect_password: string;
+      failed_update_password: string;
+      invalid_email: string;
+      email_in_use: string;
+      user_not_found: string;
+      failed_request_email_change: string;
+      invalid_phone: string;
+      failed_update_phone: string;
+      failed_deactivate: string;
+      failed_delete: string;
+      passwords_do_not_match: string;
+      username_min_length: string;
+      username_max_length: string;
+      username_pattern: string;
+      username_taken: string;
+      failed_update_username: string;
+      invalid_token: string;
+      token_expired: string;
+      something_went_wrong: string;
+      same_password: string;
+      failed_update_notification_preferences: string;
+      failed_update_region_timezone: string;
+      failed_update_cookie_preferences: string;
+      no_image_provided: string;
+      failed_update_avatar: string;
+      no_file_provided: string;
+      invalid_file_type: string;
+      file_size_too_large: string;
+      failed_upload_avatar: string;
+    };
+  };
+  profile: {
+    public: {
+      title: string;
+      description: string;
+      messageButton: string;
+      notFound: string;
+      role_teacher: string;
+      role_student: string;
+    };
+    settings: {
+      username: {
+        title: string;
+        description: string;
+        label: string;
+        placeholder: string;
+        button: string;
+        success: string;
+        error: string;
+      };
+      basic: {
+        title: string;
+        description: string;
+        firstName: string;
+        firstNamePlaceholder: string;
+        lastName: string;
+        lastNamePlaceholder: string;
+        save: string;
+        success: string;
+        saving: string;
+        avatar: {
+          label: string;
+          upload: string;
+          upload_hint: string;
+          presets: string;
+          crop_title: string;
+          crop_desc: string;
+          cancel: string;
+          save: string;
+          error_file_type: string;
+          error_file_size: string;
+          success_update: string;
+          error_upload: string;
+          error_generic: string;
+        };
+        phone: {
+          label: string;
+          placeholder: string;
+          countrySelectorLabel: string;
+          noResultsMessage: string;
+          searchPlaceholder: string;
+        };
+        teacher: {
+          branch: string;
+          branch_placeholder: string;
+          bio: string;
+          bio_placeholder: string;
+        };
+        student: {
+          student_no: string;
+          student_no_placeholder: string;
+          grade_level: string;
+          grade_level_placeholder: string;
+          parent_name: string;
+          parent_name_placeholder: string;
+          parent_phone: string;
+          parent_email: string;
+          parent_email_placeholder: string;
+        };
+      };
+      notifications: {
+        title: string;
+        description: string;
+        email: {
+          label: string;
+          description: string;
+        };
+        inApp: {
+          label: string;
+          description: string;
+        };
+        save: string;
+        success: string;
+        saving: string;
+      };
+      region: {
+        title: string;
+        description: string;
+        country: {
+          label: string;
+          placeholder: string;
+        };
+        timezone: {
+          label: string;
+          placeholder: string;
+        };
+        save: string;
+        success: string;
+        saving: string;
+      };
+      cookies: {
+        title: string;
+        description: string;
+        necessary: {
+          label: string;
+          description: string;
+        };
+        analytics: {
+          label: string;
+          description: string;
+        };
+        marketing: {
+          label: string;
+          description: string;
+        };
+        links: {
+          privacy: string;
+          cookies: string;
+        };
+        save: string;
+        success: string;
+        saving: string;
+      };
+      security: {
+        password: {
+          title: string;
+          description: string;
+          currentPassword: string;
+          newPassword: string;
+          confirmPassword: string;
+          placeholder: string;
+          save: string;
+          success: string;
+          security_strength: string;
+          saving: string;
+          hide_password: string;
+          show_password: string;
+          enter_password: string;
+          weak: string;
+          medium: string;
+          strong: string;
+          validation: {
+            required: string;
+            min_length: string;
+            passwords_do_not_match: string;
+            uppercase: string;
+            lowercase: string;
+            number: string;
+            special: string;
+          };
+        };
+        email: {
+          title: string;
+          description: string;
+          currentEmail: string;
+          newEmail: string;
+          sendVerification: string;
+          sending: string;
+          success: string;
+          placeholder: string;
+        };
+        phone: {
+          title: string;
+          description: string;
+          label: string;
+          placeholder: string;
+          save: string;
+          success: string;
+        };
+      };
+      danger: {
+        deactivate: {
+          title: string;
+          description: string;
+          button: string;
+          confirmTitle: string;
+          confirmDescription: string;
+          cancel: string;
+          confirmButton: string;
+          success: string;
+          processing: string;
+        };
+        delete: {
+          title: string;
+          description: string;
+          button: string;
+          confirmTitle: string;
+          confirmDescription: string;
+          cancel: string;
+          confirmButton: string;
+          success: string;
+          typeToConfirm: string;
+          deleting: string;
+        };
+      };
+      privacy: {
+        title: string;
+        description: string;
+        isProfilePublic: {
+          label: string;
+          description: string;
+        };
+        showEmail: {
+          label: string;
+        };
+        showCourses: {
+          label: string;
+        };
+        showAchievements: {
+          label: string;
+        };
+        save: string;
+        success: string;
+        messagingDisabled: string;
+        saving: string;
+      };
+    };
+  };
   metadata: {
     home: {
       title: string;
@@ -28,6 +290,81 @@ export interface Dictionary {
       description: string;
       welcome_title: string;
       contact_support: string;
+      nav: {
+        dashboard: string;
+        students: string;
+        schedule: string;
+        lessons: string;
+        finance: string;
+        settings: string;
+        messages: string;
+        notifications: string;
+        profile: string;
+        files: string;
+      };
+      header: {
+        profile: string;
+        settings: string;
+        logout: string;
+      };
+      overview: {
+        title: string;
+        welcome: string;
+        stats: {
+          total_students: string;
+          upcoming_lessons: string;
+          unread_messages: string;
+          total_income: string;
+        };
+        recent_activity: string;
+        upcoming_lessons: string;
+      };
+      messages: {
+        title: string;
+        search_placeholder: string;
+        type_message: string;
+        send: string;
+        no_conversation: string;
+      };
+      notifications: {
+        title: string;
+        all: string;
+        unread: string;
+        system: string;
+        mark_all_read: string;
+      };
+      profile: {
+        title: string;
+        personal_info: string;
+        contact_info: string;
+        save_changes: string;
+      };
+      files: {
+        title: string;
+        upload: string;
+        drag_drop: string;
+        no_files: string;
+      };
+      settings: {
+        title: string;
+        account: string;
+        security: string;
+        notifications: string;
+        language: string;
+        theme: string;
+      };
+      teacher: {
+        active_students: string;
+        today_lessons_count: string;
+        pending_homework_count: string;
+        upcoming_lessons: string;
+        no_lessons_today: string;
+      };
+      student: {
+        next_lesson: string;
+        completed_lessons: string;
+        assignments_todo: string;
+      };
     };
     finance: {
       title: string;
@@ -153,14 +490,152 @@ export interface Dictionary {
       dashboard: string;
       students: string;
       schedule: string;
+      lessons: string;
       finance: string;
       settings: string;
-      lessons: string;
-      homework: string;
-      exams: string;
+      messages: string;
+      notifications: string;
+      profile: string;
+      files: string;
       logout: string;
       menu_title: string;
       menu_desc: string;
+      system_operational: string;
+    };
+    overview: {
+      title: string;
+      welcome: string;
+      stats: {
+        total_students: string;
+        upcoming_lessons: string;
+        unread_messages: string;
+        total_income: string;
+      };
+      recent_activity: string;
+      upcoming_lessons: string;
+    };
+    messages: {
+      title: string;
+      search_placeholder: string;
+      type_message: string;
+      send: string;
+      no_conversation: string;
+      online: string;
+      mock_msg_1: string;
+      mock_msg_2: string;
+      mock_msg_3: string;
+      mock_time_1: string;
+      mock_time_2: string;
+      mock_time_3: string;
+      mock_time_4: string;
+      mock_msg_4: string;
+      mock_user_initial: string;
+      mock_user_name: string;
+      mock_user_name_2: string;
+    };
+    notifications: {
+      title: string;
+      all: string;
+      unread: string;
+      system: string;
+      mark_all_read: string;
+      no_unread: string;
+      no_system: string;
+      mock_title_1: string;
+      mock_msg_1: string;
+      mock_time_1: string;
+      mock_title_2: string;
+      mock_msg_2: string;
+      mock_time_2: string;
+      mock_title_3: string;
+      mock_msg_3: string;
+      mock_time_3: string;
+    };
+    profile: {
+      title: string;
+      personal_info: string;
+      personal_info_desc: string;
+      contact_info: string;
+      contact_info_desc: string;
+      save_changes: string;
+      change_avatar: string;
+      full_name: string;
+      email: string;
+      role: string;
+      phone: string;
+      phone_placeholder: string;
+      address: string;
+      address_placeholder: string;
+    };
+    files: {
+      title: string;
+      upload: string;
+      drag_drop: string;
+      no_files: string;
+      download: string;
+      delete: string;
+    };
+    finance: {
+      total_revenue: string;
+      revenue_growth: string;
+      outstanding: string;
+      pending_payments_count: string;
+      active_subscriptions: string;
+      subscriptions_growth: string;
+      recent_transactions: string;
+      mock_revenue: string;
+      mock_outstanding: string;
+      mock_subscriptions: string;
+    };
+    lessons: {
+      title: string;
+      schedule_lesson: string;
+      at: string;
+      details: string;
+    };
+    schedule: {
+      title: string;
+      new_lesson: string;
+      calendar: string;
+      calendar_placeholder: string;
+      upcoming: string;
+      math: string;
+      mock_lesson_1: string;
+      physics: string;
+      mock_lesson_2: string;
+    };
+    settings: {
+      title: string;
+      description: string;
+      nav: {
+        profile: string;
+        security: string;
+        privacy: string;
+        notifications: string;
+        language: string;
+        cookies: string;
+      };
+      logout: string;
+      account: string;
+      account_desc: string;
+      security: string;
+      notifications: string;
+      notifications_desc: string;
+      language: string;
+      language_desc: string;
+      theme: string;
+      two_fa_label: string;
+      two_fa_desc: string;
+      delete_account_label: string;
+      delete_account_desc: string;
+      delete_account_button: string;
+      email_notifications_label: string;
+      email_notifications_desc: string;
+      marketing_emails_label: string;
+      marketing_emails_desc: string;
+      language_placeholder: string;
+      en: string;
+      tr: string;
     };
     join: {
       error: string;
@@ -209,7 +684,6 @@ export interface Dictionary {
       };
     };
     header: {
-      search_placeholder: string;
       profile: string;
       settings: string;
       logout: string;
@@ -299,6 +773,10 @@ export interface Dictionary {
       weekly_schedule: string;
       no_pending_homework: string;
       due_date: string;
+      view_all: string;
+      due: string;
+      start: string;
+      all_caught_up: string;
     };
     teacher: {
       active_students: string;
@@ -306,6 +784,13 @@ export interface Dictionary {
       pending_homework_count: string;
       upcoming_lessons: string;
       no_lessons_today: string;
+      check_schedule_desc: string;
+      review: string;
+      view: string;
+      mock_task_1: string;
+      mock_task_1_sub: string;
+      mock_task_2: string;
+      mock_task_2_sub: string;
       take_attendance: string;
       quick_actions: {
         title: string;
@@ -577,6 +1062,17 @@ export interface Dictionary {
     accept_button: string;
     welcome_user: string;
   };
+  seo: {
+    profile: {
+      title: string;
+      description: {
+        teacher: string;
+        student: string;
+        generic: string;
+      };
+      private: string;
+    };
+  };
   auth: {
     placeholders: {
       email: string;
@@ -646,6 +1142,7 @@ export interface Dictionary {
         email_invalid: string;
         password_required: string;
         invalid_credentials: string;
+        rate_limit: string;
       };
     };
     forgot_password: {
@@ -713,6 +1210,11 @@ export interface Dictionary {
     errors: {
       generic: string;
     };
+  };
+  validation: {
+    passwords_do_not_match: string;
+    min_length: string;
+    required: string;
   };
   home: {
     home: string;
@@ -850,40 +1352,6 @@ export interface Dictionary {
       patent: string;
     };
   };
-  email: {
-    verification: {
-      subject: string;
-      title: string;
-      greeting: string;
-      body: string;
-      button: string;
-      ignore: string;
-      footer: string;
-      website: string;
-      support: string;
-      footer_disclaimer: string;
-      footer_address: string;
-      footer_copyright: string;
-      footer_terms: string;
-      footer_privacy: string;
-    };
-    password_reset: {
-      subject: string;
-      title: string;
-      greeting: string;
-      body: string;
-      button: string;
-      ignore: string;
-      footer: string;
-      website: string;
-      support: string;
-      footer_disclaimer: string;
-      footer_address: string;
-      footer_copyright: string;
-      footer_terms: string;
-      footer_privacy: string;
-    };
-  };
   errors: {
     unauthorized: string;
     teacher_profile_not_found: string;
@@ -939,6 +1407,12 @@ export interface Dictionary {
     file_not_found_or_error: string;
     unknown_error: string;
     phone_start_zero: string;
+    same_password: string;
+    two_fa_error: string;
+    invalid_2fa_code: string;
+    two_fa_disabled: string;
+    two_fa_enabled: string;
+    delete_account_failed: string;
   };
   support: {
     nav: {
@@ -1016,6 +1490,56 @@ export interface Dictionary {
           message_min: string;
         };
       };
+    };
+  };
+  email: {
+    verification: {
+      subject: string;
+      title: string;
+      greeting: string;
+      body: string;
+      button: string;
+      ignore: string;
+      footer: string;
+      website: string;
+      support: string;
+      footer_disclaimer: string;
+      footer_address: string;
+      footer_copyright: string;
+      footer_terms: string;
+      footer_privacy: string;
+    };
+    password_reset: {
+      subject: string;
+      title: string;
+      greeting: string;
+      body: string;
+      button: string;
+      ignore: string;
+      footer: string;
+      website: string;
+      support: string;
+      footer_disclaimer: string;
+      footer_address: string;
+      footer_copyright: string;
+      footer_terms: string;
+      footer_privacy: string;
+    };
+    email_change: {
+      subject: string;
+      title: string;
+      greeting: string;
+      body: string;
+      button: string;
+      ignore: string;
+      footer: string;
+      website: string;
+      support: string;
+      footer_disclaimer: string;
+      footer_address: string;
+      footer_copyright: string;
+      footer_terms: string;
+      footer_privacy: string;
     };
   };
 }

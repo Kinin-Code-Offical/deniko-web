@@ -5,8 +5,10 @@ import {
   CreditCard,
   Settings,
   BookOpen,
-  FileText,
-  PenTool,
+  MessageSquare,
+  Bell,
+  User,
+  Folder,
 } from "lucide-react";
 
 export const teacherNav = [
@@ -14,6 +16,16 @@ export const teacherNav = [
     title: "dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    title: "messages",
+    href: "/dashboard/messages",
+    icon: MessageSquare,
+  },
+  {
+    title: "notifications",
+    href: "/dashboard/notifications",
+    icon: Bell,
   },
   {
     title: "students",
@@ -26,9 +38,19 @@ export const teacherNav = [
     icon: Calendar,
   },
   {
+    title: "files",
+    href: "/dashboard/files",
+    icon: Folder,
+  },
+  {
     title: "finance",
     href: "/dashboard/finance",
     icon: CreditCard,
+  },
+  {
+    title: "profile",
+    href: "/dashboard/profile",
+    icon: User,
   },
   {
     title: "settings",
@@ -44,19 +66,29 @@ export const studentNav = [
     icon: LayoutDashboard,
   },
   {
+    title: "messages",
+    href: "/dashboard/messages",
+    icon: MessageSquare,
+  },
+  {
+    title: "notifications",
+    href: "/dashboard/notifications",
+    icon: Bell,
+  },
+  {
     title: "lessons",
     href: "/dashboard/lessons",
     icon: BookOpen,
   },
   {
-    title: "homework",
-    href: "/dashboard/homework",
-    icon: FileText,
+    title: "files",
+    href: "/dashboard/files",
+    icon: Folder,
   },
   {
-    title: "exams",
-    href: "/dashboard/exams",
-    icon: PenTool,
+    title: "profile",
+    href: "/dashboard/profile",
+    icon: User,
   },
   {
     title: "settings",

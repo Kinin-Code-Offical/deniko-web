@@ -40,7 +40,7 @@ export function Navbar({ lang, dictionary }: NavbarProps) {
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-100 border-b bg-white/80 backdrop-blur-md transition-colors dark:border-slate-800 dark:bg-slate-950/80">
+    <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md transition-colors dark:border-slate-800 dark:bg-slate-950/80">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:h-20">
         {/* Logo */}
         <Link

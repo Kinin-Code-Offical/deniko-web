@@ -17,15 +17,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { toast } from "sonner";
-import { Loader2, Send } from "lucide-react";
+import { Check, ChevronDown, Loader2, Send } from "lucide-react";
 import type { Dictionary } from "@/types/i18n";
+import { cn } from "@/lib/utils";
 
 interface SupportFormProps {
   dictionary: Dictionary;
@@ -36,6 +35,7 @@ export function SupportForm({ dictionary }: SupportFormProps) {
   const [isPending, startTransition] = useTransition();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, setState] = useState<SupportState>({});
+  const [open, setOpen] = useState(false);
 
   const formSchema = z.object({
     name: z.string().min(2, { message: d.validation.name_required }),
@@ -136,19 +136,55 @@ export function SupportForm({ dictionary }: SupportFormProps) {
               <FormLabel className="text-slate-700 dark:text-slate-300">
                 {d.type_label}
               </FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="h-11 rounded-xl border-slate-200 bg-slate-50 transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-900/50 dark:text-white dark:focus:border-blue-500 dark:focus:bg-slate-900">
-                    <SelectValue placeholder={d.type_placeholder} />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="rounded-xl border-slate-200 dark:border-slate-800 dark:bg-slate-950">
-                  <SelectItem value="general">{d.types.general}</SelectItem>
-                  <SelectItem value="bug">{d.types.bug}</SelectItem>
-                  <SelectItem value="billing">{d.types.billing}</SelectItem>
-                  <SelectItem value="feature">{d.types.feature}</SelectItem>
-                </SelectContent>
-              </Select>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className={cn(
+                        "w-full justify-between font-normal",
+                        "h-11 rounded-xl border-slate-200 bg-slate-50 transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-900/50 dark:text-white dark:focus:border-blue-500 dark:focus:bg-slate-900",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value
+                        ? d.types[field.value as keyof typeof d.types]
+                        : d.type_placeholder}
+                      <ChevronDown className="ml-2 h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[280px] rounded-xl border-slate-200 p-0 dark:border-slate-800 dark:bg-slate-950"
+                  align="start"
+                >
+                  <div className="p-1">
+                    {(["general", "bug", "billing", "feature"] as const).map(
+                      (type) => (
+                        <div
+                          key={type}
+                          className={cn(
+                            "relative flex cursor-pointer items-center rounded-lg px-2 py-2 text-sm transition-colors outline-none select-none hover:bg-slate-100 dark:hover:bg-slate-800",
+                            field.value === type &&
+                              "bg-slate-100 font-medium dark:bg-slate-800"
+                          )}
+                          onClick={() => {
+                            field.onChange(type);
+                            setOpen(false);
+                          }}
+                        >
+                          {d.types[type]}
+                          {field.value === type && (
+                            <Check className="ml-auto h-4 w-4 text-blue-600 dark:text-blue-400" />
+                          )}
+                        </div>
+                      )
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}

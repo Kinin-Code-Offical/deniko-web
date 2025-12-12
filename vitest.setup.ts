@@ -5,6 +5,27 @@ vi.mock("server-only", () => {
   return {};
 });
 
+vi.mock("next/server", () => {
+  return {
+    NextRequest: class { },
+    NextResponse: class {
+      static json() { }
+      static redirect() { }
+      static next() { }
+    },
+  };
+});
+
+vi.mock("next-auth", () => ({
+  default: vi.fn(),
+  NextAuth: vi.fn(() => ({
+    auth: vi.fn(),
+    handlers: { GET: vi.fn(), POST: vi.fn() },
+    signIn: vi.fn(),
+    signOut: vi.fn(),
+  })),
+}));
+
 // Mock environment variables for testing
 process.env.DATABASE_URL = "postgresql://user:password@localhost:5432/testdb";
 process.env.NEXTAUTH_URL = "http://localhost:3000";
@@ -28,5 +49,7 @@ process.env.SMTP_NOREPLY_FROM = "noreply@example.com";
 process.env.SMTP_SUPPORT_HOST = "smtp.example.com";
 process.env.SMTP_SUPPORT_PORT = "465";
 process.env.SMTP_SUPPORT_USER = "support@example.com";
+process.env.UPSTASH_REDIS_REST_URL = "https://example.upstash.io";
+process.env.UPSTASH_REDIS_REST_TOKEN = "test-token";
 process.env.SMTP_SUPPORT_PASSWORD = "support-password";
 process.env.SMTP_SUPPORT_FROM = "support@example.com";

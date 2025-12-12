@@ -83,6 +83,10 @@ export function OnboardingClientPage({
           confirmPassword,
           terms: termsAccepted,
           marketingConsent,
+          preferredTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          preferredCountry: (
+            navigator.language.split("-")[1] || "US"
+          ).toUpperCase(),
         });
         if (result.success) {
           await update({ role });
