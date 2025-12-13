@@ -22,6 +22,16 @@ vi.mock("@/auth", () => ({
   handlers: { GET: vi.fn(), POST: vi.fn() },
 }));
 
+// Mock next-auth/react
+vi.mock("next-auth/react", () => ({
+  useSession: vi.fn(() => ({
+    data: null,
+    status: "unauthenticated",
+  })),
+  signIn: vi.fn(),
+  signOut: vi.fn(),
+}));
+
 // Mock dictionary
 const mockDictionary = {
   metadata: {

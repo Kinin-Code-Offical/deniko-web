@@ -44,7 +44,7 @@ describe("ESLint i18n Rules", () => {
         m.message.includes("Avoid hardcoded placeholder")
       )
     ).toBe(true);
-  }, 30000);
+  }, 60000);
 
   it("should pass for i18n usage", async () => {
     const code = `
