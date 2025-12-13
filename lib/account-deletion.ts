@@ -147,11 +147,6 @@ export async function deleteUserAndRelatedData(userId: string) {
             username: `deleted_${userId.substring(0, 8)}`, // Unique constraint
             phoneNumber: null,
             image: null,
-            isProfilePublic: false,
-            showAvatarOnProfile: false,
-            showEmailOnProfile: false,
-            showPhoneOnProfile: false,
-            allowMessagesFromUsers: false,
         },
     });
 

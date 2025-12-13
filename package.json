@@ -21,7 +21,7 @@
     "test:unit": "vitest run __tests__",
     "test:integration": "vitest run tests/hardcoded",
     "test:cli": "tsx scripts/check-any.ts && tsx scripts/check-hardcoded.ts && tsx scripts/check-console.ts && tsx scripts/check-env.ts",
-    "test:all": "npm run lint && npm run typecheck && npm run test:unit && npm run test:integration && npm run test:cli",
+    "test:all": "pnpm lint && pnpm typecheck && pnpm test:unit && pnpm test:integration && pnpm test:cli",
     "pnpm:test:all": "pnpm lint && pnpm typecheck && pnpm test:unit && pnpm test:integration && pnpm test:cli",
     "postinstall": "prisma generate && patch-package"
   },

@@ -32,6 +32,22 @@ vi.mock("@/auth", () => ({
 // Mock dictionary
 vi.mock("@/lib/get-dictionary", () => ({
   getDictionary: vi.fn().mockResolvedValue({
+    auth: {
+      register: {
+        first_name: "First Name",
+        last_name: "Last Name",
+        username: "Username",
+      },
+    },
+    common: {
+      edit: "Edit",
+      cancel: "Cancel",
+      save: "Save",
+      error: "Error",
+      success: "Success",
+      delete: "Delete",
+      confirm: "Confirm",
+    },
     dashboard: {
       nav: {
         overview: "Overview",
@@ -102,6 +118,13 @@ vi.mock("@/lib/get-dictionary", () => ({
         phone_placeholder: "+1 234 567 890",
         address: "Address",
         address_placeholder: "123 Main St",
+        activity_stats: {
+          title: "Activity & Stats",
+          description: "Your platform activity overview",
+          lessons: "Lessons Taught",
+          students: "Students",
+          rating: "Rating",
+        },
         settings: {
           username: {
             title: "Username",
@@ -151,8 +174,51 @@ vi.mock("@/lib/get-dictionary", () => ({
         account: "Account",
         account_desc: "Manage your account settings.",
         security: "Security",
-        notifications: "Notifications",
-        notifications_desc: "Configure how you receive notifications.",
+        privacy: {
+          title: "Privacy Settings",
+          description: "Manage your privacy settings.",
+          profileVisibility: {
+            label: "Profile Visibility",
+            public: "Public",
+            private: "Private",
+          },
+          showAvatar: { label: "Show Avatar" },
+          showEmail: { label: "Show Email" },
+          showPhone: { label: "Show Phone" },
+          allowMessages: { label: "Allow Messages" },
+          showCourses: { label: "Show Courses" },
+          save: "Save",
+          success: "Success",
+          saving: "Saving...",
+        },
+        notifications: {
+          title: "Notifications",
+          description: "Configure how you receive notifications.",
+          email: {
+            label: "Email Notifications",
+            description: "Receive emails about your account activity.",
+          },
+          inApp: {
+            label: "In-App Notifications",
+            description: "Receive notifications within the application.",
+          },
+          marketing: {
+            label: "Marketing Emails",
+            description: "Receive emails about new features and offers.",
+          },
+          save: "Save Preferences",
+          success: "Notification preferences updated",
+          saving: "Saving...",
+        },
+        region: {
+          title: "Region & Timezone",
+          description: "Set your preferred region and timezone.",
+          country: { label: "Country", placeholder: "Select a country" },
+          timezone: { label: "Timezone", placeholder: "Select a timezone" },
+          save: "Save Preferences",
+          success: "Region settings updated",
+          saving: "Saving...",
+        },
         language: "Language",
         language_desc: "Select your preferred language.",
         theme: "Theme",

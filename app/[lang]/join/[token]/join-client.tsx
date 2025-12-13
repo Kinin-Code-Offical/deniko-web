@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getAvatarUrl } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -64,6 +65,7 @@ interface InviteDetails {
   teacherName: string | null;
   teacherImage?: string | null;
   teacherEmail?: string | null;
+  teacherId?: string | null;
 }
 
 type UserWithProfile = User & {
@@ -236,7 +238,12 @@ export default function JoinClient({
             {/* Teacher Avatar */}
             <div className="flex flex-col items-center gap-2">
               <Avatar className="border-primary/10 h-16 w-16 border-2">
-                <AvatarImage src={inviteDetails.teacherImage || undefined} />
+                <AvatarImage
+                  src={getAvatarUrl(
+                    inviteDetails.teacherImage,
+                    inviteDetails.teacherId || ""
+                  )}
+                />
                 <AvatarFallback className="bg-primary/10 text-primary text-lg font-semibold">
                   {teacherInitials}
                 </AvatarFallback>
@@ -299,7 +306,13 @@ export default function JoinClient({
           <div className="space-y-4">
             <div className="flex items-center gap-3 rounded-md border p-3 dark:border-slate-800">
               <Avatar className="h-10 w-10">
-                <AvatarImage src={userProfile?.image || undefined} />
+                <AvatarImage
+                  src={
+                    userProfile
+                      ? getAvatarUrl(userProfile.image, userProfile.id)
+                      : undefined
+                  }
+                />
                 <AvatarFallback>
                   {userProfile?.name?.slice(0, 2).toUpperCase() || "ME"}
                 </AvatarFallback>

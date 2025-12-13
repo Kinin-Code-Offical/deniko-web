@@ -52,6 +52,16 @@ export const createImage = (url: string): Promise<HTMLImageElement> =>
     image.src = url;
   });
 
+export function getAvatarUrl(image: string | null | undefined, userId: string) {
+  if (!image) return "/api/avatars/default";
+  if (image.startsWith("http") || image.startsWith("https")) {
+    return image;
+  }
+  // Internal key
+  return `/api/avatar/${userId}`;
+}
+
+
 export function getRadianAngle(degreeValue: number) {
   return (degreeValue * Math.PI) / 180;
 }

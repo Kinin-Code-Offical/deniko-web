@@ -13,16 +13,30 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-import { ArrowRight, BookOpen, LogIn, Menu } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  LogIn,
+  Menu,
+  LayoutDashboard,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Dictionary } from "@/types/i18n";
+import { UserNav } from "@/components/dashboard/user-nav";
 
 interface NavbarProps {
   lang: string;
   dictionary: Dictionary;
+  user?: {
+    id?: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    username?: string | null;
+  };
 }
 
-export function Navbar({ lang, dictionary }: NavbarProps) {
+export function Navbar({ lang, dictionary, user }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const pathname = usePathname();
@@ -59,32 +73,55 @@ export function Navbar({ lang, dictionary }: NavbarProps) {
           <LanguageSwitcher currentLocale={lang} />
 
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              asChild
-              className="h-11 px-4 text-[15px] font-medium text-slate-600 hover:text-[#2062A3] dark:text-slate-300 dark:hover:text-blue-400"
-            >
-              <Link
-                href={`/${lang}/login`}
-                className="inline-flex items-center gap-2"
-              >
-                <LogIn className="h-4 w-4" />
-                <span>{dictionary.home.login}</span>
-              </Link>
-            </Button>
-            <Button
-              asChild
-              className="relative h-11 overflow-hidden rounded-full bg-linear-to-r from-[#1d4f87] via-[#1a4b7d] to-[#113055] px-6 text-[15px] font-semibold text-white shadow-lg shadow-blue-900/20 hover:opacity-95"
-            >
-              <Link
-                href={`/${lang}/register`}
-                className="inline-flex items-center gap-2"
-              >
-                <BookOpen className="h-4 w-4" />
-                <span>{dictionary.home.get_started}</span>
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
+            {user ? (
+              <>
+                <Button
+                  variant="ghost"
+                  asChild
+                  className="hidden h-10 rounded-full border border-slate-200 px-4 text-sm font-medium text-slate-600 hover:text-[#2062A3] sm:inline-flex dark:border-slate-700 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700 dark:hover:text-white"
+                >
+                  <Link href={`/${lang}/dashboard`}>
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    {dictionary.dashboard.join.go_dashboard}
+                  </Link>
+                </Button>
+                <UserNav
+                  user={user}
+                  dictionary={dictionary}
+                  lang={lang}
+                  className="h-[50px] w-[50px] border border-slate-200 p-0 dark:border-slate-700"
+                />
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  asChild
+                  className="h-11 px-4 text-[15px] font-medium text-slate-600 hover:text-[#2062A3] dark:text-slate-300 dark:hover:text-blue-400"
+                >
+                  <Link
+                    href={`/${lang}/login`}
+                    className="inline-flex items-center gap-2"
+                  >
+                    <LogIn className="h-4 w-4" />
+                    <span>{dictionary.home.login}</span>
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  className="relative h-11 overflow-hidden rounded-full bg-linear-to-r from-[#1d4f87] via-[#1a4b7d] to-[#113055] px-6 text-[15px] font-semibold text-white shadow-lg shadow-blue-900/20 hover:opacity-95"
+                >
+                  <Link
+                    href={`/${lang}/register`}
+                    className="inline-flex items-center gap-2"
+                  >
+                    <BookOpen className="h-4 w-4" />
+                    <span>{dictionary.home.get_started}</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
 
@@ -115,35 +152,61 @@ export function Navbar({ lang, dictionary }: NavbarProps) {
                   {dictionary.navbar.mobile_menu_desc}
                 </SheetDescription>
                 <div className="flex flex-col gap-6 py-6">
-                  <div className="flex items-center gap-2">
-                    <div className="rounded-lg bg-[#2062A3] p-1.5 dark:bg-blue-600">
-                      <DenikoLogo className="h-6 w-6 text-white" />
+                  {!user && (
+                    <div className="flex items-center gap-2">
+                      <div className="rounded-lg bg-[#2062A3] p-1.5 dark:bg-blue-600">
+                        <DenikoLogo className="h-6 w-6 text-white" />
+                      </div>
+                      <span className="text-xl font-bold text-[#2062A3] dark:text-blue-400">
+                        {dictionary.common.app_name}
+                      </span>
                     </div>
-                    <span className="text-xl font-bold text-[#2062A3] dark:text-blue-400">
-                      {dictionary.common.app_name}
-                    </span>
-                  </div>
+                  )}
 
                   <div className="flex flex-col gap-3">
-                    <Button
-                      variant="outline"
-                      className="h-12 w-full justify-start text-base dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
-                      asChild
-                      onClick={() => setOpen(false)}
-                    >
-                      <Link href={`/${lang}/login`}>
-                        {dictionary.home.login}
-                      </Link>
-                    </Button>
-                    <Button
-                      className="h-12 w-full justify-start bg-[#2062A3] text-base hover:bg-[#1a4f83] dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700"
-                      asChild
-                      onClick={() => setOpen(false)}
-                    >
-                      <Link href={`/${lang}/register`}>
-                        {dictionary.home.get_started}
-                      </Link>
-                    </Button>
+                    {user ? (
+                      <div className="flex flex-col items-center justify-center gap-4">
+                        <UserNav
+                          user={user}
+                          dictionary={dictionary}
+                          lang={lang}
+                          className="h-16 w-16 border border-slate-200 p-0 dark:border-slate-700"
+                        />
+                        <Button
+                          variant="ghost"
+                          asChild
+                          className="w-full justify-center border border-slate-200 text-sm font-medium text-slate-600 hover:text-[#2062A3] dark:border-slate-700 dark:text-slate-300 dark:hover:text-blue-400"
+                          onClick={() => setOpen(false)}
+                        >
+                          <Link href={`/${lang}/dashboard`}>
+                            <LayoutDashboard className="mr-2 h-4 w-4" />
+                            {dictionary.dashboard.join.go_dashboard}
+                          </Link>
+                        </Button>
+                      </div>
+                    ) : (
+                      <>
+                        <Button
+                          variant="outline"
+                          className="h-12 w-full justify-start text-base dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                          asChild
+                          onClick={() => setOpen(false)}
+                        >
+                          <Link href={`/${lang}/login`}>
+                            {dictionary.home.login}
+                          </Link>
+                        </Button>
+                        <Button
+                          className="h-12 w-full justify-start bg-[#2062A3] text-base hover:bg-[#1a4f83] dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700"
+                          asChild
+                          onClick={() => setOpen(false)}
+                        >
+                          <Link href={`/${lang}/register`}>
+                            {dictionary.home.get_started}
+                          </Link>
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </div>
 

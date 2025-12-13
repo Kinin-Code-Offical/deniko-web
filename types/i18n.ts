@@ -278,18 +278,31 @@ export interface Dictionary {
       privacy: {
         title: string;
         description: string;
-        isProfilePublic: {
+        profileVisibility: {
+          label: string;
+          description: string;
+          public: string;
+          private: string;
+        };
+        showAvatar: {
           label: string;
           description: string;
         };
         showEmail: {
           label: string;
+          description: string;
+        };
+        showPhone: {
+          label: string;
+          description: string;
+        };
+        allowMessages: {
+          label: string;
+          description: string;
         };
         showCourses: {
           label: string;
-        };
-        showAchievements: {
-          label: string;
+          description: string;
         };
         save: string;
         success: string;
@@ -442,6 +455,14 @@ export interface Dictionary {
     description: string;
     go_back: string;
     home: string;
+  };
+  error_pages: {
+    forbidden: {
+      title: string;
+      description: string;
+      backToHome: string;
+      backToDashboard: string;
+    };
   };
   navbar: {
     menu_open: string;
@@ -603,6 +624,15 @@ export interface Dictionary {
       phone_placeholder: string;
       address: string;
       address_placeholder: string;
+      bio: string;
+      activity_stats: {
+        title: string;
+        description: string;
+        lessons: string;
+        students: string;
+        hours: string;
+        rating: string;
+      };
     };
     files: {
       title: string;
@@ -656,7 +686,13 @@ export interface Dictionary {
       account: string;
       account_desc: string;
       security: string;
-      notifications: string;
+      notifications: {
+        title: string;
+        description: string;
+        email: { label: string; description: string };
+        inApp: { label: string; description: string };
+        marketing: { label: string; description: string };
+      };
       notifications_desc: string;
       language: string;
       language_desc: string;
@@ -673,6 +709,28 @@ export interface Dictionary {
       language_placeholder: string;
       en: string;
       tr: string;
+      privacy: {
+        title: string;
+        description: string;
+        visibility_title: string;
+        public_profile: string;
+        public_profile_desc: string;
+        public: string;
+        private: string;
+        display_options: string;
+        show_avatar: string;
+        show_email: string;
+        show_phone: string;
+        interactions: string;
+        allow_messages: string;
+        allow_messages_desc: string;
+        show_courses: string;
+      };
+      region: {
+        country: {
+          label: string;
+        };
+      };
     };
     join: {
       error: string;
@@ -851,6 +909,9 @@ export interface Dictionary {
   common: {
     save: string;
     saved: string;
+    success: string;
+    error: string;
+    edit: string;
     all_rights_reserved: string;
     copyright: string;
     copyright_long: string;
@@ -1127,6 +1188,7 @@ export interface Dictionary {
       teacher_desc: string;
       first_name: string;
       last_name: string;
+      username: string;
       email: string;
       phone: string;
       password: string;

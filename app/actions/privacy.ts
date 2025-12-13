@@ -9,10 +9,12 @@ import type { Locale } from "@/i18n-config";
 import logger from "@/lib/logger";
 
 const privacySchema = z.object({
-    isProfilePublic: z.coerce.boolean(),
-    showEmailOnProfile: z.coerce.boolean(),
-    showCoursesOnProfile: z.coerce.boolean(),
-    showAchievementsOnProfile: z.coerce.boolean(),
+    profileVisibility: z.enum(["public", "private"]),
+    showAvatar: z.boolean(),
+    showEmail: z.boolean(),
+    showPhone: z.boolean(),
+    allowMessages: z.boolean(),
+    showCourses: z.boolean(),
 });
 
 export async function updateProfilePrivacyAction(input: unknown, lang: string) {
@@ -34,28 +36,34 @@ export async function updateProfilePrivacyAction(input: unknown, lang: string) {
         return { error: dictionary.server.errors.invalid_input };
     }
 
-    const parsed = result.data;
-
     const {
-        isProfilePublic,
-        showEmailOnProfile: inputShowEmail,
-        showCoursesOnProfile: inputShowCourses,
-        showAchievementsOnProfile: inputShowAchievements,
-    } = parsed;
-
-    // If profile is private, force other visibility settings to false
-    const showEmailOnProfile = isProfilePublic ? inputShowEmail : false;
-    const showCoursesOnProfile = isProfilePublic ? inputShowCourses : false;
-    const showAchievementsOnProfile = isProfilePublic ? inputShowAchievements : false;
+        profileVisibility,
+        showAvatar,
+        showEmail,
+        showPhone,
+        allowMessages,
+        showCourses,
+    } = result.data;
 
     try {
-        await db.user.update({
-            where: { id: session.user.id },
-            data: {
-                isProfilePublic,
-                showEmailOnProfile,
-                showCoursesOnProfile,
-                showAchievementsOnProfile,
+        await db.userSettings.upsert({
+            where: { userId: session.user.id },
+            update: {
+                profileVisibility,
+                showAvatar,
+                showEmail,
+                showPhone,
+                allowMessages,
+                showCourses,
+            },
+            create: {
+                userId: session.user.id,
+                profileVisibility,
+                showAvatar,
+                showEmail,
+                showPhone,
+                allowMessages,
+                showCourses,
             },
         });
 

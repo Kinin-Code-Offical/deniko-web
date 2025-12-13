@@ -1,6 +1,6 @@
 "use client";
 
-import { isDicebearUrl } from "@/lib/utils";
+import { getAvatarUrl } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -43,7 +43,7 @@ export function StudentHeader({
     gradeLevel,
     studentNo,
     inviteToken,
-    tempAvatar,
+    tempAvatarKey,
   } = student;
 
   // Name Logic
@@ -55,17 +55,13 @@ export function StudentHeader({
 
   // Avatar Logic
   const avatarSrc =
-    isClaimed && user?.image
-      ? user.image
-      : tempAvatar
-        ? tempAvatar.startsWith("http")
-          ? isDicebearUrl(tempAvatar)
-            ? `/api/files/defaults/${new URL(tempAvatar).searchParams.get(
-                "seed"
-              )}.svg`
-            : tempAvatar
-          : `/api/files/${tempAvatar}`
-        : undefined;
+    isClaimed && user
+      ? getAvatarUrl(user.image, user.id)
+      : tempAvatarKey
+        ? tempAvatarKey.startsWith("http")
+          ? tempAvatarKey
+          : `/api/avatar/student/${student.id}`
+        : "/api/avatars/default";
 
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

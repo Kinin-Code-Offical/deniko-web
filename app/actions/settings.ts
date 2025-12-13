@@ -8,6 +8,7 @@ import * as bcrypt from "bcryptjs";
 import { deleteUserAndRelatedData } from "@/lib/account-deletion";
 import { v4 as uuidv4 } from "uuid";
 import { sendEmailChangeVerificationEmail } from "@/lib/email";
+import { Prisma } from "@prisma/client";
 import type { Locale } from "@/i18n-config";
 import { getDictionary } from "@/lib/get-dictionary";
 import logger from "@/lib/logger";
@@ -16,13 +17,15 @@ import { deleteFile } from "@/lib/storage";
 // --- Schemas ---
 
 const profileBasicSchema = z.object({
-    firstName: z.string().min(2).max(50),
-    lastName: z.string().min(2).max(50),
+    firstName: z.string().min(2).max(50).optional(),
+    lastName: z.string().min(2).max(50).optional(),
+    username: z.string().min(3).max(30).optional(),
     phoneNumber: z.string().optional().nullable(),
-    isProfilePublic: z.boolean().optional(),
-    showEmailOnProfile: z.boolean().optional(),
-    showCoursesOnProfile: z.boolean().optional(),
-    showAchievementsOnProfile: z.boolean().optional(),
+    preferredCountry: z.string().optional().nullable(),
+    preferredTimezone: z.string().optional().nullable(),
+    notificationEmailEnabled: z.boolean().optional(),
+    notificationInAppEnabled: z.boolean().optional(),
+    isMarketingConsent: z.boolean().optional(),
     // Teacher fields
     branch: z.string().optional().nullable(),
     bio: z.string().optional().nullable(),
@@ -49,18 +52,21 @@ export async function updateProfileBasicAction(input: unknown, lang: string) {
     if (!result.success) return { error: dictionary.server.errors.invalid_input };
 
     try {
+        const updateData: Prisma.UserUpdateInput = {};
+        if (result.data.firstName) updateData.firstName = result.data.firstName;
+        if (result.data.lastName) updateData.lastName = result.data.lastName;
+        if (result.data.firstName && result.data.lastName) updateData.name = `${result.data.firstName} ${result.data.lastName}`;
+        if (result.data.username) updateData.username = result.data.username;
+        if (result.data.phoneNumber !== undefined) updateData.phoneNumber = result.data.phoneNumber;
+        if (result.data.preferredCountry !== undefined) updateData.preferredCountry = result.data.preferredCountry;
+        if (result.data.preferredTimezone !== undefined) updateData.preferredTimezone = result.data.preferredTimezone;
+        if (result.data.notificationEmailEnabled !== undefined) updateData.notificationEmailEnabled = result.data.notificationEmailEnabled;
+        if (result.data.notificationInAppEnabled !== undefined) updateData.notificationInAppEnabled = result.data.notificationInAppEnabled;
+        if (result.data.isMarketingConsent !== undefined) updateData.isMarketingConsent = result.data.isMarketingConsent;
+
         await db.user.update({
             where: { id: session.user.id },
-            data: {
-                firstName: result.data.firstName,
-                lastName: result.data.lastName,
-                name: `${result.data.firstName} ${result.data.lastName}`,
-                phoneNumber: result.data.phoneNumber,
-                isProfilePublic: result.data.isProfilePublic,
-                showEmailOnProfile: result.data.showEmailOnProfile,
-                showCoursesOnProfile: result.data.showCoursesOnProfile,
-                showAchievementsOnProfile: result.data.showAchievementsOnProfile,
-            },
+            data: updateData,
         });
 
         // Update Teacher Profile if exists
@@ -221,11 +227,25 @@ export async function deactivateAccountAction(lang: string) {
             where: { id: session.user.id },
             data: {
                 isActive: false,
-                isProfilePublic: false,
-                showAvatarOnProfile: false,
-                showEmailOnProfile: false,
-                showPhoneOnProfile: false,
-                allowMessagesFromUsers: false,
+            },
+        });
+
+        await db.userSettings.upsert({
+            where: { userId: session.user.id },
+            create: {
+                userId: session.user.id,
+                profileVisibility: "private",
+                showAvatar: false,
+                showEmail: false,
+                showPhone: false,
+                allowMessages: false,
+            },
+            update: {
+                profileVisibility: "private",
+                showAvatar: false,
+                showEmail: false,
+                showPhone: false,
+                allowMessages: false,
             },
         });
         await signOut({ redirectTo: "/" });
@@ -293,16 +313,18 @@ const DEFAULT_AVATAR_KEYS = [
 ];
 
 export async function getDefaultAvatarsAction() {
-    const { getSignedUrl } = await import("@/lib/storage");
-
-    const avatars = await Promise.all(
-        DEFAULT_AVATAR_KEYS.map(async (key) => {
-            const url = await getSignedUrl(key);
-            return { key, url };
-        })
-    );
-
-    return avatars.filter(a => a.url !== null) as { key: string; url: string }[];
+    // Return API routes instead of signed URLs
+    return DEFAULT_AVATAR_KEYS.map((key) => {
+        // key is like "default/avatars/avatar-1.png"
+        // route is /api/avatars/default/[...path]
+        // we want /api/avatars/default/avatars/avatar-1.png
+        // so we strip "default/" from the key
+        const path = key.replace(/^default\//, "");
+        return {
+            key,
+            url: `/api/avatars/default/${path}`
+        };
+    });
 }
 
 

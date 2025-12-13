@@ -30,9 +30,9 @@ export async function uploadAvatarAction(formData: FormData, lang: string) {
         // Upload new file
         const path = await uploadFile(file, "avatars");
 
-        // Get signed URL for immediate display
-        const { getSignedUrl } = await import("@/lib/storage");
-        const url = await getSignedUrl(path);
+        // Return API URL with timestamp to bust cache
+        // We don't return signed URL anymore to prevent leakage
+        const url = `/api/avatar/${session.user.id}?t=${Date.now()}`;
 
         return { success: true, path, url };
     } catch (error) {

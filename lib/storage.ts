@@ -1,11 +1,11 @@
 import { Storage } from "@google-cloud/storage";
-import { v4 as uuidv4 } from "uuid";
 import { env } from "@/lib/env";
 import logger from "@/lib/logger";
+import { v4 as uuidv4 } from "uuid";
 
 let storageInstance: Storage | null = null;
 const bucketName = env.GCS_BUCKET_NAME;
-const SIGNED_URL_TTL_MS = 60 * 60 * 1000; // 1 saat cache için yeterli
+const DEFAULT_SIGNED_URL_TTL_SECONDS = 300; // 5 minutes
 
 function getStorage() {
   if (!storageInstance) {
@@ -25,78 +25,103 @@ function getBucket() {
   return getStorage().bucket(bucketName);
 }
 
-const ALLOWED_MIME_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-  "application/pdf",
-];
-const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+const ALLOWED_PREFIXES = ["avatars/", "files/", "uploads/", "default/"];
 
-export async function uploadFile(file: File, folder: string): Promise<string> {
-  if (!bucketName) throw new Error("GCS_BUCKET_NAME is not defined");
+function validateKey(key: string) {
+  if (!key) throw new Error("Key is required");
 
-  // Security: Validate folder name to prevent path traversal
-  if (folder.includes("..") || folder.startsWith("/") || folder.includes("\\")) {
-    throw new Error("Invalid folder name");
+  // Prevent path traversal
+  if (key.includes("..") || key.includes("//") || key.includes("\\")) {
+    throw new Error("Invalid key format: Path traversal detected");
   }
 
-  // Security: Validate file type
-  if (!ALLOWED_MIME_TYPES.includes(file.type)) {
-    throw new Error(`Invalid file type: ${file.type}`);
+  // Ensure key starts with allowed prefix
+  const hasValidPrefix = ALLOWED_PREFIXES.some((prefix) => key.startsWith(prefix));
+  if (!hasValidPrefix) {
+    throw new Error(`Invalid key prefix. Allowed: ${ALLOWED_PREFIXES.join(", ")}`);
   }
-
-  // Security: Validate file size
-  if (file.size > MAX_FILE_SIZE_BYTES) {
-    throw new Error(`File size exceeds limit: ${MAX_FILE_SIZE_BYTES} bytes`);
-  }
-
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const extension = file.name.split(".").pop();
-  // Security: Use UUID for filename to prevent overwrites and path traversal
-  const fileName = `${folder}/${uuidv4()}.${extension}`;
-
-  const fileRef = getBucket().file(fileName);
-
-  await fileRef.save(buffer, {
-    contentType: file.type,
-    metadata: { cacheControl: "private, max-age=3600" },
-  });
-
-  return fileName;
 }
 
-export async function getSignedUrl(path: string): Promise<string | null> {
-  if (!path) return null;
-  const file = getBucket().file(path);
+export async function uploadObject(
+  key: string,
+  data: Buffer | Uint8Array | string,
+  options: { contentType: string; cacheControl?: string }
+): Promise<void> {
+  validateKey(key);
+
+  const file = getBucket().file(key);
+  const buffer = Buffer.isBuffer(data) ? data : Buffer.from(data);
+
+  await file.save(buffer, {
+    contentType: options.contentType,
+    metadata: {
+      cacheControl: options.cacheControl || "private, max-age=3600",
+    },
+  });
+}
+
+export async function getObjectStream(key: string) {
+  validateKey(key);
+  const file = getBucket().file(key);
+  const [exists] = await file.exists();
+  if (!exists) {
+    throw new Error(`File not found: ${key}`);
+  }
+  return file.createReadStream();
+}
+
+export async function getSignedUrlForKey(
+  key: string,
+  opts?: { expiresInSeconds?: number }
+): Promise<string> {
+  validateKey(key);
+
+  const file = getBucket().file(key);
+  const expiresInSeconds = opts?.expiresInSeconds || DEFAULT_SIGNED_URL_TTL_SECONDS;
+
+  // Max 1 hour allowed for security
+  if (expiresInSeconds > 3600) {
+    throw new Error("Expiration time cannot exceed 1 hour");
+  }
 
   try {
     const [url] = await file.getSignedUrl({
       version: "v4",
       action: "read",
-      expires: Date.now() + SIGNED_URL_TTL_MS,
+      expires: Date.now() + expiresInSeconds * 1000,
     });
     return url;
   } catch (error) {
-    logger.error({ error }, "Signed URL Error");
-    return null;
+    logger.error({ error, key }, "Signed URL Generation Error");
+    throw new Error("Failed to generate signed URL");
   }
 }
 
-export async function getFileStream(path: string) {
-  if (!bucketName) throw new Error("GCS_BUCKET_NAME is not defined");
-  return getBucket().file(path).createReadStream();
-}
-
-export async function deleteFile(path: string): Promise<boolean> {
-  if (!path) return false;
-  if (!bucketName) throw new Error("GCS_BUCKET_NAME is not defined");
+export async function deleteObject(key: string): Promise<boolean> {
+  validateKey(key);
   try {
-    await getBucket().file(path).delete();
+    await getBucket().file(key).delete();
     return true;
   } catch (error) {
-    logger.error({ error }, "GCS Delete Error");
+    logger.error({ error, key }, "GCS Delete Error");
     return false;
   }
+}
+
+// --- Legacy/Helper Wrappers ---
+
+export const deleteFile = deleteObject;
+
+export const getSignedUrl = getSignedUrlForKey;
+
+export async function uploadFile(file: File, folder: "avatars" | "files" | "uploads" = "uploads"): Promise<string> {
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const ext = file.name.split(".").pop();
+  const key = `${folder}/${uuidv4()}.${ext}`;
+
+  await uploadObject(key, buffer, {
+    contentType: file.type,
+  });
+
+  return key;
 }

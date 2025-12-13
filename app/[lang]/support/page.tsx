@@ -12,6 +12,7 @@ import {
 import { Mail, MessageSquare, Phone } from "lucide-react";
 import type { Metadata } from "next";
 import { env } from "@/lib/env";
+import { auth } from "@/auth";
 
 export async function generateMetadata({
   params,
@@ -52,6 +53,7 @@ export default async function SupportPage({
 }) {
   const { lang } = await params;
   const dictionary = await getDictionary(lang);
+  const session = await auth();
   const { contact } = dictionary.support;
 
   // JSON-LD for ContactPage
@@ -81,7 +83,7 @@ export default async function SupportPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
       />
-      <Navbar lang={lang} dictionary={dictionary} />
+      <Navbar lang={lang} dictionary={dictionary} user={session?.user} />
 
       <section className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-16 lg:py-20">
         <div className="mb-12 text-center">

@@ -53,3 +53,9 @@ process.env.UPSTASH_REDIS_REST_URL = "https://example.upstash.io";
 process.env.UPSTASH_REDIS_REST_TOKEN = "test-token";
 process.env.SMTP_SUPPORT_PASSWORD = "support-password";
 process.env.SMTP_SUPPORT_FROM = "support@example.com";
+
+global.ResizeObserver = class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};

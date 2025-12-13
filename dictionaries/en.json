@@ -290,18 +290,31 @@
       "privacy": {
         "title": "Privacy Settings",
         "description": "Manage who can see your profile and contact you.",
-        "isProfilePublic": {
-          "label": "Public Profile",
-          "description": "Allow others to see your profile."
+        "profileVisibility": {
+          "label": "Profile Visibility",
+          "description": "Control who can see your profile.",
+          "public": "Public",
+          "private": "Private"
+        },
+        "showAvatar": {
+          "label": "Show Avatar",
+          "description": "Show your profile picture to everyone."
         },
         "showEmail": {
-          "label": "Show Email"
+          "label": "Show Email",
+          "description": "Display your email address on your profile."
+        },
+        "showPhone": {
+          "label": "Show Phone Number",
+          "description": "Display your phone number on your profile."
+        },
+        "allowMessages": {
+          "label": "Allow Messages",
+          "description": "Allow other users to send you messages."
         },
         "showCourses": {
-          "label": "Show Courses"
-        },
-        "showAchievements": {
-          "label": "Show Achievements"
+          "label": "Show Courses",
+          "description": "Display your courses on your profile."
         },
         "save": "Save Privacy Settings",
         "success": "Privacy settings updated",
@@ -318,6 +331,10 @@
         "inApp": {
           "label": "In-App Notifications",
           "description": "Receive notifications within the application."
+        },
+        "marketing": {
+          "label": "Marketing Emails",
+          "description": "Receive emails about new features and offers."
         },
         "save": "Save Preferences",
         "success": "Notification preferences updated",
@@ -369,6 +386,14 @@
     "description": "The page you are trying to reach may have been deleted, moved, or never existed. Don't worry, we can get you back on track.",
     "go_back": "Go Back",
     "home": "Home"
+  },
+  "error_pages": {
+    "forbidden": {
+      "title": "Access Denied",
+      "description": "You don't have permission to view this content.",
+      "backToHome": "Back to home",
+      "backToDashboard": "Back to dashboard"
+    }
   },
   "navbar": {
     "menu_open": "Open menu",
@@ -531,7 +556,49 @@
       "phone": "Phone Number",
       "phone_placeholder": "+1 234 567 890",
       "address": "Address",
-      "address_placeholder": "123 Main St"
+      "address_placeholder": "123 Main St",
+      "bio": "Biography",
+      "bio_desc": "A short description that will appear on your profile.",
+      "bio_placeholder": "Tell us a little about yourself...",
+      "location": "Location",
+      "location_placeholder": "New York, USA",
+      "website": "Website",
+      "website_placeholder": "https://example.com",
+      "social_profiles": "Social Profiles",
+      "social_profiles_desc": "Connect your social media accounts.",
+      "activity_stats": {
+        "title": "Activity & Stats",
+        "description": "Your platform activity overview",
+        "lessons": "Lessons Taught",
+        "students": "Students Helped",
+        "hours": "Hours Online",
+        "rating": "Average Rating"
+      },
+      "public": {
+        "role_teacher": "Teacher",
+        "role_student": "Student",
+        "stats": {
+          "lessons": "Lessons"
+        },
+        "private": {
+          "title": "This profile is private",
+          "description": "The user has chosen to keep their profile information private."
+        },
+        "notFound": "User not found",
+        "title": "Public Profile",
+        "not_found_title": "Profile Not Found",
+        "not_found_desc": "The user profile you are looking for does not exist or is inaccessible.",
+        "private_title": "This Profile is Private",
+        "private_desc": "This user's profile is private. Only approved connections can see it.",
+        "back_home": "Back to Home",
+        "contact": "Contact",
+        "member_since": "Member Since",
+        "email": "Email",
+        "phone": "Phone",
+        "location": "Location",
+        "website": "Website",
+        "bio": "About"
+      }
     },
     "files": {
       "title": "Files",
@@ -591,8 +658,45 @@
       "account": "Account",
       "account_desc": "Manage your account settings.",
       "security": "Security",
-      "notifications": "Notifications",
-      "notifications_desc": "Configure how you receive notifications.",
+      "privacy": {
+        "title": "Privacy Settings",
+        "description": "Manage who can see your profile and contact you.",
+        "visibility_title": "Profile Visibility",
+        "public_profile": "Public Profile",
+        "public_profile_desc": "Anyone can see your profile.",
+        "public": "Public",
+        "private": "Private",
+        "display_options": "Display Options",
+        "show_avatar": "Show Avatar",
+        "show_email": "Show Email",
+        "show_phone": "Show Phone Number",
+        "interactions": "Interactions",
+        "allow_messages": "Allow Messages",
+        "allow_messages_desc": "Allow users to send you messages.",
+        "profile_visibility": "Profile Visibility",
+        "profile_visibility_desc": "Control who can see your profile.",
+        "search_engine_indexing": "Search Engine Indexing",
+        "search_engine_indexing_desc": "Allow your profile to appear in search engines (Google, etc.).",
+        "show_email_desc": "Show your email address on your profile.",
+        "show_phone_desc": "Show your phone number on your profile.",
+        "show_courses": "Show Courses"
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Configure how you receive notifications.",
+        "email": {
+          "label": "Email Notifications",
+          "description": "Receive emails about your account activity."
+        },
+        "inApp": {
+          "label": "In-App Notifications",
+          "description": "Receive notifications within the app."
+        },
+        "marketing": {
+          "label": "Marketing Emails",
+          "description": "Receive emails about new features and offers."
+        }
+      },
       "language": "Language",
       "language_desc": "Select your preferred language.",
       "theme": "Theme",
@@ -601,13 +705,14 @@
       "delete_account_label": "Delete Account",
       "delete_account_desc": "Permanently remove your account and all data.",
       "delete_account_button": "Delete Account",
-      "email_notifications_label": "Email Notifications",
-      "email_notifications_desc": "Receive emails about your account activity.",
-      "marketing_emails_label": "Marketing Emails",
-      "marketing_emails_desc": "Receive emails about new features and offers.",
       "language_placeholder": "Select Language",
       "en": "English",
-      "tr": "Türkçe"
+      "tr": "Türkçe",
+      "region": {
+        "country": {
+          "label": "Country"
+        }
+      }
     },
     "join": {
       "error": "Invalid Invitation",
@@ -777,9 +882,14 @@
       "loading": "Loading...",
       "save": "Save",
       "cancel": "Cancel",
+      "edit": "Edit",
+      "success": "Operation successful",
+      "error": "An error occurred",
       "delete_confirm": "Are you sure?",
       "delete_desc": "This action cannot be undone.",
-      "continue": "Continue"
+      "continue": "Continue",
+      "edit_photo": "Edit Photo",
+      "crop_description": "Drag to position and use slider to zoom."
     },
     "welcome_title": "Welcome to Deniko",
     "contact_support": "Please contact support if you see this screen."
@@ -787,6 +897,9 @@
   "common": {
     "save": "Save",
     "saved": "Saved",
+    "success": "Success",
+    "error": "Error",
+    "edit": "Edit",
     "back_to_home": "Back to Home",
     "all_rights_reserved": "All rights reserved.",
     "copyright": "© 2025 Deniko.",
@@ -799,11 +912,11 @@
     "github_profile": "My GitHub Profile",
     "patreon_profile": "My Patreon Profile",
     "brand_name": "Deniko",
+    "edit_photo": "Edit Photo",
+    "crop_description": "Drag to position and use slider to zoom.",
     "zoom": "Zoom",
     "crop_preview": "Crop Preview",
     "crop_save": "Crop & Save",
-    "edit_photo": "Edit Photo",
-    "crop_description": "Drag to reposition and use the slider to zoom.",
     "more_options": "More options",
     "copied": "Copied",
     "copied_desc": "Section copied to clipboard.",
@@ -1062,6 +1175,7 @@
       "teacher_desc": "I want to teach and manage",
       "first_name": "First Name",
       "last_name": "Last Name",
+      "username": "Username",
       "email": "Email",
       "phone": "Phone Number",
       "password": "Password",

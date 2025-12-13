@@ -5,6 +5,7 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import type { Metadata } from "next";
 import { env } from "@/lib/env";
+import { auth } from "@/auth";
 
 export async function generateMetadata({
   params,
@@ -45,6 +46,7 @@ export default async function FAQPage({
 }) {
   const { lang } = await params;
   const dictionary = await getDictionary(lang);
+  const session = await auth();
 
   // JSON-LD for FAQPage
   const faqSchema = {
@@ -68,7 +70,7 @@ export default async function FAQPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <Navbar lang={lang} dictionary={dictionary} />
+      <Navbar lang={lang} dictionary={dictionary} user={session?.user} />
 
       <section className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-16 lg:py-20">
         <div className="mb-12 text-center">

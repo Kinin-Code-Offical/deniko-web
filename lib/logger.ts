@@ -74,33 +74,34 @@ function assertMachineReadableEvent(event: string) {
 }
 
 export const logger = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  debug(arg: any, ...args: any[]) { // ignore-any-check
+  debug(arg: unknown, ...args: unknown[]) {
     if (typeof arg === "object" && arg !== null && "event" in arg) {
       assertMachineReadableEvent((arg as LogEventPayload).event);
     }
-    baseLogger.debug(arg, ...args);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    baseLogger.debug(arg as any, ...(args as any[]));// ignore-any-check
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  info(arg: any, ...args: any[]) { // ignore-any-check
+  info(arg: unknown, ...args: unknown[]) {
     if (typeof arg === "object" && arg !== null && "event" in arg) {
       assertMachineReadableEvent((arg as LogEventPayload).event);
     }
-    baseLogger.info(arg, ...args);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    baseLogger.info(arg as any, ...(args as any[]));// ignore-any-check
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  warn(arg: any, ...args: any[]) { // ignore-any-check
+  warn(arg: unknown, ...args: unknown[]) {
     if (typeof arg === "object" && arg !== null && "event" in arg) {
       assertMachineReadableEvent((arg as LogEventPayload).event);
     }
-    baseLogger.warn(arg, ...args);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    baseLogger.warn(arg as any, ...(args as any[]));// ignore-any-check
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  error(arg: any, ...args: any[]) { // ignore-any-check
+  error(arg: unknown, ...args: unknown[]) {
     if (typeof arg === "object" && arg !== null && "event" in arg) {
+
       assertMachineReadableEvent((arg as LogEventPayload).event);
     }
-    baseLogger.error(arg, ...args);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    baseLogger.error(arg as any, ...(args as any[]));// ignore-any-check
   },
 };
 

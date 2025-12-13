@@ -1,6 +1,5 @@
 "use client";
 
-import { isDicebearUrl } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -17,6 +16,7 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useState, useTransition, useMemo, memo, useCallback } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getAvatarUrl } from "@/lib/utils";
 import { Search, ChevronRight, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
@@ -35,10 +35,10 @@ import {
 interface StudentData {
   id: string;
   // Raw fields for name logic
-  user?: { name?: string | null; image?: string | null } | null;
+  user?: { id: string; name?: string | null; image?: string | null } | null;
   tempFirstName?: string | null;
   tempLastName?: string | null;
-  tempAvatar?: string | null;
+  tempAvatarKey?: string | null;
   tempPhone?: string | null;
   relation?: { customName?: string | null } | null;
 
@@ -101,15 +101,13 @@ const StudentRow = memo(function StudentRow({
               <Avatar className="h-9 w-9">
                 <AvatarImage
                   src={
-                    student.isClaimed && student.user?.image
-                      ? student.user.image
-                      : student.tempAvatar
-                        ? student.tempAvatar.startsWith("http")
-                          ? isDicebearUrl(student.tempAvatar)
-                            ? `/api/files/defaults/${new URL(student.tempAvatar).searchParams.get("seed")}.svg`
-                            : student.tempAvatar
-                          : `/api/files/${student.tempAvatar}`
-                        : undefined
+                    student.isClaimed && student.user
+                      ? getAvatarUrl(student.user.image, student.user.id)
+                      : student.tempAvatarKey
+                        ? student.tempAvatarKey.startsWith("http")
+                          ? student.tempAvatarKey
+                          : `/api/avatar/student/${student.id}`
+                        : "/api/avatars/default"
                   }
                   alt={getDisplayName(student)}
                 />

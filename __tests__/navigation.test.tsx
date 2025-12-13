@@ -14,6 +14,14 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
+// Mock auth
+vi.mock("@/auth", () => ({
+  auth: vi.fn(),
+  signIn: vi.fn(),
+  signOut: vi.fn(),
+  handlers: { GET: vi.fn(), POST: vi.fn() },
+}));
+
 // Mock dictionary
 const mockDictionary = {
   metadata: {

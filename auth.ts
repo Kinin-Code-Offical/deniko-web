@@ -192,6 +192,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (session.user) {
         session.user.isOnboardingCompleted =
           token.isOnboardingCompleted as boolean;
+        session.user.username = token.username as string;
       }
 
       return session;
@@ -209,6 +210,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       token.role = existingUser.role;
+      token.username = existingUser.username;
       token.isOnboardingCompleted = existingUser.isOnboardingCompleted;
       return token;
     },

@@ -1,6 +1,5 @@
 "use client";
 
-import { isDicebearUrl } from "@/lib/utils";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -48,7 +47,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
+import { cn, getAvatarUrl } from "@/lib/utils";
 import Image from "next/image";
 
 const DEFAULT_AVATARS = [
@@ -214,16 +213,16 @@ export function StudentSettingsTab({
     (selectedAvatar
       ? selectedAvatar.startsWith("http")
         ? selectedAvatar
-        : `/api/files/${selectedAvatar}`
-      : student.isClaimed && student.user?.image
-        ? student.user.image
-        : student.tempAvatar
-          ? student.tempAvatar.startsWith("http")
-            ? isDicebearUrl(student.tempAvatar)
-              ? `/api/files/defaults/${new URL(student.tempAvatar).searchParams.get("seed")}.svg`
-              : student.tempAvatar
-            : `/api/files/${student.tempAvatar}`
-          : undefined);
+        : selectedAvatar.startsWith("defaults/")
+          ? `/api/avatars/default/${selectedAvatar.replace("defaults/", "")}`
+          : "/api/avatars/default" // Fallback
+      : student.isClaimed && student.user
+        ? getAvatarUrl(student.user.image, student.user.id)
+        : student.tempAvatarKey
+          ? student.tempAvatarKey.startsWith("http")
+            ? student.tempAvatarKey
+            : `/api/avatar/student/${student.id}`
+          : "/api/avatars/default");
 
   return (
     <div className="space-y-6">
@@ -300,7 +299,9 @@ export function StudentSettingsTab({
                           src={
                             avatar.startsWith("http")
                               ? avatar
-                              : `/api/files/${avatar}`
+                              : avatar.startsWith("defaults/")
+                                ? `/api/avatars/default/${avatar.replace("defaults/", "")}`
+                                : "/api/avatars/default"
                           }
                           alt={dictionary.common.avatar || "Avatar"}
                           width={40}

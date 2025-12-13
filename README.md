@@ -31,7 +31,9 @@ Deniko is a comprehensive SaaS platform designed to digitize and streamline the 
 
 ## 📂 Project Structure
 
-```
+=======
+
+```text
 deniko/
 ├── app/                # Next.js App Router pages and layouts
 │   ├── [lang]/         # Localized routes (e.g., /en, /tr)
@@ -125,7 +127,7 @@ npx prisma db seed
 Start the development server:
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
@@ -145,7 +147,7 @@ The project follows the Next.js App Router structure:
 - **`prisma/`**: Database schema and migrations.
 - **`dictionaries/`**: JSON files for i18n translations (`en.json`, `tr.json`).
 
-## ✨ Key Features
+## Key Features
 
 - **Authentication Flow:** Secure login/register with Email/Password and Google OAuth. Supports role-based access (Teacher/Student).
 - **Shadow Accounts:** Teachers can create "Shadow Students" to manage data for students who haven't signed up yet. These profiles can be claimed by the actual student later via an invitation link.
@@ -156,6 +158,6 @@ The project follows the Next.js App Router structure:
 
 ## TODO
 
-- Localize the metadata, JSON-LD, and canonical URLs so each route under `/[lang]` outputs the correct language-specific SEO text.
-- Automate `app/sitemap.ts` (or replace it with `generateSitemaps`) to avoid manually tracking every public page.
-- Remove or refactor the dependency that forces `'unsafe-eval'` so the CSP configured in `proxy.ts` can remain strict in production.
+- [x] Localize the metadata, JSON-LD, and canonical URLs so each route under `/[lang]` outputs the correct language-specific SEO text.
+- [x] Automate `app/sitemap.ts` (or replace it with `generateSitemaps`) to avoid manually tracking every public page.
+- [ ] Remove or refactor the dependency that forces `'unsafe-eval'` so the CSP configured in `proxy.ts` can remain strict in production.

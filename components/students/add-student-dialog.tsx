@@ -207,7 +207,9 @@ export function AddStudentDialog({
                       src={
                         avatar.startsWith("http")
                           ? avatar
-                          : `/api/files/${avatar}`
+                          : avatar.startsWith("defaults/")
+                            ? `/api/avatars/default/${avatar.replace("defaults/", "")}`
+                            : "/api/avatars/default"
                       }
                       alt={dictionary.dashboard.students.add_dialog.avatar}
                       width={40}

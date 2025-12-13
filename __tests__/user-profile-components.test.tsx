@@ -59,6 +59,7 @@ describe("UserProfileHero", () => {
     render(
       <UserProfileHero
         user={{
+          id: "1",
           name: "John Doe",
           username: "johndoe",
           image: null,
@@ -80,6 +81,7 @@ describe("UserProfileHero", () => {
     render(
       <UserProfileHero
         user={{
+          id: "2",
           name: "Jane Doe",
           username: "janedoe",
           image: null,

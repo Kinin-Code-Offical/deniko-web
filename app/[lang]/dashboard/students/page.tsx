@@ -88,7 +88,7 @@ export default async function StudentsPage({
     user: rel.student.user,
     tempFirstName: rel.student.tempFirstName,
     tempLastName: rel.student.tempLastName,
-    tempAvatar: rel.student.tempAvatar,
+    tempAvatarKey: rel.student.tempAvatarKey,
     tempPhone: rel.student.tempPhone,
     relation: { customName: rel.customName },
     name:

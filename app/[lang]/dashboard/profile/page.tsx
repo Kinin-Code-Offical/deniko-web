@@ -1,18 +1,11 @@
 import { auth } from "@/auth";
 import { getDictionary } from "@/lib/get-dictionary";
 import type { Locale } from "@/i18n-config";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
+import { db } from "@/lib/db";
+import { ProfileSummaryCard } from "@/components/dashboard/profile/profile-summary-card";
+import { PrivacyPreferencesCard } from "@/components/dashboard/profile/privacy-preferences-card";
+import { ActivityStatsCard } from "@/components/dashboard/profile/activity-stats-card";
+import { NotificationsPermissionsCard } from "@/components/dashboard/profile/notifications-permissions-card";
 
 export default async function ProfilePage({
   params,
@@ -22,83 +15,73 @@ export default async function ProfilePage({
   const { lang } = await params;
   const dictionary = await getDictionary(lang as Locale);
   const session = await auth();
-  const user = session?.user;
+
+  if (!session?.user?.id) return null;
+
+  const user = await db.user.findUnique({
+    where: { id: session.user.id },
+    include: {
+      settings: true,
+      teacherProfile: {
+        include: {
+          _count: {
+            select: { lessons: true, studentRelations: true },
+          },
+        },
+      },
+      studentProfile: {
+        include: {
+          _count: {
+            select: { lessons: true },
+          },
+        },
+      },
+    },
+  });
+
+  if (!user) return null;
+
+  const lessonsCount =
+    (user.teacherProfile?._count.lessons || 0) +
+    (user.studentProfile?._count.lessons || 0);
+  const studentsCount = user.teacherProfile?._count.studentRelations || 0;
+
+  // Mock stats for now
+  const stats = {
+    lessons: lessonsCount,
+    students: studentsCount,
+    hours: 0,
+    rating: "-",
+  };
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">
-        {dictionary.dashboard.profile.title}
-      </h1>
+    <div className="space-y-6 p-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold tracking-tight">
+          {dictionary.dashboard.profile.title}
+        </h1>
+      </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>{dictionary.dashboard.profile.personal_info}</CardTitle>
-            <CardDescription>
-              {dictionary.dashboard.profile.personal_info_desc}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src={user?.image || ""} />
-                <AvatarFallback>{user?.name?.[0] || "U"}</AvatarFallback>
-              </Avatar>
-              <Button variant="outline">
-                {dictionary.dashboard.profile.change_avatar}
-              </Button>
-            </div>
-            <Separator />
-            <div className="space-y-2">
-              <Label htmlFor="name">
-                {dictionary.dashboard.profile.full_name}
-              </Label>
-              <Input id="name" defaultValue={user?.name || ""} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">
-                {dictionary.dashboard.profile.email}
-              </Label>
-              <Input id="email" defaultValue={user?.email || ""} disabled />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="role">{dictionary.dashboard.profile.role}</Label>
-              <Input id="role" defaultValue={user?.role || ""} disabled />
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* Left Column */}
+        <div className="space-y-6 lg:col-span-2">
+          <ProfileSummaryCard user={user} dictionary={dictionary} lang={lang} />
+          <PrivacyPreferencesCard
+            settings={user.settings}
+            dictionary={dictionary}
+            lang={lang}
+          />
+        </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{dictionary.dashboard.profile.contact_info}</CardTitle>
-            <CardDescription>
-              {dictionary.dashboard.profile.contact_info_desc}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="phone">
-                {dictionary.dashboard.profile.phone}
-              </Label>
-              <Input
-                id="phone"
-                placeholder={dictionary.dashboard.profile.phone_placeholder}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="address">
-                {dictionary.dashboard.profile.address}
-              </Label>
-              <Input
-                id="address"
-                placeholder={dictionary.dashboard.profile.address_placeholder}
-              />
-            </div>
-            <div className="pt-4">
-              <Button>{dictionary.dashboard.profile.save_changes}</Button>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Right Column */}
+        <div className="space-y-6">
+          <ActivityStatsCard stats={stats} dictionary={dictionary} />
+          <NotificationsPermissionsCard
+            user={user}
+            dictionary={dictionary}
+            lang={lang}
+          />
+        </div>
       </div>
     </div>
   );

@@ -6,15 +6,19 @@ import { Card } from "@/components/ui/card";
 import { MessageCircle, BookOpen, MapPin, Clock, Settings } from "lucide-react";
 import Link from "next/link";
 import type { Dictionary } from "@/types/i18n";
+import { getAvatarUrl } from "@/lib/utils";
 
 interface UserProfileHeroProps {
   user: {
+    id: string;
     name: string | null;
     username: string | null;
     image: string | null;
     role: "TEACHER" | "STUDENT" | "ADMIN" | null;
     country?: string | null;
     timezone?: string | null;
+    email?: string | null;
+    phone?: string | null;
   };
   stats?: {
     lessons: number;
@@ -52,7 +56,7 @@ export function UserProfileHero({
           <div className="border-border h-20 w-20 shrink-0 overflow-hidden rounded-full border sm:h-24 sm:w-24">
             <Avatar className="h-full w-full">
               <AvatarImage
-                src={user.image || ""}
+                src={getAvatarUrl(user.image, user.id)}
                 alt={user.name || ""}
                 className="object-cover"
               />
@@ -84,6 +88,29 @@ export function UserProfileHero({
                   <Clock className="h-3 w-3" />
                   <span>{user.timezone}</span>
                 </span>
+              )}
+            </div>
+
+            <div className="text-muted-foreground flex flex-col gap-1 pt-2 text-sm">
+              {user.email && (
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">
+                    {dictionary.dashboard.profile.email}:
+                  </span>
+                  <a href={`mailto:${user.email}`} className="hover:underline">
+                    {user.email}
+                  </a>
+                </div>
+              )}
+              {user.phone && (
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">
+                    {dictionary.dashboard.profile.phone}:
+                  </span>
+                  <a href={`tel:${user.phone}`} className="hover:underline">
+                    {user.phone}
+                  </a>
+                </div>
               )}
             </div>
           </div>

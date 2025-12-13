@@ -1,6 +1,7 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getAvatarUrl } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { InviteButton } from "./invite-button";
@@ -20,7 +21,13 @@ interface StudentDetailHeaderProps {
 }
 
 export function StudentDetailHeader({
-  student: {
+  student,
+  dictionary,
+  totalLessons,
+  balance,
+  lang,
+}: StudentDetailHeaderProps) {
+  const {
     isClaimed,
     userId,
     user,
@@ -28,12 +35,10 @@ export function StudentDetailHeader({
     tempLastName,
     gradeLevel,
     inviteToken,
-  },
-  dictionary,
-  totalLessons,
-  balance,
-  lang,
-}: StudentDetailHeaderProps) {
+    tempAvatarKey,
+    id,
+  } = student;
+
   const displayName = userId
     ? user?.name || `${user?.firstName} ${user?.lastName}`
     : `${tempFirstName} ${tempLastName}`;
@@ -49,7 +54,18 @@ export function StudentDetailHeader({
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div className="flex items-center gap-4">
         <Avatar className="h-16 w-16">
-          <AvatarImage src={user?.image || ""} alt={displayName} />
+          <AvatarImage
+            src={
+              isClaimed && user
+                ? getAvatarUrl(user.image, user.id)
+                : tempAvatarKey
+                  ? tempAvatarKey.startsWith("http")
+                    ? tempAvatarKey
+                    : `/api/avatar/student/${id}`
+                  : "/api/avatars/default"
+            }
+            alt={displayName}
+          />
           <AvatarFallback className="text-lg">{initials}</AvatarFallback>
         </Avatar>
         <div>

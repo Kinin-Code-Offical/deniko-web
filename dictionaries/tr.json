@@ -290,18 +290,31 @@
       "privacy": {
         "title": "Gizlilik Ayarları",
         "description": "Profilinizi kimlerin görebileceğini ve sizinle iletişime geçebileceğini yönetin.",
-        "isProfilePublic": {
-          "label": "Herkese Açık Profil",
-          "description": "Başkalarının profilinizi görmesine izin verin."
+        "profileVisibility": {
+          "label": "Profil Görünürlüğü",
+          "description": "Profilinizi kimlerin görebileceğini kontrol edin.",
+          "public": "Herkese Açık",
+          "private": "Gizli"
+        },
+        "showAvatar": {
+          "label": "Avatarı Göster",
+          "description": "Profil resminizi herkese gösterin."
         },
         "showEmail": {
-          "label": "E-postayı Göster"
+          "label": "E-postayı Göster",
+          "description": "E-posta adresinizi profilinizde gösterin."
+        },
+        "showPhone": {
+          "label": "Telefon Numarasını Göster",
+          "description": "Telefon numaranızı profilinizde gösterin."
+        },
+        "allowMessages": {
+          "label": "Mesajlara İzin Ver",
+          "description": "Diğer kullanıcıların size mesaj göndermesine izin verin."
         },
         "showCourses": {
-          "label": "Dersleri Göster"
-        },
-        "showAchievements": {
-          "label": "Başarıları Göster"
+          "label": "Dersleri Göster",
+          "description": "Derslerinizi profilinizde gösterin."
         },
         "save": "Gizlilik Ayarlarını Kaydet",
         "success": "Gizlilik ayarları güncellendi",
@@ -318,6 +331,10 @@
         "inApp": {
           "label": "Uygulama İçi Bildirimler",
           "description": "Uygulama içinde bildirimler alın."
+        },
+        "marketing": {
+          "label": "Pazarlama E-postaları",
+          "description": "Yeni özellikler ve teklifler hakkında e-posta alın."
         },
         "save": "Tercihleri Kaydet",
         "success": "Bildirim tercihleri güncellendi",
@@ -369,6 +386,14 @@
     "description": "Ulaşmaya çalıştığınız sayfa silinmiş, taşınmış veya hiç var olmamış olabilir. Endişelenmeyin, sizi doğru yola geri döndürebiliriz.",
     "go_back": "Geri Dön",
     "home": "Ana Sayfa"
+  },
+  "error_pages": {
+    "forbidden": {
+      "title": "Yetkiniz Yok",
+      "description": "Bu içeriği görüntülemek için gerekli izniniz bulunmuyor.",
+      "backToHome": "Ana sayfaya dön",
+      "backToDashboard": "Dashboard'a dön"
+    }
   },
   "navbar": {
     "menu_open": "Menüyü aç",
@@ -531,7 +556,49 @@
       "phone": "Telefon Numarası",
       "phone_placeholder": "+90 555 123 45 67",
       "address": "Adres",
-      "address_placeholder": "Örnek Mah. Cad. No:1"
+      "address_placeholder": "Örnek Mah. Cad. No:1",
+      "bio": "Biyografi",
+      "bio_placeholder": "Kendinizden kısaca bahsedin...",
+      "bio_desc": "Profilinizde görünecek kısa bir açıklama.",
+      "location": "Konum",
+      "location_placeholder": "İstanbul, Türkiye",
+      "website": "Web Sitesi",
+      "website_placeholder": "https://ornek.com",
+      "social_profiles": "Sosyal Medya Profilleri",
+      "social_profiles_desc": "Sosyal medya hesaplarınızı bağlayın.",
+      "activity_stats": {
+        "title": "Aktivite ve İstatistikler",
+        "description": "Platform aktivite özetiniz",
+        "lessons": "Verilen Dersler",
+        "students": "Öğrenciler",
+        "hours": "Çevrimiçi Saat",
+        "rating": "Ortalama Puan"
+      },
+      "public": {
+        "title": "Herkese Açık Profil",
+        "not_found_title": "Profil Bulunamadı",
+        "not_found_desc": "Aradığınız kullanıcı profili mevcut değil veya erişilemiyor.",
+        "private_title": "Bu Profil Gizli",
+        "private_desc": "Bu kullanıcının profili gizli. Sadece onaylı bağlantılar görebilir.",
+        "back_home": "Ana Sayfaya Dön",
+        "contact": "İletişim",
+        "member_since": "Üyelik Tarihi",
+        "email": "E-posta",
+        "phone": "Telefon",
+        "location": "Konum",
+        "website": "Web Sitesi",
+        "bio": "Hakkında",
+        "role_teacher": "Öğretmen",
+        "role_student": "Öğrenci",
+        "stats": {
+          "lessons": "Dersler"
+        },
+        "private": {
+          "title": "Bu profil gizli",
+          "description": "Kullanıcı profil bilgilerini gizli tutmayı tercih etti."
+        },
+        "notFound": "Kullanıcı bulunamadı"
+      }
     },
     "files": {
       "title": "Dosyalar",
@@ -591,8 +658,45 @@
       "account": "Hesap",
       "account_desc": "Hesap ayarlarınızı yönetin.",
       "security": "Güvenlik",
-      "notifications": "Bildirimler",
-      "notifications_desc": "Bildirim tercihlerinizi yapılandırın.",
+      "privacy": {
+        "title": "Gizlilik Ayarları",
+        "description": "Profilinizin görünürlüğünü ve veri paylaşımını yönetin.",
+        "visibility_title": "Profil Görünürlüğü",
+        "public_profile": "Herkese Açık Profil",
+        "public_profile_desc": "Profilinizi herkes görebilir.",
+        "public": "Herkese Açık",
+        "private": "Gizli",
+        "display_options": "Görüntüleme Seçenekleri",
+        "show_avatar": "Avatarı Göster",
+        "show_email": "E-postayı Göster",
+        "show_phone": "Telefonu Göster",
+        "interactions": "Etkileşimler",
+        "allow_messages": "Mesajlara İzin Ver",
+        "allow_messages_desc": "Kullanıcıların size mesaj göndermesine izin verin.",
+        "profile_visibility": "Profil Görünürlüğü",
+        "profile_visibility_desc": "Profilinizin kimler tarafından görülebileceğini kontrol edin.",
+        "show_email_desc": "E-posta adresiniz profilinizde görünsün.",
+        "show_phone_desc": "Telefon numaranız profilinizde görünsün.",
+        "search_engine_indexing": "Arama Motoru İndeksleme",
+        "search_engine_indexing_desc": "Profilinizin arama motorlarında (Google vb.) görünmesine izin verin.",
+        "show_courses": "Dersleri Göster"
+      },
+      "notifications": {
+        "title": "Bildirimler",
+        "description": "Bildirim tercihlerinizi yapılandırın.",
+        "email": {
+          "label": "E-posta Bildirimleri",
+          "description": "Hesap aktiviteleriniz hakkında e-posta alın."
+        },
+        "inApp": {
+          "label": "Uygulama İçi Bildirimler",
+          "description": "Uygulama içinde bildirimler alın."
+        },
+        "marketing": {
+          "label": "Pazarlama E-postaları",
+          "description": "Yeni özellikler ve teklifler hakkında e-posta alın."
+        }
+      },
       "language": "Dil",
       "language_desc": "Tercih ettiğiniz dili seçin.",
       "theme": "Tema",
@@ -601,13 +705,14 @@
       "delete_account_label": "Hesabı Sil",
       "delete_account_desc": "Hesabınızı ve tüm verilerinizi kalıcı olarak silin.",
       "delete_account_button": "Hesabı Sil",
-      "email_notifications_label": "E-posta Bildirimleri",
-      "email_notifications_desc": "Hesap aktiviteleriniz hakkında e-posta alın.",
-      "marketing_emails_label": "Pazarlama E-postaları",
-      "marketing_emails_desc": "Yeni özellikler ve teklifler hakkında e-posta alın.",
       "language_placeholder": "Dil Seçin",
       "en": "English",
-      "tr": "Türkçe"
+      "tr": "Türkçe",
+      "region": {
+        "country": {
+          "label": "Ülke"
+        }
+      }
     },
     "join": {
       "error": "Geçersiz Davet",
@@ -779,7 +884,12 @@
       "cancel": "İptal",
       "delete_confirm": "Emin misiniz?",
       "delete_desc": "Bu işlem geri alınamaz.",
-      "continue": "Devam Et"
+      "continue": "Devam Et",
+      "edit": "Düzenle",
+      "success": "İşlem başarılı",
+      "error": "Bir hata oluştu",
+      "edit_photo": "Fotoğrafı Düzenle",
+      "crop_description": "Konumlandırmak için sürükleyin ve yakınlaştırmak için kaydırıcıyı kullanın."
     },
     "welcome_title": "Deniko'ya Hoşgeldiniz",
     "contact_support": "Bu ekranı görüyorsanız lütfen destek ile iletişime geçin."
@@ -787,6 +897,9 @@
   "common": {
     "save": "Kaydet",
     "saved": "Kaydedildi",
+    "success": "Başarılı",
+    "error": "Hata",
+    "edit": "Düzenle",
     "back_to_home": "Ana Sayfaya Dön",
     "all_rights_reserved": "Tüm hakları saklıdır.",
     "copyright": "© 2025 Deniko.",
@@ -1062,6 +1175,7 @@
       "teacher_desc": "Ders vermek ve yönetmek istiyorum",
       "first_name": "Ad",
       "last_name": "Soyad",
+      "username": "Kullanıcı Adı",
       "email": "E-posta",
       "phone": "Telefon Numarası",
       "password": "Şifre",

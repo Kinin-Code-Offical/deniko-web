@@ -67,8 +67,13 @@ export default async function DashboardLayout({
   // Sign avatar URL if needed
   let imageUrl = user.image;
   if (imageUrl && !imageUrl.startsWith("http")) {
-    const { getSignedUrl } = await import("@/lib/storage");
-    imageUrl = await getSignedUrl(imageUrl);
+    // Use API URL for internal images
+    // We don't need full URL here as it's used in client component (UserNav) which handles relative paths
+    // But UserNav expects a string.
+    // Actually UserNav uses getAvatarUrl internally too!
+    // But here we are passing it as a prop.
+    // Let's pass the relative API path.
+    imageUrl = `/api/avatar/${user.id}`;
   }
 
   const userWithSignedUrl = {

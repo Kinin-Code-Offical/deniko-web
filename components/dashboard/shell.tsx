@@ -283,7 +283,12 @@ export function DashboardShell({
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
-            <UserNav user={user} dictionary={dictionary} lang={lang} />
+            <UserNav
+              user={user}
+              dictionary={dictionary}
+              lang={lang}
+              className="h-[50px] w-[50px] border border-slate-200 p-0 dark:border-slate-700"
+            />
           </div>
         </header>
 

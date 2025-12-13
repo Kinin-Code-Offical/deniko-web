@@ -12,14 +12,15 @@ const locales = ["tr", "en"];
 // to prevent 401/404 errors in search console.
 const routes = [
   "", // Home
-  "/login",
-  "/register",
   "/join",
   "/legal",
   "/legal/privacy",
   "/legal/terms",
   "/legal/cookies",
   "/legal/kvkk",
+  "/faq",
+  "/support",
+  "/support/contact",
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -42,7 +43,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (!process.env.DISABLE_DB_FOR_SITEMAP) { // ignore-env-check
       const users = await db.user.findMany({
         where: {
-          isProfilePublic: true,
+          settings: {
+            profileVisibility: "public",
+          },
           username: { not: null },
         },
         select: {
@@ -58,7 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
               url: `${baseUrl}/${locale}/users/${user.username}`,
               lastModified: user.updatedAt,
               changeFrequency: "weekly",
-              priority: 0.5,
+              priority: 0.6,
             });
           });
         }

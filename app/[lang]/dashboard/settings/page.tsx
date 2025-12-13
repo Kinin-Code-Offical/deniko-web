@@ -39,10 +39,7 @@ export default async function SettingsPage({
       phoneNumber: true,
       image: true,
       role: true,
-      isProfilePublic: true,
-      showEmailOnProfile: true,
-      showCoursesOnProfile: true,
-      showAchievementsOnProfile: true,
+      settings: true,
       notificationEmailEnabled: true,
       notificationInAppEnabled: true,
       preferredCountry: true,
@@ -71,11 +68,7 @@ export default async function SettingsPage({
     redirect(`/${lang}/login`);
   }
 
-  let imageUrl = user.image;
-  if (imageUrl && !imageUrl.startsWith("http")) {
-    const { getSignedUrl } = await import("@/lib/storage");
-    imageUrl = await getSignedUrl(imageUrl);
-  }
+  const imageUrl = user.image;
 
   const defaultAvatars = await getDefaultAvatarsAction();
 
@@ -104,6 +97,7 @@ export default async function SettingsPage({
             <TabsContent value="profile" className="mt-0 space-y-6">
               <ProfileForm
                 initialData={{
+                  id: user.id,
                   username: user.username || "",
                   firstName: user.firstName || "",
                   lastName: user.lastName || "",
@@ -139,10 +133,13 @@ export default async function SettingsPage({
             <TabsContent value="privacy" className="mt-0 space-y-6">
               <PrivacySettings
                 initialData={{
-                  isProfilePublic: user.isProfilePublic,
-                  showEmailOnProfile: user.showEmailOnProfile,
-                  showCoursesOnProfile: user.showCoursesOnProfile,
-                  showAchievementsOnProfile: user.showAchievementsOnProfile,
+                  profileVisibility:
+                    user.settings?.profileVisibility ?? "public",
+                  showAvatar: user.settings?.showAvatar ?? true,
+                  showEmail: user.settings?.showEmail ?? false,
+                  showPhone: user.settings?.showPhone ?? false,
+                  allowMessages: user.settings?.allowMessages ?? true,
+                  showCourses: user.settings?.showCourses ?? true,
                 }}
                 dictionary={dictionary.profile.settings.privacy}
                 lang={lang}

@@ -27,18 +27,9 @@ model User {
   username      String?  @unique // Kullanıcı adı Public Name
   email         String?   @unique
   emailVerified DateTime?
-  image         String?
+  image         String?   // GCS Key or External URL
   password      String?
   phoneNumber   String?
-
-  // Privacy flags
-  isProfilePublic        Boolean @default(true)   // If false: nobody else can view the profile
-  showEmailOnProfile     Boolean @default(false)  // Email visibility on profile
-  showPhoneOnProfile     Boolean @default(false)  // Phone visibility on profile
-  showAvatarOnProfile    Boolean @default(true)   // Avatar/photo visibility on profile
-  allowMessagesFromUsers Boolean @default(true)   // If false: other users cannot start messages from the profile
-  showCoursesOnProfile     Boolean @default(true)
-  showAchievementsOnProfile Boolean @default(true)
 
   // -- Soft Delete --
   isDeleted   Boolean   @default(false)
@@ -50,6 +41,8 @@ model User {
   isOnboardingCompleted Boolean @default(false)
   
   // -- Settings Preferences --
+  settings UserSettings?
+
   notificationEmailEnabled  Boolean @default(true)
   notificationInAppEnabled  Boolean @default(true)
   preferredCountry          String?
@@ -77,6 +70,24 @@ model User {
   receivedMessages Message[]      @relation("ReceivedMessages")
   todos            Todo[]
   calendarEvents   Event[]
+  files            File[]
+}
+
+/// Kullanıcı gizlilik ve tercih ayarları.
+model UserSettings {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  profileVisibility String  @default("public") // "public" | "private"
+  showAvatar        Boolean @default(true)
+  showEmail         Boolean @default(false)
+  showPhone         Boolean @default(false)
+  allowMessages     Boolean @default(true)
+  showCourses       Boolean @default(true)
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 /// OAuth hesapları (Google, Apple vb. ile giriş için).
@@ -189,7 +200,7 @@ model StudentProfile {
   tempLastName  String?
   tempPhone     String?
   tempEmail     String?
-  tempAvatar    String?
+  tempAvatarKey String?
 
   // -- C. Davet ve Durum --
   inviteToken        String?   @unique
@@ -356,7 +367,12 @@ model Lesson {
 model Material {
   id        String   @id @default(uuid())
   title     String
-  url       String
+  
+  // File storage fields
+  fileId    String?
+  file      File?    @relation(fields: [fileId], references: [id])
+  linkUrl   String?  // External Link
+  
   type      FileType
   lessonId  String
   createdAt DateTime @default(now())
@@ -385,7 +401,10 @@ model HomeworkTracking {
   status      HomeworkStatus @default(PENDING)
   studentNote String?
   teacherNote String?
-  fileUrl     String? // Öğrencinin yüklediği dosya (basit kullanım)
+  
+  fileId      String?
+  file        File?    @relation(fields: [fileId], references: [id])
+
   checkedAt   DateTime?
 
   homework Homework       @relation(fields: [homeworkId], references: [id], onDelete: Cascade)
@@ -395,7 +414,10 @@ model HomeworkTracking {
 /// Öğrencinin ödev teslimi (Gelişmiş kullanım).
 model HomeworkSubmission {
   id          String         @id @default(uuid())
-  fileUrl     String?
+  
+  fileId      String?
+  file        File?    @relation(fields: [fileId], references: [id])
+
   note        String?
   submittedAt DateTime       @default(now())
   studentId   String
@@ -515,9 +537,10 @@ model Event {
 model Message {
   id        String    @id @default(uuid())
   content   String?
-  fileUrl   String?
-  fileType  String?
-  fileName  String?
+  
+  fileId    String?
+  file      File?     @relation(fields: [fileId], references: [id])
+
   createdAt DateTime  @default(now())
   isRead    Boolean   @default(false)
   readAt    DateTime?
@@ -543,7 +566,31 @@ model Notification {
 }
 
 // ========================================================
-// 📋 ENUMLAR (SEÇENEK LİSTELERİ)
+// � 8. DOSYA YÖNETİMİ (FILE STORAGE)
+// ========================================================
+
+model File {
+  id          String   @id @default(cuid())
+  key         String   // GCS Key: "files/<ownerId>/<uuid>.<ext>"
+  filename    String   // Original filename
+  mimeType    String
+  sizeBytes   Int
+  
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  materials           Material[]
+  messages            Message[]
+  homeworkTrackings   HomeworkTracking[]
+  homeworkSubmissions HomeworkSubmission[]
+}
+
+// ========================================================
+// �📋 ENUMLAR (SEÇENEK LİSTELERİ)
 // ========================================================
 
 enum Role {

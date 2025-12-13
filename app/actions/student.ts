@@ -84,7 +84,7 @@ export async function createStudent(formData: FormData) {
 
   if (file && file.size > 0) {
     try {
-      avatarUrl = await uploadFile(file, "students");
+      avatarUrl = await uploadFile(file, "avatars");
     } catch (error) {
       logger.error(
         { context: "createStudent", error },
@@ -112,7 +112,7 @@ export async function createStudent(formData: FormData) {
           gradeLevel: grade,
           tempPhone,
           tempEmail,
-          tempAvatar: avatarUrl,
+          tempAvatarKey: avatarUrl,
           inviteToken,
           inviteTokenExpires,
           creatorTeacherId: user.teacherProfile!.id,
@@ -394,6 +394,7 @@ export async function getInviteDetails(token: string) {
               select: {
                 user: {
                   select: {
+                    id: true,
                     name: true,
                     firstName: true,
                     lastName: true,
@@ -419,12 +420,14 @@ export async function getInviteDetails(token: string) {
       : null;
     const teacherImage = teacherUser?.image || null;
     const teacherEmail = teacherUser?.email || null;
+    const teacherId = teacherUser?.id || null;
 
     return {
       ...studentProfile,
       teacherName,
       teacherImage,
       teacherEmail,
+      teacherId,
     };
   } catch (error) {
     logger.error(
@@ -542,12 +545,12 @@ export async function updateStudent(data: z.infer<typeof updateStudentSchema>) {
       // Check if avatar is changing and delete old one
       if (
         avatarUrl &&
-        studentProfile.tempAvatar &&
-        studentProfile.tempAvatar !== avatarUrl &&
-        !studentProfile.tempAvatar.startsWith("http") &&
-        !studentProfile.tempAvatar.startsWith("defaults/")
+        studentProfile.tempAvatarKey &&
+        studentProfile.tempAvatarKey !== avatarUrl &&
+        !studentProfile.tempAvatarKey.startsWith("http") &&
+        !studentProfile.tempAvatarKey.startsWith("defaults/")
       ) {
-        await deleteFile(studentProfile.tempAvatar);
+        await deleteFile(studentProfile.tempAvatarKey);
       }
 
       await db.studentProfile.update({
@@ -556,7 +559,7 @@ export async function updateStudent(data: z.infer<typeof updateStudentSchema>) {
           tempFirstName: firstName,
           tempLastName: lastName,
           tempPhone: phone,
-          tempAvatar: avatarUrl,
+          tempAvatarKey: avatarUrl,
         },
       });
     }
@@ -952,14 +955,14 @@ export async function updateStudentSettings(
 
     let newAvatarPath = undefined;
     if (avatarFile && avatarFile.size > 0) {
-      newAvatarPath = await uploadFile(avatarFile, "students");
+      newAvatarPath = await uploadFile(avatarFile, "avatars");
       // Delete old avatar if it exists and is a file
       if (
-        relation.student.tempAvatar &&
-        !relation.student.tempAvatar.startsWith("http") &&
-        !relation.student.tempAvatar.startsWith("defaults/")
+        relation.student.tempAvatarKey &&
+        !relation.student.tempAvatarKey.startsWith("http") &&
+        !relation.student.tempAvatarKey.startsWith("defaults/")
       ) {
-        await deleteFile(relation.student.tempAvatar);
+        await deleteFile(relation.student.tempAvatarKey);
       }
     } else if (avatarUrl) {
       newAvatarPath = avatarUrl;
@@ -993,7 +996,7 @@ export async function updateStudentSettings(
         profileUpdateData.tempPhone = phone;
         profileUpdateData.tempEmail = email;
         if (newAvatarPath !== undefined) {
-          profileUpdateData.tempAvatar = newAvatarPath;
+          profileUpdateData.tempAvatarKey = newAvatarPath;
         }
       } else {
         // If claimed, we generally don't update user's personal info (phone, email, name)

@@ -8,7 +8,6 @@ import { generatePersonSchema } from "@/lib/json-ld";
 import { env } from "@/lib/env";
 import { UserProfileHero } from "@/components/users/user-profile-hero";
 import { UserProfileTabs } from "@/components/users/user-profile-tabs";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Lock } from "lucide-react";
 
 interface UserProfilePageProps {
@@ -27,12 +26,17 @@ export async function generateMetadata({
   const user = await db.user.findUnique({
     where: { username },
     select: {
+      id: true,
       name: true,
       username: true,
       role: true,
-      isProfilePublic: true,
-      showAvatarOnProfile: true,
       image: true,
+      settings: {
+        select: {
+          profileVisibility: true,
+          showAvatar: true,
+        },
+      },
     },
   });
 
@@ -44,7 +48,9 @@ export async function generateMetadata({
   }
 
   const globalNoIndex = env.NEXT_PUBLIC_NOINDEX;
-  const indexable = user.isProfilePublic && !globalNoIndex;
+  const profileVisibility = user.settings?.profileVisibility ?? "public";
+  const showAvatar = user.settings?.showAvatar ?? true;
+  const indexable = profileVisibility === "public" && !globalNoIndex;
 
   const title = dictionary.seo.profile.title.replace("{name}", user.name || "");
 
@@ -69,14 +75,12 @@ export async function generateMetadata({
 
   let imageUrl = user.image;
   if (imageUrl && !imageUrl.startsWith("http")) {
-    const { getSignedUrl } = await import("@/lib/storage");
-    imageUrl = await getSignedUrl(imageUrl);
+    // Use API URL for internal images
+    imageUrl = `${env.NEXT_PUBLIC_SITE_URL || "https://deniko.net"}/api/avatar/${user.id}`;
   }
 
   const ogImageUrl =
-    user.showAvatarOnProfile && imageUrl
-      ? imageUrl
-      : "https://deniko.net/og-image.png"; // Generic image
+    showAvatar && imageUrl ? imageUrl : "https://deniko.net/og-image.png"; // Generic image
 
   return {
     title,
@@ -121,6 +125,7 @@ export default async function UserProfilePage({
     include: {
       teacherProfile: true,
       studentProfile: true,
+      settings: true,
     },
   });
 
@@ -130,29 +135,38 @@ export default async function UserProfilePage({
 
   const viewerId = session?.user?.id;
   const isOwner = viewerId === user.id;
-  const isPrivate = !user.isProfilePublic && !isOwner;
+
+  const { settings } = user;
+  const profileVisibility = settings?.profileVisibility ?? "public";
+  const isPrivate = profileVisibility === "private" && !isOwner;
 
   // Determine visibility of specific fields
-  const showAvatar = isOwner || user.showAvatarOnProfile;
-  const allowMessages = isOwner || user.allowMessagesFromUsers;
+  // Avatar is shown if:
+  // 1. Viewer is owner
+  // 2. OR (Profile is public AND Avatar is enabled on profile)
+  const showAvatar =
+    isOwner ||
+    (profileVisibility === "public" && (settings?.showAvatar ?? true));
+  const allowMessages = isOwner || (settings?.allowMessages ?? true);
+  const showEmail = isOwner || (settings?.showEmail && !isPrivate);
+  const showPhone = isOwner || (settings?.showPhone && !isPrivate);
 
   let imageUrl = user.image;
   if (imageUrl && !imageUrl.startsWith("http")) {
-    const { getSignedUrl } = await import("@/lib/storage");
-    imageUrl = await getSignedUrl(imageUrl);
+    // Use API URL for internal images
+    imageUrl = `${env.NEXT_PUBLIC_SITE_URL || "https://deniko.net"}/api/avatar/${user.id}`;
   }
 
   // JSON-LD
   const globalNoIndex = env.NEXT_PUBLIC_NOINDEX;
-  const indexable = user.isProfilePublic && !globalNoIndex;
-  const jsonLd =
-    indexable && user.isProfilePublic
-      ? generatePersonSchema(
-          user.name || "",
-          `https://deniko.net/${lang}/users/${username}`,
-          showAvatar ? imageUrl : null
-        )
-      : null;
+  const indexable = profileVisibility === "public" && !globalNoIndex;
+  const jsonLd = indexable
+    ? generatePersonSchema(
+        user.name || username,
+        `https://deniko.net/${lang}/users/${username}`,
+        showAvatar ? imageUrl : undefined
+      )
+    : null;
 
   // Prepare data for components
   const bio = user.teacherProfile?.bio || null;
@@ -170,6 +184,24 @@ export default async function UserProfilePage({
     rating: "-",
   };
 
+  if (isPrivate) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-16 text-center">
+        <div className="mb-6 flex justify-center">
+          <div className="rounded-full bg-slate-100 p-6 dark:bg-slate-800">
+            <Lock className="h-12 w-12 text-slate-400" />
+          </div>
+        </div>
+        <h1 className="mb-2 text-2xl font-bold text-slate-900 dark:text-slate-50">
+          {dictionary.profile.public.private.title}
+        </h1>
+        <p className="text-slate-600 dark:text-slate-400">
+          {dictionary.profile.public.private.description}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-5xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
       {jsonLd && (
@@ -181,45 +213,33 @@ export default async function UserProfilePage({
 
       <UserProfileHero
         user={{
+          id: user.id,
           name: user.name,
           username: user.username,
           image: showAvatar ? imageUrl : null,
           role: user.role,
           country: user.preferredCountry,
           timezone: user.preferredTimezone,
+          email: showEmail ? user.email : null,
+          phone: showPhone ? user.phoneNumber : null,
         }}
         stats={stats}
         dictionary={dictionary}
         lang={lang}
         isOwner={isOwner}
-        canMessage={!isPrivate && allowMessages}
-        canBookLesson={!isPrivate && user.role === "TEACHER"}
+        canMessage={allowMessages}
+        canBookLesson={user.role === "TEACHER"}
       />
 
-      {isPrivate ? (
-        <Alert
-          variant="default"
-          className="border-dashed border-yellow-500/50 bg-yellow-500/10"
-        >
-          <Lock className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
-          <AlertTitle className="text-yellow-800 dark:text-yellow-300">
-            {dictionary.profile.public.private.title}
-          </AlertTitle>
-          <AlertDescription className="text-yellow-700/90 dark:text-yellow-400/90">
-            {dictionary.profile.public.private.description}
-          </AlertDescription>
-        </Alert>
-      ) : (
-        <UserProfileTabs
-          dictionary={dictionary}
-          bio={bio}
-          subjects={subjects}
-          levels={levels}
-          // Mock data for empty states
-          lessons={[]}
-          reviews={[]}
-        />
-      )}
+      <UserProfileTabs
+        dictionary={dictionary}
+        bio={bio}
+        subjects={subjects}
+        levels={levels}
+        // Mock data for empty states
+        lessons={[]}
+        reviews={[]}
+      />
     </div>
   );
 }

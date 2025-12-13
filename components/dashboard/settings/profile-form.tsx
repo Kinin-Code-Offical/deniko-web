@@ -26,7 +26,7 @@ import { toast } from "sonner";
 import { Loader2, Camera, Upload, User } from "lucide-react";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { AvatarCropper } from "@/components/ui/avatar-cropper";
-import { cn } from "@/lib/utils";
+import { cn, getAvatarUrl } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 
 import Image from "next/image";
@@ -97,6 +97,7 @@ interface ProfileDictionary {
 
 interface ProfileFormProps {
   initialData: {
+    id: string;
     username: string;
     firstName: string;
     lastName: string;
@@ -128,7 +129,9 @@ export function ProfileForm({
 }: ProfileFormProps) {
   const [isPending, startTransition] = useTransition();
   const [isUploading, setIsUploading] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(initialData.image);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(
+    getAvatarUrl(initialData.image, initialData.id)
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Cropper state
