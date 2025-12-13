@@ -1,38 +1,52 @@
-# 🧩 Components
+# Components Directory (`components/`)
 
-This directory houses all the reusable React components used across the application.
+Bu klasör, uygulamanın yeniden kullanılabilir React bileşenlerini (components) içerir. Bileşenler işlevlerine göre alt klasörlere ayrılmıştır.
 
-## 📂 Organization
+## 📂 Alt Klasörler
 
-- **`ui/`**: Low-level, reusable UI primitives (Buttons, Inputs, Dialogs, etc.). These are mostly built with **Shadcn UI** and **Radix UI**.
-  - _Example:_ `button.tsx`, `card.tsx`, `dialog.tsx`.
+- **`ui/`**: Temel arayüz elemanları (Button, Input, Card, Dialog vb.). Genellikle **shadcn/ui** kütüphanesinden türetilmiştir.
+- **`auth/`**: Kimlik doğrulama ile ilgili bileşenler.
+  - `login-form.tsx`: Giriş formu.
+  - `register-form.tsx`: Kayıt formu.
+  - `google-login-button.tsx`: Google ile giriş butonu.
+- **`dashboard/`**: Yönetim paneli (Dashboard) sayfalarına özel bileşenler.
+  - `user-nav.tsx`: Üst bardaki kullanıcı profil menüsü.
+  - `shell.tsx`: Dashboard genel düzeni (sidebar, header).
+- **`landing/`**: Karşılama (Landing) sayfası bileşenleri.
+- **`users/`**: Kullanıcı profili görüntüleme bileşenleri.
+- **`providers/`**: React Context provider'ları (Theme, Session vb.).
 
-- **`auth/`**: Components specific to authentication flows.
-  - _Example:_ `login-form.tsx`, `register-form.tsx`, `user-button.tsx`.
+## 🧩 Önemli Bileşenler
 
-- **`dashboard/`**: Complex widgets and views used in the user dashboard.
-  - _Example:_ `sidebar.tsx`, `stats-card.tsx`, `recent-sales.tsx`.
+### `UserNav` (`dashboard/user-nav.tsx`)
 
-- **`landing/`**: Components used specifically on the marketing landing page.
-  - _Example:_ `hero.tsx`, `features.tsx`, `pricing.tsx`.
+Dashboard üst barında sağ köşede duran, kullanıcının avatarını gösteren ve tıklandığında profil/çıkış menüsünü açan bileşen.
 
-- **`providers/`**: Context providers that wrap the application.
-  - _Example:_ `theme-provider.tsx`, `query-provider.tsx`.
+**Props**
 
-## 🎨 Styling
+- `user`: Kullanıcı bilgilerini (isim, email, resim) içeren obje.
+- `dictionary`: Dil çeviri objesi.
+- `lang`: Mevcut dil kodu.
 
-- We use **Tailwind CSS v4** for styling.
-- Components in `ui/` are designed to be headless and accessible, following WAI-ARIA patterns via Radix UI.
-- Icons are provided by **Lucide React**.
+**Kullanım**
 
-## 📝 Usage Guidelines
+```tsx
+<UserNav user={session.user} dictionary={dict} lang="tr" />
+```
 
-1. **Prefer Server Components:** Keep components as Server Components unless they need interactivity (state, effects, event listeners).
-2. **"Use Client":** If a component needs interactivity, add `"use client"` at the top.
-3. **Composition:** Build complex UIs by composing smaller `ui/` primitives.
+### `LoginForm` (`auth/login-form.tsx`)
 
-## TODO
+Kullanıcı giriş işlemlerini yöneten form. Email/Şifre ve Google girişi seçeneklerini sunar.
 
-- Move feature-specific components (like support or marketing sections) into their own sub-folders so shared primitives remain lightweight.
-- Document which exported components are safe to import in Server Components to prevent accidental client bundling.
-- Set up visual regression stories (Storybook/Chromatic) for critical primitives to detect styling regressions early.
+**Props**
+
+- `dictionary`: Çeviri metinleri.
+- `lang`: Dil kodu.
+
+### `GoogleAnalytics` (`GoogleAnalytics.tsx`)
+
+Google Analytics takibi için script'i sayfaya ekleyen bileşen.
+
+### `ThemeToggle` (`theme-toggle.tsx`)
+
+Aydınlık/Karanlık mod (Light/Dark mode) arasında geçiş yapan buton.

@@ -1,24 +1,47 @@
-# 🛠️ Library & Utilities
+# Library Directory (`lib/`)
 
-This directory contains utility functions, shared logic, and configuration files that power the application.
+Bu klasör, uygulamanın iş mantığını, yardımcı fonksiyonlarını, veritabanı ve servis yapılandırmalarını içerir.
 
-## 📂 Key Files
+## 📄 Önemli Dosyalar
 
-- **`db.ts`**: The global Prisma Client instance. Use this to interact with the database. It handles connection pooling in development to prevent "too many connections" errors.
-- **`utils.ts`**: General helper functions, including the `cn` utility for merging Tailwind classes.
-- **`auth.ts`**: NextAuth.js configuration, including providers, callbacks, and session logic.
-- **`get-dictionary.ts`**: The server-side utility for loading i18n dictionaries based on the requested locale.
-- **`email.ts`**: Configuration and helpers for sending emails (via Nodemailer or Resend).
-- **`storage.ts`**: Helpers for interacting with Google Cloud Storage or local file storage.
+### `db.ts`
 
-## 🔍 Best Practices
+Prisma Client örneğini (instance) oluşturur ve dışa aktarır.
 
-- **Statelessness:** Functions here should generally be pure and stateless.
-- **Type Safety:** All utilities should be strictly typed with TypeScript.
-- **Server-Only:** Files that access the database or secret keys (like `db.ts`) should be kept out of the client-side bundle. Next.js usually handles this, but be mindful of imports.
+- **Amaç**: Veritabanı bağlantısını tek bir noktadan yönetmek ve development ortamında çoklu bağlantı oluşmasını engellemek (global caching).
+- **Kullanım**: `import { db } from "@/lib/db";`
 
-## TODO
+### `storage.ts`
 
-- Split large helpers (like the middleware logic in `proxy.ts`) into modular files inside `lib/security`, `lib/locale`, etc., to improve testability.
-- Add unit tests for critical utilities (dictionary loading, environment parsing, email helpers).
-- Document which utilities are safe for client imports versus server-only usage to avoid accidental bundling of secrets.
+Google Cloud Storage (GCS) işlemlerini yöneten yardımcı modül.
+
+- **Fonksiyonlar**:
+  - `uploadObject`: Dosya yükler.
+  - `getObjectStream`: Dosya okuma akışı (stream) döner.
+  - `getSignedUrlForKey`: Geçici erişim URL'i üretir.
+- **Güvenlik**: Dosya yollarını (`key`) doğrular, path traversal saldırılarını engeller.
+
+### `utils.ts`
+
+Genel amaçlı yardımcı fonksiyonlar.
+
+- **`cn(...)`**: Tailwind sınıflarını koşullu olarak birleştirmek için (clsx + tailwind-merge).
+- **`formatPhoneNumber(value)`**: Telefon numaralarını formatlar (Özellikle TR numaraları için).
+- **`getAvatarUrl(...)`**: Kullanıcı avatarı için doğru URL'i (GCS veya External) belirler.
+- **`createImage`, `getCroppedImg`**: Resim işleme (crop) yardımcıları.
+
+### `auth.ts` / `auth.config.ts` (Varsayılmıştır)
+
+NextAuth.js yapılandırması.
+
+### `logger.ts`
+
+Uygulama loglarını yönetmek için (muhtemelen Pino veya Winston wrapper).
+
+### `env.ts`
+
+Ortam değişkenlerini (Environment Variables) doğrulamak için (T3 Env veya Zod tabanlı). `process.env` yerine tip güvenli erişim sağlar.
+
+## 📂 Alt Klasörler
+
+- **`hooks/`**: React Custom Hooks.

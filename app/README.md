@@ -1,32 +1,52 @@
-# 📱 App Router Structure
+# App Directory (`app/`)
 
-This directory contains the main application logic, routing, and page definitions for the Deniko project, built with **Next.js 16 App Router**.
+Bu klasör, Next.js **App Router** yapısını barındırır. Projenin tüm sayfaları, API route'ları ve layout'ları burada bulunur.
 
-## 📂 Directory Structure
+## 📂 Klasör Yapısı
 
-- **`[lang]/`**: The root of the localized application. All pages are wrapped in this dynamic route to handle internationalization (e.g., `/en/dashboard`, `/tr/dashboard`).
-  - **`page.tsx`**: The landing page.
-  - **`layout.tsx`**: The main layout wrapping the application.
-  - **`dashboard/`**: Protected dashboard routes for authenticated users.
-  - **`legal/`**: Static legal pages (Terms, Privacy, etc.).
-  - **`auth/`**: Authentication pages (Login, Register).
+### `[lang]/` (Internationalization)
 
-- **`api/`**: Backend API routes (Next.js Route Handlers).
-  - **`auth/`**: NextAuth.js endpoints.
-  - **`webhooks/`**: Stripe or other webhook handlers.
+Tüm sayfa rotaları bu dinamik segmentin altındadır. Bu sayede uygulama çoklu dil desteği (i18n) sunar.
 
-- **`globals.css`**: Global Tailwind CSS styles and theme definitions.
-- **`layout.tsx`**: The root layout (server-side) that applies global providers and fonts.
-- **`not-found.tsx`**: Custom 404 page.
+- Örnek: `/tr/dashboard`, `/en/dashboard`.
+- `lang` parametresi, sayfa bileşenlerine prop olarak iletilir ve uygun sözlük (`dictionaries/`) dosyasının yüklenmesini sağlar.
 
-## 🔑 Key Concepts
+### `api/`
 
-- **Server Components:** By default, all components in `app/` are React Server Components (RSC). Use `"use client"` directive for interactive components.
-- **Localization:** We use a path-based strategy (`/[lang]/...`). The `lang` parameter is passed to all pages and layouts to fetch the correct dictionary.
-- **Metadata:** SEO metadata is generated dynamically in `page.tsx` or `layout.tsx` files using `generateMetadata`.
+Backend API endpoint'lerini içerir.
 
-## TODO
+- **`avatar/[userId]/route.ts`**: Kullanıcı avatarını sunar.
+- **`files/[fileId]/route.ts`**: Güvenli dosya indirme işlemi yapar.
+- **`auth/*`**: NextAuth.js endpoint'leri (otomatik oluşturulur/yönetilir).
 
-- Generate metadata, JSON-LD, and canonical URLs from the locale dictionaries so `/[lang]` routes emit localized SEO texts.
-- Expand the sitemap (or implement `generateSitemaps`) to cover new public routes automatically.
-- Extract heavy middleware logic (rate limiting, CSP, locale sync) into composable helpers to simplify future changes.
+### `actions/`
+
+Server Actions dosyaları. İstemci bileşenlerinden (Client Components) doğrudan sunucu fonksiyonlarını çağırmak için kullanılır.
+
+- Form gönderimleri, veri güncellemeleri vb. burada işlenir.
+
+### `simple/`
+
+Muhtemelen basitleştirilmiş veya test amaçlı sayfalar.
+
+## 📄 Önemli Dosyalar
+
+### `layout.tsx` (Root Layout)
+
+Uygulamanın en dış katmanıdır.
+
+- `<html>` ve `<body>` etiketlerini içerir.
+- Global CSS (`globals.css`) burada yüklenir.
+- Font konfigürasyonu burada yapılır.
+
+### `globals.css`
+
+Tüm uygulama için geçerli olan CSS stilleri ve Tailwind direktifleri (`@tailwind base`, vb.).
+
+### `not-found.tsx`
+
+404 - Sayfa bulunamadı hatası için özel tasarım.
+
+### `robots.ts` & `sitemap.ts`
+
+SEO için gerekli olan `robots.txt` ve `sitemap.xml` dosyalarını dinamik olarak üretir.
