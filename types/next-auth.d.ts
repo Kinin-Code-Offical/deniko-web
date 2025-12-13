@@ -7,6 +7,7 @@ declare module "next-auth" {
       role?: Role;
       isOnboardingCompleted: boolean;
       username?: string;
+      avatarVersion?: number;
     } & DefaultSession["user"];
   }
 }
@@ -16,5 +17,6 @@ declare module "next-auth/jwt" {
     role?: Role;
     isOnboardingCompleted: boolean;
     username?: string;
+    avatarVersion?: number;
   }
 }

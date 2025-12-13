@@ -33,6 +33,7 @@ interface NavbarProps {
     email?: string | null;
     image?: string | null;
     username?: string | null;
+    avatarVersion?: number | null;
   };
 }
 

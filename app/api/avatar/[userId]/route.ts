@@ -12,43 +12,6 @@ function isHtmlRequest(req: Request): boolean {
     return accept.includes("text/html");
 }
 
-// Helper function for permission check
-function canViewAvatar(options: {
-    sessionUser: { id: string; role?: string | null } | null;
-    profileUser: {
-        id: string;
-        settings: {
-            profileVisibility: string;
-            showAvatar: boolean;
-        } | null;
-    };
-}): boolean {
-    const { sessionUser, profileUser } = options;
-    const { settings } = profileUser;
-
-    // Defaults
-    const profileVisibility = settings?.profileVisibility ?? "public";
-    const showAvatar = settings?.showAvatar ?? true;
-
-    // 1. Owner always has access
-    if (sessionUser?.id === profileUser.id) {
-        return true;
-    }
-
-    // 2. If avatar is hidden explicitly
-    if (!showAvatar) {
-        return false;
-    }
-
-    // 3. If profile is private
-    if (profileVisibility === "private") {
-        return false;
-    }
-
-    // 4. Public profile & Avatar is on
-    return true;
-}
-
 export async function GET(
     req: Request,
     { params }: { params: Promise<{ userId: string }> }
@@ -82,16 +45,29 @@ export async function GET(
         return new NextResponse("Not Found", { status: 404 });
     }
 
-    // Debug Log
+    // Defaults
     const profileVisibility = user.settings?.profileVisibility ?? "public";
     const showAvatar = user.settings?.showAvatar ?? true;
 
-    logger.debug(`[AvatarAPI] Request for ${userId} by ${sessionUser?.id || "Guest"}`);
-    logger.debug(`[AvatarAPI] User Settings: Visibility=${profileVisibility}, ShowAvatar=${showAvatar}`);
+    // Permission Logic
+    let hasAccess = false;
 
-    // Privacy Check
-    const hasAccess = canViewAvatar({ sessionUser, profileUser: user });
-    logger.debug(`[AvatarAPI] Access Granted: ${hasAccess}`);
+    // 1. Owner always has access
+    if (sessionUser?.id === user.id) {
+        hasAccess = true;
+    }
+    // 2. If avatar is hidden explicitly (and not owner)
+    else if (!showAvatar) {
+        hasAccess = false;
+    }
+    // 3. If profile is private (and not owner)
+    else if (profileVisibility === "private") {
+        hasAccess = false;
+    }
+    // 4. Public profile & Avatar is on
+    else {
+        hasAccess = true;
+    }
 
     if (!hasAccess) {
         if (isHtmlRequest(req)) {

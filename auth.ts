@@ -193,6 +193,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.isOnboardingCompleted =
           token.isOnboardingCompleted as boolean;
         session.user.username = token.username as string;
+        session.user.avatarVersion = token.avatarVersion as number;
       }
 
       return session;
@@ -212,6 +213,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       token.role = existingUser.role;
       token.username = existingUser.username;
       token.isOnboardingCompleted = existingUser.isOnboardingCompleted;
+      token.avatarVersion = existingUser.avatarVersion;
       return token;
     },
   },

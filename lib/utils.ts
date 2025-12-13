@@ -52,13 +52,13 @@ export const createImage = (url: string): Promise<HTMLImageElement> =>
     image.src = url;
   });
 
-export function getAvatarUrl(image: string | null | undefined, userId: string) {
+export function getAvatarUrl(image: string | null | undefined, userId: string, version?: number) {
   if (!image) return "/api/avatars/default";
   if (image.startsWith("http") || image.startsWith("https")) {
     return image;
   }
   // Internal key
-  return `/api/avatar/${userId}`;
+  return `/api/avatar/${userId}${version ? `?v=${version}` : ""}`;
 }
 
 

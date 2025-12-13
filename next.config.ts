@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import withBundleAnalyzer from "@next/bundle-analyzer";
+import path from "path";
 
 const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
@@ -9,6 +10,9 @@ const nextConfig: NextConfig = {
   output: "standalone",
   compress: true,
   productionBrowserSourceMaps: false,
+  turbopack: {
+    root: path.join(__dirname),
+  },
   experimental: {
     serverActions: {
       bodySizeLimit: "10mb",
@@ -96,7 +100,7 @@ const nextConfig: NextConfig = {
               {
                 key: "Content-Security-Policy",
                 value:
-                  "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: *.google-analytics.com *.googletagmanager.com lh3.googleusercontent.com storage.googleapis.com https://api.dicebear.com; font-src 'self' data:; connect-src 'self' *.google-analytics.com *.googletagmanager.com;",
+                  "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: *.google-analytics.com *.googletagmanager.com lh3.googleusercontent.com storage.googleapis.com https://api.dicebear.com https://deniko.net; font-src 'self' data:; connect-src 'self' *.google-analytics.com *.googletagmanager.com;",
               },
             ]),
         ],

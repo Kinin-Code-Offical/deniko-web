@@ -133,8 +133,8 @@
     background-color: var(--background);
     color: var(--foreground);
   }
+  /* Override Radix/scroll-lock scrollbar compensation */
 }
-
 /* Prevent layout shift when scrollbar appears */
 
 /* Firefox global rules (ignored by Chrome, safe to keep) */
@@ -143,9 +143,15 @@ html,
 body {
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb) transparent;
-  scrollbar-gutter: auto;
+  scrollbar-gutter: stable;
 }
 
+html body[data-scroll-locked] {
+  --removed-body-scroll-bar-size: 0px !important;
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+  overflow: visible !important;
+}
 /* WebKit-based (Chrome, Edge, Safari) */
 .dnk-scrollbar::-webkit-scrollbar,
 html::-webkit-scrollbar,

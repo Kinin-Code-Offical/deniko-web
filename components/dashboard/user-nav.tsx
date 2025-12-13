@@ -27,6 +27,7 @@ interface UserNavProps {
     email?: string | null;
     image?: string | null;
     username?: string | null;
+    avatarVersion?: number | null;
   };
 
   dictionary?: Dictionary;
@@ -41,7 +42,11 @@ export const UserNav = memo(function UserNav({
   className,
 }: UserNavProps) {
   const t = dictionary?.dashboard?.header;
-  const avatarUrl = getAvatarUrl(user.image, user.id || "");
+  const avatarUrl = getAvatarUrl(
+    user.image,
+    user.id || "",
+    user.avatarVersion || 0
+  );
 
   if (!t) return null;
 

@@ -441,7 +441,10 @@ export async function updateAvatarAction(input: unknown, lang: string) {
 
         await db.user.update({
             where: { id: session.user.id },
-            data: { image: imagePath },
+            data: {
+                image: imagePath,
+                avatarVersion: { increment: 1 }
+            },
         });
 
         // Delete old avatar if it exists, is not the new one, and is not a default avatar

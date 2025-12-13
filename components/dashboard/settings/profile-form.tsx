@@ -28,8 +28,9 @@ import { PhoneInput } from "@/components/ui/phone-input";
 import { AvatarCropper } from "@/components/ui/avatar-cropper";
 import { cn, getAvatarUrl } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
-
 import Image from "next/image";
+
+import { useRouter } from "next/navigation";
 
 interface ProfileDictionary {
   title: string;
@@ -115,6 +116,7 @@ interface ProfileFormProps {
       parentPhone: string | null;
       parentEmail: string | null;
     } | null;
+    avatarVersion?: number | null;
   };
   dictionary: ProfileDictionary;
   lang: string;
@@ -127,10 +129,15 @@ export function ProfileForm({
   lang,
   defaultAvatars,
 }: ProfileFormProps) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isUploading, setIsUploading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(
-    getAvatarUrl(initialData.image, initialData.id)
+    getAvatarUrl(
+      initialData.image,
+      initialData.id,
+      initialData.avatarVersion || 0
+    )
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -278,8 +285,13 @@ export function ProfileForm({
         );
 
         if (updateResult.success) {
-          setAvatarUrl(uploadResult.url || null);
+          // Optimistic update with new version (assuming +1)
+          const newVersion = (initialData.avatarVersion || 0) + 1;
+          setAvatarUrl(
+            getAvatarUrl(uploadResult.path, initialData.id, newVersion)
+          );
           toast.success(dictionary.avatar.success_update);
+          router.refresh();
         } else {
           toast.error(updateResult.error || dictionary.avatar.error_upload);
         }
@@ -304,8 +316,12 @@ export function ProfileForm({
         lang
       );
       if (result.success) {
-        setAvatarUrl(avatar.url);
+        // Optimistic update with cache-busting
+        const newVersion = (initialData.avatarVersion || 0) + 1;
+        // Default avatar URL is an API route; add a version query to bypass caches.
+        setAvatarUrl(`${avatar.url}?v=${newVersion}`);
         toast.success(dictionary.avatar.success_update);
+        router.refresh();
       } else {
         toast.error(result.error || dictionary.avatar.error_upload);
       }
